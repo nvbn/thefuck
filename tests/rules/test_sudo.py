@@ -5,6 +5,7 @@ from thefuck.rules.sudo import match, get_new_command
 def test_match():
     assert match(Command('', '', 'Permission denied'))
     assert match(Command('', '', 'permission denied'))
+    assert match(Command('', '', "npm ERR! Error: EACCES, unlink"))
     assert not match(Command('', '', ''))
 
 
