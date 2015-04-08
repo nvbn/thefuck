@@ -1,6 +1,8 @@
 # The Fuck
 
-Magnificent app which corrects your previous console command.
+Magnificent app which corrects your previous console command,
+inspired by [@liamosaur](https://twitter.com/liamosaur/status/506975850596536320)
+twit.
 
 Few examples:
 
