@@ -2,6 +2,7 @@ from collections import namedtuple
 from imp import load_source
 from pathlib import Path
 from os.path import expanduser
+from os import environ
 from subprocess import Popen, PIPE
 import sys
 

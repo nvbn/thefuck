@@ -26,6 +26,16 @@ To push the current branch and set the remote as upstream, use
 ➜ fuck
 Counting objects: 9, done.
 ...
+
+➜ puthon
+No command 'puthon' found, did you mean:
+ Command 'python' from package 'python-minimal' (main)
+ Command 'python' from package 'python3' (main)
+zsh: command not found: puthon
+
+➜ fuck
+Python 3.4.2 (default, Oct  8 2014, 13:08:17)
+...
 ```
 
 ## Installation
