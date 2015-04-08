@@ -36,6 +36,15 @@ zsh: command not found: puthon
 ➜ fuck
 Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 ...
+
+➜ git brnch
+git: 'brnch' is not a git command. See 'git --help'.
+
+Did you mean this?
+	branch
+
+➜ fuck
+* master
 ```
 
 ## Installation

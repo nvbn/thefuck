@@ -22,4 +22,4 @@ def get_new_command(command, settings):
                              output)[0]
     fixed_name = re.findall(r"Command '([^']*)' from package",
                             output)[0]
-    return command.script.replace(broken_name, fixed_name)
+    return command.script.replace(broken_name, fixed_name, 1)
