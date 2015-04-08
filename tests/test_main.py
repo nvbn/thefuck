@@ -74,7 +74,7 @@ def test_get_command():
 
 def test_get_matched_rule():
     rules = [main.Rule(lambda x, _: x.script == 'cd ..', None),
-             main.Rule(lambda _, _: False, None)]
+             main.Rule(lambda *_: False, None)]
     assert main.get_matched_rule(main.Command('ls', '', ''),
                                  rules, None) is None
     assert main.get_matched_rule(main.Command('cd ..', '', ''),
