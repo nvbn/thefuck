@@ -1,4 +1,4 @@
-# The Fuck
+# The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg)](https://travis-ci.org/nvbn/thefuck)
 
 Magnificent app which corrects your previous console command,
 inspired by [@liamosaur](https://twitter.com/liamosaur/status/506975850596536320)
