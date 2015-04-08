@@ -1,26 +1,15 @@
 from setuptools import setup, find_packages
 
 
-version = '1'
-
 setup(name='thefuck',
-      version=version,
-      description="",
-      long_description="""\
-""",
-      classifiers=[],  # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-      keywords='',
-      author='',
-      author_email='',
-      url='',
-      license='',
+      version=1.0,
+      description="Magnificent app which corrects your previous console command",
+      author='Vladimir Iakovlev',
+      author_email='nvbn.rm@gmail.com',
+      url='https://github.com/nvbn/thefuck',
+      license='MIT',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          # -*- Extra requirements: -*-
-      ],
       entry_points={'console_scripts': [
-          'thefuck = thefuck.main:main',
-      ]},
-      )
+          'thefuck = thefuck.main:main']})
