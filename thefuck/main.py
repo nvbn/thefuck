@@ -2,13 +2,11 @@ from collections import namedtuple
 from imp import load_source
 from pathlib import Path
 from os.path import expanduser
-from os import environ
 from subprocess import Popen, PIPE
 import sys
 
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
-Settings = namedtuple('Settings', ('rules',))
 Rule = namedtuple('Rule', ('match', 'get_new_command'))
 
 
@@ -22,14 +20,16 @@ def setup_user_dir() -> Path:
     return user_dir
 
 
-def get_settings(user_dir: Path) -> Settings:
+def get_settings(user_dir: Path):
     """Returns prepared settings module."""
     settings = load_source('settings',
                            str(user_dir.joinpath('settings.py')))
-    return Settings(getattr(settings, 'rules', None))
+    if not hasattr(settings, 'rules'):
+        settings.rules = None
+    return settings
 
 
-def is_rule_enabled(settings: Settings, rule: Path) -> bool:
+def is_rule_enabled(settings, rule: Path) -> bool:
     """Returns `True` when rule mentioned in `rules` or `rules`
     isn't defined.
 
@@ -43,7 +43,7 @@ def load_rule(rule: Path) -> Rule:
     return Rule(rule_module.match, rule_module.get_new_command)
 
 
-def get_rules(user_dir: Path, settings: Settings) -> [Rule]:
+def get_rules(user_dir: Path, settings) -> [Rule]:
     """Returns all enabled rules."""
     bundled = Path(__file__).parent\
                             .joinpath('rules')\
@@ -61,16 +61,16 @@ def get_command(args: [str]) -> Command:
                    result.stderr.read().decode())
 
 
-def get_matched_rule(command: Command, rules: [Rule]) -> Rule:
+def get_matched_rule(command: Command, rules: [Rule], settings) -> Rule:
     """Returns first matched rule for command."""
     for rule in rules:
-        if rule.match(command):
+        if rule.match(command, settings):
             return rule
 
 
-def run_rule(rule: Rule, command: Command):
+def run_rule(rule: Rule, command: Command, settings):
     """Runs command from rule for passed command."""
-    new_command = rule.get_new_command(command)
+    new_command = rule.get_new_command(command, settings)
     print(new_command)
 
 
@@ -79,8 +79,8 @@ def main():
     user_dir = setup_user_dir()
     settings = get_settings(user_dir)
     rules = get_rules(user_dir, settings)
-    matched_rule = get_matched_rule(command, rules)
+    matched_rule = get_matched_rule(command, rules, settings)
     if matched_rule:
-        run_rule(matched_rule, command)
+        run_rule(matched_rule, command, settings)
     else:
         print('echo No fuck given')

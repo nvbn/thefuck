@@ -14,11 +14,11 @@ To push the current branch and set the remote as upstream, use
 
 
 def test_match(stderr):
-    assert match(Command('git push master', '', stderr))
-    assert not match(Command('git push master', '', ''))
-    assert not match(Command('ls', '', stderr))
+    assert match(Command('git push master', '', stderr), None)
+    assert not match(Command('git push master', '', ''), None)
+    assert not match(Command('ls', '', stderr), None)
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command('', '', stderr))\
+    assert get_new_command(Command('', '', stderr), None)\
         == "git push --set-upstream origin master"

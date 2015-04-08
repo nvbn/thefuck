@@ -27,9 +27,9 @@ def test_get_settings():
 
 
 def test_is_rule_enabled():
-    assert main.is_rule_enabled(main.Settings(None), Path('bash.py'))
-    assert main.is_rule_enabled(main.Settings(['bash']), Path('bash.py'))
-    assert not main.is_rule_enabled(main.Settings(['bash']), Path('lisp.py'))
+    assert main.is_rule_enabled(Mock(rules=None), Path('bash.py'))
+    assert main.is_rule_enabled(Mock(rules=['bash']), Path('bash.py'))
+    assert not main.is_rule_enabled(Mock(rules=['bash']), Path('lisp.py'))
 
 
 def test_load_rule():
@@ -50,13 +50,13 @@ def test_get_rules():
         glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
         assert main.get_rules(
             Path('~'),
-            main.Settings(None)) == [main.Rule('bash', 'bash'),
+            Mock(rules=None)) == [main.Rule('bash', 'bash'),
                                      main.Rule('lisp', 'lisp'),
                                      main.Rule('bash', 'bash'),
                                      main.Rule('lisp', 'lisp')]
         assert main.get_rules(
             Path('~'),
-            main.Settings(['bash'])) == [main.Rule('bash', 'bash'),
+            Mock(rules=['bash'])) == [main.Rule('bash', 'bash'),
                                          main.Rule('bash', 'bash')]
 
 
@@ -73,9 +73,9 @@ def test_get_command():
 
 
 def test_get_matched_rule():
-    rules = [main.Rule(lambda x: x.script == 'cd ..', None),
-             main.Rule(lambda _: False, None)]
+    rules = [main.Rule(lambda x, _: x.script == 'cd ..', None),
+             main.Rule(lambda _, _: False, None)]
     assert main.get_matched_rule(main.Command('ls', '', ''),
-                                 rules) is None
+                                 rules, None) is None
     assert main.get_matched_rule(main.Command('cd ..', '', ''),
-                                 rules) == rules[0]
+                                 rules, None) == rules[0]
