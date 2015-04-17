@@ -63,6 +63,8 @@ And add to `.bashrc` or `.zshrc`:
 
 ```bash
 alias fuck='$(thefuck $(fc -ln -1))'
+# When you really need it
+alias FUCK='fuck'
 ```
 
 Or in `config.fish`:
