@@ -12,7 +12,8 @@ E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 
 ➜ fuck
-[sudo] password for nvbn: 
+sudo apt-get install vim
+[sudo] password for nvbn:
 Reading package lists... Done
 ...
 
@@ -24,6 +25,7 @@ To push the current branch and set the remote as upstream, use
 
 
 ➜ fuck
+git push --set-upstream origin master
 Counting objects: 9, done.
 ...
 
@@ -34,6 +36,7 @@ No command 'puthon' found, did you mean:
 zsh: command not found: puthon
 
 ➜ fuck
+python
 Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 ...
 
@@ -44,6 +47,7 @@ Did you mean this?
 	branch
 
 ➜ fuck
+git branch
 * master
 ```
 
