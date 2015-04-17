@@ -1,6 +1,8 @@
 language: python
 python:
   - "3.4"
+  - "3.3"
+  - "2.7"
 install:
   - python setup.py develop
   - pip install -r requirements.txt

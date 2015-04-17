@@ -1,6 +1,6 @@
-from unittest.mock import patch, Mock
-import pytest
 from subprocess import PIPE
+from mock import patch, Mock
+import pytest
 from thefuck.rules.no_command import match, get_new_command
 from thefuck.main import Command
 

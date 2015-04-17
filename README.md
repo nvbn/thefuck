@@ -52,7 +52,7 @@ Did you mean this?
 Install `The Fuck`:
 
 ```bash
-sudo pip3 install thefuck
+sudo pip install thefuck
 ```
 
 And add to `.bashrc` or `.zshrc`:
@@ -66,8 +66,8 @@ alias fuck='$(thefuck $(fc -ln -1))'
 Install `The Fuck` for development:
 
 ```bash
-pip3 install -r requirements.txt
-python3 setup.py develop
+pip install -r requirements.txt
+python setup.py develop
 ```
 
 Run tests:

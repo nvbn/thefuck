@@ -10,7 +10,7 @@ Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
 Rule = namedtuple('Rule', ('match', 'get_new_command'))
 
 
-def setup_user_dir() -> Path:
+def setup_user_dir():
     """Returns user config dir, create it when it doesn't exists."""
     user_dir = Path(expanduser('~/.thefuck'))
     if not user_dir.is_dir():
@@ -20,7 +20,7 @@ def setup_user_dir() -> Path:
     return user_dir
 
 
-def get_settings(user_dir: Path):
+def get_settings(user_dir):
     """Returns prepared settings module."""
     settings = load_source('settings',
                            str(user_dir.joinpath('settings.py')))
@@ -29,7 +29,7 @@ def get_settings(user_dir: Path):
     return settings
 
 
-def is_rule_enabled(settings, rule: Path) -> bool:
+def is_rule_enabled(settings, rule):
     """Returns `True` when rule mentioned in `rules` or `rules`
     isn't defined.
 
@@ -37,23 +37,23 @@ def is_rule_enabled(settings, rule: Path) -> bool:
     return settings.rules is None or rule.name[:-3] in settings.rules
 
 
-def load_rule(rule: Path) -> Rule:
+def load_rule(rule):
     """Imports rule module and returns it."""
     rule_module = load_source(rule.name[:-3], str(rule))
     return Rule(rule_module.match, rule_module.get_new_command)
 
 
-def get_rules(user_dir: Path, settings) -> [Rule]:
+def get_rules(user_dir, settings):
     """Returns all enabled rules."""
     bundled = Path(__file__).parent\
                             .joinpath('rules')\
                             .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
     return [load_rule(rule) for rule in list(bundled) + list(user)
-            if is_rule_enabled(settings, rule)]
+            if rule.name != '__init__.py' and is_rule_enabled(settings, rule)]
 
 
-def get_command(args: [str]) -> Command:
+def get_command(args):
     """Creates command from `args` and executes it."""
     script = ' '.join(args[1:])
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE)
@@ -61,14 +61,14 @@ def get_command(args: [str]) -> Command:
                    result.stderr.read().decode())
 
 
-def get_matched_rule(command: Command, rules: [Rule], settings) -> Rule:
+def get_matched_rule(command, rules, settings):
     """Returns first matched rule for command."""
     for rule in rules:
         if rule.match(command, settings):
             return rule
 
 
-def run_rule(rule: Rule, command: Command, settings):
+def run_rule(rule, command, settings):
     """Runs command from rule for passed command."""
     new_command = rule.get_new_command(command, settings)
     print(new_command)

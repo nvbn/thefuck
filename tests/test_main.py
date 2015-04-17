@@ -1,6 +1,6 @@
-from unittest.mock import patch, Mock
 from subprocess import PIPE
 from pathlib import PosixPath, Path
+from mock import patch, Mock
 from thefuck import main
 
 
