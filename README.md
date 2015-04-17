@@ -61,6 +61,14 @@ And add to `.bashrc` or `.zshrc`:
 alias fuck='$(thefuck $(fc -ln -1))'
 ```
 
+Or in `config.fish`:
+
+```fish
+function fuck
+    eval (thefuck (history | head -n1))
+end
+```
+
 ## How it works
 
 The Fuck tries to match rule for the previous command, create new command
