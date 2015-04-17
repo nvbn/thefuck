@@ -4,7 +4,7 @@ from pathlib import Path
 from os.path import expanduser
 from subprocess import Popen, PIPE
 import sys
-
+import argparse
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
 Rule = namedtuple('Rule', ('match', 'get_new_command'))
@@ -77,10 +77,15 @@ def run_rule(rule, command, settings):
 
 def is_second_run(command):
     """It's second run of `fuck`?"""
-    return command.script.startswith('fuck')
+    return command.script.startswith('fuck') and ('--dry' not in command.script)
 
 
 def main():
+    parser = argparse.ArgumentParser(description='The fuck?')
+    parser.add_argument('--dry', dest='do_it_dry', type=bool, default=False,
+                        help='Do a dry fuck. (Dry run)')
+    opts = parser.parse_args(sys.argv)
+    
     command = get_command(sys.argv)
     if is_second_run(command):
         print("echo Can't fuck twice")
@@ -90,6 +95,9 @@ def main():
         rules = get_rules(user_dir, settings)
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
-            run_rule(matched_rule, command, settings)
+            if opts.do_it_dry:
+                print('Fuck again to run: {0}'.format(rule.get_new_command(command, settings)))
+            else:
+                run_rule(matched_rule, command, settings)
         else:
             print('echo No fuck given')
