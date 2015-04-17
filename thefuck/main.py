@@ -57,8 +57,8 @@ def get_command(args):
     """Creates command from `args` and executes it."""
     script = ' '.join(args[1:])
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE)
-    return Command(script, result.stdout.read().decode(),
-                   result.stderr.read().decode())
+    return Command(script, result.stdout.read().decode('utf-8'),
+                   result.stderr.read().decode('utf-8'))
 
 
 def get_matched_rule(command, rules, settings):
