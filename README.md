@@ -61,6 +61,16 @@ And add to `.bashrc` or `.zshrc`:
 alias fuck='$(thefuck $(fc -ln -1))'
 ```
 
+## How it works
+
+The Fuck tries to match rule for the previous command, create new command
+using matched rule and run it. Rules enabled by default:
+
+* `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
+* `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
+* `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
+* `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions.  
+
 ## Creating your own rules
 
 For adding your own rule you should create `your-rule-name.py`
@@ -109,3 +119,5 @@ Run tests:
 ```bash
 py.test
 ```
+
+## License MIT
