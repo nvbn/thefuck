@@ -95,9 +95,12 @@ def main():
         rules = get_rules(user_dir, settings)
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
+            print(rule.get_new_command(command, settings))
+            
             if opts.do_it_dry:
-                print('Fuck again to run: {0}'.format(rule.get_new_command(command, settings)))
-            else:
-                run_rule(matched_rule, command, settings)
+                answer = input('Run command? [Y/n]: ')
+                if answer.lower() != 'y':
+                    return
+            run_rule(matched_rule, command, settings)
         else:
             print('echo No fuck given')
