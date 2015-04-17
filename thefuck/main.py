@@ -74,13 +74,21 @@ def run_rule(rule, command, settings):
     print(new_command)
 
 
+def is_second_run(command):
+    """It's second run of `fuck`?"""
+    return command.script.startswith('fuck')
+
+
 def main():
     command = get_command(sys.argv)
-    user_dir = setup_user_dir()
-    settings = get_settings(user_dir)
-    rules = get_rules(user_dir, settings)
-    matched_rule = get_matched_rule(command, rules, settings)
-    if matched_rule:
-        run_rule(matched_rule, command, settings)
+    if is_second_run(command):
+        print("echo Can't fuck twice")
     else:
-        print('echo No fuck given')
+        user_dir = setup_user_dir()
+        settings = get_settings(user_dir)
+        rules = get_rules(user_dir, settings)
+        matched_rule = get_matched_rule(command, rules, settings)
+        if matched_rule:
+            run_rule(matched_rule, command, settings)
+        else:
+            print('echo No fuck given')
