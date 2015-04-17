@@ -61,6 +61,40 @@ And add to `.bashrc` or `.zshrc`:
 alias fuck='$(thefuck $(fc -ln -1))'
 ```
 
+## Creating your own rules
+
+For adding your own rule you should create `your-rule-name.py`
+in `~/.thefuck/rules`. Rule should contain two functions:
+`match(command: Command, settings: Settings) -> bool`
+and `get_new_command(command: Command, settings: Settings) -> str`.
+
+`Command` have three attributes: `script`, `stdout` and `stderr`.
+
+`Settings` is `~/.thefuck/settings.py`.
+
+Simple example of the rule for running script with `sudo`:
+
+```python
+def match(command, settings):
+    return ('permission denied' in command.stderr.lower()
+            or 'EACCES' in command.stderr)
+
+
+def get_new_command(command, settings):
+    return 'sudo {}'.format(command.script)
+```
+
+[More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
+[utility functions for rules]((https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py)).
+
+## Settings
+
+The Fuck have a few settings parameters:
+
+* `rules` &ndash; list of enabled rules, by default all;
+* `command_not_found` &ndash; path to `command_not_found` binary,
+by default `/usr/lib/command-not-found`.
+
 ## Developing
 
 Install `The Fuck` for development:

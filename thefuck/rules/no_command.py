@@ -1,25 +1,26 @@
 from subprocess import Popen, PIPE
 import re
-from thefuck.utils import which
+from thefuck.utils import which, wrap_settings
 
 
-def _get_bin(settings):
-    return getattr(settings, 'command_not_found', '/usr/lib/command-not-found')
+local_settings = {'command_not_found': '/usr/lib/command-not-found'}
 
 
 def _get_output(command, settings):
     name = command.script.split(' ')[command.script.startswith('sudo')]
-    check_script = '{} {}'.format(_get_bin(settings), name)
+    check_script = '{} {}'.format(settings.command_not_found, name)
     result = Popen(check_script, shell=True, stderr=PIPE)
     return result.stderr.read().decode()
 
 
+@wrap_settings(local_settings)
 def match(command, settings):
-    if which('apt-get') and which(_get_bin(settings)):
+    if which(settings.command_not_found):
         output = _get_output(command, settings)
         return "No command" in output and "from package" in output
 
 
+@wrap_settings(local_settings)
 def get_new_command(command, settings):
     output = _get_output(command, settings)
     broken_name = re.findall(r"No command '([^']*)' found",
