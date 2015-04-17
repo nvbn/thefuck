@@ -58,3 +58,6 @@ target/
 
 .env
 .idea
+
+# vim temporary files
+.*.swp
