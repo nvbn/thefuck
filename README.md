@@ -69,7 +69,7 @@ Or in `config.fish`:
 
 ```fish
 function fuck
-    eval (thefuck (history | head -n1))
+    thefuck $history[2] | source
 end
 ```
 
