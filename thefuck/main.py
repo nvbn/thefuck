@@ -71,6 +71,7 @@ def get_matched_rule(command, rules, settings):
 def run_rule(rule, command, settings):
     """Runs command from rule for passed command."""
     new_command = rule.get_new_command(command, settings)
+    sys.stderr.write(new_command + '\n')
     print(new_command)
 
 
