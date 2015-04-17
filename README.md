@@ -85,7 +85,7 @@ def get_new_command(command, settings):
 ```
 
 [More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
-[utility functions for rules]((https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py)).
+[utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py).
 
 ## Settings
 
