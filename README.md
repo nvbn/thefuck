@@ -73,6 +73,12 @@ function fuck
 end
 ```
 
+If executing thefuck fails, create nessecary directory structure & files:
+```bash
+mkdir -p ~/.thefuck/rules
+touch .thefuck/settings.py
+```
+
 ## How it works
 
 The Fuck tries to match rule for the previous command, create new command
