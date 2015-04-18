@@ -77,6 +77,7 @@ If executing thefuck fails, create nessecary directory structure & files:
 ```bash
 mkdir -p ~/.thefuck/rules
 touch .thefuck/settings.py
+cp CLONED_REPO/thefuck/rules/* .thefuck/rules
 ```
 
 ## How it works
