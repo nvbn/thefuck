@@ -49,6 +49,17 @@ Did you mean this?
 ➜ fuck
 git branch
 * master
+
+➜ lein rpl
+'rpl' is not a task. See 'lein help'.
+
+Did you mean this?
+         repl
+
+➜ fuck
+nREPL server started on port 54848 on host 127.0.0.1 - nrepl://127.0.0.1:54848
+REPL-y 0.3.1
+...
 ```
 
 ## Installation

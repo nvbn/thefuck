@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='thefuck',
-      version=1.11,
+      version=1.12,
       description="Magnificent app which corrects your previous console command",
       author='Vladimir Iakovlev',
       author_email='nvbn.rm@gmail.com',
