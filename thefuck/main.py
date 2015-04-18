@@ -13,10 +13,10 @@ Rule = namedtuple('Rule', ('match', 'get_new_command'))
 def setup_user_dir():
     """Returns user config dir, create it when it doesn't exists."""
     user_dir = Path(expanduser('~/.thefuck'))
-    if not user_dir.is_dir():
-        user_dir.mkdir()
-        user_dir.joinpath('rules').mkdir()
-        user_dir.joinpath('settings.py').touch()
+    rules_dir = user_dir.joinpath('rules')
+    if not rules_dir.is_dir():
+        rules_dir.mkdir(parents=True)
+    user_dir.joinpath('settings.py').touch()
     return user_dir
 
 

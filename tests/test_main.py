@@ -4,21 +4,6 @@ from mock import patch, Mock
 from thefuck import main
 
 
-def test_setup_user_dir():
-    with patch('thefuck.main.Path.is_dir', return_value=False), \
-         patch('thefuck.main.Path.mkdir') as mkdir, \
-            patch('thefuck.main.Path.touch') as touch:
-        main.setup_user_dir()
-        assert mkdir.call_count == 2
-        assert touch.call_count == 1
-    with patch('thefuck.main.Path.is_dir', return_value=True), \
-         patch('thefuck.main.Path.mkdir') as mkdir, \
-            patch('thefuck.main.Path.touch') as touch:
-        main.setup_user_dir()
-        assert mkdir.call_count == 0
-        assert touch.call_count == 0
-
-
 def test_get_settings():
     with patch('thefuck.main.load_source', return_value=Mock(rules=['bash'])):
         assert main.get_settings(Path('/')).rules == ['bash']
