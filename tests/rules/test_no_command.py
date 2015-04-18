@@ -39,7 +39,7 @@ def test_match(command_found, command_not_found, settings):
     with patch('thefuck.rules.no_command.Popen') as Popen:
         Popen.return_value.stderr.read.return_value = command_found
         assert match(Command('aptget install vim', '', ''), settings)
-        Popen.assert_called_once_with('/usr/lib/command-not-found aptget',
+        Popen.assert_called_with('/usr/lib/command-not-found aptget',
                                       shell=True, stderr=PIPE)
         Popen.return_value.stderr.read.return_value = command_not_found
         assert not match(Command('ls', '', ''), settings)
@@ -48,7 +48,7 @@ def test_match(command_found, command_not_found, settings):
         Popen.return_value.stderr.read.return_value = command_found
         assert match(Command('sudo aptget install vim', '', ''),
                      Mock(command_not_found='test'))
-        Popen.assert_called_once_with('test aptget',
+        Popen.assert_called_with('test aptget',
                                       shell=True, stderr=PIPE)
 
 
