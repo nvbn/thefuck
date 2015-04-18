@@ -56,7 +56,7 @@ git branch
 Install `The Fuck`:
 
 ```bash
-sudo pip install thefuck
+sudo easy_install thefuck
 ```
 
 And add to `.bashrc` or `.zshrc`:
