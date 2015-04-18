@@ -3,6 +3,7 @@ from imp import load_source
 from pathlib import Path
 from os.path import expanduser
 from subprocess import Popen, PIPE
+import os
 import sys
 
 
@@ -56,7 +57,8 @@ def get_rules(user_dir, settings):
 def get_command(args):
     """Creates command from `args` and executes it."""
     script = ' '.join(args[1:])
-    result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE)
+    result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
+                   env=dict(os.environ, LANG='C'))
     return Command(script, result.stdout.read().decode('utf-8'),
                    result.stderr.read().decode('utf-8'))
 

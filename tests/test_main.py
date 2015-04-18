@@ -46,7 +46,9 @@ def test_get_rules():
 
 
 def test_get_command():
-    with patch('thefuck.main.Popen') as Popen:
+    with patch('thefuck.main.Popen') as Popen,\
+            patch('thefuck.main.os.environ',
+                  new_callable=lambda: {}):
         Popen.return_value.stdout.read.return_value = b'stdout'
         Popen.return_value.stderr.read.return_value = b'stderr'
         assert main.get_command(['thefuck', 'apt-get', 'search', 'vim']) \
@@ -54,7 +56,8 @@ def test_get_command():
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,
                                       stdout=PIPE,
-                                      stderr=PIPE)
+                                      stderr=PIPE,
+                                      env={'LANG': 'C'})
 
 
 def test_get_matched_rule():
