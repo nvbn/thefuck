@@ -53,10 +53,16 @@ git branch
 
 ## Installation
 
-Install `The Fuck`:
+Install `The Fuck` with `pip`:
 
 ```bash
 sudo pip install thefuck
+```
+
+If it fails try to use `easy_install`:
+
+```bash
+sudo easy_intall thefuck
 ```
 
 And add to `.bashrc` or `.zshrc`:
