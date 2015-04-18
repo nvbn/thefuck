@@ -77,7 +77,7 @@ Or in `config.fish`:
 
 ```fish
 function fuck
-    thefuck $history[2] | source
+    eval (thefuck $history[1])
 end
 ```
 
