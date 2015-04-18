@@ -122,6 +122,7 @@ def get_new_command(command, settings):
 The Fuck have a few settings parameters:
 
 * `rules` &ndash; list of enabled rules, by default all;
+* `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `command_not_found` &ndash; path to `command_not_found` binary,
 by default `/usr/lib/command-not-found`.
 

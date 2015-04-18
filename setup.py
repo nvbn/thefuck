@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='thefuck',
-      version=1.10,
+      version=1.11,
       description="Magnificent app which corrects your previous console command",
       author='Vladimir Iakovlev',
       author_email='nvbn.rm@gmail.com',
@@ -11,6 +11,6 @@ setup(name='thefuck',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=['pathlib'],
+      install_requires=['pathlib', 'psutil'],
       entry_points={'console_scripts': [
           'thefuck = thefuck.main:main']})

@@ -36,22 +36,25 @@ def test_get_rules():
         assert main.get_rules(
             Path('~'),
             Mock(rules=None)) == [main.Rule('bash', 'bash'),
-                                     main.Rule('lisp', 'lisp'),
-                                     main.Rule('bash', 'bash'),
-                                     main.Rule('lisp', 'lisp')]
+                                  main.Rule('lisp', 'lisp'),
+                                  main.Rule('bash', 'bash'),
+                                  main.Rule('lisp', 'lisp')]
         assert main.get_rules(
             Path('~'),
             Mock(rules=['bash'])) == [main.Rule('bash', 'bash'),
-                                         main.Rule('bash', 'bash')]
+                                      main.Rule('bash', 'bash')]
 
 
 def test_get_command():
-    with patch('thefuck.main.Popen') as Popen,\
+    with patch('thefuck.main.Popen') as Popen, \
             patch('thefuck.main.os.environ',
-                  new_callable=lambda: {}):
+                  new_callable=lambda: {}), \
+            patch('thefuck.main.wait_output',
+                  return_value=True):
         Popen.return_value.stdout.read.return_value = b'stdout'
         Popen.return_value.stderr.read.return_value = b'stderr'
-        assert main.get_command(['thefuck', 'apt-get', 'search', 'vim']) \
+        assert main.get_command(Mock(), ['thefuck', 'apt-get',
+                                         'search', 'vim']) \
                == main.Command('apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,

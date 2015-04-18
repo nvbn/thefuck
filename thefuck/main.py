@@ -5,6 +5,7 @@ from os.path import expanduser
 from subprocess import Popen, PIPE
 import os
 import sys
+from psutil import Process, TimeoutExpired
 
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
@@ -25,8 +26,8 @@ def get_settings(user_dir):
     """Returns prepared settings module."""
     settings = load_source('settings',
                            str(user_dir.joinpath('settings.py')))
-    if not hasattr(settings, 'rules'):
-        settings.rules = None
+    settings.__dict__.setdefault('rules', None)
+    settings.__dict__.setdefault('wait_command', 3)
     return settings
 
 
@@ -54,13 +55,32 @@ def get_rules(user_dir, settings):
             if rule.name != '__init__.py' and is_rule_enabled(settings, rule)]
 
 
-def get_command(args):
+def wait_output(settings, popen):
+    """Returns `True` if we can get output of the command in the
+    `wait_command` time.
+
+    Command will be killed if it wasn't finished in the time.
+
+    """
+    proc = Process(popen.pid)
+    try:
+        proc.wait(settings.wait_command)
+        return True
+    except TimeoutExpired:
+        for child in proc.get_children(recursive=True):
+            child.kill()
+        proc.kill()
+        return False
+
+
+def get_command(settings, args):
     """Creates command from `args` and executes it."""
     script = ' '.join(args[1:])
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
-    return Command(script, result.stdout.read().decode('utf-8'),
-                   result.stderr.read().decode('utf-8'))
+    if wait_output(settings, result):
+        return Command(script, result.stdout.read().decode('utf-8'),
+                       result.stderr.read().decode('utf-8'))
 
 
 def get_matched_rule(command, rules, settings):
@@ -83,15 +103,19 @@ def is_second_run(command):
 
 
 def main():
-    command = get_command(sys.argv)
-    if is_second_run(command):
-        print("echo Can't fuck twice")
-    else:
-        user_dir = setup_user_dir()
-        settings = get_settings(user_dir)
+    user_dir = setup_user_dir()
+    settings = get_settings(user_dir)
+
+    command = get_command(settings, sys.argv)
+    if command:
+        if is_second_run(command):
+            print("echo Can't fuck twice")
+            return
+
         rules = get_rules(user_dir, settings)
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
             run_rule(matched_rule, command, settings)
-        else:
-            print('echo No fuck given')
+            return
+
+    print('echo No fuck given')
