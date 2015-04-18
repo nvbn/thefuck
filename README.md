@@ -73,7 +73,7 @@ sudo pip install thefuck
 If it fails try to use `easy_install`:
 
 ```bash
-sudo easy_intall thefuck
+sudo easy_install thefuck
 ```
 
 And add to `.bashrc` or `.zshrc`:
