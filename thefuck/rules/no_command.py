@@ -12,9 +12,10 @@ def _get_output(command, settings):
     return result.stderr.read().decode()
 
 def _count_history_uses(name):
-    script = 'history | grep {}'.format(name)
-    result = Popen(script, shell=True, stdout=PIPE)
-    return len(list(result.stdout))
+    script = "history | egrep '\\b{}\\b' | wc -l".format(name)
+    result = Popen(script, shell=True,
+                   stdout=PIPE)
+    return int(result.stdout.read())
 
 def _get_candidate_commands(command, settings):
     output = _get_output(command, settings)
@@ -40,6 +41,6 @@ def get_new_command(command, settings):
     broken_name = re.findall(r"No command '([^']*)' found",
                              output)[0]
     candidates = _get_candidate_commands(command, settings)
-    fixed_name = sorted(candidates, key=_count_history_uses)[0]
+    fixed_name = sorted(candidates, key=_count_history_uses, reverse=True)[0]
     return command.script.replace(broken_name, fixed_name)
      
