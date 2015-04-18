@@ -1,7 +1,14 @@
+patterns = ['permission denied',
+            'EACCES',
+            'pkg: Insufficient privileges',
+            'you cannot perform this operation unless you are root']
+
+
 def match(command, settings):
-    return ('permission denied' in command.stderr.lower()
-            or 'EACCES' in command.stderr
-            or 'pkg: Insufficient privileges' in command.stderr)
+    for pattern in patterns:
+        if pattern.lower() in command.stderr.lower():
+            return True
+    return False
 
 
 def get_new_command(command, settings):
