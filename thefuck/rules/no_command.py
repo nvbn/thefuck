@@ -10,7 +10,7 @@ def _get_output(command, settings):
     name = command.script.split(' ')[command.script.startswith('sudo')]
     check_script = '{} {}'.format(settings.command_not_found, name)
     result = Popen(check_script, shell=True, stderr=PIPE)
-    return result.stderr.read().decode()
+    return result.stderr.read().decode('utf-8')
 
 
 @wrap_settings(local_settings)
