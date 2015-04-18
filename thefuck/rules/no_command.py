@@ -22,7 +22,7 @@ def _get_candidate_commands(command, settings):
     if "No command" in output and "from package" in output:
         fixed_names = re.findall(r"Command '([^']*)' from package",
                             output)
-        return filter(which, fixed_names)
+        return [name for name in fixed_names if which(name)]
     return []
         
 
