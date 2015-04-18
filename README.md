@@ -69,7 +69,7 @@ And add to `.bashrc` or `.zshrc`:
 
 ```bash
 alias fuck='$(thefuck $(fc -ln -1))'
-# You can use wahtever you want for as an alias, like for mondays:
+# You can use whatever you want as an alias, like for mondays:
 alias FUCK='fuck'
 ```
 
