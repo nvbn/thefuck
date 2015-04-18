@@ -81,6 +81,8 @@ function fuck
 end
 ```
 
+Changes will available only in a new shell session.
+
 ## How it works
 
 The Fuck tries to match rule for the previous command, create new command
