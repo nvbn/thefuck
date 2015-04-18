@@ -50,8 +50,7 @@ def bin_might_exist(request):
 @pytest.fixture
 def patch_history(request):
     def side_effect(name):
-        print("history('{}')".format(name))
-        count = 2 if name == 'not-really-used' else 12
+        return 2 if name == 'not-really-used' else 12
     p = patch('thefuck.rules.no_command._count_history_uses',
               side_effect = side_effect)
     p.start()
