@@ -132,4 +132,4 @@ Run tests:
 py.test
 ```
 
-## License MIT
+## License WTFPL
