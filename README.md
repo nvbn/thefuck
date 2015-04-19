@@ -16,7 +16,9 @@ sudo apt-get install vim
 [sudo] password for nvbn:
 Reading package lists... Done
 ...
+```
 
+```bash
 ➜ git push
 fatal: The current branch master has no upstream branch.
 To push the current branch and set the remote as upstream, use
@@ -28,7 +30,9 @@ To push the current branch and set the remote as upstream, use
 git push --set-upstream origin master
 Counting objects: 9, done.
 ...
+```
 
+```bash
 ➜ puthon
 No command 'puthon' found, did you mean:
  Command 'python' from package 'python-minimal' (main)
@@ -39,7 +43,9 @@ zsh: command not found: puthon
 python
 Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 ...
+```
 
+```bash
 ➜ git brnch
 git: 'brnch' is not a git command. See 'git --help'.
 
@@ -49,7 +55,9 @@ Did you mean this?
 ➜ fuck
 git branch
 * master
+```
 
+```bash
 ➜ lein rpl
 'rpl' is not a task. See 'lein help'.
 
