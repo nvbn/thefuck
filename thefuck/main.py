@@ -13,7 +13,7 @@ Rule = namedtuple('Rule', ('match', 'get_new_command'))
 
 
 def setup_user_dir():
-    """Returns user config dir, create it when it doesn't exists."""
+    """Returns user config dir, create it when it doesn't exist."""
     user_dir = Path(expanduser('~/.thefuck'))
     rules_dir = user_dir.joinpath('rules')
     if not rules_dir.is_dir():
@@ -98,7 +98,7 @@ def run_rule(rule, command, settings):
 
 
 def is_second_run(command):
-    """It's second run of `fuck`?"""
+    """Is it the second run of `fuck`?"""
     return command.script.startswith('fuck')
 
 
