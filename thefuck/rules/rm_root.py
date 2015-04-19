@@ -1,5 +1,5 @@
 def match(command, settings):
-    return ('/' in command.script
+    return ('/' in command.script.split()
             and '--no-preserve-root' not in command.script
             and '--no-preserve-root' in command.stderr)
 
