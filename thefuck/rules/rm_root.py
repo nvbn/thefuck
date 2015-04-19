@@ -1,6 +1,6 @@
 def match(command, settings):
-    return ('rm' in command.script
-            and '--help' not in command.script
+    return ('/' in command.script
+            and '--no-preserve-root' not in command.script
             and '--no-preserve-root' in command.stderr)
 
 
