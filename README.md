@@ -73,7 +73,7 @@ function fuck
 end
 ```
 
-If executing thefuck fails, create nessecary directory structure & files:
+If executing thefuck fails, create necessary directory structure & files:
 ```bash
 mkdir -p ~/.thefuck/rules
 touch .thefuck/settings.py
