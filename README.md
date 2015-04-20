@@ -90,7 +90,7 @@ If it fails try to use `easy_install`:
 sudo easy_install thefuck
 ```
 
-And add to `.bashrc` or `.zshrc`:
+And add to `.bashrc` or `.zshrc` or `.bash_profile`(for OSX):
 
 ```bash
 alias fuck='$(thefuck $(fc -ln -1))'
