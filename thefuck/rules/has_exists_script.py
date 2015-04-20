@@ -1,8 +1,10 @@
 import os
 
+
 def match(command, settings):
-	exist = os.path.exists(command.script)
-	return exist
+    return os.path.exists(command.script.split()[0]) \
+        and 'command not found' in command.stderr
+
 
 def get_new_command(command, settings):
     return './{}'.format(command.script)
