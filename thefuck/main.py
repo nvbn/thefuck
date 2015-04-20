@@ -51,7 +51,7 @@ def get_rules(user_dir, settings):
                             .joinpath('rules')\
                             .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
-    return [load_rule(rule) for rule in list(bundled) + list(user)
+    return [load_rule(rule) for rule in sorted(list(bundled)) + list(user)
             if rule.name != '__init__.py' and is_rule_enabled(settings, rule)]
 
 
