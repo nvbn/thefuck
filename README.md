@@ -106,6 +106,18 @@ function fuck
 end
 ```
 
+Or in your Powershell `$PROFILE` on Windows:
+
+```powershell
+function fuck { 
+    $fuck = $(thefuck (get-history -count 1).commandline)
+    if($fuck.startswith("echo")) { 
+        $fuck.substring(5) 
+    } 
+    else { iex "$fuck" } 
+}
+```
+
 Changes will available only in a new shell session.
 
 
