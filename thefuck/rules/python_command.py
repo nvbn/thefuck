@@ -4,7 +4,8 @@
 
 def match(command, settings):
   toks = command.script.split()
-  return (toks[0].endswith('.py')
+  return (len(toks) > 0
+          and toks[0].endswith('.py')
           and ('Permission denied' in command.stderr or
                'command not found' in command.stderr))
 
