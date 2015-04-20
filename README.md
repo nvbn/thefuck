@@ -104,6 +104,7 @@ alias FUCK='fuck'
 source ~/.bashrc
 # zsh
 source ~/.zshrc
+```
 
 Or in `config.fish`:
 
