@@ -1,10 +1,10 @@
+import re
+
+
 def match(command, settings):
-    if 'cp: omitting directory' in command.stderr.lower():
-        return True
-    return False
+    return command.script.startswith('cp ') \
+        and 'cp: omitting directory' in command.stderr.lower()
 
 
 def get_new_command(command, settings):
-    return command.script.replace('cp', 'cp -r') 
-
-
+    return re.sub(r'^cp', 'cp -a', command.script)
