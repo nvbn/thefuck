@@ -100,9 +100,9 @@ alias FUCK='fuck'
 
 ```bash
 # Reload the shell
-# bash
+# For bash users
 source ~/.bashrc
-# zsh
+# For zsh users
 source ~/.zshrc
 ```
 
