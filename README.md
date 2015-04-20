@@ -98,6 +98,13 @@ alias fuck='$(thefuck $(fc -ln -1))'
 alias FUCK='fuck'
 ```
 
+```bash
+# Reload the shell
+# bash
+source ~/.bashrc
+# zsh
+source ~/.zshrc
+
 Or in `config.fish`:
 
 ```fish
