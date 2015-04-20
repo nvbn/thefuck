@@ -106,7 +106,7 @@ function fuck
 end
 ```
 
-Changes will available only in a new shell session.
+Changes will be available only in a new shell session.
 
 
 ## Update
@@ -134,7 +134,7 @@ in `~/.thefuck/rules`. Rule should contain two functions:
 `match(command: Command, settings: Settings) -> bool`
 and `get_new_command(command: Command, settings: Settings) -> str`.
 
-`Command` have three attributes: `script`, `stdout` and `stderr`.
+`Command` has three attributes: `script`, `stdout` and `stderr`.
 
 `Settings` is `~/.thefuck/settings.py`.
 
@@ -155,7 +155,7 @@ def get_new_command(command, settings):
 
 ## Settings
 
-The Fuck have a few settings parameters:
+The Fuck has a few settings parameters:
 
 * `rules` &ndash; list of enabled rules, by default all;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
