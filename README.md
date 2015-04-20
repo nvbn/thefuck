@@ -190,3 +190,4 @@ py.test
 ```
 
 ## License MIT
+Project License can be found [here](LICENSE.md).
