@@ -1,8 +1,8 @@
 # The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg)](https://travis-ci.org/nvbn/thefuck)
 
 Magnificent app which corrects your previous console command,
-inspired by [@liamosaur](https://twitter.com/liamosaur/status/506975850596536320)
-twit.
+inspired by [@liamosaur](https://twitter.com/liamosaur/status/506975850596536320)'s
+tweet.
 
 Few examples:
 
@@ -109,12 +109,12 @@ end
 Or in your Powershell `$PROFILE` on Windows:
 
 ```powershell
-function fuck { 
+function fuck {
     $fuck = $(thefuck (get-history -count 1).commandline)
-    if($fuck.startswith("echo")) { 
-        $fuck.substring(5) 
-    } 
-    else { iex "$fuck" } 
+    if($fuck.startswith("echo")) {
+        $fuck.substring(5)
+    }
+    else { iex "$fuck" }
 }
 ```
 
