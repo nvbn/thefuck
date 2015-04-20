@@ -82,8 +82,8 @@ def is_second_run(command):
 
 def main():
     parser = argparse.ArgumentParser(description='The fuck?')
-    parser.add_argument('--dry', dest='do_it_dry', type=bool, default=False,
-                        help='Do a dry fuck. (Dry run)')
+    parser.add_argument('-i', dest='interactive', type=bool, default=False,
+                        help='Enter interactive mode.')
     opts = parser.parse_args(sys.argv)
     
     command = get_command(sys.argv)
@@ -97,10 +97,9 @@ def main():
         if matched_rule:
             print(rule.get_new_command(command, settings))
             
-            if opts.do_it_dry:
-                answer = input('Run command? [Y/n]: ')
-                if answer.lower() != 'y':
-                    return
-            run_rule(matched_rule, command, settings)
+            if opts.interactive:
+                answer = input('Run command? [Y/n]: ').strip().lower()
+                if answer == '' or answer == 'y':
+                    run_rule(matched_rule, command, settings)
         else:
             print('echo No fuck given')
