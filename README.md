@@ -51,14 +51,14 @@ git branch
 * master
 ```
 
-Doing it dry:
+Interactive runs:
 
 ```
 ➜ apt-get install vim
 E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 
-➜ fuck --dry
+➜ fuck -i
 sudo apt-get install vim
 Run command? [Y/n]: y
 [sudo] password for nvbn:
