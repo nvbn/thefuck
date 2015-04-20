@@ -1,8 +1,8 @@
 # The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg)](https://travis-ci.org/nvbn/thefuck)
 
 Magnificent app which corrects your previous console command,
-inspired by [@liamosaur](https://twitter.com/liamosaur/status/506975850596536320)
-twit.
+inspired by a [@liamosaur](https://twitter.com/liamosaur/)
+[tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
 Few examples:
 
