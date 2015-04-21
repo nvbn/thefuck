@@ -23,6 +23,7 @@ lines = list(get_new_setup_py_lines())
 with open('setup.py', 'w') as sf:
     sf.writelines(lines)
 
+call('git pull', shell=True)
 call('git commit -am "Bump to {}"'.format(version), shell=True)
 call('git tag {}'.format(version), shell=True)
 call('git push', shell=True)
