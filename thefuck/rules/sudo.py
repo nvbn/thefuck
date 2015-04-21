@@ -3,7 +3,8 @@ patterns = ['permission denied',
             'pkg: Insufficient privileges',
             'you cannot perform this operation unless you are root',
             'non-root users cannot',
-            'Operation not permitted']
+            'Operation not permitted',
+            'root privilege']
 
 
 def match(command, settings):
