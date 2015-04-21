@@ -13,7 +13,7 @@ def _safe(fn, fallback):
 def _get_all_bins():
     return [exe.name
             for path in os.environ['PATH'].split(':')
-            for exe in _safe(Path(path).iterdir, [])
+            for exe in _safe(lambda: Path(path).iterdir(), [])
             if not _safe(exe.is_dir, True)]
 
 
