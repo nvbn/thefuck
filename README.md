@@ -72,7 +72,7 @@ REPL-y 0.3.1
 ```
 
 If you are scary to blindly run changed command, there's `require_confirmation`
-[settings](#Settings) option:
+[settings](#settings) option:
 
 ```bash
 ➜ apt-get install vim
