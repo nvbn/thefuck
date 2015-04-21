@@ -1,5 +1,6 @@
 import os
 import pytest
+from mock import Mock
 from thefuck.main import Command
 from thefuck.rules.ssh_known_hosts import match, get_new_command, remove_offending_keys
 
@@ -41,7 +42,7 @@ Host key verification failed.""".format(path, '98.765.432.321')
 
 
 def test_match(ssh_error):
-    errormsg, _, _, _ = ssh_error    
+    errormsg, _, _, _ = ssh_error
     assert match(Command('ssh', '', errormsg), None)
     assert match(Command('ssh', '', errormsg), None)
     assert match(Command('scp something something', '', errormsg), None)
@@ -55,20 +56,14 @@ def test_remove_offending_keys(ssh_error):
     errormsg, path, reset, known_hosts = ssh_error
     command = Command('ssh user@host', '', errormsg)
     remove_offending_keys(command, None)
-    expected =['123.234.567.890 asdjkasjdakjsd\n', '111.222.333.444 qwepoiwqepoiss\n']
+    expected = ['123.234.567.890 asdjkasjdakjsd\n', '111.222.333.444 qwepoiwqepoiss\n']
     assert known_hosts(path) == expected
 
 
 def test_get_new_command(ssh_error, monkeypatch):
     errormsg, _, _, _ = ssh_error
 
-    class Mock:
-        was_called = False
-
-        def __call__(self, *args, **kwargs):
-            self.was_called = True
-
     method = Mock()
     monkeypatch.setattr('thefuck.rules.ssh_known_hosts.remove_offending_keys', method)
     assert get_new_command(Command('ssh user@host', '', errormsg), None) == 'ssh user@host'
-    assert method.was_called
+    assert method.call_count

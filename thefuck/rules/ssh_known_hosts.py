@@ -1,4 +1,5 @@
 import re
+
 patterns = [
     r'WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!',
     r'WARNING: POSSIBLE DNS SPOOFING DETECTED!',
@@ -23,12 +24,10 @@ def match(command, settings):
 
 def remove_offending_keys(command, settings):
     offending = offending_pattern.findall(command.stderr)
-    print offending
     for filepath, lineno in offending:
         with open(filepath, 'r') as fh:
             lines = fh.readlines()
             del lines[int(lineno) - 1]
-            print lines
         with open(filepath, 'w') as fh:
             fh.writelines(lines)
 
