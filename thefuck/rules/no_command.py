@@ -3,18 +3,18 @@ import os
 from pathlib import Path
 
 
-def _safe(path, method):
+def _safe(fn, fallback):
     try:
-        return getattr(path, method)()
+        return fn()
     except OSError:
-        return []
+        return fallback
 
 
 def _get_all_bins():
     return [exe.name
             for path in os.environ['PATH'].split(':')
-            for exe in _safe(Path(path), 'iterdir')
-            if not _safe(exe, 'is_dir')]
+            for exe in _safe(Path(path).iterdir, [])
+            if not _safe(exe.is_dir, True)]
 
 
 def match(command, settings):
