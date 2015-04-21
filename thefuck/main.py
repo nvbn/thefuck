@@ -139,7 +139,7 @@ def main():
     command = get_command(settings, sys.argv)
     if command:
         if is_second_run(command):
-            print("echo Can't fuck twice")
+            print("echo \"Can't fuck twice\"")
             return
 
         rules = get_rules(user_dir, settings)
