@@ -65,8 +65,24 @@ Did you mean this?
          repl
 
 ➜ fuck
+lein repl
 nREPL server started on port 54848 on host 127.0.0.1 - nrepl://127.0.0.1:54848
 REPL-y 0.3.1
+...
+```
+
+If you are scary to blindly run changed command, there's `require_confirmation`
+[settings](#Settings) option:
+
+```bash
+➜ apt-get install vim
+E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
+E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+
+➜ fuck
+sudo apt-get install vim [Enter/Ctrl+C]
+[sudo] password for nvbn:
+Reading package lists... Done
 ...
 ```
 
@@ -167,9 +183,10 @@ def get_new_command(command, settings):
 
 ## Settings
 
-The Fuck has a few settings parameters:
+The Fuck has a few settings parameters, they can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default all;
+* `require_confirmation` &ndash; require confirmation before running new command, by default `False`; 
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `command_not_found` &ndash; path to `command_not_found` binary,
 by default `/usr/lib/command-not-found`.

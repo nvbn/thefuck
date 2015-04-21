@@ -28,6 +28,7 @@ def get_settings(user_dir):
                            str(user_dir.joinpath('settings.py')))
     settings.__dict__.setdefault('rules', None)
     settings.__dict__.setdefault('wait_command', 3)
+    settings.__dict__.setdefault('require_confirmation', False)
     return settings
 
 
@@ -90,11 +91,27 @@ def get_matched_rule(command, rules, settings):
             return rule
 
 
+def confirm(new_command, settings):
+    """Returns `True` when running of new command confirmed."""
+    if not settings.require_confirmation:
+        sys.stderr.write(new_command + '\n')
+        return True
+
+    sys.stderr.write(new_command + ' [Enter/Ctrl+C]')
+    sys.stderr.flush()
+    try:
+        sys.stdin.read(1)
+        return True
+    except KeyboardInterrupt:
+        sys.stderr.write('Aborted\n')
+        return False
+
+
 def run_rule(rule, command, settings):
     """Runs command from rule for passed command."""
     new_command = rule.get_new_command(command, settings)
-    sys.stderr.write(new_command + '\n')
-    print(new_command)
+    if confirm(new_command, settings):
+        print(new_command)
 
 
 def is_second_run(command):

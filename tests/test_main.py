@@ -70,3 +70,28 @@ def test_get_matched_rule():
                                  rules, None) is None
     assert main.get_matched_rule(main.Command('cd ..', '', ''),
                                  rules, None) == rules[0]
+
+
+def test_run_rule(capsys):
+    with patch('thefuck.main.confirm', return_value=True):
+        main.run_rule(main.Rule(None, lambda *_: 'new-command'),
+                      None, None)
+        assert capsys.readouterr() == ('new-command\n', '')
+    with patch('thefuck.main.confirm', return_value=False):
+        main.run_rule(main.Rule(None, lambda *_: 'new-command'),
+                      None, None)
+        assert capsys.readouterr() == ('', '')
+
+
+def test_confirm(capsys):
+    # When confirmation not required:
+    assert main.confirm('command', Mock(require_confirmation=False))
+    assert capsys.readouterr() == ('', 'command\n')
+    # When confirmation required and confirmed:
+    with patch('thefuck.main.sys.stdin.read', return_value='\n'):
+        assert main.confirm('command', Mock(require_confirmation=True))
+        assert capsys.readouterr() == ('', 'command [Enter/Ctrl+C]')
+    # When confirmation required and ctrl+c:
+    with patch('thefuck.main.sys.stdin.read', side_effect=KeyboardInterrupt):
+        assert not main.confirm('command', Mock(require_confirmation=True))
+        assert capsys.readouterr() == ('', 'command [Enter/Ctrl+C]Aborted\n')
