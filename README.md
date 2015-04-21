@@ -71,7 +71,7 @@ REPL-y 0.3.1
 ...
 ```
 
-If you are scary to blindly run changed command, there's `require_confirmation`
+If you are scared to blindly run changed command, there's `require_confirmation`
 [settings](#settings) option:
 
 ```bash
