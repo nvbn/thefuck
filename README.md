@@ -193,9 +193,7 @@ The Fuck has a few settings parameters, they can be changed in `~/.thefuck/setti
 
 * `rules` &ndash; list of enabled rules, by default all;
 * `require_confirmation` &ndash; require confirmation before running new command, by default `False`; 
-* `wait_command` &ndash; max amount of time in seconds for getting previous command output;
-* `command_not_found` &ndash; path to `command_not_found` binary,
-by default `/usr/lib/command-not-found`.
+* `wait_command` &ndash; max amount of time in seconds for getting previous command output.
 
 ## Developing
 

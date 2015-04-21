@@ -1,30 +1,23 @@
-from subprocess import Popen, PIPE
-import re
-from thefuck.utils import which, wrap_settings
+from difflib import get_close_matches
+import os
+from pathlib import Path
 
 
-local_settings = {'command_not_found': '/usr/lib/command-not-found'}
+def _get_all_bins():
+    return [exe.name
+            for path in os.environ['PATH'].split(':')
+            for exe in Path(path).iterdir()
+            if exe.is_file()]
 
 
-def _get_output(command, settings):
-    name = command.script.split(' ')[command.script.startswith('sudo')]
-    check_script = u'{} {}'.format(settings.command_not_found, name)
-    result = Popen(check_script, shell=True, stderr=PIPE)
-    return result.stderr.read().decode('utf-8')
-
-
-@wrap_settings(local_settings)
 def match(command, settings):
-    if which(settings.command_not_found):
-        output = _get_output(command, settings)
-        return "No command" in output and "from package" in output
+    return 'not found' in command.stderr and \
+           bool(get_close_matches(command.script.split(' ')[0],
+                                  _get_all_bins()))
 
 
-@wrap_settings(local_settings)
 def get_new_command(command, settings):
-    output = _get_output(command, settings)
-    broken_name = re.findall(r"No command '([^']*)' found",
-                             output)[0]
-    fixed_name = re.findall(r"Command '([^']*)' from package",
-                            output)[0]
-    return command.script.replace(broken_name, fixed_name, 1)
+    old_command = command.script.split(' ')[0]
+    new_command = get_close_matches(old_command,
+                                    _get_all_bins())[0]
+    return ' '.join([new_command] + command.script.split(' ')[1:])
