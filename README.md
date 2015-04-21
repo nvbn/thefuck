@@ -149,11 +149,16 @@ The Fuck tries to match rule for the previous command, create new command
 using matched rule and run it. Rules enabled by default:
 
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
+* `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
+* `has_exists_script` &ndash; prepends `./` when script/binary exists;
+* `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
+* `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
-* `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
-* `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`.
+* `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
+* `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
+* `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions.
 
 ## Creating your own rules
 
