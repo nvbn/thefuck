@@ -24,7 +24,7 @@ def test_load_rule():
                return_value=Mock(
                    match=match,
                    get_new_command=get_new_command)) as load_source:
-        assert main.load_rule(Path('/rules/bash.py')) == main.Rule(match, get_new_command)
+        assert main.load_rule(Path('/rules/bash.py')) == main.Rule('bash', match, get_new_command)
         load_source.assert_called_once_with('bash', '/rules/bash.py')
 
 
@@ -35,14 +35,14 @@ def test_get_rules():
         glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
         assert main.get_rules(
             Path('~'),
-            Mock(rules=None)) == [main.Rule('bash', 'bash'),
-                                  main.Rule('lisp', 'lisp'),
-                                  main.Rule('bash', 'bash'),
-                                  main.Rule('lisp', 'lisp')]
+            Mock(rules=None)) == [main.Rule('bash', 'bash', 'bash'),
+                                  main.Rule('lisp', 'lisp', 'lisp'),
+                                  main.Rule('bash', 'bash', 'bash'),
+                                  main.Rule('lisp', 'lisp', 'lisp')]
         assert main.get_rules(
             Path('~'),
-            Mock(rules=['bash'])) == [main.Rule('bash', 'bash'),
-                                      main.Rule('bash', 'bash')]
+            Mock(rules=['bash'])) == [main.Rule('bash', 'bash', 'bash'),
+                                      main.Rule('bash', 'bash', 'bash')]
 
 
 def test_get_command():
@@ -64,22 +64,25 @@ def test_get_command():
         assert main.get_command(Mock(), ['']) is None
 
 
-def test_get_matched_rule():
-    rules = [main.Rule(lambda x, _: x.script == 'cd ..', None),
-             main.Rule(lambda *_: False, None)]
+def test_get_matched_rule(capsys):
+    rules = [main.Rule('', lambda x, _: x.script == 'cd ..', None),
+             main.Rule('', lambda *_: False, None),
+             main.Rule('rule', Mock(side_effect=OSError('Denied')), None)]
     assert main.get_matched_rule(main.Command('ls', '', ''),
                                  rules, None) is None
     assert main.get_matched_rule(main.Command('cd ..', '', ''),
                                  rules, None) == rules[0]
+    assert capsys.readouterr()[1].split('\n')[0]\
+           == '[WARN] rule: Traceback (most recent call last):'
 
 
 def test_run_rule(capsys):
     with patch('thefuck.main.confirm', return_value=True):
-        main.run_rule(main.Rule(None, lambda *_: 'new-command'),
+        main.run_rule(main.Rule('', None, lambda *_: 'new-command'),
                       None, None)
         assert capsys.readouterr() == ('new-command\n', '')
     with patch('thefuck.main.confirm', return_value=False):
-        main.run_rule(main.Rule(None, lambda *_: 'new-command'),
+        main.run_rule(main.Rule('', None, lambda *_: 'new-command'),
                       None, None)
         assert capsys.readouterr() == ('', '')
 
