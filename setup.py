@@ -1,14 +1,18 @@
 from setuptools import setup, find_packages
 
 
+VERSION = '1.24'
+
+
 setup(name='thefuck',
-      version="1.23",
+      version=VERSION,
       description="Magnificent app which corrects your previous console command",
       author='Vladimir Iakovlev',
       author_email='nvbn.rm@gmail.com',
       url='https://github.com/nvbn/thefuck',
       license='MIT',
-      packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      packages=find_packages(exclude=['ez_setup', 'examples',
+                                      'tests', 'release']),
       include_package_data=True,
       zip_safe=False,
       install_requires=['pathlib', 'psutil'],
