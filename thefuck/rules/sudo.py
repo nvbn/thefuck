@@ -14,4 +14,4 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    return 'sudo {}'.format(command.script)
+    return u'sudo {}'.format(command.script)

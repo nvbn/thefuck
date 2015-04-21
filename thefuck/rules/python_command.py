@@ -3,11 +3,12 @@
 #  2) is interpreted as shell script
 
 def match(command, settings):
-  toks = command.script.split()
-  return (len(toks) > 0
-          and toks[0].endswith('.py')
-          and ('Permission denied' in command.stderr or
-               'command not found' in command.stderr))
+    toks = command.script.split()
+    return (len(toks) > 0
+            and toks[0].endswith('.py')
+            and ('Permission denied' in command.stderr or
+                 'command not found' in command.stderr))
+
 
 def get_new_command(command, settings):
-  return 'python ' + command.script
+    return 'python ' + command.script

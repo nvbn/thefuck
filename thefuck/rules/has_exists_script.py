@@ -7,5 +7,5 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    return './{}'.format(command.script)
+    return u'./{}'.format(command.script)
 

@@ -53,8 +53,8 @@ def test_get_command():
                   return_value=True):
         Popen.return_value.stdout.read.return_value = b'stdout'
         Popen.return_value.stderr.read.return_value = b'stderr'
-        assert main.get_command(Mock(), ['thefuck', 'apt-get',
-                                         'search', 'vim']) \
+        assert main.get_command(Mock(), [b'thefuck', b'apt-get',
+                                         b'search', b'vim']) \
                == main.Command('apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,
