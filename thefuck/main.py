@@ -76,7 +76,10 @@ def wait_output(settings, popen):
 
 def get_command(settings, args):
     """Creates command from `args` and executes it."""
-    script = ' '.join(arg.decode('utf-8') for arg in args[1:])
+    if sys.version_info[0] < 3:
+        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
+    else:
+        script = ' '.join(args[1:])
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
