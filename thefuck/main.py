@@ -80,6 +80,10 @@ def get_command(settings, args):
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
     else:
         script = ' '.join(args[1:])
+
+    if not script:
+        return
+
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):

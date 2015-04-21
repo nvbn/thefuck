@@ -61,6 +61,7 @@ def test_get_command():
                                       stdout=PIPE,
                                       stderr=PIPE,
                                       env={'LANG': 'C'})
+        assert main.get_command(Mock(), ['']) is None
 
 
 def test_get_matched_rule():
