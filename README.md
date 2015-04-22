@@ -158,6 +158,7 @@ using matched rule and run it. Rules enabled by default:
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
+* `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
 * `switch_layout` &ndash; switches command from your local layout to en.
 
