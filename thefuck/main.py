@@ -5,11 +5,12 @@ from os.path import expanduser
 from subprocess import Popen, PIPE
 import os
 import sys
+from traceback import format_exception
 from psutil import Process, TimeoutExpired
 
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
-Rule = namedtuple('Rule', ('match', 'get_new_command'))
+Rule = namedtuple('Rule', ('name', 'match', 'get_new_command'))
 
 
 def setup_user_dir():
@@ -43,7 +44,8 @@ def is_rule_enabled(settings, rule):
 def load_rule(rule):
     """Imports rule module and returns it."""
     rule_module = load_source(rule.name[:-3], str(rule))
-    return Rule(rule_module.match, rule_module.get_new_command)
+    return Rule(rule.name[:-3], rule_module.match,
+                rule_module.get_new_command)
 
 
 def get_rules(user_dir, settings):
@@ -80,6 +82,10 @@ def get_command(settings, args):
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
     else:
         script = ' '.join(args[1:])
+
+    if not script:
+        return
+
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
@@ -90,8 +96,12 @@ def get_command(settings, args):
 def get_matched_rule(command, rules, settings):
     """Returns first matched rule for command."""
     for rule in rules:
-        if rule.match(command, settings):
-            return rule
+        try:
+            if rule.match(command, settings):
+                return rule
+        except Exception:
+            sys.stderr.write(u'[WARN] {}: {}---------------------\n\n'.format(
+                rule.name, ''.join(format_exception(*sys.exc_info()))))
 
 
 def confirm(new_command, settings):
