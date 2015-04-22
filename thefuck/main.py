@@ -153,7 +153,8 @@ def main():
             logs.failed("Can't fuck twice", settings)
             return
 
-        rules = get_rules(user_dir, settings)
+        rules = list(get_rules(user_dir, settings))
+        sys.stderr.write(str([r.name for r in rules]) + '\n')
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
             run_rule(matched_rule, command, settings)
