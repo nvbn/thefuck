@@ -12,9 +12,14 @@ def test_get_settings():
 
 
 def test_is_rule_enabled():
-    assert main.is_rule_enabled(Mock(rules=None), Path('bash.py'))
-    assert main.is_rule_enabled(Mock(rules=['bash']), Path('bash.py'))
-    assert not main.is_rule_enabled(Mock(rules=['bash']), Path('lisp.py'))
+    assert main.is_rule_enabled(Mock(rules=None),
+                                main.Rule('bash', None, None, True))
+    assert not main.is_rule_enabled(Mock(rules=None),
+                                    main.Rule('bash', None, None, False))
+    assert main.is_rule_enabled(Mock(rules=['bash']),
+                                main.Rule('bash', None, None, True))
+    assert not main.is_rule_enabled(Mock(rules=['bash']),
+                                    main.Rule('lisp', None, None, True))
 
 
 def test_load_rule():
@@ -23,26 +28,29 @@ def test_load_rule():
     with patch('thefuck.main.load_source',
                return_value=Mock(
                    match=match,
-                   get_new_command=get_new_command)) as load_source:
-        assert main.load_rule(Path('/rules/bash.py')) == main.Rule('bash', match, get_new_command)
+                   get_new_command=get_new_command,
+                   enabled_by_default=True)) as load_source:
+        assert main.load_rule(Path('/rules/bash.py')) \
+               == main.Rule('bash', match, get_new_command, True)
         load_source.assert_called_once_with('bash', '/rules/bash.py')
 
 
 def test_get_rules():
     with patch('thefuck.main.Path.glob') as glob, \
             patch('thefuck.main.load_source',
-                  lambda x, _: Mock(match=x, get_new_command=x)):
+                  lambda x, _: Mock(match=x, get_new_command=x,
+                                    enabled_by_default=True)):
         glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
-        assert main.get_rules(
+        assert list(main.get_rules(
             Path('~'),
-            Mock(rules=None)) == [main.Rule('bash', 'bash', 'bash'),
-                                  main.Rule('lisp', 'lisp', 'lisp'),
-                                  main.Rule('bash', 'bash', 'bash'),
-                                  main.Rule('lisp', 'lisp', 'lisp')]
-        assert main.get_rules(
+            Mock(rules=None))) == [main.Rule('bash', 'bash', 'bash', True),
+                                   main.Rule('lisp', 'lisp', 'lisp', True),
+                                   main.Rule('bash', 'bash', 'bash', True),
+                                   main.Rule('lisp', 'lisp', 'lisp', True)]
+        assert list(main.get_rules(
             Path('~'),
-            Mock(rules=['bash'])) == [main.Rule('bash', 'bash', 'bash'),
-                                      main.Rule('bash', 'bash', 'bash')]
+            Mock(rules=['bash']))) == [main.Rule('bash', 'bash', 'bash', True),
+                                       main.Rule('bash', 'bash', 'bash', True)]
 
 
 def test_get_command():
@@ -65,24 +73,24 @@ def test_get_command():
 
 
 def test_get_matched_rule(capsys):
-    rules = [main.Rule('', lambda x, _: x.script == 'cd ..', None),
-             main.Rule('', lambda *_: False, None),
-             main.Rule('rule', Mock(side_effect=OSError('Denied')), None)]
+    rules = [main.Rule('', lambda x, _: x.script == 'cd ..', None, True),
+             main.Rule('', lambda *_: False, None, True),
+             main.Rule('rule', Mock(side_effect=OSError('Denied')), None, True)]
     assert main.get_matched_rule(main.Command('ls', '', ''),
                                  rules, Mock(no_colors=True)) is None
     assert main.get_matched_rule(main.Command('cd ..', '', ''),
                                  rules, Mock(no_colors=True)) == rules[0]
-    assert capsys.readouterr()[1].split('\n')[0]\
+    assert capsys.readouterr()[1].split('\n')[0] \
            == '[WARN] Rule rule:'
 
 
 def test_run_rule(capsys):
     with patch('thefuck.main.confirm', return_value=True):
-        main.run_rule(main.Rule('', None, lambda *_: 'new-command'),
+        main.run_rule(main.Rule('', None, lambda *_: 'new-command', True),
                       None, None)
         assert capsys.readouterr() == ('new-command\n', '')
     with patch('thefuck.main.confirm', return_value=False):
-        main.run_rule(main.Rule('', None, lambda *_: 'new-command'),
+        main.run_rule(main.Rule('', None, lambda *_: 'new-command', True),
                       None, None)
         assert capsys.readouterr() == ('', '')
 

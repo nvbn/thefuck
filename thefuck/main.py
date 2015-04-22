@@ -11,7 +11,8 @@ from thefuck import logs
 
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
-Rule = namedtuple('Rule', ('name', 'match', 'get_new_command'))
+Rule = namedtuple('Rule', ('name', 'match', 'get_new_command',
+                           'enabled_by_default'))
 
 
 def setup_user_dir():
@@ -40,14 +41,20 @@ def is_rule_enabled(settings, rule):
     isn't defined.
 
     """
-    return settings.rules is None or rule.name[:-3] in settings.rules
+    if settings.rules is None and rule.enabled_by_default:
+        return True
+    elif settings.rules and rule.name in settings.rules:
+        return True
+    else:
+        return False
 
 
 def load_rule(rule):
     """Imports rule module and returns it."""
     rule_module = load_source(rule.name[:-3], str(rule))
     return Rule(rule.name[:-3], rule_module.match,
-                rule_module.get_new_command)
+                rule_module.get_new_command,
+                getattr(rule_module, 'enabled_by_default', True))
 
 
 def get_rules(user_dir, settings):
@@ -56,8 +63,11 @@ def get_rules(user_dir, settings):
                             .joinpath('rules')\
                             .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
-    return [load_rule(rule) for rule in sorted(list(bundled)) + list(user)
-            if rule.name != '__init__.py' and is_rule_enabled(settings, rule)]
+    for rule in sorted(list(bundled)) + list(user):
+        if rule.name != '__init__.py':
+            loaded_rule = load_rule(rule)
+            if is_rule_enabled(settings, loaded_rule):
+                yield loaded_rule
 
 
 def wait_output(settings, popen):
