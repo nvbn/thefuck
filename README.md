@@ -112,6 +112,8 @@ And add to `.bashrc` or `.zshrc` or `.bash_profile`(for OSX):
 alias fuck='$(thefuck $(fc -ln -1))'
 # You can use whatever you want as an alias, like for mondays:
 alias FUCK='fuck'
+# Confirm before execute if you have scruple:
+alias shit='cmd=$(thefuck $(fc -ln -1)); if [[ "$cmd" =~ "^echo .+" ]]; then eval $cmd; else printf "Sure? press Enter to continue..."; read -n 1 confirm; if [[ "$confirm" -eq "" ]]; then echo ''; eval $cmd; fi; fi'
 ```
 
 Or in `config.fish`:
@@ -125,12 +127,12 @@ end
 Or in your Powershell `$PROFILE` on Windows:
 
 ```powershell
-function fuck { 
+function fuck {
     $fuck = $(thefuck (get-history -count 1).commandline)
-    if($fuck.startswith("echo")) { 
-        $fuck.substring(5) 
-    } 
-    else { iex "$fuck" } 
+    if($fuck.startswith("echo")) {
+        $fuck.substring(5)
+    }
+    else { iex "$fuck" }
 }
 ```
 
@@ -192,7 +194,7 @@ def get_new_command(command, settings):
 The Fuck has a few settings parameters, they can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default all;
-* `require_confirmation` &ndash; require confirmation before running new command, by default `False`; 
+* `require_confirmation` &ndash; require confirmation before running new command, by default `False`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output.
 
