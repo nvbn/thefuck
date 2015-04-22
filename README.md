@@ -196,14 +196,14 @@ def get_new_command(command, settings):
 
 The Fuck has a few settings parameters, they can be changed in `~/.thefuck/settings.py`:
 
-* `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT`;
+* `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
 * `require_confirmation` &ndash; require confirmation before running new command, by default `False`; 
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output.
 
 Or via environment variables:
 
-* `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT:rm_root` or `sudo:no_command`;
+* `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`.

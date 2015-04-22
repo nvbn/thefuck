@@ -28,7 +28,7 @@ class _DefaultRulesNames(RulesNamesList):
             return False
 
 
-DEFAULT = _DefaultRulesNames([])
+DEFAULT_RULES = _DefaultRulesNames([])
 
 
 class Settings(object):
@@ -45,7 +45,7 @@ class Settings(object):
         return Settings(conf)
 
 
-DEFAULT_SETTINGS = {'rules': DEFAULT,
+DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'wait_command': 3,
                     'require_confirmation': False,
                     'no_colors': False}
@@ -68,8 +68,8 @@ def _settings_from_file(user_dir):
 def _rules_from_env(val):
     """Transforms rules list from env-string to python."""
     val = val.split(':')
-    if 'DEFAULT' in val:
-        val = DEFAULT + [rule for rule in val if rule != 'DEFAULT']
+    if 'DEFAULT_RULES' in val:
+        val = DEFAULT_RULES + [rule for rule in val if rule != 'DEFAULT_RULES']
     return val
 
 

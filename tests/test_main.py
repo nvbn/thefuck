@@ -25,7 +25,7 @@ def test_get_rules():
         glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
         assert list(main.get_rules(
             Path('~'),
-            Mock(rules=conf.DEFAULT))) \
+            Mock(rules=conf.DEFAULT_RULES))) \
                == [main.Rule('bash', 'bash', 'bash', True),
                    main.Rule('lisp', 'lisp', 'lisp', True),
                    main.Rule('bash', 'bash', 'bash', True),

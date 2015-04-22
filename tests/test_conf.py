@@ -11,9 +11,9 @@ def test_rules_names_list():
 
 
 def test_default():
-    assert Rule('test', None, None, True) in conf.DEFAULT
-    assert Rule('test', None, None, False) not in conf.DEFAULT
-    assert Rule('test', None, None, False) in (conf.DEFAULT + ['test'])
+    assert Rule('test', None, None, True) in conf.DEFAULT_RULES
+    assert Rule('test', None, None, False) not in conf.DEFAULT_RULES
+    assert Rule('test', None, None, False) in (conf.DEFAULT_RULES + ['test'])
 
 
 def test_settings_defaults():
@@ -37,13 +37,13 @@ def test_settings_from_file():
 
 
 def test_settings_from_file_with_DEFAULT():
-    with patch('thefuck.conf.load_source', return_value=Mock(rules=conf.DEFAULT + ['test'],
+    with patch('thefuck.conf.load_source', return_value=Mock(rules=conf.DEFAULT_RULES + ['test'],
                                                              wait_command=10,
                                                              require_confirmation=True,
                                                              no_colors=True)), \
          patch('thefuck.conf.os.environ', new_callable=lambda: {}):
         settings = conf.get_settings(Mock())
-        assert settings.rules == conf.DEFAULT + ['test']
+        assert settings.rules == conf.DEFAULT_RULES + ['test']
 
 
 def test_settings_from_env():
@@ -63,9 +63,9 @@ def test_settings_from_env():
 
 def test_settings_from_env_with_DEFAULT():
     with patch('thefuck.conf.load_source', return_value=Mock()), \
-         patch('thefuck.conf.os.environ', new_callable=lambda: {'THEFUCK_RULES': 'DEFAULT:bash:lisp'}):
+         patch('thefuck.conf.os.environ', new_callable=lambda: {'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'}):
         settings = conf.get_settings(Mock())
-        assert settings.rules == conf.DEFAULT + ['bash', 'lisp']
+        assert settings.rules == conf.DEFAULT_RULES + ['bash', 'lisp']
 
 
 def test_update_settings():
