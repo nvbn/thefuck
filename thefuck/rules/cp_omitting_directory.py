@@ -7,4 +7,4 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    return re.sub(r'^cp', 'cp -a', command.script)
+    return re.sub(r'^cp', 'cp -ra', command.script)
