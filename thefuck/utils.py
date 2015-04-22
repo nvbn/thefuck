@@ -1,5 +1,7 @@
 from functools import wraps
 import os
+import six
+from thefuck.main import Command
 
 
 def which(program):
@@ -41,3 +43,22 @@ def wrap_settings(params):
             return fn(command, settings)
         return wrapper
     return decorator
+
+
+def sudo_support(fn):
+    """Removes sudo before calling fn and adds it after."""
+    @wraps(fn)
+    def wrapper(command, settings):
+        if not command.script.startswith('sudo '):
+            return fn(command, settings)
+
+        result = fn(Command(command.script[5:],
+                            command.stdout,
+                            command.stderr),
+                    settings)
+
+        if result and isinstance(result, six.string_types):
+            return u'sudo {}'.format(result)
+        else:
+            return result
+    return wrapper
