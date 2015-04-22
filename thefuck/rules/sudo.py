@@ -5,7 +5,8 @@ patterns = ['permission denied',
             'non-root users cannot',
             'Operation not permitted',
             'root privilege',
-            'This command has to be run under the root user.']
+            'This command has to be run under the root user.',
+            'You need to be root to perform this command.']
 
 
 def match(command, settings):
