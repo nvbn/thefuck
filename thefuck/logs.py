@@ -11,15 +11,19 @@ def color(color_, settings):
         return color_
 
 
-def rule_failed(rule, exc_info, settings):
+def exception(title, exc_info, settings):
     sys.stderr.write(
-        u'{warn}[WARN] Rule {name}:{reset}\n{trace}'
+        u'{warn}[WARN] {title}:{reset}\n{trace}'
         u'{warn}----------------------------{reset}\n\n'.format(
             warn=color(colorama.Back.RED + colorama.Fore.WHITE
                        + colorama.Style.BRIGHT, settings),
             reset=color(colorama.Style.RESET_ALL, settings),
-            name=rule.name,
+            title=title,
             trace=''.join(format_exception(*exc_info))))
+
+
+def rule_failed(rule, exc_info, settings):
+    exception('Rule {}'.format(rule.name), exc_info, settings)
 
 
 def show_command(new_command, settings):

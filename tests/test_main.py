@@ -1,25 +1,7 @@
 from subprocess import PIPE
 from pathlib import PosixPath, Path
 from mock import patch, Mock
-from thefuck import main
-
-
-def test_get_settings():
-    with patch('thefuck.main.load_source', return_value=Mock(rules=['bash'])):
-        assert main.get_settings(Path('/')).rules == ['bash']
-    with patch('thefuck.main.load_source', return_value=Mock(spec=[])):
-        assert main.get_settings(Path('/')).rules is None
-
-
-def test_is_rule_enabled():
-    assert main.is_rule_enabled(Mock(rules=None),
-                                main.Rule('bash', None, None, True))
-    assert not main.is_rule_enabled(Mock(rules=None),
-                                    main.Rule('bash', None, None, False))
-    assert main.is_rule_enabled(Mock(rules=['bash']),
-                                main.Rule('bash', None, None, True))
-    assert not main.is_rule_enabled(Mock(rules=['bash']),
-                                    main.Rule('lisp', None, None, True))
+from thefuck import main, conf
 
 
 def test_load_rule():
@@ -43,14 +25,16 @@ def test_get_rules():
         glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
         assert list(main.get_rules(
             Path('~'),
-            Mock(rules=None))) == [main.Rule('bash', 'bash', 'bash', True),
-                                   main.Rule('lisp', 'lisp', 'lisp', True),
-                                   main.Rule('bash', 'bash', 'bash', True),
-                                   main.Rule('lisp', 'lisp', 'lisp', True)]
+            Mock(rules=conf.DEFAULT))) \
+               == [main.Rule('bash', 'bash', 'bash', True),
+                   main.Rule('lisp', 'lisp', 'lisp', True),
+                   main.Rule('bash', 'bash', 'bash', True),
+                   main.Rule('lisp', 'lisp', 'lisp', True)]
         assert list(main.get_rules(
             Path('~'),
-            Mock(rules=['bash']))) == [main.Rule('bash', 'bash', 'bash', True),
-                                       main.Rule('bash', 'bash', 'bash', True)]
+            Mock(rules=conf.RulesList(['bash'])))) \
+               == [main.Rule('bash', 'bash', 'bash', True),
+                   main.Rule('bash', 'bash', 'bash', True)]
 
 
 def test_get_command():

@@ -7,7 +7,7 @@ import os
 import sys
 from psutil import Process, TimeoutExpired
 import colorama
-from thefuck import logs
+from . import logs, conf
 
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
@@ -23,30 +23,6 @@ def setup_user_dir():
         rules_dir.mkdir(parents=True)
     user_dir.joinpath('settings.py').touch()
     return user_dir
-
-
-def get_settings(user_dir):
-    """Returns prepared settings module."""
-    settings = load_source('settings',
-                           str(user_dir.joinpath('settings.py')))
-    settings.__dict__.setdefault('rules', None)
-    settings.__dict__.setdefault('wait_command', 3)
-    settings.__dict__.setdefault('require_confirmation', False)
-    settings.__dict__.setdefault('no_colors', False)
-    return settings
-
-
-def is_rule_enabled(settings, rule):
-    """Returns `True` when rule mentioned in `rules` or `rules`
-    isn't defined.
-
-    """
-    if settings.rules is None and rule.enabled_by_default:
-        return True
-    elif settings.rules and rule.name in settings.rules:
-        return True
-    else:
-        return False
 
 
 def load_rule(rule):
@@ -66,7 +42,7 @@ def get_rules(user_dir, settings):
     for rule in sorted(list(bundled)) + list(user):
         if rule.name != '__init__.py':
             loaded_rule = load_rule(rule)
-            if is_rule_enabled(settings, loaded_rule):
+            if loaded_rule in settings.rules:
                 yield loaded_rule
 
 
@@ -145,7 +121,7 @@ def is_second_run(command):
 def main():
     colorama.init()
     user_dir = setup_user_dir()
-    settings = get_settings(user_dir)
+    settings = conf.Settings(user_dir)
 
     command = get_command(settings, sys.argv)
     if command:

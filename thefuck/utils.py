@@ -37,10 +37,7 @@ def wrap_settings(params):
     def decorator(fn):
         @wraps(fn)
         def wrapper(command, settings):
-            for key, val in params.items():
-                if not hasattr(settings, key):
-                    setattr(settings, key, val)
-            return fn(command, settings)
+            return fn(command, settings.update(**params))
         return wrapper
     return decorator
 
