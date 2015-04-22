@@ -1,4 +1,4 @@
-from thefuck.main import Command
+from thefuck.types import Command
 from thefuck.rules.cd_parent import match, get_new_command
 
 

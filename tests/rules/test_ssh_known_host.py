@@ -1,7 +1,7 @@
 import os
 import pytest
 from mock import Mock
-from thefuck.main import Command
+from thefuck.types import Command
 from thefuck.rules.ssh_known_hosts import match, get_new_command, remove_offending_keys
 
 

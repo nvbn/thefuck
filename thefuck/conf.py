@@ -3,17 +3,10 @@ from imp import load_source
 import os
 import sys
 from six import text_type
-from . import logs
+from . import logs, types
 
 
-class RulesNamesList(list):
-    """Wrapper a top of list for string rules names."""
-
-    def __contains__(self, item):
-        return super(RulesNamesList, self).__contains__(item.name)
-
-
-class _DefaultRulesNames(RulesNamesList):
+class _DefaultRulesNames(types.RulesNamesList):
     def __add__(self, items):
         return _DefaultRulesNames(list(self) + items)
 
@@ -29,20 +22,6 @@ class _DefaultRulesNames(RulesNamesList):
 
 
 DEFAULT_RULES = _DefaultRulesNames([])
-
-
-class Settings(object):
-    def __init__(self, conf):
-        self._conf = conf
-
-    def __getattr__(self, item):
-        return self._conf.get(item)
-
-    def update(self, **kwargs):
-        """Returns new settings with new values from `kwargs`."""
-        conf = copy(self._conf)
-        conf.update(kwargs)
-        return Settings(conf)
 
 
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
@@ -100,16 +79,16 @@ def get_settings(user_dir):
     except Exception:
         logs.exception("Can't load settings from file",
                        sys.exc_info(),
-                       Settings(conf))
+                       types.Settings(conf))
 
     try:
         conf.update(_settings_from_env())
     except Exception:
         logs.exception("Can't load settings from env",
                        sys.exc_info(),
-                       Settings(conf))
+                       types.Settings(conf))
 
-    if not isinstance(conf['rules'], RulesNamesList):
-        conf['rules'] = RulesNamesList(conf['rules'])
+    if not isinstance(conf['rules'], types.RulesNamesList):
+        conf['rules'] = types.RulesNamesList(conf['rules'])
 
-    return Settings(conf)
+    return types.Settings(conf)

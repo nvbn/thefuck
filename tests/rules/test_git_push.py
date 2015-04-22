@@ -1,5 +1,5 @@
 import pytest
-from thefuck.main import Command
+from thefuck.types import Command
 from thefuck.rules.git_push import match, get_new_command
 
 

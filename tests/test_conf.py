@@ -1,13 +1,6 @@
 from mock import patch, Mock
-from thefuck.main import Rule
+from thefuck.types import Rule
 from thefuck import conf
-
-
-def test_rules_names_list():
-    assert conf.RulesNamesList(['bash', 'lisp']) == ['bash', 'lisp']
-    assert conf.RulesNamesList(['bash', 'lisp']) == conf.RulesNamesList(['bash', 'lisp'])
-    assert Rule('lisp', None, None, False) in conf.RulesNamesList(['lisp'])
-    assert Rule('bash', None, None, False) not in conf.RulesNamesList(['lisp'])
 
 
 def test_default():
@@ -66,10 +59,3 @@ def test_settings_from_env_with_DEFAULT():
          patch('thefuck.conf.os.environ', new_callable=lambda: {'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'}):
         settings = conf.get_settings(Mock())
         assert settings.rules == conf.DEFAULT_RULES + ['bash', 'lisp']
-
-
-def test_update_settings():
-    settings = conf.Settings({'key': 'val'})
-    new_settings = settings.update(key='new-val')
-    assert new_settings.key == 'new-val'
-    assert settings.key == 'val'

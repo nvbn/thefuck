@@ -1,7 +1,7 @@
 from functools import wraps
 import os
 import six
-from thefuck.main import Command
+from .types import Command
 
 
 def which(program):

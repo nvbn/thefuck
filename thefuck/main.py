@@ -1,4 +1,3 @@
-from collections import namedtuple
 from imp import load_source
 from pathlib import Path
 from os.path import expanduser
@@ -7,12 +6,7 @@ import os
 import sys
 from psutil import Process, TimeoutExpired
 import colorama
-from . import logs, conf
-
-
-Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
-Rule = namedtuple('Rule', ('name', 'match', 'get_new_command',
-                           'enabled_by_default'))
+from . import logs, conf, types
 
 
 def setup_user_dir():
@@ -28,16 +22,16 @@ def setup_user_dir():
 def load_rule(rule):
     """Imports rule module and returns it."""
     rule_module = load_source(rule.name[:-3], str(rule))
-    return Rule(rule.name[:-3], rule_module.match,
-                rule_module.get_new_command,
-                getattr(rule_module, 'enabled_by_default', True))
+    return types.Rule(rule.name[:-3], rule_module.match,
+                      rule_module.get_new_command,
+                      getattr(rule_module, 'enabled_by_default', True))
 
 
 def get_rules(user_dir, settings):
     """Returns all enabled rules."""
-    bundled = Path(__file__).parent\
-                            .joinpath('rules')\
-                            .glob('*.py')
+    bundled = Path(__file__).parent \
+        .joinpath('rules') \
+        .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
     for rule in sorted(list(bundled)) + list(user):
         if rule.name != '__init__.py':
@@ -77,8 +71,8 @@ def get_command(settings, args):
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
-        return Command(script, result.stdout.read().decode('utf-8'),
-                       result.stderr.read().decode('utf-8'))
+        return types.Command(script, result.stdout.read().decode('utf-8'),
+                             result.stderr.read().decode('utf-8'))
 
 
 def get_matched_rule(command, rules, settings):
