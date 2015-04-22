@@ -3,7 +3,10 @@ patterns = ['permission denied',
             'pkg: Insufficient privileges',
             'you cannot perform this operation unless you are root',
             'non-root users cannot',
-            'Operation not permitted']
+            'Operation not permitted',
+            'root privilege',
+            'This command has to be run under the root user.',
+            'You need to be root to perform this command.']
 
 
 def match(command, settings):
@@ -14,4 +17,4 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    return 'sudo {}'.format(command.script)
+    return u'sudo {}'.format(command.script)

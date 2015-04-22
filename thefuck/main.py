@@ -6,10 +6,12 @@ from subprocess import Popen, PIPE
 import os
 import sys
 from psutil import Process, TimeoutExpired
+import colorama
+from thefuck import logs
 
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
-Rule = namedtuple('Rule', ('match', 'get_new_command'))
+Rule = namedtuple('Rule', ('name', 'match', 'get_new_command'))
 
 
 def setup_user_dir():
@@ -28,6 +30,8 @@ def get_settings(user_dir):
                            str(user_dir.joinpath('settings.py')))
     settings.__dict__.setdefault('rules', None)
     settings.__dict__.setdefault('wait_command', 3)
+    settings.__dict__.setdefault('require_confirmation', False)
+    settings.__dict__.setdefault('no_colors', False)
     return settings
 
 
@@ -42,7 +46,8 @@ def is_rule_enabled(settings, rule):
 def load_rule(rule):
     """Imports rule module and returns it."""
     rule_module = load_source(rule.name[:-3], str(rule))
-    return Rule(rule_module.match, rule_module.get_new_command)
+    return Rule(rule.name[:-3], rule_module.match,
+                rule_module.get_new_command)
 
 
 def get_rules(user_dir, settings):
@@ -51,7 +56,7 @@ def get_rules(user_dir, settings):
                             .joinpath('rules')\
                             .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
-    return [load_rule(rule) for rule in list(bundled) + list(user)
+    return [load_rule(rule) for rule in sorted(list(bundled)) + list(user)
             if rule.name != '__init__.py' and is_rule_enabled(settings, rule)]
 
 
@@ -75,7 +80,14 @@ def wait_output(settings, popen):
 
 def get_command(settings, args):
     """Creates command from `args` and executes it."""
-    script = ' '.join(args[1:])
+    if sys.version_info[0] < 3:
+        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
+    else:
+        script = ' '.join(args[1:])
+
+    if not script:
+        return
+
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
@@ -86,15 +98,33 @@ def get_command(settings, args):
 def get_matched_rule(command, rules, settings):
     """Returns first matched rule for command."""
     for rule in rules:
-        if rule.match(command, settings):
-            return rule
+        try:
+            if rule.match(command, settings):
+                return rule
+        except Exception:
+            logs.rule_failed(rule, sys.exc_info(), settings)
+
+
+def confirm(new_command, settings):
+    """Returns `True` when running of new command confirmed."""
+    if not settings.require_confirmation:
+        logs.show_command(new_command, settings)
+        return True
+
+    logs.confirm_command(new_command, settings)
+    try:
+        sys.stdin.read(1)
+        return True
+    except KeyboardInterrupt:
+        logs.failed('Aborted', settings)
+        return False
 
 
 def run_rule(rule, command, settings):
     """Runs command from rule for passed command."""
     new_command = rule.get_new_command(command, settings)
-    sys.stderr.write(new_command + '\n')
-    print(new_command)
+    if confirm(new_command, settings):
+        print(new_command)
 
 
 def is_second_run(command):
@@ -103,13 +133,14 @@ def is_second_run(command):
 
 
 def main():
+    colorama.init()
     user_dir = setup_user_dir()
     settings = get_settings(user_dir)
 
     command = get_command(settings, sys.argv)
     if command:
         if is_second_run(command):
-            print("echo Can't fuck twice")
+            logs.failed("Can't fuck twice", settings)
             return
 
         rules = get_rules(user_dir, settings)
@@ -118,4 +149,4 @@ def main():
             run_rule(matched_rule, command, settings)
             return
 
-    print('echo No fuck given')
+    logs.failed('No fuck given', settings)
