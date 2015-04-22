@@ -1,5 +1,8 @@
+enabled_by_default = False
+
+
 def match(command, settings):
-    return ('/' in command.script.split()
+    return ({'rm', '/'}.issubset(command.script.split())
             and '--no-preserve-root' not in command.script
             and '--no-preserve-root' in command.stderr)
 

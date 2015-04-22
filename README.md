@@ -161,6 +161,10 @@ using matched rule and run it. Rules enabled by default:
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
 * `switch_layout` &ndash; switches command from your local layout to en.
 
+Bundled, but not enabled by default:
+
+* `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
+
 ## Creating your own rules
 
 For adding your own rule you should create `your-rule-name.py`
