@@ -106,6 +106,12 @@ If it fails try to use `easy_install`:
 sudo easy_install thefuck
 ```
 
+Or using an OS package manager (currently supported in OSX via [brew](http://brew.sh)):
+
+```bash
+brew install thefuck
+```
+
 And add to `.bashrc` or `.zshrc` or `.bash_profile`(for OSX):
 
 ```bash
