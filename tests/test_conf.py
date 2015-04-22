@@ -19,8 +19,8 @@ def test_default():
 def test_settings_defaults():
     with patch('thefuck.conf.load_source', return_value=object()), \
          patch('thefuck.conf.os.environ', new_callable=lambda: {}):
-        for key, val in conf.Settings.defaults.items():
-            assert getattr(conf.Settings(Mock()), key) == val
+        for key, val in conf.DEFAULT_SETTINGS.items():
+            assert getattr(conf.get_settings(Mock()), key) == val
 
 
 def test_settings_from_file():
@@ -29,7 +29,7 @@ def test_settings_from_file():
                                                              require_confirmation=True,
                                                              no_colors=True)), \
          patch('thefuck.conf.os.environ', new_callable=lambda: {}):
-        settings = conf.Settings(Mock())
+        settings = conf.get_settings(Mock())
         assert settings.rules == ['test']
         assert settings.wait_command == 10
         assert settings.require_confirmation is True
@@ -42,7 +42,7 @@ def test_settings_from_file_with_DEFAULT():
                                                              require_confirmation=True,
                                                              no_colors=True)), \
          patch('thefuck.conf.os.environ', new_callable=lambda: {}):
-        settings = conf.Settings(Mock())
+        settings = conf.get_settings(Mock())
         assert settings.rules == conf.DEFAULT + ['test']
 
 
@@ -54,7 +54,7 @@ def test_settings_from_env():
                                      'THEFUCK_WAIT_COMMAND': '55',
                                      'THEFUCK_REQUIRE_CONFIRMATION': 'true',
                                      'THEFUCK_NO_COLORS': 'false'}):
-        settings = conf.Settings(Mock())
+        settings = conf.get_settings(Mock())
         assert settings.rules == ['bash', 'lisp']
         assert settings.wait_command == 55
         assert settings.require_confirmation is True
@@ -64,12 +64,12 @@ def test_settings_from_env():
 def test_settings_from_env_with_DEFAULT():
     with patch('thefuck.conf.load_source', return_value=Mock()), \
          patch('thefuck.conf.os.environ', new_callable=lambda: {'THEFUCK_RULES': 'DEFAULT:bash:lisp'}):
-        settings = conf.Settings(Mock())
+        settings = conf.get_settings(Mock())
         assert settings.rules == conf.DEFAULT + ['bash', 'lisp']
 
 
 def test_update_settings():
-    settings = conf.BaseSettings({'key': 'val'})
+    settings = conf.Settings({'key': 'val'})
     new_settings = settings.update(key='new-val')
     assert new_settings.key == 'new-val'
     assert settings.key == 'val'

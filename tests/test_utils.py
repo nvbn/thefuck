@@ -1,15 +1,15 @@
 from mock import Mock
 from thefuck.utils import sudo_support, wrap_settings
 from thefuck.main import Command
-from thefuck.conf import BaseSettings
+from thefuck.conf import Settings
 
 
 def test_wrap_settings():
     fn = lambda _, settings: settings._conf
-    assert wrap_settings({'key': 'val'})(fn)(None, BaseSettings({})) \
+    assert wrap_settings({'key': 'val'})(fn)(None, Settings({})) \
            == {'key': 'val'}
     assert wrap_settings({'key': 'new-val'})(fn)(
-        None, BaseSettings({'key': 'val'})) == {'key': 'new-val'}
+        None, Settings({'key': 'val'})) == {'key': 'new-val'}
 
 
 def test_sudo_support():

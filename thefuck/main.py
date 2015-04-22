@@ -121,7 +121,7 @@ def is_second_run(command):
 def main():
     colorama.init()
     user_dir = setup_user_dir()
-    settings = conf.Settings(user_dir)
+    settings = conf.get_settings(user_dir)
 
     command = get_command(settings, sys.argv)
     if command:

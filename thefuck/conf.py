@@ -40,7 +40,7 @@ class _DefaultRules(RulesList):
 DEFAULT = _DefaultRules([])
 
 
-class BaseSettings(object):
+class Settings(object):
     def __init__(self, conf):
         self._conf = conf
 
@@ -51,70 +51,74 @@ class BaseSettings(object):
         """Returns new settings with new values from `kwargs`."""
         conf = copy(self._conf)
         conf.update(kwargs)
-        return BaseSettings(conf)
+        return Settings(conf)
 
 
-class Settings(BaseSettings):
-    """Settings loaded from defaults/file/env."""
-    defaults = {'rules': DEFAULT,
-                'wait_command': 3,
-                'require_confirmation': False,
-                'no_colors': False}
+DEFAULT_SETTINGS = {'rules': DEFAULT,
+                    'wait_command': 3,
+                    'require_confirmation': False,
+                    'no_colors': False}
 
-    env_to_attr = {'THEFUCK_RULES': 'rules',
-                   'THEFUCK_WAIT_COMMAND': 'wait_command',
-                   'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
-                   'THEFUCK_NO_COLORS': 'no_colors'}
+ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
+               'THEFUCK_WAIT_COMMAND': 'wait_command',
+               'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
+               'THEFUCK_NO_COLORS': 'no_colors'}
 
-    def __init__(self, user_dir):
-        super(Settings, self).__init__(self._load_conf(user_dir))
 
-    def _load_conf(self, user_dir):
-        conf = copy(self.defaults)
-        try:
-            conf.update(self._load_from_file(user_dir))
-        except:
-            logs.exception("Can't load settings from file",
-                           sys.exc_info(),
-                           BaseSettings(conf))
-        try:
-            conf.update(self._load_from_env())
-        except:
-            logs.exception("Can't load settings from env",
-                           sys.exc_info(),
-                           BaseSettings(conf))
-        if not isinstance(conf['rules'], RulesList):
-            conf['rules'] = RulesList(conf['rules'])
-        return conf
+def _settings_from_file(user_dir):
+    """Loads settings from file."""
+    settings = load_source('settings',
+                           text_type(user_dir.joinpath('settings.py')))
+    return {key: getattr(settings, key)
+            for key in DEFAULT_SETTINGS.keys()
+            if hasattr(settings, key)}
 
-    def _load_from_file(self, user_dir):
-        """Loads settings from file."""
-        settings = load_source('settings',
-                               text_type(user_dir.joinpath('settings.py')))
-        return {key: getattr(settings, key)
-                for key in self.defaults.keys()
-                if hasattr(settings, key)}
 
-    def _load_from_env(self):
-        """Loads settings from env."""
-        return {attr: self._val_from_env(env, attr)
-                for env, attr in self.env_to_attr.items()
-                if env in os.environ}
+def _rules_from_env(val):
+    """Transforms rules list from env-string to python."""
+    val = val.split(':')
+    if 'DEFAULT' in val:
+        val = DEFAULT + [rule for rule in val if rule != 'DEFAULT']
+    return val
 
-    def _val_from_env(self, env, attr):
-        """Transforms env-strings to python."""
-        val = os.environ[env]
-        if attr == 'rules':
-            val = self._rules_from_env(val)
-        elif attr == 'wait_command':
-            val = int(val)
-        elif attr in ('require_confirmation', 'no_colors'):
-            val = val.lower() == 'true'
-        return val
 
-    def _rules_from_env(self, val):
-        """Transforms rules list from env-string to python."""
-        val = val.split(':')
-        if 'DEFAULT' in val:
-            val = DEFAULT + [rule for rule in val if rule != 'DEFAULT']
-        return val
+def _val_from_env(env, attr):
+    """Transforms env-strings to python."""
+    val = os.environ[env]
+    if attr == 'rules':
+        val = _rules_from_env(val)
+    elif attr == 'wait_command':
+        val = int(val)
+    elif attr in ('require_confirmation', 'no_colors'):
+        val = val.lower() == 'true'
+    return val
+
+
+def _settings_from_env():
+    """Loads settings from env."""
+    return {attr: _val_from_env(env, attr)
+            for env, attr in ENV_TO_ATTR.items()
+            if env in os.environ}
+
+
+def get_settings(user_dir):
+    """Returns settings filled with values from `settings.py` and env."""
+    conf = copy(DEFAULT_SETTINGS)
+    try:
+        conf.update(_settings_from_file(user_dir))
+    except Exception:
+        logs.exception("Can't load settings from file",
+                       sys.exc_info(),
+                       Settings(conf))
+
+    try:
+        conf.update(_settings_from_env())
+    except Exception:
+        logs.exception("Can't load settings from env",
+                       sys.exc_info(),
+                       Settings(conf))
+
+    if not isinstance(conf['rules'], RulesList):
+        conf['rules'] = RulesList(conf['rules'])
+
+    return Settings(conf)
