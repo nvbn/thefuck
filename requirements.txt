@@ -1,3 +1,2 @@
 pytest
 mock
-colorama
