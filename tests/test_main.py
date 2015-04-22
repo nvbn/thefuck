@@ -32,7 +32,7 @@ def test_get_rules():
                    main.Rule('lisp', 'lisp', 'lisp', True)]
         assert list(main.get_rules(
             Path('~'),
-            Mock(rules=conf.RulesList(['bash'])))) \
+            Mock(rules=conf.RulesNamesList(['bash'])))) \
                == [main.Rule('bash', 'bash', 'bash', True),
                    main.Rule('bash', 'bash', 'bash', True)]
 

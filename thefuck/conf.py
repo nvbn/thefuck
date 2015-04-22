@@ -6,38 +6,29 @@ from six import text_type
 from . import logs
 
 
-class RulesList(object):
+class RulesNamesList(list):
     """Wrapper a top of list for string rules names."""
 
-    def __init__(self, rules):
-        self.rules = rules
-
     def __contains__(self, item):
-        return item.name in self.rules
-
-    def __getattr__(self, item):
-        return getattr(self.rules, item)
-
-    def __eq__(self, other):
-        return self.rules == other
+        return super(RulesNamesList, self).__contains__(item.name)
 
 
-class _DefaultRules(RulesList):
+class _DefaultRulesNames(RulesNamesList):
     def __add__(self, items):
-        return _DefaultRules(self.rules + items)
+        return _DefaultRulesNames(list(self) + items)
 
     def __contains__(self, item):
         return item.enabled_by_default or \
-               super(_DefaultRules, self).__contains__(item)
+               super(_DefaultRulesNames, self).__contains__(item)
 
     def __eq__(self, other):
-        if isinstance(other, _DefaultRules):
-            return self.rules == other.rules
+        if isinstance(other, _DefaultRulesNames):
+            return super(_DefaultRulesNames, self).__eq__(other)
         else:
             return False
 
 
-DEFAULT = _DefaultRules([])
+DEFAULT = _DefaultRulesNames([])
 
 
 class Settings(object):
@@ -118,7 +109,7 @@ def get_settings(user_dir):
                        sys.exc_info(),
                        Settings(conf))
 
-    if not isinstance(conf['rules'], RulesList):
-        conf['rules'] = RulesList(conf['rules'])
+    if not isinstance(conf['rules'], RulesNamesList):
+        conf['rules'] = RulesNamesList(conf['rules'])
 
     return Settings(conf)

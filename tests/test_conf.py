@@ -3,11 +3,11 @@ from thefuck.main import Rule
 from thefuck import conf
 
 
-def test_rules_list():
-    assert conf.RulesList(['bash', 'lisp']) == ['bash', 'lisp']
-    assert conf.RulesList(['bash', 'lisp']) == conf.RulesList(['bash', 'lisp'])
-    assert Rule('lisp', None, None, False) in conf.RulesList(['lisp'])
-    assert Rule('bash', None, None, False) not in conf.RulesList(['lisp'])
+def test_rules_names_list():
+    assert conf.RulesNamesList(['bash', 'lisp']) == ['bash', 'lisp']
+    assert conf.RulesNamesList(['bash', 'lisp']) == conf.RulesNamesList(['bash', 'lisp'])
+    assert Rule('lisp', None, None, False) in conf.RulesNamesList(['lisp'])
+    assert Rule('bash', None, None, False) not in conf.RulesNamesList(['lisp'])
 
 
 def test_default():
