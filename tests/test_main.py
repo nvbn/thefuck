@@ -69,11 +69,11 @@ def test_get_matched_rule(capsys):
              main.Rule('', lambda *_: False, None),
              main.Rule('rule', Mock(side_effect=OSError('Denied')), None)]
     assert main.get_matched_rule(main.Command('ls', '', ''),
-                                 rules, None) is None
+                                 rules, Mock(no_colors=True)) is None
     assert main.get_matched_rule(main.Command('cd ..', '', ''),
-                                 rules, None) == rules[0]
+                                 rules, Mock(no_colors=True)) == rules[0]
     assert capsys.readouterr()[1].split('\n')[0]\
-           == '[WARN] rule: Traceback (most recent call last):'
+           == '[WARN] Rule rule:'
 
 
 def test_run_rule(capsys):
@@ -93,9 +93,11 @@ def test_confirm(capsys):
     assert capsys.readouterr() == ('', 'command\n')
     # When confirmation required and confirmed:
     with patch('thefuck.main.sys.stdin.read', return_value='\n'):
-        assert main.confirm('command', Mock(require_confirmation=True))
-        assert capsys.readouterr() == ('', 'command [Enter/Ctrl+C]')
+        assert main.confirm('command', Mock(require_confirmation=True,
+                                            no_colors=True))
+        assert capsys.readouterr() == ('', 'command [enter/ctrl+c]')
     # When confirmation required and ctrl+c:
     with patch('thefuck.main.sys.stdin.read', side_effect=KeyboardInterrupt):
-        assert not main.confirm('command', Mock(require_confirmation=True))
-        assert capsys.readouterr() == ('', 'command [Enter/Ctrl+C]Aborted\n')
+        assert not main.confirm('command', Mock(require_confirmation=True,
+                                                no_colors=True))
+        assert capsys.readouterr() == ('', 'command [enter/ctrl+c]Aborted\n')
