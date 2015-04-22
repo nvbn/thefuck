@@ -8,4 +8,4 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    return '{} --no-preserve-root'.format(command.script)
+    return u'{} --no-preserve-root'.format(command.script)
