@@ -181,7 +181,7 @@ and `get_new_command(command: Command, settings: Settings) -> str`.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
-`Settings` is `~/.thefuck/settings.py`.
+`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env, [more](#settings).
 
 Simple example of the rule for running script with `sudo`:
 
