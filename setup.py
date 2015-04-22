@@ -15,6 +15,6 @@ setup(name='thefuck',
                                       'tests', 'release']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=['pathlib', 'psutil'],
+      install_requires=['pathlib', 'psutil', 'colorama'],
       entry_points={'console_scripts': [
           'thefuck = thefuck.main:main']})

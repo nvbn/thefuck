@@ -193,7 +193,8 @@ The Fuck has a few settings parameters, they can be changed in `~/.thefuck/setti
 
 * `rules` &ndash; list of enabled rules, by default all;
 * `require_confirmation` &ndash; require confirmation before running new command, by default `False`; 
-* `wait_command` &ndash; max amount of time in seconds for getting previous command output.
+* `wait_command` &ndash; max amount of time in seconds for getting previous command output;
+* `no_colors` &ndash; disable colored output.
 
 ## Developing
 

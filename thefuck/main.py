@@ -5,8 +5,9 @@ from os.path import expanduser
 from subprocess import Popen, PIPE
 import os
 import sys
-from traceback import format_exception
 from psutil import Process, TimeoutExpired
+import colorama
+from thefuck import logs
 
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
@@ -30,6 +31,7 @@ def get_settings(user_dir):
     settings.__dict__.setdefault('rules', None)
     settings.__dict__.setdefault('wait_command', 3)
     settings.__dict__.setdefault('require_confirmation', False)
+    settings.__dict__.setdefault('no_colors', False)
     return settings
 
 
@@ -100,23 +102,21 @@ def get_matched_rule(command, rules, settings):
             if rule.match(command, settings):
                 return rule
         except Exception:
-            sys.stderr.write(u'[WARN] {}: {}---------------------\n\n'.format(
-                rule.name, ''.join(format_exception(*sys.exc_info()))))
+            logs.rule_failed(rule, sys.exc_info(), settings)
 
 
 def confirm(new_command, settings):
     """Returns `True` when running of new command confirmed."""
     if not settings.require_confirmation:
-        sys.stderr.write(new_command + '\n')
+        logs.show_command(new_command, settings)
         return True
 
-    sys.stderr.write(new_command + ' [Enter/Ctrl+C]')
-    sys.stderr.flush()
+    logs.confirm_command(new_command, settings)
     try:
         sys.stdin.read(1)
         return True
     except KeyboardInterrupt:
-        sys.stderr.write('Aborted\n')
+        logs.failed('Aborted', settings)
         return False
 
 
@@ -133,13 +133,14 @@ def is_second_run(command):
 
 
 def main():
+    colorama.init()
     user_dir = setup_user_dir()
     settings = get_settings(user_dir)
 
     command = get_command(settings, sys.argv)
     if command:
         if is_second_run(command):
-            print("echo Can't fuck twice")
+            logs.failed("Can't fuck twice", settings)
             return
 
         rules = get_rules(user_dir, settings)
@@ -148,4 +149,4 @@ def main():
             run_rule(matched_rule, command, settings)
             return
 
-    print('echo No fuck given')
+    logs.failed('No fuck given', settings)
