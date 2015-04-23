@@ -157,6 +157,7 @@ using matched rule and run it. Rules enabled by default:
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
+* `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
