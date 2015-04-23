@@ -154,6 +154,7 @@ sudo pip install thefuck --upgrade
 The Fuck tries to match rule for the previous command, create new command
 using matched rule and run it. Rules enabled by default:
 
+* `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
