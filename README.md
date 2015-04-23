@@ -115,8 +115,8 @@ brew install thefuck
 And add to `.bashrc` or `.zshrc` or `.bash_profile`(for OSX):
 
 ```bash
-alias fuck='$(thefuck $(fc -ln -1))'
-# You can use whatever you want as an alias, like for mondays:
+alias fuck='eval $(thefuck $(fc -ln -1))'
+# You can use whatever you want as an alias, like for Mondays:
 alias FUCK='fuck'
 ```
 
