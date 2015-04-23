@@ -163,6 +163,7 @@ using matched rule and run it. Rules enabled by default:
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
+* `sl_ls` &ndash; changes `sl` to `ls`;
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
