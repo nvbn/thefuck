@@ -131,12 +131,12 @@ end
 Or in your Powershell `$PROFILE` on Windows:
 
 ```powershell
-function fuck { 
+function fuck {
     $fuck = $(thefuck (get-history -count 1).commandline)
-    if($fuck.startswith("echo")) { 
-        $fuck.substring(5) 
-    } 
-    else { iex "$fuck" } 
+    if($fuck.startswith("echo")) {
+        $fuck.substring(5)
+    }
+    else { iex "$fuck" }
 }
 ```
 
@@ -162,6 +162,7 @@ using matched rule and run it. Rules enabled by default:
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
+* `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
@@ -204,7 +205,7 @@ def get_new_command(command, settings):
 The Fuck has a few settings parameters, they can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
-* `require_confirmation` &ndash; require confirmation before running new command, by default `False`; 
+* `require_confirmation` &ndash; require confirmation before running new command, by default `False`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output.
 
