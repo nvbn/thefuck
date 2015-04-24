@@ -1,3 +1,4 @@
+import six
 from mock import patch, Mock
 from thefuck.types import Rule
 from thefuck import conf
@@ -59,3 +60,30 @@ def test_settings_from_env_with_DEFAULT():
          patch('thefuck.conf.os.environ', new_callable=lambda: {'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'}):
         settings = conf.get_settings(Mock())
         assert settings.rules == conf.DEFAULT_RULES + ['bash', 'lisp']
+
+
+def test_initialize_settings_file_ignore_if_exists():
+    settings_path_mock = Mock(is_file=Mock(return_value=True), open=Mock())
+    user_dir_mock = Mock(joinpath=Mock(return_value=settings_path_mock))
+    conf.initialize_settings_file(user_dir_mock)
+    assert settings_path_mock.is_file.call_count == 1
+    assert not settings_path_mock.open.called
+
+
+def test_initialize_settings_file_create_if_exists_not():
+    settings_file = six.StringIO()
+    settings_path_mock = Mock(
+        is_file=Mock(return_value=False),
+        open=Mock(return_value=Mock(
+            __exit__=lambda *args: None, __enter__=lambda *args: settings_file
+        )),
+    )
+    user_dir_mock = Mock(joinpath=Mock(return_value=settings_path_mock))
+    conf.initialize_settings_file(user_dir_mock)
+    settings_file_contents = settings_file.getvalue()
+    assert settings_path_mock.is_file.call_count == 1
+    assert settings_path_mock.open.call_count == 1
+    assert conf.SETTINGS_HEADER in settings_file_contents
+    for setting in conf.DEFAULT_SETTINGS.items():
+        assert '# {} = {}\n'.format(*setting) in settings_file_contents
+    settings_file.close()
