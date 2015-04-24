@@ -124,7 +124,7 @@ Or in `config.fish`:
 
 ```fish
 function fuck
-    eval (thefuck $history[2])
+    eval (thefuck $history[1])
 end
 ```
 
