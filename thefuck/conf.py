@@ -35,6 +35,19 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_NO_COLORS': 'no_colors'}
 
 
+SETTINGS_HEADER = u"""# ~/.thefuck/settings.py: The Fuck settings file
+#
+# The rules are defined as in the example bellow:
+#
+# rules = ['cd_parent', 'git_push', 'python_command', 'sudo']
+#
+# The default values are as follows. Uncomment and change to fit your needs.
+# See https://github.com/nvbn/thefuck#settings for more information.
+#
+
+"""
+
+
 def _settings_from_file(user_dir):
     """Loads settings from file."""
     settings = load_source('settings',
@@ -92,3 +105,12 @@ def get_settings(user_dir):
         conf['rules'] = types.RulesNamesList(conf['rules'])
 
     return types.Settings(conf)
+
+
+def initialize_settings_file(user_dir):
+    settings_path = user_dir.joinpath('settings.py')
+    if not settings_path.is_file():
+        with settings_path.open(mode='w') as settings_file:
+            settings_file.write(SETTINGS_HEADER)
+            for setting in DEFAULT_SETTINGS.items():
+                settings_file.write(u'# {} = {}\n'.format(*setting))

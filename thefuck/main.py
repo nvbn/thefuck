@@ -15,7 +15,7 @@ def setup_user_dir():
     rules_dir = user_dir.joinpath('rules')
     if not rules_dir.is_dir():
         rules_dir.mkdir(parents=True)
-    user_dir.joinpath('settings.py').touch()
+    conf.initialize_settings_file(user_dir)
     return user_dir
 
 
