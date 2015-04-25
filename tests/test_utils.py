@@ -1,6 +1,7 @@
 from mock import Mock
 from thefuck.utils import sudo_support, wrap_settings
-from thefuck.types import Command, Settings
+from thefuck.types import Settings
+from tests.utils import Command
 
 
 def test_wrap_settings():
@@ -13,13 +14,13 @@ def test_wrap_settings():
 
 def test_sudo_support():
     fn = Mock(return_value=True, __name__='')
-    assert sudo_support(fn)(Command('sudo ls', 'out', 'err'), None)
-    fn.assert_called_once_with(Command('ls', 'out', 'err'), None)
+    assert sudo_support(fn)(Command('sudo ls'), None)
+    fn.assert_called_once_with(Command('ls'), None)
 
     fn.return_value = False
-    assert not sudo_support(fn)(Command('sudo ls', 'out', 'err'), None)
+    assert not sudo_support(fn)(Command('sudo ls'), None)
 
     fn.return_value = 'pwd'
-    assert sudo_support(fn)(Command('sudo ls', 'out', 'err'), None) == 'sudo pwd'
+    assert sudo_support(fn)(Command('sudo ls'), None) == 'sudo pwd'
 
-    assert sudo_support(fn)(Command('ls', 'out', 'err'), None) == 'pwd'
+    assert sudo_support(fn)(Command('ls'), None) == 'pwd'

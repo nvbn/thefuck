@@ -1,6 +1,6 @@
 import pytest
-from thefuck.types import Command
 from thefuck.rules.composer_not_command import match, get_new_command
+from tests.utils import Command
 
 
 @pytest.fixture
@@ -36,13 +36,18 @@ def composer_not_command_one_of_this():
 
 
 def test_match(composer_not_command, composer_not_command_one_of_this):
-    assert match(Command('composer udpate', '', composer_not_command), None)
-    assert match(Command('composer pdate', '', composer_not_command_one_of_this), None)
-    assert not match(Command('ls update', '', composer_not_command), None)
+    assert match(Command('composer udpate',
+                         stderr=composer_not_command), None)
+    assert match(Command('composer pdate',
+                         stderr=composer_not_command_one_of_this), None)
+    assert not match(Command('ls update', stderr=composer_not_command),
+                     None)
 
 
 def test_get_new_command(composer_not_command, composer_not_command_one_of_this):
-    assert get_new_command(Command('composer udpate', '', composer_not_command), None) \
+    assert get_new_command(Command('composer udpate',
+                                   stderr=composer_not_command), None) \
            == 'composer update'
     assert get_new_command(
-        Command('composer pdate', '', composer_not_command_one_of_this), None) == 'composer selfupdate'
+        Command('composer pdate', stderr=composer_not_command_one_of_this),
+        None) == 'composer selfupdate'

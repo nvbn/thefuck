@@ -1,13 +1,13 @@
 import six
 from mock import patch, Mock
-from thefuck.types import Rule
 from thefuck import conf
+from tests.utils import Rule
 
 
 def test_default():
-    assert Rule('test', None, None, True) in conf.DEFAULT_RULES
-    assert Rule('test', None, None, False) not in conf.DEFAULT_RULES
-    assert Rule('test', None, None, False) in (conf.DEFAULT_RULES + ['test'])
+    assert Rule('test', enabled_by_default=True) in conf.DEFAULT_RULES
+    assert Rule('test', enabled_by_default=False) not in conf.DEFAULT_RULES
+    assert Rule('test', enabled_by_default=False) in (conf.DEFAULT_RULES + ['test'])
 
 
 def test_settings_defaults():
