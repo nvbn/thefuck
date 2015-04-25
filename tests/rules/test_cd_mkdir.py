@@ -1,19 +1,25 @@
-from mock import Mock
+import pytest
 from thefuck.rules.cd_mkdir import match, get_new_command
+from tests.utils import Command
 
 
-def test_match():
-    assert match(Mock(script='cd foo', stderr='cd: foo: No such file or directory'),
-                 None)
-    assert match(Mock(script='cd foo/bar/baz', stderr='cd: foo: No such file or directory'),
-                 None)
-    assert match(Mock(script='cd foo/bar/baz', stderr='cd: can\'t cd to foo/bar/baz'),
-                 None)
-    assert not match(Mock(script='cd foo',
-                          stderr=''), None)
-    assert not match(Mock(script='', stderr=''), None)
+@pytest.mark.parametrize('command', [
+    Command(script='cd foo', stderr='cd: foo: No such file or directory'),
+    Command(script='cd foo/bar/baz',
+            stderr='cd: foo: No such file or directory'),
+    Command(script='cd foo/bar/baz', stderr='cd: can\'t cd to foo/bar/baz')])
+def test_match(command):
+    assert match(command, None)
 
 
-def test_get_new_command():
-    assert get_new_command(Mock(script='cd foo'), None) == 'mkdir -p foo && cd foo'
-    assert get_new_command(Mock(script='cd foo/bar/baz'), None) == 'mkdir -p foo/bar/baz && cd foo/bar/baz'
+@pytest.mark.parametrize('command', [
+    Command(script='cd foo', stderr=''), Command()])
+def test_not_match(command):
+    assert not match(command, None)
+
+
+@pytest.mark.parametrize('command, new_command', [
+    (Command('cd foo'), 'mkdir -p foo && cd foo'),
+    (Command('cd foo/bar/baz'), 'mkdir -p foo/bar/baz && cd foo/bar/baz')])
+def test_get_new_command(command, new_command):
+    assert get_new_command(command, None) == new_command
