@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from thefuck.rules.fix_alt_space import match, get_new_command
 from tests.utils import Command
 
