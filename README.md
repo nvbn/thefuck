@@ -114,6 +114,14 @@ alias fuck='eval $(thefuck $(fc -ln -1))'
 alias FUCK='fuck'
 ```
 
+```bash
+# Reload the shell
+# For bash users
+source ~/.bashrc
+# For zsh users
+source ~/.zshrc
+```
+
 Or in `config.fish`:
 
 ```fish
