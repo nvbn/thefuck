@@ -156,7 +156,6 @@ using matched rule and run it. Rules enabled by default:
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
-* `ls_lah` &ndash; adds -lah to ls;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
@@ -170,6 +169,7 @@ using matched rule and run it. Rules enabled by default:
 
 Bundled, but not enabled by default:
 
+* `ls_lah` &ndash; adds -lah to ls;
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
 ## Creating your own rules
