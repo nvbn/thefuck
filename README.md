@@ -123,7 +123,10 @@ function __thefuck_repl --description 'Replace operators into fish-compatible'
 end
 
 function fuck --description 'Correct your previous console command'
-    eval (__thefuck_repl (thefuck $history[1]))
+    set -l eval_script (mktemp 2>/dev/null ; or mktemp -t 'thefuck')
+    thefuck $history[1] > $eval_script
+    eval (__thefuck_repl (cat $eval_script))
+    rm $eval_script
 end
 ```
 
