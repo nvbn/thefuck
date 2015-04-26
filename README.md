@@ -92,6 +92,12 @@ Reading package lists... Done
 - python
 - python-dev
 
+You can install these requirements in Ubuntu with `apt-get`:
+
+```bash
+sudo apt-get install python-pip python-dev
+```
+
 ## Installation
 
 Install `The Fuck` with `pip`:
