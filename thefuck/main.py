@@ -111,11 +111,20 @@ def is_second_run(command):
     """Is it the second run of `fuck`?"""
     return command.script.startswith('fuck')
 
+def check_show_alias(argv):
+    """Was thefuck called with --bash-alias?"""
+    if "--bash-alias" in sys.argv:
+        print("\nalias fuck='eval $(thefuck $(fc -ln -1))'\n");
+        return True
+    return False
 
 def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
+
+    if check_show_alias(sys.argv):
+        return
 
     command = get_command(settings, sys.argv)
     if command:
