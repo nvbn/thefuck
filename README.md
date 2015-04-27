@@ -110,25 +110,7 @@ alias fuck='eval $(thefuck $(fc -ln -1))'
 alias FUCK='fuck'
 ```
 
-Or in `config.fish`:
-
-```fish
-function fuck
-    eval (thefuck $history[1])
-end
-```
-
-Or in your Powershell `$PROFILE` on Windows:
-
-```powershell
-function fuck {
-    $fuck = $(thefuck (get-history -count 1).commandline)
-    if($fuck.startswith("echo")) {
-        $fuck.substring(5)
-    }
-    else { iex "$fuck" }
-}
-```
+[On in your shell config (Bash, Zsh, Fish, Powershell).](/wiki/Shell-aliases)
 
 Changes will be available only in a new shell session.
 
