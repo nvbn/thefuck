@@ -100,7 +100,7 @@ Install `The Fuck` with `pip`:
 sudo pip install thefuck
 ```
 
-**Unoffical**: Or using an OS package manager (currently supported in OSX via [brew](http://brew.sh)):
+**Unofficial**: Or using an OS package manager (currently supported in OSX via [brew](http://brew.sh)):
 
 ```bash
 brew install thefuck
