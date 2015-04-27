@@ -100,7 +100,7 @@ Install `The Fuck` with `pip`:
 sudo pip install thefuck
 ```
 
-[Or using an OS package manager (OS X, Ubuntu, Arch).](/wiki/Installation)
+[Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
 
 And add to `.bashrc` or `.zshrc` or `.bash_profile`(for OSX):
 
@@ -110,7 +110,7 @@ alias fuck='eval $(thefuck $(fc -ln -1))'
 alias FUCK='fuck'
 ```
 
-[On in your shell config (Bash, Zsh, Fish, Powershell).](/wiki/Shell-aliases)
+[On in your shell config (Bash, Zsh, Fish, Powershell).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
 
 Changes will be available only in a new shell session.
 
