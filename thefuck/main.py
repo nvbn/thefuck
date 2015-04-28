@@ -96,7 +96,7 @@ def confirm(new_command, settings):
         sys.stdin.read(1)
         return True
     except KeyboardInterrupt:
-        logs.failed('Aborted', settings)
+        logs.failed('Pulled out', settings)
         return False
 
 
