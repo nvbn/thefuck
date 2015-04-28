@@ -88,8 +88,8 @@ Reading package lists... Done
 
 ## Requirements
 
+- python (2.7+ or 3.3+)
 - pip
-- python
 - python-dev
 
 ## Installation
