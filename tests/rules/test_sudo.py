@@ -5,7 +5,8 @@ from tests.utils import Command
 
 @pytest.mark.parametrize('stderr', ['Permission denied',
                                     'permission denied',
-                                    "npm ERR! Error: EACCES, unlink"])
+                                    "npm ERR! Error: EACCES, unlink",
+                                    'requested operation requires superuser privilege'])
 def test_match(stderr):
     assert match(Command(stderr=stderr), None)
 
