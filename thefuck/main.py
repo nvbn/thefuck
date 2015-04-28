@@ -1,4 +1,4 @@
-from imp import load_source
+from importlib.machinery import SourceFileLoader
 from pathlib import Path
 from os.path import expanduser
 from subprocess import Popen, PIPE
@@ -21,7 +21,9 @@ def setup_user_dir():
 
 def load_rule(rule):
     """Imports rule module and returns it."""
-    rule_module = load_source(rule.name[:-3], str(rule))
+    loader = SourceFileLoader(rule.name[:-3], str(rule))
+    rule_module = loader.load_module(rule.name[:-3])
+    # rule_module = load_source(rule.name[:-3], str(rule))
     return types.Rule(rule.name[:-3], rule_module.match,
                       rule_module.get_new_command,
                       getattr(rule_module, 'enabled_by_default', True))
