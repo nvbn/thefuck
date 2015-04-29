@@ -10,7 +10,7 @@ def brew_unknown_cmd():
 
 
 @pytest.fixture
-def brew_unknown_cmd_instaa():
+def brew_unknown_cmd2():
     return '''Error: Unknown command: instaa'''
 
 
@@ -20,9 +20,9 @@ def test_match(brew_unknown_cmd):
         assert not match(Command('brew ' + command), None)
 
 
-def test_get_new_command(brew_unknown_cmd, brew_unknown_cmd_instaa):
-    assert get_new_command(Command('brew inst', stderr=brew_unknown_cmd), None)\
-        == 'brew list'
+def test_get_new_command(brew_unknown_cmd, brew_unknown_cmd2):
+    assert get_new_command(Command('brew inst', stderr=brew_unknown_cmd),
+                           None) == 'brew list'
 
-    assert get_new_command(Command('brew instaa', stderr=brew_unknown_cmd_instaa),
+    assert get_new_command(Command('brew instaa', stderr=brew_unknown_cmd2),
                            None) == 'brew install'
