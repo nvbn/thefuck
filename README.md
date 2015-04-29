@@ -184,6 +184,14 @@ The Fuck has a few settings parameters, they can be changed in `~/.thefuck/setti
 * `require_confirmation` &ndash; require confirmation before running new command, by default `False`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output.
+ 
+These are entered into the file as seen in the following example:
+
+````
+require_confirmation='true'
+wait_command='true'
+````
+
 
 Example of `settings.py`:
 
