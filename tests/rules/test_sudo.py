@@ -3,12 +3,14 @@ from thefuck.rules.sudo import match, get_new_command
 from tests.utils import Command
 
 
-@pytest.mark.parametrize('stderr', ['Permission denied',
-                                    'permission denied',
-                                    "npm ERR! Error: EACCES, unlink",
-                                    'requested operation requires superuser privilege'])
-def test_match(stderr):
-    assert match(Command(stderr=stderr), None)
+@pytest.mark.parametrize('stderr, stdout', [
+    ('Permission denied', ''),
+    ('permission denied', ''),
+    ("npm ERR! Error: EACCES, unlink", ''),
+    ('requested operation requires superuser privilege', ''),
+    ('', "error: [Errno 13] Permission denied: '/usr/local/lib/python2.7/dist-packages/ipaddr.py'")])
+def test_match(stderr, stdout):
+    assert match(Command(stderr=stderr, stdout=stdout), None)
 
 
 def test_not_match():

@@ -13,7 +13,8 @@ patterns = ['permission denied',
 
 def match(command, settings):
     for pattern in patterns:
-        if pattern.lower() in command.stderr.lower():
+        if pattern.lower() in command.stderr.lower()\
+                or pattern.lower() in command.stdout.lower():
             return True
     return False
 
