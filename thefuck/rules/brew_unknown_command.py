@@ -1,11 +1,77 @@
 import difflib
+import os
 import re
+import subprocess
 import thefuck.logs
 
-# This commands are based on Homebrew 0.9.5
-brew_commands = ['info', 'home', 'options', 'install', 'uninstall', 'search',
-                 'list', 'update', 'upgrade', 'pin', 'unpin', 'doctor',
-                 'create', 'edit']
+BREW_CMD_PATH = '/Library/Homebrew/cmd'
+TAP_PATH = '/Library/Taps'
+TAP_CMD_PATH = '/%s/%s/cmd'
+
+
+def _get_brew_path_prefix():
+    '''To get brew path'''
+    try:
+        return subprocess.check_output(['brew', '--prefix']).strip()
+    except:
+        return None
+
+
+def _get_brew_commands(brew_path_prefix):
+    '''To get brew default commands on local environment'''
+    brew_cmd_path = brew_path_prefix + BREW_CMD_PATH
+
+    commands = (name.replace('.rb', '') for name in os.listdir(brew_cmd_path)
+                if name.endswith('.rb'))
+
+    return commands
+
+
+def _get_brew_tap_specific_commands(brew_path_prefix):
+    '''To get tap's specific commands
+    https://github.com/Homebrew/homebrew/blob/master/Library/brew.rb#L115'''
+    commands = []
+    brew_taps_path = brew_path_prefix + TAP_PATH
+
+    for user in _get_directory_names_only(brew_taps_path):
+        taps = _get_directory_names_only(brew_taps_path + '/%s' % user)
+
+        # Brew Taps's naming rule
+        # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/brew-tap.md#naming-conventions-and-limitations
+        taps = (tap for tap in taps if tap.startswith('homebrew-'))
+        for tap in taps:
+            tap_cmd_path = brew_taps_path + TAP_CMD_PATH % (user, tap)
+
+            if os.path.isdir(tap_cmd_path):
+                commands += (name.replace('brew-', '').replace('.rb', '')
+                             for name in os.listdir(tap_cmd_path)
+                             if _is_brew_tap_cmd_naming(name))
+
+    return commands
+
+
+def _is_brew_tap_cmd_naming(name):
+    if name.startswith('brew-') and name.endswith('.rb'):
+        return True
+
+    return False
+
+
+def _get_directory_names_only(path):
+    return [d for d in os.listdir(path)
+            if os.path.isdir(os.path.join(path, d))]
+
+brew_commands = []
+brew_path_prefix = _get_brew_path_prefix()
+
+if brew_path_prefix:
+    brew_commands += _get_brew_commands(brew_path_prefix)
+    brew_commands += _get_brew_tap_specific_commands(brew_path_prefix)
+else:
+    # Failback commands for testing (Based on Homebrew 0.9.5)
+    brew_commands = ['info', 'home', 'options', 'install', 'uninstall',
+                     'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
+                     'doctor', 'create', 'edit']
 
 
 def _get_similar_commands(command):
