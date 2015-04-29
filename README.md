@@ -110,7 +110,7 @@ alias fuck='eval $(thefuck $(fc -ln -1))'
 alias FUCK='fuck'
 ```
 
-[On in your shell config (Bash, Zsh, Fish, Powershell).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
+[Or in your shell config (Bash, Zsh, Fish, Powershell).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
 
 Changes will be available only in a new shell session.
 
