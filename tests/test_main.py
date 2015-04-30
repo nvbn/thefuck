@@ -93,4 +93,4 @@ def test_confirm(capsys):
     with patch('thefuck.main.sys.stdin.read', side_effect=KeyboardInterrupt):
         assert not main.confirm('command', Mock(require_confirmation=True,
                                                 no_colors=True))
-        assert capsys.readouterr() == ('', 'command [enter/ctrl+c]Aborted\n')
+        assert capsys.readouterr() == ('', 'command [enter/ctrl+c]Pulled out\n')
