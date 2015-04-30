@@ -112,6 +112,10 @@ def is_second_run(command):
     return command.script.startswith('fuck')
 
 
+def alias():
+    print("\nalias fuck='eval $(thefuck $(fc -ln -1))'\n")
+
+
 def main():
     colorama.init()
     user_dir = setup_user_dir()
