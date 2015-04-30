@@ -110,6 +110,12 @@ alias fuck='eval $(thefuck $(fc -ln -1))'
 alias FUCK='fuck'
 ```
 
+Alternatively, you can redirect the output of `thefuck-alias`:
+
+```bash
+thefuck-alias >> ~/.bashrc
+```
+
 [Or in your shell config (Bash, Zsh, Fish, Powershell).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
 
 Changes will be available only in a new shell session.
@@ -200,7 +206,7 @@ Or via environment variables:
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`.
- 
+
 For example:
 
 ```bash
