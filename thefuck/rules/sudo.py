@@ -8,7 +8,9 @@ patterns = ['permission denied',
             'This command has to be run under the root user.',
             'This operation requires root.',
             'You need to be root to perform this command.',
-            'requested operation requires superuser privilege']
+            'requested operation requires superuser privilege',
+            'must be run as root',
+            'must be superuser']
 
 
 def match(command, settings):
