@@ -1,11 +1,12 @@
-from thefuck.types import Rule, RulesNamesList, Settings
+from thefuck.types import RulesNamesList, Settings
+from tests.utils import Rule
 
 
 def test_rules_names_list():
     assert RulesNamesList(['bash', 'lisp']) == ['bash', 'lisp']
     assert RulesNamesList(['bash', 'lisp']) == RulesNamesList(['bash', 'lisp'])
-    assert Rule('lisp', None, None, False) in RulesNamesList(['lisp'])
-    assert Rule('bash', None, None, False) not in RulesNamesList(['lisp'])
+    assert Rule('lisp') in RulesNamesList(['lisp'])
+    assert Rule('bash') not in RulesNamesList(['lisp'])
 
 
 def test_update_settings():

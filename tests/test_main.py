@@ -74,6 +74,15 @@ def test_run_rule(capsys):
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command'),
                       None, None)
         assert capsys.readouterr() == ('new-command\n', '')
+        # With side effect:
+        side_effect = Mock()
+        settings = Mock()
+        command = Mock()
+        main.run_rule(Rule(get_new_command=lambda *_: 'new-command',
+                           side_effect=side_effect),
+                      command, settings)
+        assert capsys.readouterr() == ('new-command\n', '')
+        side_effect.assert_called_once_with(command, settings)
     with patch('thefuck.main.confirm', return_value=False):
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command'),
                       None, None)
@@ -82,15 +91,25 @@ def test_run_rule(capsys):
 
 def test_confirm(capsys):
     # When confirmation not required:
-    assert main.confirm('command', Mock(require_confirmation=False))
+    assert main.confirm('command', None, Mock(require_confirmation=False))
     assert capsys.readouterr() == ('', 'command\n')
+    # With side effect and without confirmation:
+    assert main.confirm('command', Mock(), Mock(require_confirmation=False))
+    assert capsys.readouterr() == ('', 'command*\n')
     # When confirmation required and confirmed:
     with patch('thefuck.main.sys.stdin.read', return_value='\n'):
-        assert main.confirm('command', Mock(require_confirmation=True,
-                                            no_colors=True))
+        assert main.confirm(
+            'command', None, Mock(require_confirmation=True,
+                                  no_colors=True))
         assert capsys.readouterr() == ('', 'command [enter/ctrl+c]')
+        # With side effect:
+        assert main.confirm(
+            'command', Mock(), Mock(require_confirmation=True,
+                                    no_colors=True))
+        assert capsys.readouterr() == ('', 'command* [enter/ctrl+c]')
     # When confirmation required and ctrl+c:
     with patch('thefuck.main.sys.stdin.read', side_effect=KeyboardInterrupt):
-        assert not main.confirm('command', Mock(require_confirmation=True,
-                                                no_colors=True))
+        assert not main.confirm('command', None,
+                                Mock(require_confirmation=True,
+                                     no_colors=True))
         assert capsys.readouterr() == ('', 'command [enter/ctrl+c]Aborted\n')

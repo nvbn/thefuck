@@ -26,17 +26,20 @@ def rule_failed(rule, exc_info, settings):
     exception('Rule {}'.format(rule.name), exc_info, settings)
 
 
-def show_command(new_command, settings):
-    sys.stderr.write('{bold}{command}{reset}\n'.format(
+def show_command(new_command, side_effect, settings):
+    sys.stderr.write('{bold}{command}{side_effect}{reset}\n'.format(
         command=new_command,
+        side_effect='*' if side_effect else '',
         bold=color(colorama.Style.BRIGHT, settings),
         reset=color(colorama.Style.RESET_ALL, settings)))
 
 
-def confirm_command(new_command, settings):
+def confirm_command(new_command, side_effect, settings):
     sys.stderr.write(
-        '{bold}{command}{reset} [{green}enter{reset}/{red}ctrl+c{reset}]'.format(
+        '{bold}{command}{side_effect}{reset} '
+        '[{green}enter{reset}/{red}ctrl+c{reset}]'.format(
             command=new_command,
+            side_effect='*' if side_effect else '',
             bold=color(colorama.Style.BRIGHT, settings),
             green=color(colorama.Fore.GREEN, settings),
             red=color(colorama.Fore.RED, settings),

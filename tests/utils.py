@@ -7,5 +7,7 @@ def Command(script='', stdout='', stderr=''):
 
 def Rule(name='', match=lambda *_: True,
          get_new_command=lambda *_: '',
-         enabled_by_default=True):
-    return types.Rule(name, match, get_new_command, enabled_by_default)
+         enabled_by_default=True,
+         side_effect=None):
+    return types.Rule(name, match, get_new_command,
+                      enabled_by_default, side_effect)

@@ -24,7 +24,8 @@ def load_rule(rule):
     rule_module = load_source(rule.name[:-3], str(rule))
     return types.Rule(rule.name[:-3], rule_module.match,
                       rule_module.get_new_command,
-                      getattr(rule_module, 'enabled_by_default', True))
+                      getattr(rule_module, 'enabled_by_default', True),
+                      getattr(rule_module, 'side_effect', None))
 
 
 def get_rules(user_dir, settings):
@@ -85,13 +86,13 @@ def get_matched_rule(command, rules, settings):
             logs.rule_failed(rule, sys.exc_info(), settings)
 
 
-def confirm(new_command, settings):
+def confirm(new_command, side_effect, settings):
     """Returns `True` when running of new command confirmed."""
     if not settings.require_confirmation:
-        logs.show_command(new_command, settings)
+        logs.show_command(new_command, side_effect, settings)
         return True
 
-    logs.confirm_command(new_command, settings)
+    logs.confirm_command(new_command, side_effect, settings)
     try:
         sys.stdin.read(1)
         return True
@@ -103,7 +104,9 @@ def confirm(new_command, settings):
 def run_rule(rule, command, settings):
     """Runs command from rule for passed command."""
     new_command = rule.get_new_command(command, settings)
-    if confirm(new_command, settings):
+    if confirm(new_command, rule.side_effect, settings):
+        if rule.side_effect:
+            rule.side_effect(command, settings)
         print(new_command)
 
 
