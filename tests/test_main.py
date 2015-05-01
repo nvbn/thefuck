@@ -46,15 +46,30 @@ def test_get_command():
                   return_value=True):
         Popen.return_value.stdout.read.return_value = b'stdout'
         Popen.return_value.stderr.read.return_value = b'stderr'
-        assert main.get_command(Mock(), ['thefuck', 'apt-get',
-                                         'search', 'vim']) \
+        assert main.get_command(Mock(), Mock(),
+            ['thefuck', 'apt-get', 'search', 'vim']) \
                == Command('apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,
                                       stdout=PIPE,
                                       stderr=PIPE,
                                       env={'LANG': 'C'})
-        assert main.get_command(Mock(), ['']) is None
+        assert main.get_command(Mock(), Mock(), ['']) is None
+        # When command is `fuck`:
+        assert main.get_command(
+            Mock(),
+            Mock(last_script='ls', last_fixed_script='ls -la'),
+            ['thefuck', 'fuck']).script == 'ls -la'
+        # When command equals to last command:
+        assert main.get_command(
+            Mock(),
+            Mock(last_script='ls', last_fixed_script='ls -la'),
+            ['thefuck', 'ls']).script == 'ls -la'
+        # When last command is `fuck` and no last fixed script:
+        assert main.get_command(
+            Mock(),
+            Mock(last_script='ls', last_fixed_script=''),
+            ['thefuck', 'ls']).script == 'ls'
 
 
 def test_get_matched_rule(capsys):
@@ -72,20 +87,24 @@ def test_get_matched_rule(capsys):
 def test_run_rule(capsys):
     with patch('thefuck.main.confirm', return_value=True):
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command'),
-                      None, None)
+                      Command(), Mock(), None)
         assert capsys.readouterr() == ('new-command\n', '')
         # With side effect:
         side_effect = Mock()
         settings = Mock()
-        command = Mock()
+        command = Mock(script='ls')
+        history = Mock()
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command',
                            side_effect=side_effect),
-                      command, settings)
+                      command, history, settings)
         assert capsys.readouterr() == ('new-command\n', '')
         side_effect.assert_called_once_with(command, settings)
+        # Ensure that history updated:
+        history.update.assert_called_once_with(last_script='ls',
+                                               last_fixed_script='new-command')
     with patch('thefuck.main.confirm', return_value=False):
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command'),
-                      None, None)
+                      Command(), Mock(), None)
         assert capsys.readouterr() == ('', '')
 
 

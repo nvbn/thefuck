@@ -6,6 +6,7 @@ import os
 import sys
 from psutil import Process, TimeoutExpired
 import colorama
+from .history import History
 from . import logs, conf, types
 
 
@@ -59,16 +60,21 @@ def wait_output(settings, popen):
         return False
 
 
-def get_command(settings, args):
+def get_command(settings, history, args):
     """Creates command from `args` and executes it."""
     if sys.version_info[0] < 3:
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
     else:
         script = ' '.join(args[1:])
 
+    if script == 'fuck' or script == history.last_script:
+        script = history.last_fixed_script or history.last_script
+
     if not script:
         return
 
+    history.update(last_script=script,
+                   last_fixed_script=None)
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
@@ -101,18 +107,15 @@ def confirm(new_command, side_effect, settings):
         return False
 
 
-def run_rule(rule, command, settings):
+def run_rule(rule, command, history, settings):
     """Runs command from rule for passed command."""
     new_command = rule.get_new_command(command, settings)
     if confirm(new_command, rule.side_effect, settings):
         if rule.side_effect:
             rule.side_effect(command, settings)
+        history.update(last_script=command.script,
+                       last_fixed_script=new_command)
         print(new_command)
-
-
-def is_second_run(command):
-    """Is it the second run of `fuck`?"""
-    return command.script.startswith('fuck')
 
 
 def alias():
@@ -123,17 +126,14 @@ def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
+    history = History()
 
-    command = get_command(settings, sys.argv)
+    command = get_command(settings, history, sys.argv)
     if command:
-        if is_second_run(command):
-            logs.failed("Can't fuck twice", settings)
-            return
-
         rules = get_rules(user_dir, settings)
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
-            run_rule(matched_rule, command, settings)
+            run_rule(matched_rule, command, history, settings)
             return
 
     logs.failed('No fuck given', settings)
