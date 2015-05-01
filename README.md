@@ -149,7 +149,10 @@ using matched rule and run it. Rules enabled by default:
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
-* `switch_layout` &ndash; switches command from your local layout to en.
+* `switch_layout` &ndash; switches command from your local layout to en;
+* `apt_get` &ndash; installs app from apt if it not installed;
+* `brew_install` &ndash; fixes formula name for `brew install`;
+* `composer_not_command` &ndash; fixes composer command name.
 
 Bundled, but not enabled by default:
 
