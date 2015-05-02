@@ -78,12 +78,6 @@ class TestGetCommand(object):
 
 
 class TestGetMatchedRule(object):
-    @pytest.fixture
-    def rules(self):
-        return [Rule('', lambda x, _: x.script == 'cd ..'),
-                Rule('', lambda *_: False),
-                Rule('rule', Mock(side_effect=OSError('Denied')))]
-
     def test_no_match(self):
         assert main.get_matched_rule(
             Command('ls'), [Rule('', lambda *_: False)],
