@@ -67,14 +67,14 @@ def get_command(settings, history, args):
     else:
         script = ' '.join(args[1:])
 
-    if script == 'fuck' or script == history.last_script:
-        script = history.last_fixed_script or history.last_script
+    if script == 'fuck' or script == history.last_command:
+        script = history.last_fixed_command or history.last_command
 
     if not script:
         return
 
-    history.update(last_script=script,
-                   last_fixed_script=None)
+    history.update(last_command=script,
+                   last_fixed_command=None)
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
@@ -113,8 +113,8 @@ def run_rule(rule, command, history, settings):
     if confirm(new_command, rule.side_effect, settings):
         if rule.side_effect:
             rule.side_effect(command, settings)
-        history.update(last_script=command.script,
-                       last_fixed_script=new_command)
+        history.update(last_command=command.script,
+                       last_fixed_command=new_command)
         print(new_command)
 
 

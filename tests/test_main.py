@@ -62,13 +62,13 @@ class TestGetCommand(object):
 
     @pytest.mark.parametrize('history, args, result', [
         (Mock(), [''], None),
-        (Mock(last_script='ls', last_fixed_script='ls -la'),
+        (Mock(last_command='ls', last_fixed_command='ls -la'),
          ['thefuck', 'fuck'], 'ls -la'),
-        (Mock(last_script='ls', last_fixed_script='ls -la'),
+        (Mock(last_command='ls', last_fixed_command='ls -la'),
          ['thefuck', 'ls'], 'ls -la'),
-        (Mock(last_script='ls', last_fixed_script=''),
+        (Mock(last_command='ls', last_fixed_command=''),
          ['thefuck', 'ls'], 'ls'),
-        (Mock(last_script='ls', last_fixed_script=''),
+        (Mock(last_command='ls', last_fixed_command=''),
          ['thefuck', 'fuck'], 'ls')])
     def test_get_command_script(self, history, args, result):
         if result:
@@ -127,8 +127,8 @@ class TestRunRule(object):
         history = Mock()
         main.run_rule(Rule(get_new_command=lambda *_: 'ls -lah'),
                       Command('ls'), history, None)
-        history.update.assert_called_once_with(last_script='ls',
-                                               last_fixed_script='ls -lah')
+        history.update.assert_called_once_with(last_command='ls',
+                                               last_fixed_command='ls -lah')
 
     def test_when_not_comfirmed(self, capsys, confirm):
         confirm.return_value = False
