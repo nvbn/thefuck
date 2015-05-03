@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '1.33'
+VERSION = '1.34'
 
 
 setup(name='thefuck',
