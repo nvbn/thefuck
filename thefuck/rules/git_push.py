@@ -1,7 +1,7 @@
 def match(command, settings):
-    return ('git' in command.script
-            and 'push' in command.script
-            and 'set-upstream' in command.stderr)
+    is_git = ('git' in command.script and 'push' in command.script) or \
+              'gp' in command.script
+    return (is_git and 'set-upstream' in command.stderr)
 
 
 def get_new_command(command, settings):
