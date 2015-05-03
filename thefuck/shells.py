@@ -31,6 +31,9 @@ class Generic(object):
         """Prepares command for running in shell."""
         return command_script
 
+    def app_alias(self):
+        return "\nalias fuck='eval $(thefuck $(fc -ln -1))'\n"
+
 
 class Bash(Generic):
     def _parse_alias(self, alias):
@@ -78,3 +81,7 @@ def from_shell(command):
 
 def to_shell(command):
     return _get_shell().to_shell(command)
+
+
+def app_alias():
+    return _get_shell().app_alias()

@@ -120,7 +120,7 @@ def run_rule(rule, command, history, settings):
 
 
 def alias():
-    print("\nalias fuck='eval $(thefuck $(fc -ln -1))'\n")
+    print(shells.app_alias())
 
 
 def main():
