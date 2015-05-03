@@ -7,7 +7,7 @@ import sys
 from psutil import Process, TimeoutExpired
 import colorama
 from .history import History
-from . import logs, conf, types
+from . import logs, conf, types, shells
 
 
 def setup_user_dir():
@@ -73,6 +73,7 @@ def get_command(settings, history, args):
     if not script:
         return
 
+    script = shells.from_shell(script)
     history.update(last_command=script,
                    last_fixed_command=None)
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
@@ -109,7 +110,7 @@ def confirm(new_command, side_effect, settings):
 
 def run_rule(rule, command, history, settings):
     """Runs command from rule for passed command."""
-    new_command = rule.get_new_command(command, settings)
+    new_command = shells.to_shell(rule.get_new_command(command, settings))
     if confirm(new_command, rule.side_effect, settings):
         if rule.side_effect:
             rule.side_effect(command, settings)

@@ -50,6 +50,11 @@ class TestGetCommand(object):
         monkeypatch.setattr('thefuck.main.os.environ', {})
         monkeypatch.setattr('thefuck.main.wait_output', lambda *_: True)
 
+    @pytest.fixture(autouse=True)
+    def generic_shell(self, monkeypatch):
+        monkeypatch.setattr('thefuck.shells.from_shell', lambda x: x)
+        monkeypatch.setattr('thefuck.shells.to_shell', lambda x: x)
+
     def test_get_command_calls(self, Popen):
         assert main.get_command(Mock(), Mock(),
             ['thefuck', 'apt-get', 'search', 'vim']) \
