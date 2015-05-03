@@ -2,7 +2,7 @@ import difflib
 import os
 import re
 import subprocess
-import thefuck.logs
+
 
 BREW_CMD_PATH = '/Library/Homebrew/cmd'
 TAP_PATH = '/Library/Taps'
@@ -10,7 +10,7 @@ TAP_CMD_PATH = '/%s/%s/cmd'
 
 
 def _get_brew_path_prefix():
-    '''To get brew path'''
+    """To get brew path"""
     try:
         return subprocess.check_output(['brew', '--prefix']).strip()
     except:
@@ -18,18 +18,18 @@ def _get_brew_path_prefix():
 
 
 def _get_brew_commands(brew_path_prefix):
-    '''To get brew default commands on local environment'''
+    """To get brew default commands on local environment"""
     brew_cmd_path = brew_path_prefix + BREW_CMD_PATH
 
-    commands = (name.replace('.rb', '') for name in os.listdir(brew_cmd_path)
-                if name.endswith('.rb'))
+    commands = [name.replace('.rb', '') for name in os.listdir(brew_cmd_path)
+                if name.endswith('.rb')]
 
     return commands
 
 
 def _get_brew_tap_specific_commands(brew_path_prefix):
-    '''To get tap's specific commands
-    https://github.com/Homebrew/homebrew/blob/master/Library/brew.rb#L115'''
+    """To get tap's specific commands
+    https://github.com/Homebrew/homebrew/blob/master/Library/brew.rb#L115"""
     commands = []
     brew_taps_path = brew_path_prefix + TAP_PATH
 
@@ -61,17 +61,20 @@ def _get_directory_names_only(path):
     return [d for d in os.listdir(path)
             if os.path.isdir(os.path.join(path, d))]
 
-brew_commands = []
+
 brew_path_prefix = _get_brew_path_prefix()
 
+# Failback commands for testing (Based on Homebrew 0.9.5)
+brew_commands = ['info', 'home', 'options', 'install', 'uninstall',
+                 'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
+                 'doctor', 'create', 'edit']
+
 if brew_path_prefix:
-    brew_commands += _get_brew_commands(brew_path_prefix)
-    brew_commands += _get_brew_tap_specific_commands(brew_path_prefix)
-else:
-    # Failback commands for testing (Based on Homebrew 0.9.5)
-    brew_commands = ['info', 'home', 'options', 'install', 'uninstall',
-                     'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
-                     'doctor', 'create', 'edit']
+    try:
+        brew_commands = _get_brew_commands(brew_path_prefix) \
+                        + _get_brew_tap_specific_commands(brew_path_prefix)
+    except OSError:
+        pass
 
 
 def _get_similar_commands(command):
