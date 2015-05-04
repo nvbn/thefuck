@@ -6,7 +6,7 @@ import os
 import sys
 from psutil import Process, TimeoutExpired
 import colorama
-from .history import History
+import six
 from . import logs, conf, types, shells
 
 
@@ -60,22 +60,17 @@ def wait_output(settings, popen):
         return False
 
 
-def get_command(settings, history, args):
+def get_command(settings, args):
     """Creates command from `args` and executes it."""
-    if sys.version_info[0] < 3:
+    if six.PY2:
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
     else:
         script = ' '.join(args[1:])
-
-    if script == 'fuck' or script == history.last_command:
-        script = history.last_fixed_command or history.last_command
 
     if not script:
         return
 
     script = shells.from_shell(script)
-    history.update(last_command=script,
-                   last_fixed_command=None)
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
@@ -108,14 +103,13 @@ def confirm(new_command, side_effect, settings):
         return False
 
 
-def run_rule(rule, command, history, settings):
+def run_rule(rule, command, settings):
     """Runs command from rule for passed command."""
     new_command = shells.to_shell(rule.get_new_command(command, settings))
     if confirm(new_command, rule.side_effect, settings):
         if rule.side_effect:
             rule.side_effect(command, settings)
-        history.update(last_command=command.script,
-                       last_fixed_command=new_command)
+        shells.put_to_history(new_command)
         print(new_command)
 
 
@@ -127,14 +121,13 @@ def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
-    history = History()
 
-    command = get_command(settings, history, sys.argv)
+    command = get_command(settings, sys.argv)
     if command:
         rules = get_rules(user_dir, settings)
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
-            run_rule(matched_rule, command, history, settings)
+            run_rule(matched_rule, command, settings)
             return
 
     logs.failed('No fuck given', settings)

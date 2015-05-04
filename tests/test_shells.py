@@ -1,6 +1,20 @@
 import pytest
-from mock import Mock
+from mock import Mock, MagicMock
 from thefuck import shells
+
+
+@pytest.fixture
+def builtins_open(monkeypatch):
+    mock = MagicMock()
+    monkeypatch.setattr('six.moves.builtins.open', mock)
+    return mock
+
+
+@pytest.fixture
+def isfile(monkeypatch):
+    mock = Mock(return_value=True)
+    monkeypatch.setattr('os.path.isfile', mock)
+    return mock
 
 
 class TestGeneric(object):
@@ -8,9 +22,14 @@ class TestGeneric(object):
         assert shells.Generic().from_shell('pwd') == 'pwd'
 
     def test_to_shell(self):
-        assert shells.Bash().to_shell('pwd') == 'pwd'
+        assert shells.Generic().to_shell('pwd') == 'pwd'
+
+    def test_put_to_history(self, builtins_open):
+        assert shells.Generic().put_to_history('ls') is None
+        assert builtins_open.call_count == 0
 
 
+@pytest.mark.usefixtures('isfile')
 class TestBash(object):
     @pytest.fixture(autouse=True)
     def Popen(self, monkeypatch):
@@ -31,7 +50,13 @@ class TestBash(object):
     def test_to_shell(self):
         assert shells.Bash().to_shell('pwd') == 'pwd'
 
+    def test_put_to_history(self, builtins_open):
+        shells.Bash().put_to_history('ls')
+        builtins_open.return_value.__enter__.return_value.\
+            write.assert_called_once_with('ls\n')
 
+
+@pytest.mark.usefixtures('isfile')
 class TestZsh(object):
     @pytest.fixture(autouse=True)
     def Popen(self, monkeypatch):
@@ -51,3 +76,10 @@ class TestZsh(object):
 
     def test_to_shell(self):
         assert shells.Zsh().to_shell('pwd') == 'pwd'
+
+    def test_put_to_history(self, builtins_open, monkeypatch):
+        monkeypatch.setattr('thefuck.shells.time',
+                            lambda: 1430707243.3517463)
+        shells.Zsh().put_to_history('ls')
+        builtins_open.return_value.__enter__.return_value. \
+            write.assert_called_once_with(': 1430707243:0;ls\n')

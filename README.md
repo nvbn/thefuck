@@ -102,12 +102,18 @@ sudo pip install thefuck
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
 
-And add to `.bashrc` or `.zshrc` or `.bash_profile`(for OSX):
+And add to `.bashrc` or `.bash_profile`(for OSX):
 
 ```bash
-alias fuck='eval $(thefuck $(fc -ln -1))'
+alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
 # You can use whatever you want as an alias, like for Mondays:
 alias FUCK='fuck'
+```
+
+Or in your `.zshrc`:
+
+```bash
+alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 ```
 
 Alternatively, you can redirect the output of `thefuck-alias`:

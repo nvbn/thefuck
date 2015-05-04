@@ -1,9 +1,11 @@
 """Module with shell specific actions, each shell class should
-implement `from_shell` and `to_shell` methods.
+implement `from_shell`, `to_shell`, `app_alias` and `put_to_history`
+methods.
 
 """
 from collections import defaultdict
 from subprocess import Popen, PIPE
+from time import time
 import os
 from psutil import Process
 
@@ -34,6 +36,19 @@ class Generic(object):
     def app_alias(self):
         return "\nalias fuck='eval $(thefuck $(fc -ln -1))'\n"
 
+    def _get_history_file_name(self):
+        return ''
+
+    def _get_history_line(self, command_script):
+        return ''
+
+    def put_to_history(self, command_script):
+        """Puts command script to shell history."""
+        history_file_name = self._get_history_file_name()
+        if os.path.isfile(history_file_name):
+            with open(history_file_name, 'a') as history:
+                history.write(self._get_history_line(command_script))
+
 
 class Bash(Generic):
     def _parse_alias(self, alias):
@@ -49,6 +64,13 @@ class Bash(Generic):
             for alias in proc.stdout.read().decode('utf-8').split('\n')
             if alias)
 
+    def _get_history_file_name(self):
+        return os.environ.get("HISTFILE",
+                              os.path.expanduser('~/.bash_history'))
+
+    def _get_history_line(self, command_script):
+        return u'{}\n'.format(command_script)
+
 
 class Zsh(Generic):
     def _parse_alias(self, alias):
@@ -63,6 +85,13 @@ class Zsh(Generic):
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')
             if alias)
+
+    def _get_history_file_name(self):
+        return os.environ.get("HISTFILE",
+                              os.path.expanduser('~/.zsh_history'))
+
+    def _get_history_line(self, command_script):
+        return u': {}:0;{}\n'.format(int(time()), command_script)
 
 
 shells = defaultdict(lambda: Generic(), {
@@ -85,3 +114,7 @@ def to_shell(command):
 
 def app_alias():
     return _get_shell().app_alias()
+
+
+def put_to_history(command):
+    return _get_shell().put_to_history(command)

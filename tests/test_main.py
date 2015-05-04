@@ -56,7 +56,7 @@ class TestGetCommand(object):
         monkeypatch.setattr('thefuck.shells.to_shell', lambda x: x)
 
     def test_get_command_calls(self, Popen):
-        assert main.get_command(Mock(), Mock(),
+        assert main.get_command(Mock(),
             ['thefuck', 'apt-get', 'search', 'vim']) \
                == Command('apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
@@ -64,22 +64,14 @@ class TestGetCommand(object):
                                       stdout=PIPE,
                                       stderr=PIPE,
                                       env={'LANG': 'C'})
-
-    @pytest.mark.parametrize('history, args, result', [
-        (Mock(), [''], None),
-        (Mock(last_command='ls', last_fixed_command='ls -la'),
-         ['thefuck', 'fuck'], 'ls -la'),
-        (Mock(last_command='ls', last_fixed_command='ls -la'),
-         ['thefuck', 'ls'], 'ls -la'),
-        (Mock(last_command='ls', last_fixed_command=''),
-         ['thefuck', 'ls'], 'ls'),
-        (Mock(last_command='ls', last_fixed_command=''),
-         ['thefuck', 'fuck'], 'ls')])
-    def test_get_command_script(self, history, args, result):
+    @pytest.mark.parametrize('args, result', [
+        (['thefuck', 'ls', '-la'], 'ls -la'),
+        (['thefuck', 'ls'], 'ls')])
+    def test_get_command_script(self, args, result):
         if result:
-            assert main.get_command(Mock(), history, args).script == result
+            assert main.get_command(Mock(), args).script == result
         else:
-            assert main.get_command(Mock(), history, args) is None
+            assert main.get_command(Mock(), args) is None
 
 
 class TestGetMatchedRule(object):
@@ -109,7 +101,7 @@ class TestRunRule(object):
 
     def test_run_rule(self, capsys):
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command'),
-                      Command(), Mock(), None)
+                      Command(), None)
         assert capsys.readouterr() == ('new-command\n', '')
 
     def test_run_rule_with_side_effect(self, capsys):
@@ -118,21 +110,14 @@ class TestRunRule(object):
         command = Command()
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command',
                            side_effect=side_effect),
-                      command, Mock(), settings)
+                      command, settings)
         assert capsys.readouterr() == ('new-command\n', '')
         side_effect.assert_called_once_with(command, settings)
-
-    def test_hisotry_updated(self):
-        history = Mock()
-        main.run_rule(Rule(get_new_command=lambda *_: 'ls -lah'),
-                      Command('ls'), history, None)
-        history.update.assert_called_once_with(last_command='ls',
-                                               last_fixed_command='ls -lah')
 
     def test_when_not_comfirmed(self, capsys, confirm):
         confirm.return_value = False
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command'),
-                      Command(), Mock(), None)
+                      Command(), None)
         assert capsys.readouterr() == ('', '')
 
 
