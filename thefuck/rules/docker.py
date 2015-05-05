@@ -1,23 +1,14 @@
-try:
-    import CommandNotFound
-except ImportError:
-    enabled_by_default = False
+patterns = ['FATA[0000]',
+            ]
 
 
 def match(command, settings):
-    if 'not found' in command.stderr:
-        try:
-            c = CommandNotFound.CommandNotFound()
-            pkgs = c.getPackages(command.script.split(" ")[0])
-            name, _ = pkgs[0]
+    for pattern in patterns:
+        if pattern.lower() in command.stderr.lower()\
+                or pattern.lower() in command.stdout.lower():
             return True
-        except IndexError:
-            # IndexError is thrown when no matching package is found
-            return False
+    return False
 
 
 def get_new_command(command, settings):
-    c = CommandNotFound.CommandNotFound()
-    pkgs = c.getPackages(command.script.split(" ")[0])
-    name, _ = pkgs[0]
-    return "sudo docker {} && {}".format(name, command.script)
+    return u'sudo {}'.format(command.script)
