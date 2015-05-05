@@ -1,5 +1,4 @@
-patterns = ['FATA[0000]',
-            ]
+patterns = ['docker.sock']
 
 
 def match(command, settings):
