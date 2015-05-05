@@ -151,6 +151,7 @@ using matched rule and run it. Rules enabled by default:
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
+* `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
 * `sl_ls` &ndash; changes `sl` to `ls`;
