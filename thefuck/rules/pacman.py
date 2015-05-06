@@ -1,8 +1,17 @@
+import six
 import subprocess
+
+# FileNotFoundError is only available since Python 3.3
+if six.PY2:
+    FileNotFoundError = OSError
 
 
 def __command_available(command):
     try:
+        # subprocess.DEVNULL is only available since Python 3.3
+        if six.PY2:
+            import os
+            subprocess.DEVNULL = open(os.devnull, 'w')
         subprocess.check_output([command], stderr=subprocess.DEVNULL)
         return True
     except subprocess.CalledProcessError:
@@ -10,16 +19,28 @@ def __command_available(command):
         return True
     except FileNotFoundError:
         return False
+    finally:
+        # The open file has to be closed
+        if six.PY2:
+            subprocess.DEVNULL.close()
 
 
 def __get_pkgfile(command):
     try:
+        # subprocess.DEVNULL is only available since Python 3.3
+        if six.PY2:
+            import os
+            subprocess.DEVNULL = open(os.devnull, 'w')
         return subprocess.check_output(
             ['pkgfile', '-b', '-v', command.script.split(" ")[0]],
             universal_newlines=True, stderr=subprocess.DEVNULL
         ).split()
     except subprocess.CalledProcessError:
         return None
+    finally:
+        # The open file has to be closed
+        if six.PY2:
+            subprocess.DEVNULL.close()
 
 
 def match(command, settings):
