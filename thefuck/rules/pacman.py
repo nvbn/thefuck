@@ -1,14 +1,15 @@
 import subprocess
+from thefuck.utils import DEVNULL
 
 
 def __command_available(command):
     try:
-        subprocess.check_output([command], stderr=subprocess.DEVNULL)
+        subprocess.check_output([command], stderr=DEVNULL)
         return True
     except subprocess.CalledProcessError:
         # command exists but is not happy to be called without any argument
         return True
-    except FileNotFoundError:
+    except OSError:
         return False
 
 

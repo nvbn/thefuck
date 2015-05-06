@@ -8,9 +8,7 @@ from subprocess import Popen, PIPE
 from time import time
 import os
 from psutil import Process
-
-
-FNULL = open(os.devnull, 'w')
+from .utils import DEVNULL
 
 
 class Generic(object):
@@ -58,7 +56,7 @@ class Bash(Generic):
         return name, value
 
     def _get_aliases(self):
-        proc = Popen('bash -ic alias', stdout=PIPE, stderr=FNULL, shell=True)
+        proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
         return dict(
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')
@@ -80,7 +78,7 @@ class Zsh(Generic):
         return name, value
 
     def _get_aliases(self):
-        proc = Popen('zsh -ic alias', stdout=PIPE, stderr=FNULL, shell=True)
+        proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
         return dict(
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')

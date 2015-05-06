@@ -4,6 +4,9 @@ import six
 from .types import Command
 
 
+DEVNULL = open(os.devnull, 'w')
+
+
 def which(program):
     """Returns `program` path or `None`."""
 
