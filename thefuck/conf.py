@@ -22,6 +22,7 @@ class _DefaultRulesNames(types.RulesNamesList):
 
 
 DEFAULT_RULES = _DefaultRulesNames([])
+DEFAULT_PRIORITY = 1000
 
 
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,

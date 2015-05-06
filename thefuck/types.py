@@ -4,7 +4,8 @@ from collections import namedtuple
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
 
 Rule = namedtuple('Rule', ('name', 'match', 'get_new_command',
-                           'enabled_by_default', 'side_effect'))
+                           'enabled_by_default', 'side_effect',
+                           'priority'))
 
 
 class RulesNamesList(list):

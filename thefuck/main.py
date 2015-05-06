@@ -26,7 +26,17 @@ def load_rule(rule):
     return types.Rule(rule.name[:-3], rule_module.match,
                       rule_module.get_new_command,
                       getattr(rule_module, 'enabled_by_default', True),
-                      getattr(rule_module, 'side_effect', None))
+                      getattr(rule_module, 'side_effect', None),
+                      getattr(rule_module, 'priority', conf.DEFAULT_PRIORITY))
+
+
+def _get_loaded_rules(rules, settings):
+    """Yields all available rules."""
+    for rule in rules:
+        if rule.name != '__init__.py':
+            loaded_rule = load_rule(rule)
+            if loaded_rule in settings.rules:
+                yield loaded_rule
 
 
 def get_rules(user_dir, settings):
@@ -35,11 +45,8 @@ def get_rules(user_dir, settings):
         .joinpath('rules') \
         .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
-    for rule in sorted(list(bundled)) + list(user):
-        if rule.name != '__init__.py':
-            loaded_rule = load_rule(rule)
-            if loaded_rule in settings.rules:
-                yield loaded_rule
+    rules = _get_loaded_rules(sorted(bundled) + sorted(user), settings)
+    return sorted(rules, key=lambda rule: rule.priority)
 
 
 def wait_output(settings, popen):

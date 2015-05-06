@@ -12,28 +12,43 @@ def test_load_rule(monkeypatch):
     load_source = Mock()
     load_source.return_value = Mock(match=match,
                                     get_new_command=get_new_command,
-                                    enabled_by_default=True)
+                                    enabled_by_default=True,
+                                    priority=900)
     monkeypatch.setattr('thefuck.main.load_source', load_source)
     assert main.load_rule(Path('/rules/bash.py')) \
-           == Rule('bash', match, get_new_command)
+           == Rule('bash', match, get_new_command, priority=900)
     load_source.assert_called_once_with('bash', '/rules/bash.py')
 
 
-@pytest.mark.parametrize('conf_rules, rules', [
-    (conf.DEFAULT_RULES, [Rule('bash', 'bash', 'bash'),
-                          Rule('lisp', 'lisp', 'lisp'),
-                          Rule('bash', 'bash', 'bash'),
-                          Rule('lisp', 'lisp', 'lisp')]),
-    (types.RulesNamesList(['bash']), [Rule('bash', 'bash', 'bash'),
-                                      Rule('bash', 'bash', 'bash')])])
-def test_get_rules(monkeypatch, conf_rules, rules):
-    monkeypatch.setattr(
-        'thefuck.main.Path.glob',
-        lambda *_: [PosixPath('bash.py'), PosixPath('lisp.py')])
-    monkeypatch.setattr('thefuck.main.load_source',
-                        lambda x, _: Mock(match=x, get_new_command=x,
-                                          enabled_by_default=True))
-    assert list(main.get_rules(Path('~'), Mock(rules=conf_rules))) == rules
+class TestGetRules(object):
+    @pytest.fixture(autouse=True)
+    def glob(self, monkeypatch):
+        mock = Mock(return_value=[])
+        monkeypatch.setattr('thefuck.main.Path.glob', mock)
+        return mock
+
+    def _compare_names(self, rules, names):
+        return [r.name for r in rules] == names
+
+    @pytest.mark.parametrize('conf_rules, rules', [
+        (conf.DEFAULT_RULES, ['bash', 'lisp', 'bash', 'lisp']),
+        (types.RulesNamesList(['bash']), ['bash', 'bash'])])
+    def test_get(self, monkeypatch, glob, conf_rules, rules):
+        glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
+        monkeypatch.setattr('thefuck.main.load_source',
+                            lambda x, _: Rule(x))
+        assert self._compare_names(
+            main.get_rules(Path('~'), Mock(rules=conf_rules)), rules)
+
+    @pytest.mark.parametrize('unordered, ordered', [
+        ([Rule('bash', priority=100), Rule('python', priority=5)],
+         ['python', 'bash']),
+        ([Rule('lisp', priority=9999), Rule('c', priority=conf.DEFAULT_PRIORITY)],
+         ['c', 'lisp'])])
+    def test_ordered_by_priority(self, monkeypatch, unordered, ordered):
+        monkeypatch.setattr('thefuck.main._get_loaded_rules',
+                            lambda *_: unordered)
+        assert self._compare_names(main.get_rules(Path('~'), Mock()), ordered)
 
 
 class TestGetCommand(object):
@@ -64,6 +79,7 @@ class TestGetCommand(object):
                                       stdout=PIPE,
                                       stderr=PIPE,
                                       env={'LANG': 'C'})
+
     @pytest.mark.parametrize('args, result', [
         (['thefuck', 'ls', '-la'], 'ls -la'),
         (['thefuck', 'ls'], 'ls')])
