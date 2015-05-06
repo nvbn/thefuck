@@ -1,9 +1,9 @@
 from mock import patch, Mock
-from thefuck.rules.no_command import match, get_new_command
+from thefuck.rules.z_no_command import match, get_new_command
 
 
 def test_match():
-    with patch('thefuck.rules.no_command._get_all_bins',
+    with patch('thefuck.rules.z_no_command._get_all_bins',
                return_value=['vim', 'apt-get']):
         assert match(Mock(stderr='vom: not found', script='vom file.py'), None)
         assert not match(Mock(stderr='qweqwe: not found', script='qweqwe'), None)
@@ -11,7 +11,7 @@ def test_match():
 
 
 def test_get_new_command():
-    with patch('thefuck.rules.no_command._get_all_bins',
+    with patch('thefuck.rules.z_no_command._get_all_bins',
                return_value=['vim', 'apt-get']):
         assert get_new_command(
             Mock(stderr='vom: not found',
