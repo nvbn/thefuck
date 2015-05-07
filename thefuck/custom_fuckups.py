@@ -12,11 +12,7 @@
 
 # rule is in rules/myfuckups.py
 
-# TODO default fuckups (could replace some existing rules with these, mostly typo rules), share fuckups
-# TODO add command that calls add_fuckup() - something like -$ fuck --ifuckedup # not sure how to do this with all these aliases...
-# TODO add suggestion to add a fuckup when 'no fucks given'
-# TODO add command that calls remove_fuckup() - something like -$ fuck --remove 'cd..' # same problem as add_fuckup
-
+# TODO default fuckups (could replace some existing rules with these, mostly typo rules) in ~/.thefuck/my_fuckups
 
 def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuckups
   
@@ -41,6 +37,9 @@ def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuc
   return fuckups
 
 def add_fuckup(fucked, fixed)
+
+  print 'Adding fucked: ' + fucked + ' as fixed: ' + fixed
+
   FILENAME = '~/.thefuck/my_fuckups'
   FILE = open(FILENAME, 'w')
 
@@ -52,6 +51,8 @@ def add_fuckup(fucked, fixed)
   return
 
 def remove_fuckup(fuckup)
+
+  print 'Removing fucked: ' + fucked + ' as fixed: ' + fixed
 
   FILENAME = '~/.thefuck/my_fuckups'
   FILE = open(FILENAME, 'r')
