@@ -1,5 +1,5 @@
 
-import custom_fuckups
+import thefuck.custom_fuckups
 
 fuckups = custom_fuckups.get_fuckups()
 

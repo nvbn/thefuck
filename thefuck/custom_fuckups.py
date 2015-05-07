@@ -1,7 +1,7 @@
 
 # handle reading and writing local list of fuckups
 
-# fuckups are stored in ~/.thefuck/my_fuckups
+# fuckups are stored locally in ~/.thefuck/my_fuckups
 
 # file format:
 #   fucked up command
@@ -12,11 +12,9 @@
 
 # rule is in rules/myfuckups.py
 
-# TODO default fuckups (could replace some existing rules with these, mostly typo rules) in ~/.thefuck/my_fuckups
-
-def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuckups
+def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/.my_fuckups
   
-  FILENAME = '~/.thefuck/my_fuckups'
+  FILENAME = '~/.thefuck/.my_fuckups'
   FILE = open(FILENAME, 'r')
 
   IS_FUCKUP = True
@@ -40,7 +38,7 @@ def add_fuckup(fucked, fixed):
 
   print ('Adding fucked: ' + fucked + ' as fixed: ' + fixed)
 
-  FILENAME = '~/.thefuck/my_fuckups'
+  FILENAME = '~/.thefuck/.my_fuckups'
   FILE = open(FILENAME, 'w')
 
   FILE.write(fucked + '\n')
@@ -54,7 +52,7 @@ def remove_fuckup(fuckup):
 
   print ('Removing fucked: ' + fucked + ' as fixed: ' + fixed)
 
-  FILENAME = '~/.thefuck/my_fuckups'
+  FILENAME = '~/.thefuck/.my_fuckups'
   FILE = open(FILENAME, 'r')
 
   fuckup_cmd = ''
