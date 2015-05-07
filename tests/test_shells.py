@@ -1,20 +1,15 @@
 import pytest
-from mock import Mock, MagicMock
 from thefuck import shells
 
 
 @pytest.fixture
-def builtins_open(monkeypatch):
-    mock = MagicMock()
-    monkeypatch.setattr('six.moves.builtins.open', mock)
-    return mock
+def builtins_open(mocker):
+    return mocker.patch('six.moves.builtins.open')
 
 
 @pytest.fixture
-def isfile(monkeypatch):
-    mock = Mock(return_value=True)
-    monkeypatch.setattr('os.path.isfile', mock)
-    return mock
+def isfile(mocker):
+    return mocker.patch('os.path.isfile', return_value=True)
 
 
 class TestGeneric(object):
@@ -32,9 +27,8 @@ class TestGeneric(object):
 @pytest.mark.usefixtures('isfile')
 class TestBash(object):
     @pytest.fixture(autouse=True)
-    def Popen(self, monkeypatch):
-        mock = Mock()
-        monkeypatch.setattr('thefuck.shells.Popen', mock)
+    def Popen(self, mocker):
+        mock = mocker.patch('thefuck.shells.Popen')
         mock.return_value.stdout.read.return_value = (
             b'alias l=\'ls -CF\'\n'
             b'alias la=\'ls -A\'\n'
@@ -52,16 +46,15 @@ class TestBash(object):
 
     def test_put_to_history(self, builtins_open):
         shells.Bash().put_to_history('ls')
-        builtins_open.return_value.__enter__.return_value.\
+        builtins_open.return_value.__enter__.return_value. \
             write.assert_called_once_with('ls\n')
 
 
 @pytest.mark.usefixtures('isfile')
 class TestZsh(object):
     @pytest.fixture(autouse=True)
-    def Popen(self, monkeypatch):
-        mock = Mock()
-        monkeypatch.setattr('thefuck.shells.Popen', mock)
+    def Popen(self, mocker):
+        mock = mocker.patch('thefuck.shells.Popen')
         mock.return_value.stdout.read.return_value = (
             b'l=\'ls -CF\'\n'
             b'la=\'ls -A\'\n'
@@ -77,9 +70,9 @@ class TestZsh(object):
     def test_to_shell(self):
         assert shells.Zsh().to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open, monkeypatch):
-        monkeypatch.setattr('thefuck.shells.time',
-                            lambda: 1430707243.3517463)
+    def test_put_to_history(self, builtins_open, mocker):
+        mocker.patch('thefuck.shells.time',
+                     return_value=1430707243.3517463)
         shells.Zsh().put_to_history('ls')
         builtins_open.return_value.__enter__.return_value. \
             write.assert_called_once_with(': 1430707243:0;ls\n')

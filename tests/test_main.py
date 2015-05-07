@@ -6,15 +6,15 @@ from thefuck import main, conf, types
 from tests.utils import Rule, Command
 
 
-def test_load_rule(monkeypatch):
+def test_load_rule(mocker):
     match = object()
     get_new_command = object()
-    load_source = Mock()
-    load_source.return_value = Mock(match=match,
-                                    get_new_command=get_new_command,
-                                    enabled_by_default=True,
-                                    priority=900)
-    monkeypatch.setattr('thefuck.main.load_source', load_source)
+    load_source = mocker.patch(
+        'thefuck.main.load_source',
+        return_value=Mock(match=match,
+                          get_new_command=get_new_command,
+                          enabled_by_default=True,
+                          priority=900))
     assert main.load_rule(Path('/rules/bash.py')) \
            == Rule('bash', match, get_new_command, priority=900)
     load_source.assert_called_once_with('bash', '/rules/bash.py')
@@ -22,10 +22,8 @@ def test_load_rule(monkeypatch):
 
 class TestGetRules(object):
     @pytest.fixture(autouse=True)
-    def glob(self, monkeypatch):
-        mock = Mock(return_value=[])
-        monkeypatch.setattr('thefuck.main.Path.glob', mock)
-        return mock
+    def glob(self, mocker):
+        return mocker.patch('thefuck.main.Path.glob', return_value=[])
 
     def _compare_names(self, rules, names):
         return [r.name for r in rules] == names
@@ -118,10 +116,8 @@ class TestGetMatchedRule(object):
 
 class TestRunRule(object):
     @pytest.fixture(autouse=True)
-    def confirm(self, monkeypatch):
-        mock = Mock(return_value=True)
-        monkeypatch.setattr('thefuck.main.confirm', mock)
-        return mock
+    def confirm(self, mocker):
+        return mocker.patch('thefuck.main.confirm', return_value=True)
 
     def test_run_rule(self, capsys):
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command'),
@@ -147,10 +143,8 @@ class TestRunRule(object):
 
 class TestConfirm(object):
     @pytest.fixture
-    def stdin(self, monkeypatch):
-        mock = Mock(return_value='\n')
-        monkeypatch.setattr('sys.stdin.read', mock)
-        return mock
+    def stdin(self, mocker):
+        return mocker.patch('sys.stdin.read', return_value='\n')
 
     def test_when_not_required(self, capsys):
         assert main.confirm('command', None, Mock(require_confirmation=False))

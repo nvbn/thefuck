@@ -14,10 +14,8 @@ def test_default(enabled, rules, result):
 
 
 @pytest.fixture
-def load_source(monkeypatch):
-    mock = Mock()
-    monkeypatch.setattr('thefuck.conf.load_source', mock)
-    return mock
+def load_source(mocker):
+    return mocker.patch('thefuck.conf.load_source')
 
 
 @pytest.fixture
