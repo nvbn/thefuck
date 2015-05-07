@@ -84,7 +84,7 @@ def check_args(settings, args, cmd):
             elif opt == '--remove':
                 custom_fuckups.remove_fuckup(val)
                 return True
-            else
+            else:
                 return False
         except Exception as err:
             logs.failed(err, settings)

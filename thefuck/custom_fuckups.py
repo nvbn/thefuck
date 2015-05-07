@@ -27,7 +27,7 @@ def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuc
     if IS_FUCKUP:
       key = line
       IS_FUCKUP = False
-    else
+    else:
       cmd = line
       IS_FUCKUP = True
       fuckups[key] = cmd
