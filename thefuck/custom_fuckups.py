@@ -36,7 +36,7 @@ def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuc
 
   return fuckups
 
-def add_fuckup(fucked, fixed)
+def add_fuckup(fucked, fixed):
 
   print 'Adding fucked: ' + fucked + ' as fixed: ' + fixed
 
@@ -50,7 +50,7 @@ def add_fuckup(fucked, fixed)
 
   return
 
-def remove_fuckup(fuckup)
+def remove_fuckup(fuckup):
 
   print 'Removing fucked: ' + fucked + ' as fixed: ' + fixed
 
@@ -65,7 +65,7 @@ def remove_fuckup(fuckup)
  
   FILE = open(FILENAME, 'w')
 
-  for number, line in enumerate(lines)
+  for number, line in enumerate(lines):
     if line != fuckup and line != fuckup_cmd:
       FILE.write(line)
     elif line == fuckup:
