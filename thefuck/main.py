@@ -7,9 +7,8 @@ import sys
 from psutil import Process, TimeoutExpired
 import colorama
 import six
-from . import logs, conf, types, shells
+from . import logs, conf, types, shells, custom_fuckups
 import getopt
-import custom_fuckups
 
 
 def setup_user_dir():
