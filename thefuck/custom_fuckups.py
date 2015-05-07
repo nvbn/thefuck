@@ -38,7 +38,7 @@ def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuc
 
 def add_fuckup(fucked, fixed):
 
-  print 'Adding fucked: ' + fucked + ' as fixed: ' + fixed
+  print ('Adding fucked: ' + fucked + ' as fixed: ' + fixed)
 
   FILENAME = '~/.thefuck/my_fuckups'
   FILE = open(FILENAME, 'w')
@@ -52,7 +52,7 @@ def add_fuckup(fucked, fixed):
 
 def remove_fuckup(fuckup):
 
-  print 'Removing fucked: ' + fucked + ' as fixed: ' + fixed
+  print ('Removing fucked: ' + fucked + ' as fixed: ' + fixed)
 
   FILENAME = '~/.thefuck/my_fuckups'
   FILE = open(FILENAME, 'r')
