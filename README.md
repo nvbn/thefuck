@@ -213,7 +213,8 @@ The Fuck has a few settings parameters, they can be changed in `~/.thefuck/setti
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
 * `require_confirmation` &ndash; require confirmation before running new command, by default `False`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
-* `no_colors` &ndash; disable colored output.
+* `no_colors` &ndash; disable colored output;
+* `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first.
 
 Example of `settings.py`:
 
@@ -222,6 +223,7 @@ rules = ['sudo', 'no_command']
 require_confirmation = True
 wait_command = 10
 no_colors = False
+priority = {'sudo': 100, 'no_command': 9999}
 ```
 
 Or via environment variables:
@@ -229,7 +231,9 @@ Or via environment variables:
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
-* `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`.
+* `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
+* `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
+rule with lower `priority` will be matched first.
 
 For example:
 
@@ -238,6 +242,7 @@ export THEFUCK_RULES='sudo:no_command'
 export THEFUCK_REQUIRE_CONFIRMATION='true'
 export THEFUCK_WAIT_COMMAND=10
 export THEFUCK_NO_COLORS='false'
+export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
 ```
 
 ## Developing

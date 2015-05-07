@@ -40,12 +40,14 @@ class TestSettingsFromFile(object):
         load_source.return_value = Mock(rules=['test'],
                                         wait_command=10,
                                         require_confirmation=True,
-                                        no_colors=True)
+                                        no_colors=True,
+                                        priority={'vim': 100})
         settings = conf.get_settings(Mock())
         assert settings.rules == ['test']
         assert settings.wait_command == 10
         assert settings.require_confirmation is True
         assert settings.no_colors is True
+        assert settings.priority == {'vim': 100}
 
     def test_from_file_with_DEFAULT(self, load_source):
         load_source.return_value = Mock(rules=conf.DEFAULT_RULES + ['test'],
@@ -62,12 +64,14 @@ class TestSettingsFromEnv(object):
         environ.update({'THEFUCK_RULES': 'bash:lisp',
                         'THEFUCK_WAIT_COMMAND': '55',
                         'THEFUCK_REQUIRE_CONFIRMATION': 'true',
-                        'THEFUCK_NO_COLORS': 'false'})
+                        'THEFUCK_NO_COLORS': 'false',
+                        'THEFUCK_PRIORITY': 'bash=10:lisp=wrong:vim=15'})
         settings = conf.get_settings(Mock())
         assert settings.rules == ['bash', 'lisp']
         assert settings.wait_command == 55
         assert settings.require_confirmation is True
         assert settings.no_colors is False
+        assert settings.priority == {'bash': 10, 'vim': 15}
 
     def test_from_env_with_DEFAULT(self, environ):
         environ.update({'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'})

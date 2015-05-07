@@ -38,17 +38,25 @@ class TestGetRules(object):
         monkeypatch.setattr('thefuck.main.load_source',
                             lambda x, _: Rule(x))
         assert self._compare_names(
-            main.get_rules(Path('~'), Mock(rules=conf_rules)), rules)
+            main.get_rules(Path('~'), Mock(rules=conf_rules, priority={})),
+            rules)
 
-    @pytest.mark.parametrize('unordered, ordered', [
-        ([Rule('bash', priority=100), Rule('python', priority=5)],
+    @pytest.mark.parametrize('priority, unordered, ordered', [
+        ({},
+         [Rule('bash', priority=100), Rule('python', priority=5)],
          ['python', 'bash']),
-        ([Rule('lisp', priority=9999), Rule('c', priority=conf.DEFAULT_PRIORITY)],
-         ['c', 'lisp'])])
-    def test_ordered_by_priority(self, monkeypatch, unordered, ordered):
+        ({},
+         [Rule('lisp', priority=9999), Rule('c', priority=conf.DEFAULT_PRIORITY)],
+         ['c', 'lisp']),
+        ({'python': 9999},
+         [Rule('bash', priority=100), Rule('python', priority=5)],
+         ['bash', 'python'])])
+    def test_ordered_by_priority(self, monkeypatch, priority, unordered, ordered):
         monkeypatch.setattr('thefuck.main._get_loaded_rules',
                             lambda *_: unordered)
-        assert self._compare_names(main.get_rules(Path('~'), Mock()), ordered)
+        assert self._compare_names(
+            main.get_rules(Path('~'), Mock(priority=priority)),
+            ordered)
 
 
 class TestGetCommand(object):
