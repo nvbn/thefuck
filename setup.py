@@ -17,4 +17,5 @@ setup(name='thefuck',
       zip_safe=False,
       install_requires=['pathlib', 'psutil', 'colorama', 'six'],
       entry_points={'console_scripts': [
-          'thefuck = thefuck.main:main', 'thefuck-alias = thefuck.main:alias']})
+          'thefuck = thefuck.main:main',
+          'thefuck-alias = thefuck.shells:app_alias']})

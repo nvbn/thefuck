@@ -121,10 +121,6 @@ def run_rule(rule, command, settings):
         print(new_command)
 
 
-def alias():
-    print(shells.app_alias())
-
-
 def main():
     colorama.init()
     user_dir = setup_user_dir()
