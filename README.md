@@ -153,6 +153,7 @@ using matched rule and run it. Rules enabled by default:
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
+* `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
@@ -194,13 +195,13 @@ def match(command, settings):
 
 def get_new_command(command, settings):
     return 'sudo {}'.format(command.script)
-    
+
 # Optional:
 enabled_by_default = True
 
 def side_effect(command, settings):
     subprocess.call('chmod 777 .', shell=True)
-    
+
 priority = 1000  # Lower first
 ```
 
