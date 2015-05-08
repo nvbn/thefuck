@@ -136,7 +136,7 @@ def _get_shell():
         shell = Process(os.getpid()).parent().cmdline()[0]
     except TypeError:
         shell = Process(os.getpid()).parent.cmdline[0]
-    return shells[shell]
+    return shells[os.path.basename(shell)]
 
 
 def from_shell(command):
