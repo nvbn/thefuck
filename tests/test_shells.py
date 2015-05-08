@@ -51,6 +51,28 @@ class TestBash(object):
 
 
 @pytest.mark.usefixtures('isfile')
+class TestFish(object):
+    @pytest.mark.parametrize('before, after', [
+        ('pwd', 'pwd'),
+        ('ll', 'll')])  # Fish has no aliases but functions
+    def test_from_shell(self, before, after):
+        assert shells.Fish().from_shell(before) == after
+
+    def test_to_shell(self):
+        assert shells.Fish().to_shell('pwd') == 'pwd'
+
+    def test_put_to_history(self, builtins_open, mocker):
+        mocker.patch('thefuck.shells.time',
+                     return_value=1430707243.3517463)
+        shells.Fish().put_to_history('ls')
+        builtins_open.return_value.__enter__.return_value. \
+            write.assert_called_once_with('- cmd: ls\n   when: 1430707243\n')
+
+    def test_and_(self):
+        assert shells.Fish().and_('foo', 'bar') == 'foo; and bar'
+
+
+@pytest.mark.usefixtures('isfile')
 class TestZsh(object):
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
