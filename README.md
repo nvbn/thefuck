@@ -135,6 +135,13 @@ Changes will be available only in a new shell session.
 sudo pip install thefuck --upgrade
 ```
 
+If executing thefuck fails, create necessary directory structure & files:
+```bash
+mkdir -p ~/.thefuck/rules
+touch .thefuck/settings.py
+cp CLONED_REPO/thefuck/rules/* .thefuck/rules
+```
+
 ## How it works
 
 The Fuck tries to match rule for the previous command, create new command
