@@ -60,7 +60,7 @@ class Bash(Generic):
         return dict(
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias)
+            if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -82,7 +82,7 @@ class Zsh(Generic):
         return dict(
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias)
+            if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
