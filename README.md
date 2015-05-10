@@ -73,7 +73,7 @@ REPL-y 0.3.1
 ...
 ```
 
-If you are scared to blindly run changed command, there's `require_confirmation`
+If you are scared to blindly run the changed command, there is a `require_confirmation`
 [settings](#settings) option:
 
 ```bash
@@ -104,7 +104,7 @@ sudo pip install thefuck
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
 
-And add to `.bashrc` or `.bash_profile`(for OSX):
+And add to the `.bashrc` or `.bash_profile`(for OSX):
 
 ```bash
 alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
@@ -137,8 +137,8 @@ sudo pip install thefuck --upgrade
 
 ## How it works
 
-The Fuck tries to match rule for the previous command, create new command
-using matched rule and run it. Rules enabled by default:
+The Fuck tries to match a rule for the previous command, creates a new command
+using the matched rule and runs it. Rules enabled by default are as follows:
 
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
@@ -212,10 +212,10 @@ priority = 1000  # Lower first
 
 ## Settings
 
-The Fuck has a few settings parameters, they can be changed in `~/.thefuck/settings.py`:
+The Fuck has a few settings parameters which can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
-* `require_confirmation` &ndash; require confirmation before running new command, by default `False`;
+* `require_confirmation` &ndash; requires confirmation before running new command, by default `False`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
 * `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first.
