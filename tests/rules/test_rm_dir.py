@@ -1,12 +1,20 @@
-from thefuck.main import Command
+import pytest
 from thefuck.rules.rm_dir import match, get_new_command
+from tests.utils import Command
 
 
-def test_match():
-    assert match(Command('rm foo', '', 'rm: foo: is a directory'), None)
-    assert not match(Command('rm foo', '', ''), None)
-    assert not match(Command('rm foo', '', 'foo bar baz'), None)
-    assert not match(Command('', '', ''), None)
+@pytest.mark.parametrize('command', [
+    Command('rm foo', stderr='rm: foo: is a directory'),
+    Command('rm foo', stderr='rm: foo: Is a directory')])
+def test_match(command):
+    assert match(command, None)
+    assert match(command, None)
+
+
+@pytest.mark.parametrize('command', [
+    Command('rm foo'), Command('rm foo'), Command()])
+def test_not_match(command):
+    assert not match(command, None)
 
 
 def test_get_new_command():

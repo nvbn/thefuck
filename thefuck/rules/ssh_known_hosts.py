@@ -22,7 +22,11 @@ def match(command, settings):
     return True
 
 
-def remove_offending_keys(command, settings):
+def get_new_command(command, settings):
+    return command.script
+
+
+def side_effect(command, settings):
     offending = offending_pattern.findall(command.stderr)
     for filepath, lineno in offending:
         with open(filepath, 'r') as fh:
@@ -30,8 +34,3 @@ def remove_offending_keys(command, settings):
             del lines[int(lineno) - 1]
         with open(filepath, 'w') as fh:
             fh.writelines(lines)
-
-
-def get_new_command(command, settings):
-    remove_offending_keys(command, settings)
-    return command.script

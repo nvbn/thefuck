@@ -1,5 +1,5 @@
 from mock import Mock, patch
-from thefuck.rules. has_exists_script import match, get_new_command
+from thefuck.rules.has_exists_script import match, get_new_command
 
 
 def test_match():

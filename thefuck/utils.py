@@ -1,5 +1,10 @@
 from functools import wraps
 import os
+import six
+from .types import Command
+
+
+DEVNULL = open(os.devnull, 'w')
 
 
 def which(program):
@@ -35,9 +40,25 @@ def wrap_settings(params):
     def decorator(fn):
         @wraps(fn)
         def wrapper(command, settings):
-            for key, val in params.items():
-                if not hasattr(settings, key):
-                    setattr(settings, key, val)
-            return fn(command, settings)
+            return fn(command, settings.update(**params))
         return wrapper
     return decorator
+
+
+def sudo_support(fn):
+    """Removes sudo before calling fn and adds it after."""
+    @wraps(fn)
+    def wrapper(command, settings):
+        if not command.script.startswith('sudo '):
+            return fn(command, settings)
+
+        result = fn(Command(command.script[5:],
+                            command.stdout,
+                            command.stderr),
+                    settings)
+
+        if result and isinstance(result, six.string_types):
+            return u'sudo {}'.format(result)
+        else:
+            return result
+    return wrapper

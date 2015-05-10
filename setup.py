@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '1.26'
+VERSION = '1.39'
 
 
 setup(name='thefuck',
@@ -15,6 +15,7 @@ setup(name='thefuck',
                                       'tests', 'release']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=['pathlib', 'psutil', 'colorama'],
+      install_requires=['pathlib', 'psutil', 'colorama', 'six'],
       entry_points={'console_scripts': [
-          'thefuck = thefuck.main:main']})
+          'thefuck = thefuck.main:main',
+          'thefuck-alias = thefuck.shells:app_alias']})

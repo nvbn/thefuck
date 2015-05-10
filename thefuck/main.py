@@ -1,4 +1,3 @@
-from collections import namedtuple
 from imp import load_source
 from pathlib import Path
 from os.path import expanduser
@@ -7,11 +6,8 @@ import os
 import sys
 from psutil import Process, TimeoutExpired
 import colorama
-from thefuck import logs
-
-
-Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
-Rule = namedtuple('Rule', ('name', 'match', 'get_new_command'))
+import six
+from . import logs, conf, types, shells
 
 
 def setup_user_dir():
@@ -20,44 +16,38 @@ def setup_user_dir():
     rules_dir = user_dir.joinpath('rules')
     if not rules_dir.is_dir():
         rules_dir.mkdir(parents=True)
-    user_dir.joinpath('settings.py').touch()
+    conf.initialize_settings_file(user_dir)
     return user_dir
-
-
-def get_settings(user_dir):
-    """Returns prepared settings module."""
-    settings = load_source('settings',
-                           str(user_dir.joinpath('settings.py')))
-    settings.__dict__.setdefault('rules', None)
-    settings.__dict__.setdefault('wait_command', 3)
-    settings.__dict__.setdefault('require_confirmation', False)
-    settings.__dict__.setdefault('no_colors', False)
-    return settings
-
-
-def is_rule_enabled(settings, rule):
-    """Returns `True` when rule mentioned in `rules` or `rules`
-    isn't defined.
-
-    """
-    return settings.rules is None or rule.name[:-3] in settings.rules
 
 
 def load_rule(rule):
     """Imports rule module and returns it."""
     rule_module = load_source(rule.name[:-3], str(rule))
-    return Rule(rule.name[:-3], rule_module.match,
-                rule_module.get_new_command)
+    return types.Rule(rule.name[:-3], rule_module.match,
+                      rule_module.get_new_command,
+                      getattr(rule_module, 'enabled_by_default', True),
+                      getattr(rule_module, 'side_effect', None),
+                      getattr(rule_module, 'priority', conf.DEFAULT_PRIORITY))
+
+
+def _get_loaded_rules(rules, settings):
+    """Yields all available rules."""
+    for rule in rules:
+        if rule.name != '__init__.py':
+            loaded_rule = load_rule(rule)
+            if loaded_rule in settings.rules:
+                yield loaded_rule
 
 
 def get_rules(user_dir, settings):
     """Returns all enabled rules."""
-    bundled = Path(__file__).parent\
-                            .joinpath('rules')\
-                            .glob('*.py')
+    bundled = Path(__file__).parent \
+        .joinpath('rules') \
+        .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
-    return [load_rule(rule) for rule in sorted(list(bundled)) + list(user)
-            if rule.name != '__init__.py' and is_rule_enabled(settings, rule)]
+    rules = _get_loaded_rules(sorted(bundled) + sorted(user), settings)
+    return sorted(rules, key=lambda rule: settings.priority.get(
+        rule.name, rule.priority))
 
 
 def wait_output(settings, popen):
@@ -80,7 +70,7 @@ def wait_output(settings, popen):
 
 def get_command(settings, args):
     """Creates command from `args` and executes it."""
-    if sys.version_info[0] < 3:
+    if six.PY2:
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
     else:
         script = ' '.join(args[1:])
@@ -88,11 +78,12 @@ def get_command(settings, args):
     if not script:
         return
 
+    script = shells.from_shell(script)
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
-        return Command(script, result.stdout.read().decode('utf-8'),
-                       result.stderr.read().decode('utf-8'))
+        return types.Command(script, result.stdout.read().decode('utf-8'),
+                             result.stderr.read().decode('utf-8'))
 
 
 def get_matched_rule(command, rules, settings):
@@ -105,13 +96,13 @@ def get_matched_rule(command, rules, settings):
             logs.rule_failed(rule, sys.exc_info(), settings)
 
 
-def confirm(new_command, settings):
+def confirm(new_command, side_effect, settings):
     """Returns `True` when running of new command confirmed."""
     if not settings.require_confirmation:
-        logs.show_command(new_command, settings)
+        logs.show_command(new_command, side_effect, settings)
         return True
 
-    logs.confirm_command(new_command, settings)
+    logs.confirm_command(new_command, side_effect, settings)
     try:
         sys.stdin.read(1)
         return True
@@ -122,27 +113,21 @@ def confirm(new_command, settings):
 
 def run_rule(rule, command, settings):
     """Runs command from rule for passed command."""
-    new_command = rule.get_new_command(command, settings)
-    if confirm(new_command, settings):
+    new_command = shells.to_shell(rule.get_new_command(command, settings))
+    if confirm(new_command, rule.side_effect, settings):
+        if rule.side_effect:
+            rule.side_effect(command, settings)
+        shells.put_to_history(new_command)
         print(new_command)
-
-
-def is_second_run(command):
-    """Is it the second run of `fuck`?"""
-    return command.script.startswith('fuck')
 
 
 def main():
     colorama.init()
     user_dir = setup_user_dir()
-    settings = get_settings(user_dir)
+    settings = conf.get_settings(user_dir)
 
     command = get_command(settings, sys.argv)
     if command:
-        if is_second_run(command):
-            logs.failed("Can't fuck twice", settings)
-            return
-
         rules = get_rules(user_dir, settings)
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
