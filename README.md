@@ -141,7 +141,7 @@ The Fuck tries to match rule for the previous command, create new command
 using matched rule and run it. Rules enabled by default:
 
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
-* `c++11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
+* `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
