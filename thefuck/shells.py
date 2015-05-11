@@ -98,7 +98,10 @@ shells = defaultdict(lambda: Generic(), {
 
 
 def _get_shell():
-    shell = Process(os.getpid()).parent().cmdline()[0]
+    try:
+        shell = Process(os.getpid()).parent().cmdline()[0]
+    except TypeError:
+        shell = Process(os.getpid()).parent.cmdline[0]
     return shells[shell]
 
 
