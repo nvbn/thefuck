@@ -77,7 +77,7 @@ def check_args(settings, args, cmd):
 
     for opt, val in options:
         try:
-            if opt == '--ifuckedup' or opt == '--add_fuckup':
+            if opt == '--ifuckedup':
                 custom_fuckups.add_fuckup(cmd, val)
                 return True
             elif opt == '--remove':
@@ -93,24 +93,24 @@ def check_args(settings, args, cmd):
 def get_command(settings):
     """Creates command from `args` and executes it."""
 
-# trying to use...
-#  subprocess.check_output("bash fc -ln -1; history -r", shell=True).split()
-# ... to get recent calls instead of using the alias
+# trying to use history to get recent calls instead of using the alias
 
 # - no need for alias with that ^^^
 # - allows for command line args
 
     shell_cmd = "bash -c -i 'history -r; history -p \!\!'"
-    event = Popen(shell_cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+    event = Popen(shell_cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
     output = event.communicate()
 
-    args = output.split()
+    args = output.strip()
     
-    if six.PY2:
-        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
-    else:
-        script = ' '.join(args[1:])
+#    if six.PY2:
+#        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
+#    else:
+#        script = ' '.join(args[1:])
+
+    script = args
 
     if not script:
         return
