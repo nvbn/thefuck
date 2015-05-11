@@ -91,13 +91,24 @@ def check_args(settings, args, cmd):
             return False
 
 
-def get_command(settings, args):
+def get_command(settings):
     """Creates command from `args` and executes it."""
 
+# trying to use...
+#  subprocess.check_output("bash fc -ln -1; history -r", shell=True).split()
+# ... to get recent calls instead of using the alias
+
+# - no need for alias with that ^^^
+# - allows for command line args
+
+    last_cmd = subprocess.check_output("bash fc -ln -1; history -r", shell=True)
+
+    args = last_cmd.split()
+    
     if six.PY2:
-        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
+        script = ' '.join(arg.decode('utf-8') for arg in args)
     else:
-        script = ' '.join(args[1:])
+        script = ' '.join(args)
 
     if not script:
         return
@@ -149,7 +160,7 @@ def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
-    command = get_command(settings, sys.argv)
+    command = get_command(settings)
 
     if check_args(settings, sys.argv[1:], command):
         return
