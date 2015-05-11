@@ -73,11 +73,11 @@ def check_args(settings, args, cmd):
      --ifuckedup requires relevent fix.
      """
 
-    options, leftovers = getopt.getopt(args, '', ['ifuckedup=', 'remove='])
+    options, leftovers = getopt.getopt(args, '', ['add_fix=', 'ifuckedup=', 'remove='])
 
     for opt, val in options:
         try:
-            if opt == '--ifuckedup':
+            if opt == '--ifuckedup' or opt == '--add_fix':
                 custom_fuckups.add_fuckup(cmd, val)
                 return True
             elif opt == '--remove':
@@ -91,26 +91,19 @@ def check_args(settings, args, cmd):
 
 
 def get_command(settings):
-    """Creates command from `args` and executes it."""
+    """Retrieves previous command from ~/.bash_history ."""
 
-# trying to use history to get recent calls instead of using the alias
+# requires following in .bashrc
 
-# - no need for alias with that ^^^
-# - allows for command line args
+#   shopt -s histappend
+#   PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 
     shell_cmd = "bash -c -i 'history -r; history -p \!\!'"
     event = Popen(shell_cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
     output = event.communicate()
 
-    args = output.strip()
-    
-#    if six.PY2:
-#        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
-#    else:
-#        script = ' '.join(args[1:])
-
-    script = args
+    script = output.strip()
 
     if not script:
         return
