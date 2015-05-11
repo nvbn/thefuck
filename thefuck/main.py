@@ -1,14 +1,13 @@
 from imp import load_source
 from pathlib import Path
 from os.path import expanduser
-from subprocess import Popen, PIPE
-import os
-import sys
-from psutil import Process, TimeoutExpired
-import colorama
+import subprocess
+from subprocess import Popen, PIPE, STDOUT
 import six
 from . import logs, conf, types, shells, custom_fuckups
 import getopt
+import sys
+import os
 
 
 def setup_user_dir():
@@ -101,14 +100,17 @@ def get_command(settings):
 # - no need for alias with that ^^^
 # - allows for command line args
 
-    last_cmd = subprocess.check_output("bash fc -ln -1; history -r", shell=True)
+    shell_cmd = "bash -c -i 'history -r; history -p \!\!'"
+    event = Popen(shell_cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
-    args = last_cmd.split()
+    output = event.communicate()
+
+    args = output.split()
     
     if six.PY2:
-        script = ' '.join(arg.decode('utf-8') for arg in args)
+        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
     else:
-        script = ' '.join(args)
+        script = ' '.join(args[1:])
 
     if not script:
         return
