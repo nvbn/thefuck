@@ -77,7 +77,7 @@ def check_args(settings, args, cmd):
 
     for opt, val in options:
         try:
-            if opt == '--ifuckedup':
+            if opt == '--ifuckedup' or opt == '--add_fuckup':
                 custom_fuckups.add_fuckup(cmd, val)
                 return True
             elif opt == '--remove':
