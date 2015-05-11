@@ -47,7 +47,8 @@ def get_rules(user_dir, settings):
         .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
     rules = _get_loaded_rules(sorted(bundled) + sorted(user), settings)
-    return sorted(rules, key=lambda rule: rule.priority)
+    return sorted(rules, key=lambda rule: settings.priority.get(
+        rule.name, rule.priority))
 
 
 def wait_output(settings, popen):
@@ -142,10 +143,6 @@ def run_rule(rule, command, settings):
             rule.side_effect(command, settings)
         shells.put_to_history(new_command)
         print(new_command)
-
-
-def alias():
-    print(shells.app_alias())
 
 
 def main():
