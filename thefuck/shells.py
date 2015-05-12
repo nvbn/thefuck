@@ -114,7 +114,7 @@ def to_shell(command):
 
 
 def app_alias():
-    return _get_shell().app_alias()
+    print(_get_shell().app_alias())
 
 
 def put_to_history(command):
