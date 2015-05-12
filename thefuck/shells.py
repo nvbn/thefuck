@@ -32,7 +32,7 @@ class Generic(object):
         return command_script
 
     def app_alias(self):
-        print "\nalias fuck='eval $(thefuck $(fc -ln -1))'\n"
+        return "\nalias fuck='eval $(thefuck $(fc -ln -1))'\n"
 
     def _get_history_file_name(self):
         return ''
@@ -114,7 +114,7 @@ def to_shell(command):
 
 
 def app_alias():
-    return _get_shell().app_alias()
+    print(_get_shell().app_alias())
 
 
 def put_to_history(command):
