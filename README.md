@@ -118,6 +118,11 @@ Or in your `.zshrc`:
 alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 ```
 
+If you are using `tcsh`:
+```tcsh
+alias fuck 'set fuckedCmd=`history -h 2 | head -n 1` && eval `thefuck ${fuckedCmd}`'
+```
+
 Alternatively, you can redirect the output of `thefuck-alias`:
 
 ```bash
