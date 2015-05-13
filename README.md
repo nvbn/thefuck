@@ -151,7 +151,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_checkout` &ndash; creates the branch before checking-out;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
-* `git_stash` &ndash; stashes you local modifications before rebase;
+* `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;

@@ -1,6 +1,7 @@
 def match(command, settings):
-    return ('git' in command.script
-            and 'Please commit or stash them.' in command.stderr)
+    # catches "Please commit or stash them" and "Please, commit your changes or
+    # stash them before you can switch branches."
+    return 'git' in command.script and 'or stash them' in command.stderr
 
 
 def get_new_command(command, settings):
