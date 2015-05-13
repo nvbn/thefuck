@@ -31,3 +31,6 @@ def get_new_command(command, settings):
     new_command = get_close_matches(old_command,
                                     _get_all_bins())[0]
     return ' '.join([new_command] + command.script.split(' ')[1:])
+
+
+priority = 3000
