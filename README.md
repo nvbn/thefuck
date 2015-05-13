@@ -73,7 +73,7 @@ REPL-y 0.3.1
 ...
 ```
 
-If you are scared to blindly run changed command, there's `require_confirmation`
+If you are scared to blindly run the changed command, there is a `require_confirmation`
 [settings](#settings) option:
 
 ```bash
@@ -104,7 +104,7 @@ sudo pip install thefuck
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
 
-And add to `.bashrc` or `.bash_profile`(for OSX):
+And add to the `.bashrc` or `.bash_profile`(for OSX):
 
 ```bash
 alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
@@ -116,6 +116,11 @@ Or in your `.zshrc`:
 
 ```bash
 alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+```
+
+If you are using `tcsh`:
+```tcsh
+alias fuck 'set fucked_cmd=`history -h 2 | head -n 1` && eval `thefuck ${fucked_cmd}`'
 ```
 
 Alternatively, you can redirect the output of `thefuck-alias`:
@@ -137,21 +142,26 @@ sudo pip install thefuck --upgrade
 
 ## How it works
 
-The Fuck tries to match rule for the previous command, create new command
-using matched rule and run it. Rules enabled by default:
+The Fuck tries to match a rule for the previous command, creates a new command
+using the matched rule and runs it. Rules enabled by default are as follows:
 
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
+* `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
+* `dry` &ndash; fix repetitions like "git git push";
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
+* `git_checkout` &ndash; creates the branch before checking-out;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
+* `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
+* `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
@@ -193,13 +203,13 @@ def match(command, settings):
 
 def get_new_command(command, settings):
     return 'sudo {}'.format(command.script)
-    
+
 # Optional:
 enabled_by_default = True
 
 def side_effect(command, settings):
     subprocess.call('chmod 777 .', shell=True)
-    
+
 priority = 1000  # Lower first
 ```
 
@@ -208,12 +218,13 @@ priority = 1000  # Lower first
 
 ## Settings
 
-The Fuck has a few settings parameters, they can be changed in `~/.thefuck/settings.py`:
+The Fuck has a few settings parameters which can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
-* `require_confirmation` &ndash; require confirmation before running new command, by default `False`;
+* `require_confirmation` &ndash; requires confirmation before running new command, by default `False`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
-* `no_colors` &ndash; disable colored output.
+* `no_colors` &ndash; disable colored output;
+* `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first.
 
 Example of `settings.py`:
 
@@ -222,6 +233,7 @@ rules = ['sudo', 'no_command']
 require_confirmation = True
 wait_command = 10
 no_colors = False
+priority = {'sudo': 100, 'no_command': 9999}
 ```
 
 Or via environment variables:
@@ -229,7 +241,9 @@ Or via environment variables:
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
-* `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`.
+* `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
+* `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
+rule with lower `priority` will be matched first.
 
 For example:
 
@@ -238,6 +252,7 @@ export THEFUCK_RULES='sudo:no_command'
 export THEFUCK_REQUIRE_CONFIRMATION='true'
 export THEFUCK_WAIT_COMMAND=10
 export THEFUCK_NO_COLORS='false'
+export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
 ```
 
 ## Developing
