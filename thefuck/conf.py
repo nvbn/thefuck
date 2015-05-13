@@ -28,12 +28,16 @@ DEFAULT_PRIORITY = 1000
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'wait_command': 3,
                     'require_confirmation': False,
-                    'no_colors': False}
+                    'no_colors': False,
+                    'priority': {}}
+
+DEFAULT_FUCKUPS = {'cd..':'cd ..'}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_WAIT_COMMAND': 'wait_command',
                'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
-               'THEFUCK_NO_COLORS': 'no_colors'}
+               'THEFUCK_NO_COLORS': 'no_colors',
+               'THEFUCK_PRIORITY': 'priority'}
 
 
 SETTINGS_HEADER = u"""# ~/.thefuck/settings.py: The Fuck settings file
@@ -66,16 +70,29 @@ def _rules_from_env(val):
     return val
 
 
+def _priority_from_env(val):
+    """Gets priority pairs from env."""
+    for part in val.split(':'):
+        try:
+            rule, priority = part.split('=')
+            yield rule, int(priority)
+        except ValueError:
+            continue
+
+
 def _val_from_env(env, attr):
     """Transforms env-strings to python."""
     val = os.environ[env]
     if attr == 'rules':
-        val = _rules_from_env(val)
+        return _rules_from_env(val)
+    elif attr == 'priority':
+        return dict(_priority_from_env(val))
     elif attr == 'wait_command':
-        val = int(val)
+        return int(val)
     elif attr in ('require_confirmation', 'no_colors'):
-        val = val.lower() == 'true'
-    return val
+        return val.lower() == 'true'
+    else:
+        return val
 
 
 def _settings_from_env():
@@ -115,3 +132,13 @@ def initialize_settings_file(user_dir):
             settings_file.write(SETTINGS_HEADER)
             for setting in DEFAULT_SETTINGS.items():
                 settings_file.write(u'# {} = {}\n'.format(*setting))
+
+
+def initialize_fuckups_file(user_dir):
+    fuckups_path = user_dir.joinpath('.my_fuckups')
+    if not fuckups_path.is_file():
+        with fuckups_path.open(mode='w') as fuckups_file:
+            for key, fix in DEFAULT_FUCKUPS.iteritems():
+                fuckups_file.write(key + '\n')
+                fuckups_file.write(fix + '\n')
+    return

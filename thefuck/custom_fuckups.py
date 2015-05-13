@@ -1,7 +1,7 @@
 
 # handle reading and writing local list of fuckups
 
-# fuckups are stored in ~/.thefuck/my_fuckups
+# fuckups are stored locally in ~/.thefuck/my_fuckups
 
 # file format:
 #   fucked up command
@@ -12,15 +12,9 @@
 
 # rule is in rules/myfuckups.py
 
-# TODO default fuckups (could replace some existing rules with these, mostly typo rules), share fuckups
-# TODO add command that calls add_fuckup() - something like -$ fuck --ifuckedup # not sure how to do this with all these aliases...
-# TODO add suggestion to add a fuckup when 'no fucks given'
-# TODO add command that calls remove_fuckup() - something like -$ fuck --remove 'cd..' # same problem as add_fuckup
-
-
-def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuckups
+def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/.my_fuckups
   
-  FILENAME = '~/.thefuck/my_fuckups'
+  FILENAME = '~/.thefuck/.my_fuckups'
   FILE = open(FILENAME, 'r')
 
   IS_FUCKUP = True
@@ -31,7 +25,7 @@ def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuc
     if IS_FUCKUP:
       key = line
       IS_FUCKUP = False
-    else
+    else:
       cmd = line
       IS_FUCKUP = True
       fuckups[key] = cmd
@@ -40,8 +34,11 @@ def get_fuckups(): # returns a dictionary of your fuckups from ~/.thefuck/my_fuc
 
   return fuckups
 
-def add_fuckup(fucked, fixed)
-  FILENAME = '~/.thefuck/my_fuckups'
+def add_fuckup(fucked, fixed):
+
+  print ('Adding fucked: ' + fucked + ' as fixed: ' + fixed)
+
+  FILENAME = '~/.thefuck/.my_fuckups'
   FILE = open(FILENAME, 'w')
 
   FILE.write(fucked + '\n')
@@ -51,9 +48,11 @@ def add_fuckup(fucked, fixed)
 
   return
 
-def remove_fuckup(fuckup)
+def remove_fuckup(fuckup):
 
-  FILENAME = '~/.thefuck/my_fuckups'
+  print ('Removing fucked: ' + fucked + ' as fixed: ' + fixed)
+
+  FILENAME = '~/.thefuck/.my_fuckups'
   FILE = open(FILENAME, 'r')
 
   fuckup_cmd = ''
@@ -64,7 +63,7 @@ def remove_fuckup(fuckup)
  
   FILE = open(FILENAME, 'w')
 
-  for number, line in enumerate(lines)
+  for number, line in enumerate(lines):
     if line != fuckup and line != fuckup_cmd:
       FILE.write(line)
     elif line == fuckup:
