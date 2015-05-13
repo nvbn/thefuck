@@ -49,6 +49,9 @@ class Generic(object):
 
 
 class Bash(Generic):
+    def app_alias(self):
+        return "\nalias fuck='eval $(thefuck $(fc -ln -1)); history -r'\n"
+
     def _parse_alias(self, alias):
         name, value = alias.replace('alias ', '', 1).split('=', 1)
         if value[0] == value[-1] == '"' or value[0] == value[-1] == "'":
@@ -71,6 +74,9 @@ class Bash(Generic):
 
 
 class Zsh(Generic):
+    def app_alias(self):
+        return "\nalias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'\n"
+
     def _parse_alias(self, alias):
         name, value = alias.split('=', 1)
         if value[0] == value[-1] == '"' or value[0] == value[-1] == "'":
