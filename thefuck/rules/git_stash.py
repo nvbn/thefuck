@@ -1,3 +1,6 @@
+from thefuck import shells
+
+
 def match(command, settings):
     # catches "Please commit or stash them" and "Please, commit your changes or
     # stash them before you can switch branches."
@@ -5,4 +8,5 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    return 'git stash && ' + command.script
+    formatme = shells.and_('git stash', '{}')
+    return formatme.format(command.script)

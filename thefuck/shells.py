@@ -47,6 +47,9 @@ class Generic(object):
             with open(history_file_name, 'a') as history:
                 history.write(self._get_history_line(command_script))
 
+    def and_(self, *commands):
+        return ' && '.join(commands)
+
 
 class Bash(Generic):
     def app_alias(self):
@@ -150,3 +153,7 @@ def app_alias():
 
 def put_to_history(command):
     return _get_shell().put_to_history(command)
+
+
+def and_(*commands):
+    return _get_shell().and_(*commands)

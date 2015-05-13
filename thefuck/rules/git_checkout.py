@@ -1,4 +1,5 @@
 import re
+from thefuck import shells
 
 
 def match(command, settings):
@@ -12,4 +13,5 @@ def get_new_command(command, settings):
             r"error: pathspec '([^']*)' "
             "did not match any file\(s\) known to git.", command.stderr)[0]
 
-    return 'git branch {} && {}'.format(missing_file, command.script)
+    formatme = shells.and_('git branch {}', '{}')
+    return formatme.format(missing_file, command.script)

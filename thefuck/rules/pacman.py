@@ -1,4 +1,5 @@
 import subprocess
+from thefuck import shells
 from thefuck.utils import DEVNULL
 
 
@@ -30,7 +31,8 @@ def match(command, settings):
 def get_new_command(command, settings):
     package = __get_pkgfile(command)[0]
 
-    return '{} -S {} && {}'.format(pacman, package, command.script)
+    formatme = shells.and_('{} -S {}', '{}')
+    return formatme.format(pacman, package, command.script)
 
 
 if not __command_available('pkgfile'):
