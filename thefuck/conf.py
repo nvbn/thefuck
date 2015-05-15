@@ -41,7 +41,7 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_DEBUG': 'debug'}
 
 
-SETTINGS_HEADER = u"""# ~/.thefuck/settings.py: The Fuck settings file
+SETTINGS_HEADER = u"""# ~/.config/thefuck/settings.py: The Fuck settings file
 #
 # The rules are defined as in the example bellow:
 #

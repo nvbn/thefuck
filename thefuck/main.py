@@ -13,8 +13,18 @@ from .ui import select_command
 
 
 def setup_user_dir():
-    """Returns user config dir, create it when it doesn't exist."""
+    """Returns user config dir, creates it when it doesn't exist.
+
+    Uses `~/.thefuck` if it exists, else `$XDG_CONFIG_HOME/thefuck` if it
+    exists else `~/.config/thefuck`, which is created if it does not exist.
+    """
     user_dir = Path(expanduser('~/.thefuck'))
+
+    if not user_dir.is_dir():
+        user_dir = Path(os.path.join(
+            expanduser(os.getenv("XDG_CONFIG_HOME", "~/.config")), 'thefuck'
+        ))
+
     rules_dir = user_dir.joinpath('rules')
     if not rules_dir.is_dir():
         rules_dir.mkdir(parents=True)
