@@ -3,7 +3,9 @@ import re
 
 patterns = (
     r"mv: cannot move '[^']*' to '([^']*)': No such file or directory",
+    r"mv: cannot move '[^']*' to '([^']*)': Not a directory",
     r"cp: cannot create regular file '([^']*)': No such file or directory",
+    r"cp: cannot create regular file '([^']*)': Not a directory",
 )
 
 
