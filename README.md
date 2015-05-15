@@ -161,6 +161,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
+* `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
