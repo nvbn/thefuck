@@ -1,16 +1,5 @@
 import subprocess
-from thefuck.utils import DEVNULL
-
-
-def __command_available(command):
-    try:
-        subprocess.check_output([command], stderr=DEVNULL)
-        return True
-    except subprocess.CalledProcessError:
-        # command exists but is not happy to be called without any argument
-        return True
-    except OSError:
-        return False
+from thefuck.utils import DEVNULL, which
 
 
 def __get_pkgfile(command):
@@ -33,11 +22,11 @@ def get_new_command(command, settings):
     return '{} -S {} && {}'.format(pacman, package, command.script)
 
 
-if not __command_available('pkgfile'):
+if not which('pkgfile'):
     enabled_by_default = False
-elif __command_available('yaourt'):
+elif which('yaourt'):
     pacman = 'yaourt'
-elif __command_available('pacman'):
+elif which('pacman'):
     pacman = 'sudo pacman'
 else:
     enabled_by_default = False
