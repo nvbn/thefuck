@@ -17,7 +17,7 @@ def __get_pkgfile(command):
     try:
         return subprocess.check_output(
             ['pkgfile', '-b', '-v', command.script.split(" ")[0]],
-            universal_newlines=True, stderr=subprocess.DEVNULL
+            universal_newlines=True, stderr=DEVNULL
         ).split()
     except subprocess.CalledProcessError:
         return None
