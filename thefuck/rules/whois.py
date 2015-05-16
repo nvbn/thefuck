@@ -1,4 +1,5 @@
-from urllib.parse import urlparse
+# -*- encoding: utf-8 -*-
+from six.moves.urllib.parse import urlparse
 
 
 def match(command, settings):
