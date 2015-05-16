@@ -171,6 +171,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
 * `switch_layout` &ndash; switches command from your local layout to en;
+* `whois` &ndash; fixes `whois` command;
 * `apt_get` &ndash; installs app from apt if it not installed;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `composer_not_command` &ndash; fixes composer command name.
