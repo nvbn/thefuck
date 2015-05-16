@@ -1,4 +1,5 @@
-from urllib.parse import urlparse
+ # coding: utf-8
+from urlparse import urlparse
 
 
 def match(command, settings):
