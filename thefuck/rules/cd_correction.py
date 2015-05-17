@@ -76,7 +76,8 @@ def get_new_command(command, settings):
             cwd = os.path.split(cwd)[0]
             continue
         best_match = min(_get_sub_dirs(cwd), key=lambda x: _dam_lev_dist(directory, x))
-        if _dam_lev_dist(directory, best_match) > MAX_ALLOWED_STR_DIST:
+        best_dist = _dam_lev_dist(directory, best_match)
+        if best_dist > MAX_ALLOWED_STR_DIST or best_dist >= len(best_match):
             return cd_mkdir.get_new_command(command, settings)
         else:
             cwd = os.path.join(cwd, best_match)
