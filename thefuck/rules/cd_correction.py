@@ -5,49 +5,14 @@ __author__ = "mmussomele"
 
 import os
 import cd_mkdir
+from difflib import get_close_matches
 from thefuck.utils import sudo_support
 
-MAX_ALLOWED_STR_DIST = 5
+MAX_ALLOWED_DIFF = 0.6
 
 def _get_sub_dirs(parent):
     """Returns a list of the child directories of the given parent directory"""
     return [child for child in os.listdir(parent) if os.path.isdir(os.path.join(parent, child))]
-
-def _dam_lev_dist():
-    """Returns a Damerau-Levenshtein distance calculator."""
-    cache = {}
-    def _calculator(first, second):
-        """
-        Calculates the Damerau-Levenshtein distance of two strings.
-        See: http://en.wikipedia.org/wiki/Damerau-Levenshtein_distance#Algorithm
-        """
-        if (first, second) in cache:
-            return cache[(first, second)]
-        else:
-            l_first = len(first)
-            l_second = len(second)
-            distances = [[0 for _ in range(l_second + 1)] for _ in range(l_first + 1)]
-            for i in range(l_first + 1):
-                distances[i][0] = i
-            for j in range(1, l_second + 1):
-                distances[0][j] = j
-            for i in range(l_first):
-                for j in range(l_second):
-                    if first[i] == second[j]:
-                        cost = 0
-                    else:
-                        cost = 1
-                    distances[i+1][j+1] = min(distances[i][j+1] + 1, 
-                                              distances[i+1][j] + 1,
-                                              distances[i][j] + cost)
-                    if i and j and first[i] == second[j-1] and first[i-1] == second[j]:
-                        distances[i][j] = min(distances[i+1][j+1],
-                                              distances[i-1][j-1] + cost)
-            cache[(first, second)] = distances[l_first][l_second]
-            return distances[l_first][l_second]
-    return _calculator
-
-_dam_lev_dist = _dam_lev_dist()
 
 @sudo_support
 def match(command, settings):
@@ -62,8 +27,7 @@ def get_new_command(command, settings):
     Attempt to rebuild the path string by spellchecking the directories.
     If it fails (i.e. no directories are a close enough match), then it 
     defaults to the rules of cd_mkdir. 
-    Change sensitivity to matching by changing MAX_ALLOWED_STR_DIST. 
-    Higher values allow for larger discrepancies in path names. 
+    Change sensitivity by changing MAX_ALLOWED_DIFF. Default value is 0.6
     """
     dest = command.script.split()[1].split(os.sep)
     if dest[-1] == '':
@@ -75,12 +39,11 @@ def get_new_command(command, settings):
         elif directory == "..":
             cwd = os.path.split(cwd)[0]
             continue
-        best_match = min(_get_sub_dirs(cwd), key=lambda x: _dam_lev_dist(directory, x))
-        best_dist = _dam_lev_dist(directory, best_match)
-        if best_dist > MAX_ALLOWED_STR_DIST or best_dist >= len(best_match):
-            return cd_mkdir.get_new_command(command, settings)
+        best_matches = get_close_matches(directory, _get_sub_dirs(cwd), cutoff=MAX_ALLOWED_DIFF)
+        if len(best_matches):
+            cwd = os.path.join(cwd, best_matches[0])
         else:
-            cwd = os.path.join(cwd, best_match)
+            return cd_mkdir.get_new_command(command, settings)
     return "cd {0}".format(cwd) 
 
 enabled_by_default = True
