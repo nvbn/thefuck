@@ -40,7 +40,7 @@ def get_new_command(command, settings):
             cwd = os.path.split(cwd)[0]
             continue
         best_matches = get_close_matches(directory, _get_sub_dirs(cwd), cutoff=MAX_ALLOWED_DIFF)
-        if len(best_matches):
+        if best_matches:
             cwd = os.path.join(cwd, best_matches[0])
         else:
             return cd_mkdir.get_new_command(command, settings)
