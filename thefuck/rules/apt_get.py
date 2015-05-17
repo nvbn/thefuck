@@ -1,3 +1,5 @@
+from thefuck import shells
+
 try:
     import CommandNotFound
 except ImportError:
@@ -20,4 +22,5 @@ def get_new_command(command, settings):
     c = CommandNotFound.CommandNotFound()
     pkgs = c.getPackages(command.script.split(" ")[0])
     name, _ = pkgs[0]
-    return "sudo apt-get install {} && {}".format(name, command.script)
+    formatme = shells.and_('sudo apt-get install {}', '{}')
+    return formatme.format(name, command.script)
