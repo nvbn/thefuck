@@ -153,16 +153,16 @@ shells = defaultdict(lambda: Generic(), {
     'bash': Bash(),
     'fish': Fish(),
     'zsh': Zsh(),
-    '-csh': Tcsh(),
+    'csh': Tcsh(),
     'tcsh': Tcsh()})
 
 
 def _get_shell():
     try:
-        shell = Process(os.getpid()).parent().cmdline()[0]
+        shell = Process(os.getpid()).parent().name()
     except TypeError:
-        shell = Process(os.getpid()).parent.cmdline[0]
-    return shells[os.path.basename(shell)]
+        shell = Process(os.getpid()).parent.name()
+    return shells[shell]
 
 
 def from_shell(command):
