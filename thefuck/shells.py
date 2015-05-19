@@ -76,6 +76,31 @@ class Bash(Generic):
         return u'{}\n'.format(command_script)
 
 
+class Fish(Generic):
+    def app_alias(self):
+        return ("function fuck -d 'Correct your previous console command'\n"
+                "    set -l exit_code $status\n"
+                "    set -l eval_script"
+                " (mktemp 2>/dev/null ; or mktemp -t 'thefuck')\n"
+                "    set -l fucked_up_commandd $history[1]\n"
+                "    thefuck $fucked_up_commandd > $eval_script\n"
+                "    . $eval_script\n"
+                "    rm $eval_script\n"
+                "    if test $exit_code -ne 0\n"
+                "        history --delete $fucked_up_commandd\n"
+                "    end\n"
+                "end")
+
+    def _get_history_file_name(self):
+        return os.path.expanduser('~/.config/fish/fish_history')
+
+    def _get_history_line(self, command_script):
+        return u'- cmd: {}\n   when: {}\n'.format(command_script, int(time()))
+
+    def and_(self, *commands):
+        return '; and '.join(commands)
+
+
 class Zsh(Generic):
     def app_alias(self):
         return "\nalias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'\n"
@@ -126,6 +151,7 @@ class Tcsh(Generic):
 
 shells = defaultdict(lambda: Generic(), {
     'bash': Bash(),
+    'fish': Fish(),
     'zsh': Zsh(),
     '-csh': Tcsh(),
     'tcsh': Tcsh()})
@@ -136,7 +162,7 @@ def _get_shell():
         shell = Process(os.getpid()).parent().cmdline()[0]
     except TypeError:
         shell = Process(os.getpid()).parent.cmdline[0]
-    return shells[shell]
+    return shells[os.path.basename(shell)]
 
 
 def from_shell(command):
