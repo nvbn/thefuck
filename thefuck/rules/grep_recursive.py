@@ -1,5 +1,5 @@
 def match(command, settings):
-	return (command.script.startswith('grep')
+    return (command.script.startswith('grep')
             and 'is a directory' in command.stderr.lower())
 
 
