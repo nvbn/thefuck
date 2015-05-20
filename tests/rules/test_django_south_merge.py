@@ -1,11 +1,13 @@
 import pytest
-from thefuck.rules.django_south_ghost import match, get_new_command
+from thefuck.rules.django_south_merge import match, get_new_command
 from tests.utils import Command
 
 
 @pytest.fixture
 def stderr():
-    return '''Traceback (most recent call last):
+    return '''Running migrations for app:
+ ! Migration app:0003_auto... should not have been applied before app:0002_auto__add_field_query_due_date_ but was.
+Traceback (most recent call last):
   File "/home/nvbn/work/.../bin/python", line 42, in <module>
     exec(compile(__file__f.read(), __file__, "exec"))
   File "/home/nvbn/work/.../app/manage.py", line 34, in <module>
@@ -20,23 +22,11 @@ def stderr():
     output = self.handle(*args, **options)
   File "/home/nvbn/work/.../app/lib/south/management/commands/migrate.py", line 108, in handle
     ignore_ghosts = ignore_ghosts,
-  File "/home/nvbn/work/.../app/lib/south/migration/__init__.py", line 193, in migrate_app
-    applied_all = check_migration_histories(applied_all, delete_ghosts, ignore_ghosts)
-  File "/home/nvbn/work/.../app/lib/south/migration/__init__.py", line 88, in check_migration_histories
-    raise exceptions.GhostMigrations(ghosts)
-south.exceptions.GhostMigrations: 
-
- ! These migrations are in the database but not on disk:
-    <app1: 0033_auto__...>
-    <app1: 0034_fill_...>
-    <app1: 0035_rename_...>
-    <app2: 0003_add_...>
-    <app2: 0004_denormalize_...>
-    <app1: 0033_auto....>
-    <app1: 0034_fill...>
- ! I'm not trusting myself; either fix this yourself by fiddling
- ! with the south_migrationhistory table, or pass --delete-ghost-migrations
- ! to South to have it delete ALL of these records (this may not be good).
+  File "/home/nvbn/work/.../app/lib/south/migration/__init__.py", line 207, in migrate_app
+    raise exceptions.InconsistentMigrationHistory(problems)
+south.exceptions.InconsistentMigrationHistory: Inconsistent migration history
+The following options are available:
+    --merge: will just attempt the migration ignoring any potential dependency conflicts.
 '''
 
 
@@ -49,5 +39,5 @@ def test_match(stderr):
 
 
 def test_get_new_command():
-    assert get_new_command(Command('./manage.py migrate auth'), None)\
-        == './manage.py migrate auth --delete-ghost-migrations'
+    assert get_new_command(Command('./manage.py migrate auth'), None) \
+           == './manage.py migrate auth --merge'
