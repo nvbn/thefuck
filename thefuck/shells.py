@@ -161,7 +161,7 @@ def _get_shell():
     try:
         shell = Process(os.getpid()).parent().name()
     except TypeError:
-        shell = Process(os.getpid()).parent.name()
+        shell = Process(os.getpid()).parent.name
     return shells[shell]
 
 
