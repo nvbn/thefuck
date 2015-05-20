@@ -152,6 +152,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
 * `dry` &ndash; fix repetitions like "git git push";
+* `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
 * `git_checkout` &ndash; creates the branch before checking-out;
