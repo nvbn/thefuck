@@ -163,6 +163,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `ls_lah` &ndash; adds -lah to ls;
+* `man` &ndash; change manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
