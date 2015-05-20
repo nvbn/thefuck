@@ -186,4 +186,4 @@ def and_(*commands):
 
 
 def get_aliases():
-    return _get_shell().get_aliases().keys()
+    return list(_get_shell().get_aliases().keys())
