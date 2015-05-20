@@ -11,6 +11,10 @@ def test_match(command):
     assert match(command, None)
 
 
+def test_not_match():
+    assert not match(Command(script='whois'), None)
+
+
 @pytest.mark.parametrize('command, new_command', [
     (Command('whois https://en.wikipedia.org/wiki/Main_Page'), 'whois en.wikipedia.org'),
     (Command('whois https://en.wikipedia.org/'), 'whois en.wikipedia.org'),
