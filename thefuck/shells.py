@@ -1,5 +1,5 @@
 """Module with shell specific actions, each shell class should
-implement `from_shell`, `to_shell`, `app_alias` and `put_to_history`
+implement `from_shell`, `to_shell`, `app_alias`, `put_to_history` and `get_aliases`
 methods.
 
 """
@@ -12,11 +12,11 @@ from .utils import DEVNULL
 
 
 class Generic(object):
-    def _get_aliases(self):
+    def get_aliases(self):
         return {}
 
     def _expand_aliases(self, command_script):
-        aliases = self._get_aliases()
+        aliases = self.get_aliases()
         binary = command_script.split(' ')[0]
         if binary in aliases:
             return command_script.replace(binary, aliases[binary], 1)
@@ -61,7 +61,7 @@ class Bash(Generic):
             value = value[1:-1]
         return name, value
 
-    def _get_aliases(self):
+    def get_aliases(self):
         proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
         return dict(
             self._parse_alias(alias)
@@ -111,7 +111,7 @@ class Zsh(Generic):
             value = value[1:-1]
         return name, value
 
-    def _get_aliases(self):
+    def get_aliases(self):
         proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
         return dict(
             self._parse_alias(alias)
@@ -134,7 +134,7 @@ class Tcsh(Generic):
         name, value = alias.split("\t", 1)
         return name, value
 
-    def _get_aliases(self):
+    def get_aliases(self):
         proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
         return dict(
             self._parse_alias(alias)
@@ -183,3 +183,7 @@ def put_to_history(command):
 
 def and_(*commands):
     return _get_shell().and_(*commands)
+
+
+def get_aliases():
+    return _get_shell().get_aliases().keys()

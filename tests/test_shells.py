@@ -13,19 +13,33 @@ def isfile(mocker):
 
 
 class TestGeneric(object):
-    def test_from_shell(self):
-        assert shells.Generic().from_shell('pwd') == 'pwd'
+    @pytest.fixture
+    def shell(self):
+        return shells.Generic()
 
-    def test_to_shell(self):
-        assert shells.Generic().to_shell('pwd') == 'pwd'
+    def test_from_shell(self, shell):
+        assert shell.from_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open):
-        assert shells.Generic().put_to_history('ls') is None
+    def test_to_shell(self, shell):
+        assert shell.to_shell('pwd') == 'pwd'
+
+    def test_put_to_history(self, builtins_open, shell):
+        assert shell.put_to_history('ls') is None
         assert builtins_open.call_count == 0
+
+    def test_and_(self, shell):
+        assert shell.and_('ls', 'cd') == 'ls && cd'
+
+    def test_get_aliases(self, shell):
+        assert shell.get_aliases() == {}
 
 
 @pytest.mark.usefixtures('isfile')
 class TestBash(object):
+    @pytest.fixture
+    def shell(self):
+        return shells.Bash()
+
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.Popen')
@@ -38,42 +52,61 @@ class TestBash(object):
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),
         ('ll', 'ls -alF')])
-    def test_from_shell(self, before, after):
-        assert shells.Bash().from_shell(before) == after
+    def test_from_shell(self, before, after, shell):
+        assert shell.from_shell(before) == after
 
-    def test_to_shell(self):
-        assert shells.Bash().to_shell('pwd') == 'pwd'
+    def test_to_shell(self, shell):
+        assert shell.to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open):
-        shells.Bash().put_to_history('ls')
+    def test_put_to_history(self, builtins_open, shell):
+        shell.put_to_history('ls')
         builtins_open.return_value.__enter__.return_value. \
             write.assert_called_once_with('ls\n')
+
+    def test_and_(self, shell):
+        assert shell.and_('ls', 'cd') == 'ls && cd'
+
+    def test_get_aliases(self, shell):
+        assert shell.get_aliases() == {'l': 'ls -CF',
+                                       'la': 'ls -A',
+                                       'll': 'ls -alF'}
 
 
 @pytest.mark.usefixtures('isfile')
 class TestFish(object):
+    @pytest.fixture
+    def shell(self):
+        return shells.Fish()
+
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),
         ('ll', 'll')])  # Fish has no aliases but functions
-    def test_from_shell(self, before, after):
-        assert shells.Fish().from_shell(before) == after
+    def test_from_shell(self, before, after, shell):
+        assert shell.from_shell(before) == after
 
-    def test_to_shell(self):
-        assert shells.Fish().to_shell('pwd') == 'pwd'
+    def test_to_shell(self, shell):
+        assert shell.to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open, mocker):
+    def test_put_to_history(self, builtins_open, mocker, shell):
         mocker.patch('thefuck.shells.time',
                      return_value=1430707243.3517463)
-        shells.Fish().put_to_history('ls')
+        shell.put_to_history('ls')
         builtins_open.return_value.__enter__.return_value. \
             write.assert_called_once_with('- cmd: ls\n   when: 1430707243\n')
 
-    def test_and_(self):
-        assert shells.Fish().and_('foo', 'bar') == 'foo; and bar'
+    def test_and_(self, shell):
+        assert shell.and_('foo', 'bar') == 'foo; and bar'
+
+    def test_get_aliases(self, shell):
+        assert shell.get_aliases() == {}
 
 
 @pytest.mark.usefixtures('isfile')
 class TestZsh(object):
+    @pytest.fixture
+    def shell(self):
+        return shells.Zsh()
+
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.Popen')
@@ -86,15 +119,23 @@ class TestZsh(object):
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),
         ('ll', 'ls -alF')])
-    def test_from_shell(self, before, after):
-        assert shells.Zsh().from_shell(before) == after
+    def test_from_shell(self, before, after, shell):
+        assert shell.from_shell(before) == after
 
-    def test_to_shell(self):
-        assert shells.Zsh().to_shell('pwd') == 'pwd'
+    def test_to_shell(self, shell):
+        assert shell.to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open, mocker):
+    def test_put_to_history(self, builtins_open, mocker, shell):
         mocker.patch('thefuck.shells.time',
                      return_value=1430707243.3517463)
-        shells.Zsh().put_to_history('ls')
+        shell.put_to_history('ls')
         builtins_open.return_value.__enter__.return_value. \
             write.assert_called_once_with(': 1430707243:0;ls\n')
+
+    def test_and_(self, shell):
+        assert shell.and_('ls', 'cd') == 'ls && cd'
+
+    def test_get_aliases(self, shell):
+        assert shell.get_aliases() == {'l': 'ls -CF',
+                                       'la': 'ls -A',
+                                       'll': 'ls -alF'}
