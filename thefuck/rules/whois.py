@@ -19,7 +19,7 @@ def match(command, settings):
         - www.google.fr → subdomain: www, domain: 'google.fr';
         - google.co.uk → subdomain: None, domain; 'google.co.uk'.
     """
-    return 'whois' in command.script
+    return 'whois' in command.script and len(command.script.split()) > 1
 
 
 def get_new_command(command, settings):
