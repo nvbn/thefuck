@@ -1,5 +1,5 @@
 def match(command, settings):
-    return command.script.startswith('man')
+    return command.script.strip().startswith('man ')
 
 
 def get_new_command(command, settings):
