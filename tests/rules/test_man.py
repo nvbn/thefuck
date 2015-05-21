@@ -2,6 +2,7 @@ import pytest
 from thefuck.rules.man import match, get_new_command
 from tests.utils import Command
 
+
 @pytest.mark.parametrize('command', [
     Command('man read'),
     Command('man 2 read'),
@@ -12,6 +13,13 @@ from tests.utils import Command
     Command('man -s 3 read')])
 def test_match(command):
     assert match(command, None)
+
+
+@pytest.mark.parametrize('command', [
+    Command('man'),
+    Command('man ')])
+def test_not_match(command):
+    assert not match(command, None)
 
 
 @pytest.mark.parametrize('command, new_command', [
