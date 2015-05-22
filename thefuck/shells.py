@@ -12,8 +12,10 @@ from .utils import DEVNULL
 
 
 class Generic(object):
+    _aliases = {}
+
     def get_aliases(self):
-        return {}
+        return self._aliases
 
     def _expand_aliases(self, command_script):
         aliases = self.get_aliases()
@@ -62,11 +64,15 @@ class Bash(Generic):
         return name, value
 
     def get_aliases(self):
-        proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
-        return dict(
-            self._parse_alias(alias)
-            for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias and '=' in alias)
+        if not self._aliases:
+            proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL,
+                         shell=True)
+            self._aliases = dict(
+                self._parse_alias(alias)
+                for alias in proc.stdout.read().decode('utf-8').split('\n')
+                if alias and '=' in alias)
+
+        return self._aliases
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -112,11 +118,15 @@ class Zsh(Generic):
         return name, value
 
     def get_aliases(self):
-        proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
-        return dict(
-            self._parse_alias(alias)
-            for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias and '=' in alias)
+        if not self._aliases:
+            proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL,
+                         shell=True)
+            self._aliases = dict(
+                self._parse_alias(alias)
+                for alias in proc.stdout.read().decode('utf-8').split('\n')
+                if alias and '=' in alias)
+
+        return self._aliases
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -135,11 +145,15 @@ class Tcsh(Generic):
         return name, value
 
     def get_aliases(self):
-        proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL, shell=True)
-        return dict(
-            self._parse_alias(alias)
-            for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias and '\t' in alias)
+        if not self._aliases:
+            proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL,
+                         shell=True)
+            self._aliases = dict(
+                self._parse_alias(alias)
+                for alias in proc.stdout.read().decode('utf-8').split('\n')
+                if alias and '\t' in alias)
+
+        return self._aliases
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
