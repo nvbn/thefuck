@@ -78,6 +78,12 @@ class TestFish(object):
     def shell(self):
         return shells.Fish()
 
+    @pytest.fixture(autouse=True)
+    def Popen(self, mocker):
+        mock = mocker.patch('thefuck.shells.Popen')
+        mock.return_value.stdout.read.return_value = (b'funced\nfuncsave\ngrep')
+        return mock
+
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),
         ('ll', 'll')])  # Fish has no aliases but functions
@@ -98,7 +104,9 @@ class TestFish(object):
         assert shell.and_('foo', 'bar') == 'foo; and bar'
 
     def test_get_aliases(self, shell):
-        assert shell.get_aliases() == {}
+        assert shell.get_aliases() == {'funced': 'funced',
+                                       'funcsave': 'funcsave',
+                                       'grep': 'grep'}
 
 
 @pytest.mark.usefixtures('isfile')

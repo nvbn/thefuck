@@ -97,6 +97,15 @@ class Fish(Generic):
                 "    end\n"
                 "end")
 
+    def get_aliases(self):
+        if not self._aliases:
+            proc = Popen('fish -ic functions', stdout=PIPE, stderr=DEVNULL,
+                         shell=True)
+            functions = proc.stdout.read().decode('utf-8').strip().split('\n')
+            self._aliases = dict((function, function) for function in functions)
+
+        return self._aliases
+
     def _get_history_file_name(self):
         return os.path.expanduser('~/.config/fish/fish_history')
 
