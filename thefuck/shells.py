@@ -8,14 +8,13 @@ from subprocess import Popen, PIPE
 from time import time
 import os
 from psutil import Process
-from .utils import DEVNULL
+from .utils import DEVNULL, memoize
 
 
 class Generic(object):
-    _aliases = {}
 
     def get_aliases(self):
-        return self._aliases
+        return {}
 
     def _expand_aliases(self, command_script):
         aliases = self.get_aliases()
@@ -63,16 +62,14 @@ class Bash(Generic):
             value = value[1:-1]
         return name, value
 
+    @memoize
     def get_aliases(self):
-        if not self._aliases:
-            proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL,
-                         shell=True)
-            self._aliases = dict(
-                self._parse_alias(alias)
-                for alias in proc.stdout.read().decode('utf-8').split('\n')
-                if alias and '=' in alias)
-
-        return self._aliases
+        proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL,
+                     shell=True)
+        return dict(
+            self._parse_alias(alias)
+            for alias in proc.stdout.read().decode('utf-8').split('\n')
+            if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -97,14 +94,12 @@ class Fish(Generic):
                 "    end\n"
                 "end")
 
+    @memoize
     def get_aliases(self):
-        if not self._aliases:
-            proc = Popen('fish -ic functions', stdout=PIPE, stderr=DEVNULL,
-                         shell=True)
-            functions = proc.stdout.read().decode('utf-8').strip().split('\n')
-            self._aliases = dict((function, function) for function in functions)
-
-        return self._aliases
+        proc = Popen('fish -ic functions', stdout=PIPE, stderr=DEVNULL,
+                     shell=True)
+        functions = proc.stdout.read().decode('utf-8').strip().split('\n')
+        return {function: function for function in functions}
 
     def _get_history_file_name(self):
         return os.path.expanduser('~/.config/fish/fish_history')
@@ -126,16 +121,14 @@ class Zsh(Generic):
             value = value[1:-1]
         return name, value
 
+    @memoize
     def get_aliases(self):
-        if not self._aliases:
-            proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL,
-                         shell=True)
-            self._aliases = dict(
-                self._parse_alias(alias)
-                for alias in proc.stdout.read().decode('utf-8').split('\n')
-                if alias and '=' in alias)
-
-        return self._aliases
+        proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL,
+                     shell=True)
+        return dict(
+            self._parse_alias(alias)
+            for alias in proc.stdout.read().decode('utf-8').split('\n')
+            if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -153,16 +146,14 @@ class Tcsh(Generic):
         name, value = alias.split("\t", 1)
         return name, value
 
+    @memoize
     def get_aliases(self):
-        if not self._aliases:
-            proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL,
-                         shell=True)
-            self._aliases = dict(
-                self._parse_alias(alias)
-                for alias in proc.stdout.read().decode('utf-8').split('\n')
-                if alias and '\t' in alias)
-
-        return self._aliases
+        proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL,
+                     shell=True)
+        return dict(
+            self._parse_alias(alias)
+            for alias in proc.stdout.read().decode('utf-8').split('\n')
+            if alias and '\t' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",

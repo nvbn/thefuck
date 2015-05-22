@@ -1,5 +1,6 @@
 from functools import wraps
 import os
+import pickle
 import six
 from .types import Command
 
@@ -62,3 +63,19 @@ def sudo_support(fn):
         else:
             return result
     return wrapper
+
+
+def memoize(fn):
+    """Caches previous calls to the function."""
+    memo = {}
+
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        key = pickle.dumps((args, kwargs))
+        if key not in memo:
+            memo[key] = fn(*args, **kwargs)
+
+        return memo[key]
+
+    return wrapper
+
