@@ -170,6 +170,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
+* `open` &ndash; prepends `http` to address passed to `open`;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
