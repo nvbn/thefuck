@@ -79,7 +79,8 @@ def get_command(settings, args):
         return
 
     script = shells.from_shell(script)
-    result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
+    system_shell = os.environ.get("SHELL")
+    result = Popen(script, shell=True, executable=system_shell, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
         return types.Command(script, result.stdout.read().decode('utf-8'),
