@@ -81,12 +81,19 @@ class TestFish(object):
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.Popen')
-        mock.return_value.stdout.read.return_value = (b'funced\nfuncsave\ngrep')
+        mock.return_value.stdout.read.return_value = (
+            b'fish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nmath')
         return mock
 
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),
-        ('ll', 'll')])  # Fish has no aliases but functions
+        ('fuck', 'fish -ic "fuck"'),
+        ('find', 'find'),
+        ('funced', 'fish -ic "funced"'),
+        ('awk', 'awk'),
+        ('math "2 + 2"', r'fish -ic "math \"2 + 2\""'),
+        ('vim', 'vim'),
+        ('ll', 'fish -ic "ll"')])  # Fish has no aliases but functions
     def test_from_shell(self, before, after, shell):
         assert shell.from_shell(before) == after
 
@@ -104,9 +111,14 @@ class TestFish(object):
         assert shell.and_('foo', 'bar') == 'foo; and bar'
 
     def test_get_aliases(self, shell):
-        assert shell.get_aliases() == {'funced': 'funced',
+        assert shell.get_aliases() == {'fish_config': 'fish_config',
+                                       'fuck': 'fuck',
+                                       'funced': 'funced',
                                        'funcsave': 'funcsave',
-                                       'grep': 'grep'}
+                                       'grep': 'grep',
+                                       'history': 'history',
+                                       'll': 'll',
+                                       'math': 'math'}
 
 
 @pytest.mark.usefixtures('isfile')
