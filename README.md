@@ -155,6 +155,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
+* `java` &ndash; removes `.java` extension when running Java programs
 * `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
 * `git_checkout` &ndash; creates the branch before checking-out;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
