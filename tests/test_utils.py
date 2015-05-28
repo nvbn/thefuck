@@ -1,6 +1,6 @@
 import pytest
 from mock import Mock
-from thefuck.utils import sudo_support, wrap_settings
+from thefuck.utils import sudo_support, wrap_settings, memoize
 from thefuck.types import Settings
 from tests.utils import Command
 
@@ -24,3 +24,11 @@ def test_sudo_support(return_value, command, called, result):
     fn = Mock(return_value=return_value, __name__='')
     assert sudo_support(fn)(Command(command), None) == result
     fn.assert_called_once_with(Command(called), None)
+
+
+def test_memoize():
+    fn = Mock(__name__='fn')
+    memoized = memoize(fn)
+    memoized()
+    memoized()
+    fn.assert_called_once_with()

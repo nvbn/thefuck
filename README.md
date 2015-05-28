@@ -118,6 +118,11 @@ Or in your `.zshrc`:
 alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
 ```
 
+If you are using `tcsh`:
+```tcsh
+alias fuck 'set fucked_cmd=`history -h 2 | head -n 1` && eval `thefuck ${fucked_cmd}`'
+```
+
 Alternatively, you can redirect the output of `thefuck-alias`:
 
 ```bash
@@ -140,37 +145,50 @@ sudo pip install thefuck --upgrade
 The Fuck tries to match a rule for the previous command, creates a new command
 using the matched rule and runs it. Rules enabled by default are as follows:
 
-* `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
-* `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
-* `cd_parent` &ndash; changes `cd..` to `cd ..`;
+* `cd_correction` &ndash; spellchecks and correct failed cd commands;
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
+* `cd_parent` &ndash; changes `cd..` to `cd ..`;
+* `composer_not_command` &ndash; fixes composer command name;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
+* `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
 * `dry` &ndash; fix repetitions like "git git push";
+* `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
+* `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
 * `git_checkout` &ndash; creates the branch before checking-out;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
+* `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
+* `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
+* `grep_recursive` &ndash; adds `-r` when you trying to grep directory; 
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
+* `ls_lah` &ndash; adds -lah to ls;
+* `man` &ndash; change manual section;
+* `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
-* `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
-* `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed;
+* `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
+* `open` &ndash; prepends `http` to address passed to `open`;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
-* `sl_ls` &ndash; changes `sl` to `ls`;
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
+* `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
 * `switch_layout` &ndash; switches command from your local layout to en;
+* `whois` &ndash; fixes `whois` command.
+
+Enabled by default only on specific platforms:
+
 * `apt_get` &ndash; installs app from apt if it not installed;
 * `brew_install` &ndash; fixes formula name for `brew install`;
-* `composer_not_command` &ndash; fixes composer command name.
+* `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
+* `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed.
 
 Bundled, but not enabled by default:
 
-* `ls_lah` &ndash; adds -lah to ls;
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
 ## Creating your own rules
