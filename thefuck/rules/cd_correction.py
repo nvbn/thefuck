@@ -47,7 +47,7 @@ def get_new_command(command, settings):
             cwd = os.path.join(cwd, best_matches[0])
         else:
             return cd_mkdir.get_new_command(command, settings)
-    return "cd {0}".format(cwd)
+    return 'cd "{0}"'.format(cwd)
 
 
 enabled_by_default = True
