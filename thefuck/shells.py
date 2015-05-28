@@ -101,6 +101,18 @@ class Fish(Generic):
         functions = proc.stdout.read().decode('utf-8').strip().split('\n')
         return {function: function for function in functions}
 
+    def _expand_aliases(self, command_script):
+        aliases = self.get_aliases()
+        binary = command_script.split(' ')[0]
+        if binary in aliases:
+            return 'fish -ic "{}"'.format(command_script.replace('"', r'\"'))
+        else:
+            return command_script
+
+    def from_shell(self, command_script):
+        """Prepares command before running in app."""
+        return self._expand_aliases(command_script)
+
     def _get_history_file_name(self):
         return os.path.expanduser('~/.config/fish/fish_history')
 
