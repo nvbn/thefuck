@@ -1,11 +1,12 @@
 from thefuck import shells
+from thefuck.utils import sudo_support
 
 try:
     import CommandNotFound
 except ImportError:
     enabled_by_default = False
 
-
+@sudo_support
 def match(command, settings):
     if 'not found' in command.stderr:
         try:
@@ -17,7 +18,7 @@ def match(command, settings):
             # IndexError is thrown when no matching package is found
             return False
 
-
+@sudo_support
 def get_new_command(command, settings):
     c = CommandNotFound.CommandNotFound()
     pkgs = c.getPackages(command.script.split(" ")[0])
