@@ -179,6 +179,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `open` &ndash; prepends `http` to address passed to `open`;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
+* `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args'
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
