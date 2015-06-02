@@ -190,6 +190,7 @@ Enabled by default only on specific platforms:
 * `apt_get` &ndash; installs app from apt if it not installed;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
+* `brew_upgrade` &ndash; appends `-all` to `brew upgrade` as per Homebrew's new behaviour
 * `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed.
 
 Bundled, but not enabled by default:
