@@ -158,6 +158,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
+* `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; creates the branch before checking-out;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
