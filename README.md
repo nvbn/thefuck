@@ -166,6 +166,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
+* `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to grep directory; 
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
