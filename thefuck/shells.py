@@ -49,7 +49,7 @@ class Generic(object):
                 history.write(self._get_history_line(command_script))
 
     def and_(self, *commands):
-        return ' && '.join(commands)
+        return u' && '.join(commands)
 
 
 class Bash(Generic):
@@ -105,7 +105,7 @@ class Fish(Generic):
         aliases = self.get_aliases()
         binary = command_script.split(' ')[0]
         if binary in aliases:
-            return 'fish -ic "{}"'.format(command_script.replace('"', r'\"')).encode('utf8')
+            return u'fish -ic "{}"'.format(command_script.replace('"', r'\"'))
         else:
             return command_script
 
@@ -120,7 +120,7 @@ class Fish(Generic):
         return u'- cmd: {}\n   when: {}\n'.format(command_script, int(time()))
 
     def and_(self, *commands):
-        return '; and '.join(commands)
+        return u'; and '.join(commands)
 
 
 class Zsh(Generic):
