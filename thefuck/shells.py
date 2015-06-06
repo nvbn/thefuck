@@ -105,7 +105,7 @@ class Fish(Generic):
         aliases = self.get_aliases()
         binary = command_script.split(' ')[0]
         if binary in aliases:
-            return 'fish -ic "{}"'.format(command_script.replace('"', r'\"'))
+            return 'fish -ic "{}"'.format(command_script.replace('"', r'\"')).encode('utf8')
         else:
             return command_script
 
