@@ -146,7 +146,8 @@ sudo pip install thefuck --upgrade
 The Fuck tries to match a rule for the previous command, creates a new command
 using the matched rule and runs it. Rules enabled by default are as follows:
 
-* `cargo` &ndash; run `cargo build` instead of `cargo`;
+* `cargo` &ndash; runs `cargo build` instead of `cargo`;
+* `cargo_no_command` &ndash; fixes wrongs commands like `cargo buid`;
 * `cd_correction` &ndash; spellchecks and correct failed cd commands;
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
