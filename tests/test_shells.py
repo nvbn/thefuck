@@ -33,6 +33,11 @@ class TestGeneric(object):
     def test_get_aliases(self, shell):
         assert shell.get_aliases() == {}
 
+    def test_app_alias(self, shell):
+        assert 'alias fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
+
 
 @pytest.mark.usefixtures('isfile')
 class TestBash(object):
@@ -74,6 +79,11 @@ class TestBash(object):
                                        'l': 'ls -CF',
                                        'la': 'ls -A',
                                        'll': 'ls -alF'}
+
+    def test_app_alias(self, shell):
+        assert 'alias fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
 
 
 @pytest.mark.usefixtures('isfile')
@@ -124,6 +134,11 @@ class TestFish(object):
                                        'll': 'll',
                                        'math': 'math'}
 
+    def test_app_alias(self, shell):
+        assert 'function fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
+
 
 @pytest.mark.usefixtures('isfile')
 class TestZsh(object):
@@ -167,3 +182,8 @@ class TestZsh(object):
             'l': 'ls -CF',
             'la': 'ls -A',
             'll': 'ls -alF'}
+
+    def test_app_alias(self, shell):
+        assert 'alias fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
