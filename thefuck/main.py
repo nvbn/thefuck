@@ -62,7 +62,7 @@ def wait_output(settings, popen):
         proc.wait(settings.wait_command)
         return True
     except TimeoutExpired:
-        for child in proc.get_children(recursive=True):
+        for child in proc.children(recursive=True):
             child.kill()
         proc.kill()
         return False
