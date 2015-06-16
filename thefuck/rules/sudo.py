@@ -12,10 +12,8 @@ patterns = ['permission denied',
             'must be run as root',
             'must be superuser',
             'must be root',
-            # wow, case-sensitive
             'need to be root',
             'need root',
-            'Need to be root',
             'you must be root to run this program.',
             'only root can do that']
 
