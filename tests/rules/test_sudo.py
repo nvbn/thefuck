@@ -8,6 +8,9 @@ from tests.utils import Command
     ('permission denied', ''),
     ("npm ERR! Error: EACCES, unlink", ''),
     ('requested operation requires superuser privilege', ''),
+    ('need to be root', ''),
+    ('need root', ''),
+    ('must be root', ''),
     ('', "error: [Errno 13] Permission denied: '/usr/local/lib/python2.7/dist-packages/ipaddr.py'")])
 def test_match(stderr, stdout):
     assert match(Command(stderr=stderr, stdout=stdout), None)
