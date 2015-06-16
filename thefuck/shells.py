@@ -54,7 +54,8 @@ class Generic(object):
 
 class Bash(Generic):
     def app_alias(self):
-        return "\nalias fuck='TF_ALIAS=fuck eval $(thefuck $(fc -ln -1)); history -r'\n"
+        return "\nTF_ALIAS=fuck alias fuck='eval $(thefuck $(fc -ln -1));" \
+               " history -r'\n"
 
     def _parse_alias(self, alias):
         name, value = alias.replace('alias ', '', 1).split('=', 1)
@@ -126,7 +127,9 @@ class Fish(Generic):
 
 class Zsh(Generic):
     def app_alias(self):
-        return "\nalias fuck='TF_ALIAS=fuck eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'\n"
+        return "\nTF_ALIAS=fuck" \
+               " alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1));" \
+               " fc -R'\n"
 
     def _parse_alias(self, alias):
         name, value = alias.split('=', 1)
