@@ -33,6 +33,11 @@ class TestGeneric(object):
     def test_get_aliases(self, shell):
         assert shell.get_aliases() == {}
 
+    def test_app_alias(self, shell):
+        assert 'alias fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
+
 
 @pytest.mark.usefixtures('isfile')
 class TestBash(object):
@@ -44,6 +49,7 @@ class TestBash(object):
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.Popen')
         mock.return_value.stdout.read.return_value = (
+            b'alias fuck=\'eval $(thefuck $(fc -ln -1))\'\n'
             b'alias l=\'ls -CF\'\n'
             b'alias la=\'ls -A\'\n'
             b'alias ll=\'ls -alF\'')
@@ -51,6 +57,8 @@ class TestBash(object):
 
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),
+        ('fuck', 'eval $(thefuck $(fc -ln -1))'),
+        ('awk', 'awk'),
         ('ll', 'ls -alF')])
     def test_from_shell(self, before, after, shell):
         assert shell.from_shell(before) == after
@@ -67,9 +75,15 @@ class TestBash(object):
         assert shell.and_('ls', 'cd') == 'ls && cd'
 
     def test_get_aliases(self, shell):
-        assert shell.get_aliases() == {'l': 'ls -CF',
+        assert shell.get_aliases() == {'fuck': 'eval $(thefuck $(fc -ln -1))',
+                                       'l': 'ls -CF',
                                        'la': 'ls -A',
                                        'll': 'ls -alF'}
+
+    def test_app_alias(self, shell):
+        assert 'alias fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
 
 
 @pytest.mark.usefixtures('isfile')
@@ -120,6 +134,11 @@ class TestFish(object):
                                        'll': 'll',
                                        'math': 'math'}
 
+    def test_app_alias(self, shell):
+        assert 'function fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
+
 
 @pytest.mark.usefixtures('isfile')
 class TestZsh(object):
@@ -131,12 +150,14 @@ class TestZsh(object):
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.Popen')
         mock.return_value.stdout.read.return_value = (
+            b'fuck=\'eval $(thefuck $(fc -ln -1 | tail -n 1))\'\n'
             b'l=\'ls -CF\'\n'
             b'la=\'ls -A\'\n'
             b'll=\'ls -alF\'')
         return mock
 
     @pytest.mark.parametrize('before, after', [
+        ('fuck', 'eval $(thefuck $(fc -ln -1 | tail -n 1))'),
         ('pwd', 'pwd'),
         ('ll', 'ls -alF')])
     def test_from_shell(self, before, after, shell):
@@ -156,6 +177,13 @@ class TestZsh(object):
         assert shell.and_('ls', 'cd') == 'ls && cd'
 
     def test_get_aliases(self, shell):
-        assert shell.get_aliases() == {'l': 'ls -CF',
-                                       'la': 'ls -A',
-                                       'll': 'ls -alF'}
+        assert shell.get_aliases() == {
+            'fuck': 'eval $(thefuck $(fc -ln -1 | tail -n 1))',
+            'l': 'ls -CF',
+            'la': 'ls -A',
+            'll': 'ls -alF'}
+
+    def test_app_alias(self, shell):
+        assert 'alias fuck' in shell.app_alias()
+        assert 'thefuck' in shell.app_alias()
+        assert 'TF_ALIAS' in shell.app_alias()
