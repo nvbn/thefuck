@@ -1,3 +1,6 @@
+from thefuck import shells
+
+
 def match(command, settings):
     return ('git' in command.script
             and 'pull' in command.script
@@ -9,4 +12,4 @@ def get_new_command(command, settings):
     branch = line.split(' ')[-1]
     set_upstream = line.replace('<remote>', 'origin')\
                        .replace('<branch>', branch)
-    return u'{} && {}'.format(set_upstream, command.script)
+    return shells.and_(set_upstream, command.script)
