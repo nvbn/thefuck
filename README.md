@@ -181,7 +181,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `open` &ndash; prepends `http` to address passed to `open`;
 * `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
-* `python_compile` &ndash; appends missing `.py` when compiling and running Python files;
+* `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args'
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
 * `sl_ls` &ndash; changes `sl` to `ls`;

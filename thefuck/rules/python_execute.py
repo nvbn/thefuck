@@ -1,4 +1,4 @@
-# Appends .py when compiling python files
+# Appends .py when executing python files
 #
 # Example:
 # > python foo

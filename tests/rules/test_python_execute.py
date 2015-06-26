@@ -1,5 +1,5 @@
 import pytest
-from thefuck.rules.python_compile import match, get_new_command
+from thefuck.rules.python_execute import match, get_new_command
 from tests.utils import Command
 
 
