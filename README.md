@@ -154,12 +154,10 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `composer_not_command` &ndash; fixes composer command name;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
-* `dry` &ndash; fix repetitions like "git git push";
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
+* `dry` &ndash; fix repetitions like "git git push";
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
-* `javac` &ndash; appends missing `.java` when compiling Java files;
-* `java` &ndash; removes `.java` extension when running Java programs;
 * `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; creates the branch before checking-out;
@@ -171,6 +169,8 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to grep directory;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
+* `java` &ndash; removes `.java` extension when running Java programs;
+* `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `ls_lah` &ndash; adds -lah to ls;
 * `man` &ndash; change manual section;
