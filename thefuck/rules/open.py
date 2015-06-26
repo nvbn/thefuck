@@ -8,7 +8,7 @@
 
 
 def match(command, settings):
-    return (command.script.startswith('open')
+    return (command.script.startswith(('open', 'xdg-open', 'gnome-open', 'kde-open'))
             and (
                 '.com' in command.script
                 or '.net' in command.script
