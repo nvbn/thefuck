@@ -211,7 +211,7 @@ in `~/.thefuck/rules`. Rule should contain two functions:
 and `get_new_command(command: Command, settings: Settings) -> str`.
 Also the rule can contain optional function
 `side_effect(command: Command, settings: Settings) -> None` and
-optional boolean `enabled_by_default`
+optional boolean `enabled_by_default`.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
