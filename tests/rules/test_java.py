@@ -4,14 +4,14 @@ from tests.utils import Command
 
 
 @pytest.mark.parametrize('command', [
-	Command(script='java foo.java'),
-	Command(script='java bar.java')])
+    Command(script='java foo.java'),
+    Command(script='java bar.java')])
 def test_match(command):
-	assert match(command, None)
+    assert match(command, None)
 
 
 @pytest.mark.parametrize('command, new_command', [
-	(Command('java foo.java'), 'java foo'),
-	(Command('java bar.java'), 'java bar')])
+    (Command('java foo.java'), 'java foo'),
+    (Command('java bar.java'), 'java bar')])
 def test_get_new_command(command, new_command):
-	assert get_new_command(command, None) == new_command
+    assert get_new_command(command, None) == new_command
