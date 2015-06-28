@@ -1,12 +1,21 @@
 import subprocess
 from thefuck.utils import DEVNULL, which
 from thefuck import shells
+from thefuck.utils import memoize
 
 
+@memoize
 def __get_pkgfile(command):
     try:
+        command = command.script
+
+        if command.startswith('sudo'):
+            command = command[5:]
+
+        command = command.split(" ")[0]
+
         return subprocess.check_output(
-            ['pkgfile', '-b', '-v', command.script.split(" ")[0]],
+            ['pkgfile', '-b', '-v', command],
             universal_newlines=True, stderr=DEVNULL
         ).split()
     except subprocess.CalledProcessError:
