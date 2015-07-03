@@ -1,5 +1,7 @@
 def match(command, settings):
-    return 'ls' in command.script and not ('ls -' in command.script)
+    return (command.script == 'ls'
+            or command.script.startswith('ls ')
+            and not ('ls -' in command.script))
 
 
 def get_new_command(command, settings):
