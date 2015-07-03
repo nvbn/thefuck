@@ -1,4 +1,10 @@
-pytest
-mock
-pytest-mock
-wheel
+colorama==0.3.3
+mock==1.0.1
+pathlib==1.0.1
+psutil==3.0.1
+py==1.4.30
+pytest==2.7.2
+pytest-mock==0.6.0
+six==1.9.0
+wheel==0.24.0
+wsgiref==0.1.2
