@@ -7,7 +7,7 @@ VERSION = '1.46'
 install_requires = ['psutil', 'colorama', 'six']
 
 if sys.version_info < (3,4):
-    deps.append('pathlib')
+    install_requires.append('pathlib')
 
 setup(name='thefuck',
       version=VERSION,
