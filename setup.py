@@ -4,7 +4,7 @@ import sys
 
 VERSION = '1.46'
 
-deps = ['psutil', 'colorama', 'six']
+install_requires = ['psutil', 'colorama', 'six']
 
 if sys.version_info < (3,4):
     deps.append('pathlib')
@@ -20,7 +20,7 @@ setup(name='thefuck',
                                       'tests', 'release']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=deps,
+      install_requires=install_requires,
       entry_points={'console_scripts': [
           'thefuck = thefuck.main:main',
           'thefuck-alias = thefuck.shells:app_alias']})
