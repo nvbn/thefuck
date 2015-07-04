@@ -184,6 +184,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args'
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
+* `sed` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
