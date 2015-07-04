@@ -7,4 +7,3 @@ pytest==2.7.2
 pytest-mock==0.6.0
 six==1.9.0
 wheel==0.24.0
-wsgiref==0.1.2
