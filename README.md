@@ -189,7 +189,8 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
 * `switch_layout` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing systemctl;
-* `test.py` &ndasg; runs `py.test` instead of `test.py`;
+* `test.py` &ndash; runs `py.test` instead of `test.py`;
+* `tmux` &ndash; fixes tmux commands;
 * `whois` &ndash; fixes `whois` command.
 
 Enabled by default only on specific platforms:
