@@ -7,6 +7,13 @@ from .types import Command
 
 DEVNULL = open(os.devnull, 'w')
 
+if six.PY2:
+    import pipes
+    quote = pipes.quote
+else:
+    import shlex
+    quote = shlex.quote
+
 
 def which(program):
     """Returns `program` path or `None`."""
