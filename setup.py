@@ -1,5 +1,18 @@
+#!/usr/bin/env python
+import sys
 from setuptools import setup, find_packages
 
+if sys.version_info[0] == 2 and sys.version_info[1] < 7:
+    print(
+      'thefuck requires Python version 2.7 or later' +
+      ' ({}.{} detected).'.format(*sys.version_info[:2]))
+    sys.exit(-1)
+
+if sys.version_info[0] == 3 and sys.version_info[1] < 3:
+    print(
+      'thefuck requires Python version 3.3 or later' +
+      ' ({}.{} detected).'.format(*sys.version_info[:2]))
+    sys.exit(-1)
 
 VERSION = '1.46'
 
