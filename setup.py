@@ -11,7 +11,7 @@ elif (3, 0) < sys.version_info < (3, 3):
           ' ({}.{} detected).'.format(*sys.version_info[:2]))
     sys.exit(-1)
 
-VERSION = '1.46'
+VERSION = '1.47'
 
 install_requires = ['psutil', 'colorama', 'six']
 
