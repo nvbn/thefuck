@@ -1,3 +1,4 @@
+from difflib import get_close_matches
 from functools import wraps
 import os
 import pickle
@@ -85,3 +86,12 @@ def memoize(fn):
         return memo[key]
 
     return wrapper
+
+
+def get_closest(word, possibilities, n=3, cutoff=0.6):
+    """Returns closest match or just first from possibilities."""
+    possibilities = list(possibilities)
+    try:
+        return get_close_matches(word, possibilities, n, cutoff)[0]
+    except IndexError:
+        return possibilities[0]

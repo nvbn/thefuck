@@ -1,9 +1,10 @@
-import difflib
 import os
 import re
 from subprocess import check_output
+from thefuck.utils import get_closest
 
 # Formulars are base on each local system's status
+
 brew_formulas = []
 try:
     brew_path_prefix = check_output(['brew', '--prefix'],
@@ -17,8 +18,8 @@ except:
     pass
 
 
-def _get_similar_formulars(formula_name):
-    return difflib.get_close_matches(formula_name, brew_formulas, 1, 0.85)
+def _get_similar_formula(formula_name):
+    return get_closest(formula_name, brew_formulas, 1, 0.85)
 
 
 def match(command, settings):
@@ -29,7 +30,7 @@ def match(command, settings):
     if is_proper_command:
         formula = re.findall(r'Error: No available formula for ([a-z]+)',
                              command.stderr)[0]
-        has_possible_formulas = len(_get_similar_formulars(formula)) > 0
+        has_possible_formulas = bool(_get_similar_formula(formula))
 
     return has_possible_formulas
 
@@ -37,6 +38,6 @@ def match(command, settings):
 def get_new_command(command, settings):
     not_exist_formula = re.findall(r'Error: No available formula for ([a-z]+)',
                                    command.stderr)[0]
-    exist_formula = _get_similar_formulars(not_exist_formula)[0]
+    exist_formula = _get_similar_formula(not_exist_formula)
 
     return command.script.replace(not_exist_formula, exist_formula, 1)

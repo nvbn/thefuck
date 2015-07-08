@@ -1,6 +1,6 @@
 import pytest
 from mock import Mock
-from thefuck.utils import sudo_support, wrap_settings, memoize
+from thefuck.utils import sudo_support, wrap_settings, memoize, get_closest
 from thefuck.types import Settings
 from tests.utils import Command
 
@@ -32,3 +32,12 @@ def test_memoize():
     memoized()
     memoized()
     fn.assert_called_once_with()
+
+
+class TestGetClosest(object):
+
+    def test_when_can_match(self):
+        assert 'branch' == get_closest('brnch', ['branch', 'status'])
+
+    def test_when_cant_match(self):
+        assert 'status' == get_closest('st', ['status', 'reset'])

@@ -1,6 +1,5 @@
 import re
-
-from difflib import get_close_matches
+from thefuck.utils import get_closest
 
 
 def extract_possisiblities(command):
@@ -26,9 +25,5 @@ def match(command, settings):
 def get_new_command(command, settings):
     script = command.script.split(' ')
     possisiblities = extract_possisiblities(command)
-    matches = get_close_matches(script[1], possisiblities)
-    if matches:
-        script[1] = matches[0]
-    else:
-        script[1] = possisiblities[0]
+    script[1] = get_closest(script[1], possisiblities)
     return ' '.join(script)

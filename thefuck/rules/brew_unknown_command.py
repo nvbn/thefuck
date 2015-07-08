@@ -1,8 +1,7 @@
-import difflib
 import os
 import re
 import subprocess
-
+from thefuck.utils import get_closest
 
 BREW_CMD_PATH = '/Library/Homebrew/cmd'
 TAP_PATH = '/Library/Taps'
@@ -78,8 +77,8 @@ if brew_path_prefix:
         pass
 
 
-def _get_similar_commands(command):
-    return difflib.get_close_matches(command, brew_commands)
+def _get_similar_command(command):
+    return get_closest(command, brew_commands)
 
 
 def match(command, settings):
@@ -90,7 +89,7 @@ def match(command, settings):
     if is_proper_command:
         broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
                                 command.stderr)[0]
-        has_possible_commands = len(_get_similar_commands(broken_cmd)) > 0
+        has_possible_commands = bool(_get_similar_command(broken_cmd))
 
     return has_possible_commands
 
@@ -98,6 +97,6 @@ def match(command, settings):
 def get_new_command(command, settings):
     broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
                             command.stderr)[0]
-    new_cmd = _get_similar_commands(broken_cmd)[0]
+    new_cmd = _get_similar_command(broken_cmd)
 
     return command.script.replace(broken_cmd, new_cmd, 1)
