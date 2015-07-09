@@ -13,7 +13,8 @@ patterns = ['permission denied',
             'must be root',
             'need to be root',
             'need root',
-            'only root can do that']
+            'only root can do that',
+            'authentication is required']
 
 
 def match(command, settings):
