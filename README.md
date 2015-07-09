@@ -175,6 +175,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `ls_lah` &ndash; adds -lah to ls;
 * `man` &ndash; change manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
+* `mercurial` &ndash; fixes wrong `hg` commands;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
