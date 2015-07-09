@@ -6,4 +6,8 @@ python:
 install:
   - python setup.py develop
   - pip install -r requirements.txt
-script: py.test -v
+  - pip install coveralls
+script:
+    coverage run --source=thefuck,tests -m py.test -v
+after_success:
+    coveralls
