@@ -176,6 +176,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `ls_lah` &ndash; adds -lah to ls;
 * `man` &ndash; change manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
+* `mercurial` &ndash; fixes wrong `hg` commands;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
@@ -185,7 +186,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args'
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
-* `sed` &ndash; adds missing '/' to `sed`'s `s` commands;
+* `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
