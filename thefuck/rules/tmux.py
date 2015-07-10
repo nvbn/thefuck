@@ -1,3 +1,4 @@
+from thefuck.utils import get_closest
 import re
 
 
@@ -8,7 +9,12 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    cmd = re.match(r"ambiguous command: (.*), could be: ([^, \n]*)",
+    cmd = re.match(r"ambiguous command: (.*), could be: (.*)",
                    command.stderr)
 
-    return command.script.replace(cmd.group(1), cmd.group(2))
+    old_cmd = cmd.group(1)
+    suggestions = [cmd.strip() for cmd in cmd.group(2).split(',')]
+
+    new_cmd = get_closest(old_cmd, suggestions)
+
+    return command.script.replace(old_cmd, new_cmd)
