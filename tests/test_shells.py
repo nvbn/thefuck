@@ -12,6 +12,16 @@ def isfile(mocker):
     return mocker.patch('os.path.isfile', return_value=True)
 
 
+@pytest.fixture
+@pytest.mark.usefixtures('isfile')
+def history_lines(mocker):
+    def aux(lines):
+        mock = mocker.patch('io.open')
+        mock.return_value.__enter__\
+            .return_value.__iter__.return_value = lines
+    return aux
+
+
 class TestGeneric(object):
     @pytest.fixture
     def shell(self):
@@ -37,6 +47,12 @@ class TestGeneric(object):
         assert 'alias fuck' in shell.app_alias()
         assert 'thefuck' in shell.app_alias()
         assert 'TF_ALIAS' in shell.app_alias()
+
+    def test_get_history(self, history_lines, shell):
+        history_lines(['ls', 'rm'])
+        # We don't know what to do in generic shell with history lines,
+        # so just ignore them:
+        assert list(shell.get_history()) == []
 
 
 @pytest.mark.usefixtures('isfile')
@@ -84,6 +100,10 @@ class TestBash(object):
         assert 'alias fuck' in shell.app_alias()
         assert 'thefuck' in shell.app_alias()
         assert 'TF_ALIAS' in shell.app_alias()
+
+    def test_get_history(self, history_lines, shell):
+        history_lines(['ls', 'rm'])
+        assert list(shell.get_history()) == ['ls', 'rm']
 
 
 @pytest.mark.usefixtures('isfile')
@@ -187,3 +207,7 @@ class TestZsh(object):
         assert 'alias fuck' in shell.app_alias()
         assert 'thefuck' in shell.app_alias()
         assert 'TF_ALIAS' in shell.app_alias()
+
+    def test_get_history(self, history_lines, shell):
+        history_lines([': 1432613911:0;ls', ': 1432613916:0;rm'])
+        assert list(shell.get_history()) == ['ls', 'rm']

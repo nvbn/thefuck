@@ -7,7 +7,9 @@ from collections import defaultdict
 from subprocess import Popen, PIPE
 from time import time
 import os
+import io
 from psutil import Process
+import six
 from .utils import DEVNULL, memoize
 
 
@@ -48,6 +50,26 @@ class Generic(object):
             with open(history_file_name, 'a') as history:
                 history.write(self._get_history_line(command_script))
 
+    def _script_from_history(self, line):
+        """Returns prepared history line.
+
+        Should return a blank line if history line is corrupted or empty.
+
+        """
+        return ''
+
+    def get_history(self):
+        """Returns list of history entries."""
+        history_file_name = self._get_history_file_name()
+        if os.path.isfile(history_file_name):
+            with io.open(history_file_name, 'r',
+                         encoding='utf-8', errors='ignore') as history:
+                for line in history:
+                    prepared = self._script_from_history(line)\
+                                   .strip()
+                    if prepared:
+                        yield prepared
+
     def and_(self, *commands):
         return u' && '.join(commands)
 
@@ -63,7 +85,6 @@ class Bash(Generic):
             value = value[1:-1]
         return name, value
 
-    @memoize
     def get_aliases(self):
         proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
@@ -78,6 +99,10 @@ class Bash(Generic):
 
     def _get_history_line(self, command_script):
         return u'{}\n'.format(command_script)
+
+    def _script_from_history(self, line):
+        print(line)
+        return line
 
 
 class Fish(Generic):
@@ -96,7 +121,6 @@ class Fish(Generic):
                 "    end\n"
                 "end")
 
-    @memoize
     def get_aliases(self):
         proc = Popen('fish -ic functions', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
@@ -137,7 +161,6 @@ class Zsh(Generic):
             value = value[1:-1]
         return name, value
 
-    @memoize
     def get_aliases(self):
         proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
@@ -153,6 +176,12 @@ class Zsh(Generic):
     def _get_history_line(self, command_script):
         return u': {}:0;{}\n'.format(int(time()), command_script)
 
+    def _script_from_history(self, line):
+        if ';' in line:
+            return line.split(';', 1)[1]
+        else:
+            return ''
+
 
 class Tcsh(Generic):
     def app_alias(self):
@@ -162,7 +191,6 @@ class Tcsh(Generic):
         name, value = alias.split("\t", 1)
         return name, value
 
-    @memoize
     def get_aliases(self):
         proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
@@ -219,5 +247,11 @@ def and_(*commands):
     return _get_shell().and_(*commands)
 
 
+@memoize
 def get_aliases():
     return list(_get_shell().get_aliases().keys())
+
+
+@memoize
+def get_history():
+    return list(_get_shell().get_history())
