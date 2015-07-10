@@ -2,7 +2,7 @@ import pytest
 from mock import Mock
 from thefuck.utils import sudo_support, wrap_settings, memoize, get_closest
 from thefuck.types import Settings
-from tests.utils import Command
+from tests.utils import Command, no_memoize
 
 
 @pytest.mark.parametrize('override, old, new', [
@@ -32,6 +32,15 @@ def test_memoize():
     memoized()
     memoized()
     fn.assert_called_once_with()
+
+
+@pytest.mark.usefixtures('no_memoize')
+def test_no_memoize():
+    fn = Mock(__name__='fn')
+    memoized = memoize(fn)
+    memoized()
+    memoized()
+    assert fn.call_count == 2
 
 
 class TestGetClosest(object):

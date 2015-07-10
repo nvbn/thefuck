@@ -1,3 +1,4 @@
+import pytest
 from thefuck import types
 from thefuck.conf import DEFAULT_PRIORITY
 
@@ -14,3 +15,7 @@ def Rule(name='', match=lambda *_: True,
     return types.Rule(name, match, get_new_command,
                       enabled_by_default, side_effect,
                       priority)
+
+@pytest.fixture
+def no_memoize(monkeypatch):
+    monkeypatch.setattr('thefuck.utils.memoize.disabled', True)

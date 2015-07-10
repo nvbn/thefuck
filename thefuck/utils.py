@@ -80,12 +80,13 @@ def memoize(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         key = pickle.dumps((args, kwargs))
-        if key not in memo:
+        if key not in memo or memoize.disabled:
             memo[key] = fn(*args, **kwargs)
 
         return memo[key]
 
     return wrapper
+memoize.disabled = False
 
 
 def get_closest(word, possibilities, n=3, cutoff=0.6):
