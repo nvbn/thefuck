@@ -2,7 +2,7 @@ import pytest
 from mock import Mock
 from thefuck.utils import sudo_support, wrap_settings, memoize, get_closest
 from thefuck.types import Settings
-from tests.utils import Command, no_memoize
+from tests.utils import Command
 
 
 @pytest.mark.parametrize('override, old, new', [

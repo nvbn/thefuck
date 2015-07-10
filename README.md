@@ -169,6 +169,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to grep directory;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
+* `history` &ndash; tries to replace command with most similar command from history;
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
