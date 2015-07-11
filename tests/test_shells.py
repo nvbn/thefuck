@@ -116,18 +116,34 @@ class TestFish(object):
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.Popen')
         mock.return_value.stdout.read.return_value = (
-            b'fish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nmath')
+            b'cd\nfish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nls\n'
+            b'man\nmath\npopd\npushd\nruby')
         return mock
 
+    @pytest.fixture
+    def environ(self, monkeypatch):
+        data = {'TF_OVERRIDDEN_ALIASES': 'cd, ls, man, open'}
+        monkeypatch.setattr('thefuck.shells.os.environ', data)
+        return data
+
+    @pytest.mark.usefixture('environ')
+    def test_get_overridden_aliases(self, shell, environ):
+        assert shell._get_overridden_aliases() == ['cd', 'ls', 'man', 'open']
+
     @pytest.mark.parametrize('before, after', [
+        ('cd', 'cd'),
         ('pwd', 'pwd'),
         ('fuck', 'fish -ic "fuck"'),
         ('find', 'find'),
         ('funced', 'fish -ic "funced"'),
+        ('grep', 'grep'),
         ('awk', 'awk'),
         ('math "2 + 2"', r'fish -ic "math \"2 + 2\""'),
+        ('man', 'man'),
+        ('open', 'open'),
         ('vim', 'vim'),
-        ('ll', 'fish -ic "ll"')])  # Fish has no aliases but functions
+        ('ll', 'fish -ic "ll"'),
+        ('ls', 'ls')])  # Fish has no aliases but functions
     def test_from_shell(self, before, after, shell):
         assert shell.from_shell(before) == after
 
@@ -149,10 +165,12 @@ class TestFish(object):
                                        'fuck': 'fuck',
                                        'funced': 'funced',
                                        'funcsave': 'funcsave',
-                                       'grep': 'grep',
                                        'history': 'history',
                                        'll': 'll',
-                                       'math': 'math'}
+                                       'math': 'math',
+                                       'popd': 'popd',
+                                       'pushd': 'pushd',
+                                       'ruby': 'ruby'}
 
     def test_app_alias(self, shell):
         assert 'function fuck' in shell.app_alias()

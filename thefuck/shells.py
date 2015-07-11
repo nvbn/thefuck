@@ -106,10 +106,18 @@ class Bash(Generic):
 
 
 class Fish(Generic):
+
+    def _get_overridden_aliases(self):
+        overridden_aliases = os.environ.get('TF_OVERRIDDEN_ALIASES', '').strip()
+        if overridden_aliases:
+            return [alias.strip() for alias in overridden_aliases.split(',')]
+        else:
+            return ['cd', 'grep', 'ls', 'man', 'open']
+
     def app_alias(self):
-        return ("function fuck -d 'Correct your previous console command'\n"
+        return ("set TF_ALIAS fuck\n"
+                "function fuck -d 'Correct your previous console command'\n"
                 "    set -l exit_code $status\n"
-                "    set -l TF_ALIAS fuck\n"
                 "    set -l eval_script"
                 " (mktemp 2>/dev/null ; or mktemp -t 'thefuck')\n"
                 "    set -l fucked_up_commandd $history[1]\n"
@@ -122,10 +130,11 @@ class Fish(Generic):
                 "end")
 
     def get_aliases(self):
+        overridden = self._get_overridden_aliases()
         proc = Popen('fish -ic functions', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
         functions = proc.stdout.read().decode('utf-8').strip().split('\n')
-        return {function: function for function in functions}
+        return {func: func for func in functions if func not in overridden}
 
     def _expand_aliases(self, command_script):
         aliases = self.get_aliases()
