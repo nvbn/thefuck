@@ -1,13 +1,13 @@
 from imp import load_source
 from pathlib import Path
 from os.path import expanduser
-from subprocess import Popen, PIPE
-import os
-import sys
-from psutil import Process, TimeoutExpired
-import colorama
+import subprocess
+from subprocess import Popen, PIPE, STDOUT
 import six
-from . import logs, conf, types, shells
+from . import logs, conf, types, shells, custom_fuckups
+import getopt
+import sys
+import os
 
 
 def setup_user_dir():
@@ -67,13 +67,43 @@ def wait_output(settings, popen):
         proc.kill()
         return False
 
+def check_args(settings, args, cmd):
+    """Looks for command line arguments '--ifuckedup=' and '--remove='.
+     --remove requires relevent fuckup.
+     --ifuckedup requires relevent fix.
+     """
 
-def get_command(settings, args):
-    """Creates command from `args` and executes it."""
-    if six.PY2:
-        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
-    else:
-        script = ' '.join(args[1:])
+    options, leftovers = getopt.getopt(args, '', ['add_fix=', 'ifuckedup=', 'remove='])
+
+    for opt, val in options:
+        try:
+            if opt == '--ifuckedup' or opt == '--add_fix':
+                custom_fuckups.add_fuckup(cmd, val)
+                return True
+            elif opt == '--remove':
+                custom_fuckups.remove_fuckup(val)
+                return True
+            else:
+                return False
+        except Exception as err:
+            logs.failed(err, settings)
+            return False
+
+
+def get_command(settings):
+    """Retrieves previous command from ~/.bash_history ."""
+
+# requires following in .bashrc
+
+#   shopt -s histappend
+#   PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
+
+    shell_cmd = "bash -c -i 'history -r; history -p \!\!'"
+    event = Popen(shell_cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+
+    output = event.communicate()
+
+    script = output.strip()
 
     if not script:
         return
@@ -125,8 +155,11 @@ def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
+    command = get_command(settings)
 
-    command = get_command(settings, sys.argv)
+    if check_args(settings, sys.argv[1:], command):
+        return
+
     if command:
         rules = get_rules(user_dir, settings)
         matched_rule = get_matched_rule(command, rules, settings)

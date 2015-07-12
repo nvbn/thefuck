@@ -91,9 +91,9 @@ class TestGetCommand(object):
         (['thefuck', 'ls'], 'ls')])
     def test_get_command_script(self, args, result):
         if result:
-            assert main.get_command(Mock(), args).script == result
+            assert main.get_command(Mock()).script == result
         else:
-            assert main.get_command(Mock(), args) is None
+            assert main.get_command(Mock()) is None
 
 
 class TestGetMatchedRule(object):
