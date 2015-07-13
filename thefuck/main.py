@@ -11,7 +11,7 @@ import six
 from . import logs, conf, types, shells
 
 
-def setup_user_dir():
+def setup_user_dir():  # pragma: no cover
     """Returns user config dir, create it when it doesn't exist."""
     user_dir = Path(expanduser('~/.thefuck'))
     rules_dir = user_dir.joinpath('rules')
