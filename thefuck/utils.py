@@ -8,10 +8,10 @@ from .types import Command
 
 DEVNULL = open(os.devnull, 'w')
 
-if six.PY2:
+if six.PY2:  # pragma: no cover python-3
     import pipes
     quote = pipes.quote
-else:
+else:  # pragma: no cover python-2
     import shlex
     quote = shlex.quote
 

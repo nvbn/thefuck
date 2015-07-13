@@ -1,0 +1,3 @@
+[report]
+exclude_lines =
+    pragma: no cover ${COVERAGE_PYTHON_VERSION}

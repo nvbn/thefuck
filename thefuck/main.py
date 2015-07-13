@@ -71,9 +71,9 @@ def wait_output(settings, popen):
 
 def get_command(settings, args):
     """Creates command from `args` and executes it."""
-    if six.PY2:
+    if six.PY2:  # pragma: no cover python-3
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
-    else:
+    else:  # pragma: no cover python-2
         script = ' '.join(args[1:])
 
     if not script:
