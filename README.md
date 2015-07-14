@@ -152,6 +152,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `composer_not_command` &ndash; fixes composer command name;
+* `cp_dir` &ndash; adds `-r` when you try to copy a directory;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
