@@ -253,7 +253,8 @@ The Fuck has a few settings parameters which can be changed in `~/.thefuck/setti
 * `require_confirmation` &ndash; requires confirmation before running new command, by default `False`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
-* `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first.
+* `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first;
+* `debug` &ndash; enabled debug output, by default `False`;
 
 Example of `settings.py`:
 
@@ -263,6 +264,7 @@ require_confirmation = True
 wait_command = 10
 no_colors = False
 priority = {'sudo': 100, 'no_command': 9999}
+debug = False
 ```
 
 Or via environment variables:
@@ -272,7 +274,8 @@ Or via environment variables:
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
 * `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
-rule with lower `priority` will be matched first.
+rule with lower `priority` will be matched first;
+* `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`.
 
 For example:
 

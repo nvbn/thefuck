@@ -110,7 +110,7 @@ class TestGetMatchedRule(object):
     def test_when_rule_failed(self, capsys):
         main.get_matched_rule(
             Command('ls'), [Rule('test', Mock(side_effect=OSError('Denied')))],
-            Mock(no_colors=True))
+            Mock(no_colors=True, debug=False))
         assert capsys.readouterr()[1].split('\n')[0] == '[WARN] Rule test:'
 
 
@@ -126,7 +126,7 @@ class TestRunRule(object):
 
     def test_run_rule_with_side_effect(self, capsys):
         side_effect = Mock()
-        settings = Mock()
+        settings = Mock(debug=False)
         command = Command()
         main.run_rule(Rule(get_new_command=lambda *_: 'new-command',
                            side_effect=side_effect),

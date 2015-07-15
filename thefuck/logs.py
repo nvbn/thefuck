@@ -1,3 +1,4 @@
+from pprint import pformat
 import sys
 from traceback import format_exception
 import colorama
@@ -52,3 +53,12 @@ def failed(msg, settings):
         msg=msg,
         red=color(colorama.Fore.RED, settings),
         reset=color(colorama.Style.RESET_ALL, settings)))
+
+
+def debug(msg, settings):
+    if settings.debug:
+        sys.stderr.write(u'{blue}{bold}DEBUG:{reset} {msg}\n'.format(
+            msg=msg,
+            reset=color(colorama.Style.RESET_ALL, settings),
+            blue=color(colorama.Fore.BLUE, settings),
+            bold=color(colorama.Style.BRIGHT, settings)))

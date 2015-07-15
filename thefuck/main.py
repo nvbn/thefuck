@@ -1,6 +1,7 @@
 from imp import load_source
 from pathlib import Path
 from os.path import expanduser
+from pprint import pformat
 from subprocess import Popen, PIPE
 import os
 import sys
@@ -79,6 +80,7 @@ def get_command(settings, args):
         return
 
     script = shells.from_shell(script)
+    logs.debug('Call: {}'.format(script), settings)
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
                    env=dict(os.environ, LANG='C'))
     if wait_output(settings, result):
@@ -90,6 +92,7 @@ def get_matched_rule(command, rules, settings):
     """Returns first matched rule for command."""
     for rule in rules:
         try:
+            logs.debug(u'Trying rule: {}'.format(rule.name), settings)
             if rule.match(command, settings):
                 return rule
         except Exception:
@@ -125,12 +128,21 @@ def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
+    logs.debug('Run with settings: {}'.format(pformat(settings)), settings)
 
     command = get_command(settings, sys.argv)
     if command:
+        logs.debug('Received stdout: {}'.format(command.stdout), settings)
+        logs.debug('Received stderr: {}'.format(command.stderr), settings)
+
         rules = get_rules(user_dir, settings)
+        logs.debug(
+            'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
+            settings)
+
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
+            logs.debug('Matched rule: {}'.format(matched_rule.name), settings)
             run_rule(matched_rule, command, settings)
             return
 
