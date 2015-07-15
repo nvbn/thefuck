@@ -1,14 +1,22 @@
-from mock import Mock
+import pytest
 from thefuck.rules.cp_omitting_directory import match, get_new_command
+from tests.utils import Command
 
 
-def test_match():
-    assert match(Mock(script='cp dir', stderr="cp: omitting directory 'dir'"),
-                 None)
-    assert not match(Mock(script='some dir',
-                          stderr="cp: omitting directory 'dir'"), None)
-    assert not match(Mock(script='cp dir', stderr=""), None)
+@pytest.mark.parametrize('script, stderr', [
+    ('cp dir', 'cp: dor: is a directory'),
+    ('cp dir', "cp: omitting directory 'dir'")])
+def test_match(script, stderr):
+    assert match(Command(script, stderr=stderr), None)
+
+
+@pytest.mark.parametrize('script, stderr', [
+    ('some dir', 'cp: dor: is a directory'),
+    ('some dir', "cp: omitting directory 'dir'"),
+    ('cp dir', '')])
+def test_not_match(script, stderr):
+    assert not match(Command(script, stderr=stderr), None)
 
 
 def test_get_new_command():
-    assert get_new_command(Mock(script='cp dir'), None) == 'cp -a dir'
+    assert get_new_command(Command(script='cp dir'), None) == 'cp -a dir'
