@@ -30,7 +30,8 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'require_confirmation': False,
                     'no_colors': False,
                     'debug': False,
-                    'priority': {}}
+                    'priority': {},
+                    'env': {'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_WAIT_COMMAND': 'wait_command',
