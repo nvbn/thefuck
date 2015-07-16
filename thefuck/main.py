@@ -82,7 +82,7 @@ def get_command(settings, args):
     script = shells.from_shell(script)
     logs.debug('Call: {}'.format(script), settings)
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE,
-                   env=dict(os.environ, LANG='C'))
+                   env=dict(os.environ, LANG='C', GIT_TRACE=1))
     if wait_output(settings, result):
         return types.Command(script, result.stdout.read().decode('utf-8'),
                              result.stderr.read().decode('utf-8'))

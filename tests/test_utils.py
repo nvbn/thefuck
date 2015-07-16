@@ -1,6 +1,6 @@
 import pytest
 from mock import Mock
-from thefuck.utils import sudo_support, wrap_settings, memoize, get_closest
+from thefuck.utils import git_support, sudo_support, wrap_settings, memoize, get_closest
 from thefuck.types import Settings
 from tests.utils import Command
 
@@ -24,6 +24,15 @@ def test_sudo_support(return_value, command, called, result):
     fn = Mock(return_value=return_value, __name__='')
     assert sudo_support(fn)(Command(command), None) == result
     fn.assert_called_once_with(Command(called), None)
+
+
+@pytest.mark.parametrize('called, command, stderr', [
+    ('git co', "git 'checkout'", "19:22:36.299340 git.c:282   trace: alias expansion: co => 'checkout'"),
+    ('git com file', "git 'commit' '--verbose' file", "19:23:25.470911 git.c:282   trace: alias expansion: com => 'commit' '--verbose'")])
+def test_git_support(called, command, stderr):
+    @git_support
+    def fn(command, settings): return command.script
+    assert fn(Command(script=called, stderr=stderr), None) == command
 
 
 def test_memoize():

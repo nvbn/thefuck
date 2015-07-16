@@ -84,7 +84,7 @@ class TestGetCommand(object):
                                       shell=True,
                                       stdout=PIPE,
                                       stderr=PIPE,
-                                      env={'LANG': 'C'})
+                                      env={'LANG': 'C', 'GIT_TRACE': 1})
 
     @pytest.mark.parametrize('args, result', [
         (['thefuck', 'ls', '-la'], 'ls -la'),

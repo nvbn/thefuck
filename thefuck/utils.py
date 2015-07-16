@@ -2,6 +2,7 @@ from difflib import get_close_matches
 from functools import wraps
 import os
 import pickle
+import re
 import six
 from .types import Command
 
@@ -70,6 +71,25 @@ def sudo_support(fn):
             return u'sudo {}'.format(result)
         else:
             return result
+    return wrapper
+
+
+def git_support(fn):
+    """Resolve git aliases."""
+    @wraps(fn)
+    def wrapper(command, settings):
+        if (command.script.startswith('git') and
+                'trace: alias expansion:' in command.stderr):
+
+            search = re.search("trace: alias expansion: ([^ ]*) => ([^\n]*)",
+                               command.stderr)
+            alias = search.group(1)
+            expansion = search.group(2)
+            new_script = command.script.replace(alias, expansion)
+
+            command = Command._replace(command, script=new_script)
+        return fn(command, settings)
+
     return wrapper
 
 
