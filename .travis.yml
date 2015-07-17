@@ -4,6 +4,6 @@ python:
   - "3.3"
   - "2.7"
 install:
-  - python setup.py develop
   - pip install -r requirements.txt
+  - python setup.py develop
 script: py.test -v
