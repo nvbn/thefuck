@@ -11,7 +11,7 @@ import six
 from . import logs, conf, types, shells
 
 
-def setup_user_dir():
+def setup_user_dir():  # pragma: no cover
     """Returns user config dir, create it when it doesn't exist."""
     user_dir = Path(expanduser('~/.thefuck'))
     rules_dir = user_dir.joinpath('rules')
@@ -71,9 +71,9 @@ def wait_output(settings, popen):
 
 def get_command(settings, args):
     """Creates command from `args` and executes it."""
-    if six.PY2:
+    if six.PY2:  # pragma: no cover python-3
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
-    else:
+    else:  # pragma: no cover python-2
         script = ' '.join(args[1:])
 
     if not script:

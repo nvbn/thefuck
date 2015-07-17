@@ -6,4 +6,9 @@ python:
 install:
   - python setup.py develop
   - pip install -r requirements.txt
-script: py.test -v
+  - pip install coveralls
+script:
+    - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
+    - coverage run --source=thefuck,tests -m py.test -v
+after_success:
+    coveralls
