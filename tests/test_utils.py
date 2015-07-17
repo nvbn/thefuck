@@ -27,8 +27,8 @@ def test_sudo_support(return_value, command, called, result):
 
 
 @pytest.mark.parametrize('called, command, stderr', [
-    ('git co', "git 'checkout'", "19:22:36.299340 git.c:282   trace: alias expansion: co => 'checkout'"),
-    ('git com file', "git 'commit' '--verbose' file", "19:23:25.470911 git.c:282   trace: alias expansion: com => 'commit' '--verbose'")])
+    ('git co', 'git checkout', "19:22:36.299340 git.c:282   trace: alias expansion: co => 'checkout'"),
+    ('git com file', 'git commit --verbose file', "19:23:25.470911 git.c:282   trace: alias expansion: com => 'commit' '--verbose'")])
 def test_git_support(called, command, stderr):
     @git_support
     def fn(command, settings): return command.script

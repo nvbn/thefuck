@@ -1,5 +1,6 @@
 from difflib import get_close_matches
 from functools import wraps
+from shlex import split
 import os
 import pickle
 import re
@@ -10,11 +11,9 @@ from .types import Command
 DEVNULL = open(os.devnull, 'w')
 
 if six.PY2:
-    import pipes
-    quote = pipes.quote
+    from pipes import quote
 else:
-    import shlex
-    quote = shlex.quote
+    from shlex import quote
 
 
 def which(program):
@@ -84,7 +83,12 @@ def git_support(fn):
             search = re.search("trace: alias expansion: ([^ ]*) => ([^\n]*)",
                                command.stderr)
             alias = search.group(1)
-            expansion = search.group(2)
+
+            # by default git quotes everthing, for example:
+            #     'commit' '--amend'
+            # which is surprising and does not allow to easily test for
+            # eg. 'git commit'
+            expansion = ' '.join(map(quote, split(search.group(2))))
             new_script = command.script.replace(alias, expansion)
 
             command = Command._replace(command, script=new_script)
