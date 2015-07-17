@@ -1,8 +1,8 @@
-from difflib import get_close_matches
 import re
-from thefuck.utils import get_closest
+from thefuck.utils import get_closest, git_support
 
 
+@git_support
 def match(command, settings):
     return ('git' in command.script
             and " is not a git command. See 'git --help'." in command.stderr
@@ -18,6 +18,7 @@ def _get_all_git_matched_commands(stderr):
             yield line.strip()
 
 
+@git_support
 def get_new_command(command, settings):
     broken_cmd = re.findall(r"git: '([^']*)' is not a git command",
                             command.stderr)[0]
