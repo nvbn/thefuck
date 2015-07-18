@@ -11,12 +11,10 @@ elif (3, 0) < sys.version_info < (3, 3):
           ' ({}.{} detected).'.format(*sys.version_info[:2]))
     sys.exit(-1)
 
-VERSION = '1.49'
+VERSION = '1.49.1'
 
 install_requires = ['psutil', 'colorama', 'six']
-
-if sys.version_info < (3, 4):
-    install_requires.append('pathlib')
+extras_require = {':python_version<"3.4"': ['pathlib']}
 
 setup(name='thefuck',
       version=VERSION,
@@ -30,6 +28,7 @@ setup(name='thefuck',
       include_package_data=True,
       zip_safe=False,
       install_requires=install_requires,
+      extras_require=extras_require,
       entry_points={'console_scripts': [
           'thefuck = thefuck.main:main',
           'thefuck-alias = thefuck.shells:app_alias']})

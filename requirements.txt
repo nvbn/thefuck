@@ -2,3 +2,4 @@ pytest
 mock
 pytest-mock
 wheel
+setuptools>=17.1
