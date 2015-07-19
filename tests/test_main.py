@@ -77,23 +77,23 @@ class TestGetCommand(object):
         monkeypatch.setattr('thefuck.shells.to_shell', lambda x: x)
 
     def test_get_command_calls(self, Popen):
-        assert main.get_command(Mock(),
+        assert main.get_command(Mock(env={}),
             ['thefuck', 'apt-get', 'search', 'vim']) \
                == Command('apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,
                                       stdout=PIPE,
                                       stderr=PIPE,
-                                      env={'LANG': 'C'})
+                                      env={})
 
     @pytest.mark.parametrize('args, result', [
         (['thefuck', 'ls', '-la'], 'ls -la'),
         (['thefuck', 'ls'], 'ls')])
     def test_get_command_script(self, args, result):
         if result:
-            assert main.get_command(Mock(), args).script == result
+            assert main.get_command(Mock(env={}), args).script == result
         else:
-            assert main.get_command(Mock(), args) is None
+            assert main.get_command(Mock(env={}), args) is None
 
 
 class TestGetMatchedRule(object):
