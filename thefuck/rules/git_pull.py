@@ -1,12 +1,14 @@
-from thefuck import shells
+from thefuck import shells, utils
 
 
+@utils.git_support
 def match(command, settings):
     return ('git' in command.script
             and 'pull' in command.script
             and 'set-upstream' in command.stderr)
 
 
+@utils.git_support
 def get_new_command(command, settings):
     line = command.stderr.split('\n')[-3].strip()
     branch = line.split(' ')[-1]
