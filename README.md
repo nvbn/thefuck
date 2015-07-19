@@ -6,7 +6,9 @@ Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
-Few examples:
+![gif with examples](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)
+
+Few more examples:
 
 ```bash
 ➜ apt-get install vim
@@ -159,6 +161,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `dry` &ndash; fix repetitions like "git git push";
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
+* `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; creates the branch before checking-out;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
@@ -250,7 +253,7 @@ priority = 1000  # Lower first
 The Fuck has a few settings parameters which can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
-* `require_confirmation` &ndash; requires confirmation before running new command, by default `False`;
+* `require_confirmation` &ndash; requires confirmation before running new command, by default `True`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
 * `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first;
