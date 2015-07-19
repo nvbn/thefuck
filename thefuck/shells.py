@@ -9,7 +9,6 @@ from time import time
 import os
 import io
 from psutil import Process
-import six
 from .utils import DEVNULL, memoize
 
 

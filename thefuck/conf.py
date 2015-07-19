@@ -27,7 +27,7 @@ DEFAULT_PRIORITY = 1000
 
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'wait_command': 3,
-                    'require_confirmation': False,
+                    'require_confirmation': True,
                     'no_colors': False,
                     'debug': False,
                     'priority': {},
