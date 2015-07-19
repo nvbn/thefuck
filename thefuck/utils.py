@@ -84,7 +84,7 @@ def git_support(fn):
                                command.stderr)
             alias = search.group(1)
 
-            # by default git quotes everthing, for example:
+            # by default git quotes everything, for example:
             #     'commit' '--amend'
             # which is surprising and does not allow to easily test for
             # eg. 'git commit'
