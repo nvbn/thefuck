@@ -1,4 +1,4 @@
-# The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg)](https://travis-ci.org/nvbn/thefuck)
+# The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg)](https://travis-ci.org/nvbn/thefuck) [![Coverage Status](https://coveralls.io/repos/nvbn/thefuck/badge.svg?branch=master&service=github)](https://coveralls.io/github/nvbn/thefuck?branch=master)
 
 **Aliases changed in 1.34.**
 
