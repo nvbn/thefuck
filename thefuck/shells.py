@@ -9,7 +9,6 @@ from subprocess import Popen, PIPE
 from time import time
 import io
 import os
-import sys
 from .utils import DEVNULL, memoize
 
 
@@ -242,11 +241,8 @@ def to_shell(command):
     return _get_shell().to_shell(command)
 
 
-def app_alias():
-    alias = thefuck_alias()
-    if len(sys.argv) > 1:
-        alias = sys.argv[1]
-    print(_get_shell().app_alias(alias))
+def app_alias(alias):
+    return _get_shell().app_alias(alias)
 
 
 def thefuck_alias():

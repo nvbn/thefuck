@@ -31,4 +31,4 @@ setup(name='thefuck',
       extras_require=extras_require,
       entry_points={'console_scripts': [
           'thefuck = thefuck.main:main',
-          'thefuck-alias = thefuck.shells:app_alias']})
+          'thefuck-alias = thefuck.main:print_alias']})

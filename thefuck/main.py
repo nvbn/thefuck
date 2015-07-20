@@ -128,6 +128,8 @@ def run_rule(rule, command, settings):
         print(new_command)
 
 
+# Entry points:
+
 def main():
     colorama.init()
     user_dir = setup_user_dir()
@@ -151,3 +153,10 @@ def main():
             return
 
     logs.failed('No fuck given', settings)
+
+
+def print_alias():
+    alias = shells.thefuck_alias()
+    if len(sys.argv) > 1:
+        alias = sys.argv[1]
+    print(shells.app_alias(alias))
