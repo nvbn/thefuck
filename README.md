@@ -138,12 +138,12 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `composer_not_command` &ndash; fixes composer command name;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
-* `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
+* `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
-* `dry` &ndash; fix repetitions like "git git push";
+* `dry` &ndash; fixes repetitions like "git git push";
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
-* `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
+* `git_add` &ndash; fixes *"Did you forget to 'git add'?"*;
 * `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
@@ -162,7 +162,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `ls_lah` &ndash; adds -lah to ls;
-* `man` &ndash; change manual section;
+* `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
@@ -243,7 +243,7 @@ The Fuck has a few settings parameters which can be changed in `~/.thefuck/setti
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
 * `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first;
-* `debug` &ndash; enables debug output, by default `False`;
+* `debug` &ndash; enables debug output, by default `False`.
 
 Example of `settings.py`:
 
