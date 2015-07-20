@@ -80,11 +80,11 @@ def get_command(settings, args):
         return
 
     script = shells.from_shell(script)
-    logs.debug('Call: {}'.format(script), settings)
+    logs.debug(u'Call: {}'.format(script), settings)
 
     env = dict(os.environ)
     env.update(settings.env)
-    logs.debug('Executing with env: {}'.format(env), settings)
+    logs.debug(u'Executing with env: {}'.format(env), settings)
 
     result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
     if wait_output(settings, result):
@@ -132,21 +132,21 @@ def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
-    logs.debug('Run with settings: {}'.format(pformat(settings)), settings)
+    logs.debug(u'Run with settings: {}'.format(pformat(settings)), settings)
 
     command = get_command(settings, sys.argv)
     if command:
-        logs.debug('Received stdout: {}'.format(command.stdout), settings)
-        logs.debug('Received stderr: {}'.format(command.stderr), settings)
+        logs.debug(u'Received stdout: {}'.format(command.stdout), settings)
+        logs.debug(u'Received stderr: {}'.format(command.stderr), settings)
 
         rules = get_rules(user_dir, settings)
         logs.debug(
-            'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
+            u'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
             settings)
 
         matched_rule = get_matched_rule(command, rules, settings)
         if matched_rule:
-            logs.debug('Matched rule: {}'.format(matched_rule.name), settings)
+            logs.debug(u'Matched rule: {}'.format(matched_rule.name), settings)
             run_rule(matched_rule, command, settings)
             return
 
