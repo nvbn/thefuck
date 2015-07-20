@@ -242,7 +242,7 @@ enabled_by_default = True
 def side_effect(command, settings):
     subprocess.call('chmod 777 .', shell=True)
 
-priority = 1000  # Lower first
+priority = 1000  # Lower first, default is 1000
 ```
 
 [More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
