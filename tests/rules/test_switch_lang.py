@@ -15,6 +15,7 @@ def test_match(command):
 @pytest.mark.parametrize('command', [
     Command(stderr='command not found: pat-get', script=u'pat-get'),
     Command(stderr='command not found: ls', script=u'ls'),
+    Command(stderr='command not found: агсл', script=u'агсл'),
     Command(stderr='some info', script=u'фзе-пуе')])
 def test_not_match(command):
     assert not switch_lang.match(command, None)
