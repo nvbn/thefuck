@@ -1,29 +1,16 @@
 import pytest
-from thefuck.rules.no_command import match, get_new_command, get_all_callables
+from thefuck.rules.no_command import match, get_new_command
 from tests.utils import Command
 
 
 @pytest.fixture(autouse=True)
-def _safe(mocker):
-    mocker.patch('thefuck.rules.no_command._safe', return_value=[])
-
-
-@pytest.fixture(autouse=True)
-def get_aliases(mocker):
-    mocker.patch('thefuck.rules.no_command.get_aliases',
-                 return_value=['vim', 'apt-get', 'fsck', 'fuck'])
+def get_all_executables(mocker):
+    mocker.patch('thefuck.rules.no_command.get_all_executables',
+                 return_value=['vim', 'apt-get', 'fsck'])
 
 
 @pytest.mark.usefixtures('no_memoize')
-def test_get_all_callables(*args):
-    all_callables = get_all_callables()
-    assert 'vim' in all_callables
-    assert 'fsck' in all_callables
-    assert 'fuck' not in all_callables
-
-
-@pytest.mark.usefixtures('no_memoize')
-def test_match(*args):
+def test_match():
     assert match(Command(stderr='vom: not found', script='vom file.py'), None)
     assert match(Command(stderr='fucck: not found', script='fucck'), None)
     assert not match(Command(stderr='qweqwe: not found', script='qweqwe'), None)
@@ -31,7 +18,7 @@ def test_match(*args):
 
 
 @pytest.mark.usefixtures('no_memoize')
-def test_get_new_command(*args):
+def test_get_new_command():
     assert get_new_command(
         Command(stderr='vom: not found',
                 script='vom file.py'),

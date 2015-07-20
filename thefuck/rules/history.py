@@ -1,7 +1,6 @@
 from difflib import get_close_matches
 from thefuck.shells import get_history, thefuck_alias
-from thefuck.utils import get_closest, memoize
-from thefuck.rules.no_command import get_all_callables
+from thefuck.utils import get_closest, memoize, get_all_executables
 
 
 def _not_corrected(history, tf_alias):
@@ -19,10 +18,10 @@ def _not_corrected(history, tf_alias):
 def _history_of_exists_without_current(command):
     history = get_history()
     tf_alias = thefuck_alias()
-    callables = get_all_callables()
+    executables = get_all_executables()
     return [line for line in _not_corrected(history, tf_alias)
             if not line.startswith(tf_alias) and not line == command.script
-            and line.split(' ')[0] in callables]
+            and line.split(' ')[0] in executables]
 
 def match(command, settings):
     return len(get_close_matches(command.script,

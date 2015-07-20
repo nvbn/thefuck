@@ -18,7 +18,7 @@ def alias(mocker):
 
 @pytest.fixture
 def callables(mocker):
-    return mocker.patch('thefuck.rules.history.get_all_callables',
+    return mocker.patch('thefuck.rules.history.get_all_executables',
                         return_value=['diff', 'ls'])
 
 

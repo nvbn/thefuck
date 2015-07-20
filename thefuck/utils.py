@@ -1,5 +1,6 @@
 from difflib import get_close_matches
 from functools import wraps
+from pathlib import Path
 from shlex import split
 import os
 import pickle
@@ -121,3 +122,21 @@ def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
     except IndexError:
         if fallback_to_first:
             return possibilities[0]
+
+
+@memoize
+def get_all_executables():
+    from thefuck.shells import thefuck_alias, get_aliases
+
+    def _safe(fn, fallback):
+        try:
+            return fn()
+        except OSError:
+            return fallback
+
+    tf_alias = thefuck_alias()
+    return [exe.name
+            for path in os.environ.get('PATH', '').split(':')
+            for exe in _safe(lambda: list(Path(path).iterdir()), [])
+            if not _safe(exe.is_dir, True)] + [
+                alias for alias in get_aliases() if alias != tf_alias]

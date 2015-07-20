@@ -1,6 +1,7 @@
 import pytest
 from mock import Mock
-from thefuck.utils import git_support, sudo_support, wrap_settings, memoize, get_closest
+from thefuck.utils import git_support, sudo_support, wrap_settings,\
+    memoize, get_closest, get_all_executables
 from thefuck.types import Settings
 from tests.utils import Command
 
@@ -63,3 +64,17 @@ class TestGetClosest(object):
     def test_without_fallback(self):
         assert get_closest('st', ['status', 'reset'],
                            fallback_to_first=False) is None
+
+
+@pytest.fixture
+def get_aliases(mocker):
+    mocker.patch('thefuck.shells.get_aliases',
+                 return_value=['vim', 'apt-get', 'fsck', 'fuck'])
+
+
+@pytest.mark.usefixtures('no_memoize', 'get_aliases')
+def test_get_all_callables():
+    all_callables = get_all_executables()
+    assert 'vim' in all_callables
+    assert 'fsck' in all_callables
+    assert 'fuck' not in all_callables
