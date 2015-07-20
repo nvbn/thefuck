@@ -11,7 +11,8 @@ def _not_corrected(history, tf_alias):
         if previous is not None and line != tf_alias:
             yield previous
         previous = line
-    yield history[-1]
+    if history:
+        yield history[-1]
 
 
 @memoize
