@@ -167,7 +167,9 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
 * `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
+* `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
+* `git_push_force` &ndash; adds `--force` to a `git push`;
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to grep directory;
