@@ -200,16 +200,19 @@ Bundled, but not enabled by default:
 ## Creating your own rules
 
 For adding your own rule you should create `your-rule-name.py`
-in `~/.thefuck/rules`. Rule should contain two functions:
-`match(command: Command, settings: Settings) -> bool`
-and `get_new_command(command: Command, settings: Settings) -> str`.
-Also the rule can contain optional function
-`side_effect(command: Command, settings: Settings) -> None` and
+in `~/.thefuck/rules`. The rule should contain two functions:
+```python
+match(command: Command, settings: Settings) -> bool
+get_new_command(command: Command, settings: Settings) -> str
+```
+
+Also the rule can contain an optional function
+`side_effect(command: Command, settings: Settings) -> None` and an
 optional boolean `enabled_by_default`.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
-`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env, [more](#settings).
+`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env ([see more below](#settings)).
 
 Simple example of the rule for running script with `sudo`:
 
