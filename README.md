@@ -1,7 +1,5 @@
 # The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg)](https://travis-ci.org/nvbn/thefuck) 
 
-**Aliases changed in 1.34.**
-
 Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
@@ -106,29 +104,12 @@ sudo pip install thefuck
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
 
-And add to the `.bashrc` or `.bash_profile`(for OSX):
+You should place this command in your `.bash_profile` or other startup script:
 
 ```bash
-alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
+eval "$(thefuck-alias)"
 # You can use whatever you want as an alias, like for Mondays:
-alias FUCK='fuck'
-```
-
-Or in your `.zshrc`:
-
-```bash
-alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
-```
-
-If you are using `tcsh`:
-```tcsh
-alias fuck 'set fucked_cmd=`history -h 2 | head -n 1` && eval `thefuck ${fucked_cmd}`'
-```
-
-Alternatively, you can redirect the output of `thefuck-alias`:
-
-```bash
-thefuck-alias >> ~/.bashrc
+eval "$(thefuck-alias FUCK)"
 ```
 
 [Or in your shell config (Bash, Zsh, Fish, Powershell).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
@@ -142,6 +123,8 @@ To make them available immediately, run `source ~/.bashrc` (or your shell config
 ```bash
 sudo pip install thefuck --upgrade
 ```
+
+**Aliases changed in 1.34.**
 
 ## How it works
 
