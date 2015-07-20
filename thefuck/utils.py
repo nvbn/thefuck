@@ -113,10 +113,11 @@ def memoize(fn):
 memoize.disabled = False
 
 
-def get_closest(word, possibilities, n=3, cutoff=0.6):
+def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
     """Returns closest match or just first from possibilities."""
     possibilities = list(possibilities)
     try:
         return get_close_matches(word, possibilities, n, cutoff)[0]
     except IndexError:
-        return possibilities[0]
+        if fallback_to_first:
+            return possibilities[0]

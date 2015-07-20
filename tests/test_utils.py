@@ -59,3 +59,7 @@ class TestGetClosest(object):
 
     def test_when_cant_match(self):
         assert 'status' == get_closest('st', ['status', 'reset'])
+
+    def test_without_fallback(self):
+        assert get_closest('st', ['status', 'reset'],
+                           fallback_to_first=False) is None
