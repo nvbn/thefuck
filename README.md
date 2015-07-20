@@ -190,11 +190,11 @@ Enabled by default only on specific platforms:
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
-* `git_push_force` &ndash; adds `--force` to a `git push` (may conflict with `git_push_pull`);
 * `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed.
 
 Bundled, but not enabled by default:
 
+* `git_push_force` &ndash; adds `--force` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
 ## Creating your own rules
