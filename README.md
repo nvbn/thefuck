@@ -169,7 +169,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
-* `git_push_force` &ndash; adds `--force` to a `git push`;
+* `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to grep directory;
@@ -206,7 +206,8 @@ Enabled by default only on specific platforms:
 * `apt_get` &ndash; installs app from apt if it not installed;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
-* `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour
+* `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
+* `git_push_force` &ndash; adds `--force` to a `git push` (may conflict with `git_push_pull`);
 * `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed.
 
 Bundled, but not enabled by default:

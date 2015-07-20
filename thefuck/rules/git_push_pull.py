@@ -1,4 +1,5 @@
 from thefuck import utils
+from thefuck.shells import and_
 
 
 @utils.git_support
@@ -12,7 +13,5 @@ def match(command, settings):
 
 @utils.git_support
 def get_new_command(command, settings):
-    return command.script.replace('push', 'push --force')
-
-
-enabled_by_default = False
+    return and_(command.script.replace('push', 'pull'),
+                command.script)
