@@ -44,9 +44,10 @@ class TestGeneric(object):
         assert shell.get_aliases() == {}
 
     def test_app_alias(self, shell):
-        assert 'alias fuck' in shell.app_alias()
-        assert 'thefuck' in shell.app_alias()
-        assert 'TF_ALIAS' in shell.app_alias()
+        assert 'alias fuck' in shell.app_alias('fuck')
+        assert 'alias FUCK' in shell.app_alias('FUCK')
+        assert 'thefuck' in shell.app_alias('fuck')
+        assert 'TF_ALIAS' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines(['ls', 'rm'])
@@ -97,9 +98,10 @@ class TestBash(object):
                                        'll': 'ls -alF'}
 
     def test_app_alias(self, shell):
-        assert 'alias fuck' in shell.app_alias()
-        assert 'thefuck' in shell.app_alias()
-        assert 'TF_ALIAS' in shell.app_alias()
+        assert 'alias fuck' in shell.app_alias('fuck')
+        assert 'alias FUCK' in shell.app_alias('FUCK')
+        assert 'thefuck' in shell.app_alias('fuck')
+        assert 'TF_ALIAS' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines(['ls', 'rm'])
@@ -173,9 +175,10 @@ class TestFish(object):
                                        'ruby': 'ruby'}
 
     def test_app_alias(self, shell):
-        assert 'function fuck' in shell.app_alias()
-        assert 'thefuck' in shell.app_alias()
-        assert 'TF_ALIAS' in shell.app_alias()
+        assert 'function fuck' in shell.app_alias('fuck')
+        assert 'function FUCK' in shell.app_alias('FUCK')
+        assert 'thefuck' in shell.app_alias('fuck')
+        assert 'TF_ALIAS' in shell.app_alias('fuck')
 
 
 @pytest.mark.usefixtures('isfile')
@@ -222,9 +225,10 @@ class TestZsh(object):
             'll': 'ls -alF'}
 
     def test_app_alias(self, shell):
-        assert 'alias fuck' in shell.app_alias()
-        assert 'thefuck' in shell.app_alias()
-        assert 'TF_ALIAS' in shell.app_alias()
+        assert 'alias fuck' in shell.app_alias('fuck')
+        assert 'alias FUCK' in shell.app_alias('FUCK')
+        assert 'thefuck' in shell.app_alias('fuck')
+        assert 'TF_ALIAS' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines([': 1432613911:0;ls', ': 1432613916:0;rm'])

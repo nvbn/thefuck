@@ -4,11 +4,12 @@ methods.
 
 """
 from collections import defaultdict
+from psutil import Process
 from subprocess import Popen, PIPE
 from time import time
-import os
 import io
-from psutil import Process
+import os
+import sys
 from .utils import DEVNULL, memoize
 
 
@@ -33,8 +34,8 @@ class Generic(object):
         """Prepares command for running in shell."""
         return command_script
 
-    def app_alias(self):
-        return "\nalias fuck='TF_ALIAS=fuck eval $(thefuck $(fc -ln -1))'\n"
+    def app_alias(self, fuck):
+        return "alias {0}='TF_ALIAS={0} eval $(thefuck $(fc -ln -1))'".format(fuck)
 
     def _get_history_file_name(self):
         return ''
@@ -74,9 +75,9 @@ class Generic(object):
 
 
 class Bash(Generic):
-    def app_alias(self):
-        return "\nTF_ALIAS=fuck alias fuck='eval $(thefuck $(fc -ln -1));" \
-               " history -r'\n"
+    def app_alias(self, fuck):
+        return "TF_ALIAS={0} alias {0}='eval $(thefuck $(fc -ln -1));" \
+               " history -r'".format(fuck)
 
     def _parse_alias(self, alias):
         name, value = alias.replace('alias ', '', 1).split('=', 1)
@@ -113,9 +114,9 @@ class Fish(Generic):
         else:
             return ['cd', 'grep', 'ls', 'man', 'open']
 
-    def app_alias(self):
-        return ("set TF_ALIAS fuck\n"
-                "function fuck -d 'Correct your previous console command'\n"
+    def app_alias(self, fuck):
+        return ("set TF_ALIAS {0}\n"
+                "function {0} -d 'Correct your previous console command'\n"
                 "    set -l exit_code $status\n"
                 "    set -l eval_script"
                 " (mktemp 2>/dev/null ; or mktemp -t 'thefuck')\n"
@@ -126,7 +127,7 @@ class Fish(Generic):
                 "    if test $exit_code -ne 0\n"
                 "        history --delete $fucked_up_commandd\n"
                 "    end\n"
-                "end")
+                "end").format(fuck)
 
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
@@ -158,10 +159,10 @@ class Fish(Generic):
 
 
 class Zsh(Generic):
-    def app_alias(self):
-        return "\nTF_ALIAS=fuck" \
-               " alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1));" \
-               " fc -R'\n"
+    def app_alias(self, fuck):
+        return "TF_ALIAS={0}" \
+               " alias {0}='eval $(thefuck $(fc -ln -1 | tail -n 1));" \
+               " fc -R'".format(fuck)
 
     def _parse_alias(self, alias):
         name, value = alias.split('=', 1)
@@ -192,8 +193,10 @@ class Zsh(Generic):
 
 
 class Tcsh(Generic):
-    def app_alias(self):
-        return "\nalias fuck 'setenv TF_ALIAS fuck && set fucked_cmd=`history -h 2 | head -n 1` && eval `thefuck ${fucked_cmd}`'\n"
+    def app_alias(self, fuck):
+        return ("alias {0} 'setenv TF_ALIAS {0} && "
+                "set fucked_cmd=`history -h 2 | head -n 1` && "
+                "eval `thefuck ${fucked_cmd}`'").format(fuck)
 
     def _parse_alias(self, alias):
         name, value = alias.split("\t", 1)
@@ -240,7 +243,10 @@ def to_shell(command):
 
 
 def app_alias():
-    print(_get_shell().app_alias())
+    alias = thefuck_alias()
+    if len(sys.argv) > 1:
+        alias = sys.argv[1]
+    print(_get_shell().app_alias(alias))
 
 
 def thefuck_alias():
