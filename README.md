@@ -112,7 +112,7 @@ eval "$(thefuck-alias)"
 eval "$(thefuck-alias FUCK)"
 ```
 
-[Or in your shell config (Bash, Zsh, Fish, Powershell).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
+[Or in your shell config (Bash, Zsh, Fish, Powershell, tcsh).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
 
 Changes will be available only in a new shell session.
 To make them available immediately, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
