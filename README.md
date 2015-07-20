@@ -14,7 +14,7 @@ E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 
 ➜ fuck
-sudo apt-get install vim
+sudo apt-get install vim [enter/ctrl+c]
 [sudo] password for nvbn:
 Reading package lists... Done
 ...
@@ -29,7 +29,7 @@ To push the current branch and set the remote as upstream, use
 
 
 ➜ fuck
-git push --set-upstream origin master
+git push --set-upstream origin master [enter/ctrl+c]
 Counting objects: 9, done.
 ...
 ```
@@ -42,7 +42,7 @@ No command 'puthon' found, did you mean:
 zsh: command not found: puthon
 
 ➜ fuck
-python
+python [enter/ctrl+c]
 Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 ...
 ```
@@ -55,7 +55,7 @@ Did you mean this?
 	branch
 
 ➜ fuck
-git branch
+git branch [enter/ctrl+c]
 * master
 ```
 
@@ -67,13 +67,13 @@ Did you mean this?
          repl
 
 ➜ fuck
-lein repl
+lein repl [enter/ctrl+c]
 nREPL server started on port 54848 on host 127.0.0.1 - nrepl://127.0.0.1:54848
 REPL-y 0.3.1
 ...
 ```
 
-If you are scared to blindly run the changed command, there is a `require_confirmation`
+If you are not scared to blindly run the changed command, there is a `require_confirmation`
 [settings](#settings) option:
 
 ```bash
@@ -82,7 +82,7 @@ E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 
 ➜ fuck
-sudo apt-get install vim [Enter/Ctrl+C]
+sudo apt-get install vim
 [sudo] password for nvbn:
 Reading package lists... Done
 ...
@@ -138,12 +138,12 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `composer_not_command` &ndash; fixes composer command name;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
-* `cpp11` &ndash; add missing `-std=c++11` to `g++` or `clang++`;
+* `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
-* `dry` &ndash; fix repetitions like "git git push";
+* `dry` &ndash; fixes repetitions like "git git push";
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
-* `git_add` &ndash; fix *"Did you forget to 'git add'?"*;
+* `git_add` &ndash; fixes *"Did you forget to 'git add'?"*;
 * `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
@@ -162,7 +162,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `ls_lah` &ndash; adds -lah to ls;
-* `man` &ndash; change manual section;
+* `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
@@ -190,26 +190,29 @@ Enabled by default only on specific platforms:
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
-* `git_push_force` &ndash; adds `--force` to a `git push` (may conflict with `git_push_pull`);
 * `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed.
 
 Bundled, but not enabled by default:
 
+* `git_push_force` &ndash; adds `--force` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
 ## Creating your own rules
 
 For adding your own rule you should create `your-rule-name.py`
-in `~/.thefuck/rules`. Rule should contain two functions:
-`match(command: Command, settings: Settings) -> bool`
-and `get_new_command(command: Command, settings: Settings) -> str`.
-Also the rule can contain optional function
-`side_effect(command: Command, settings: Settings) -> None` and
+in `~/.thefuck/rules`. The rule should contain two functions:
+```python
+match(command: Command, settings: Settings) -> bool
+get_new_command(command: Command, settings: Settings) -> str
+```
+
+Also the rule can contain an optional function
+`side_effect(command: Command, settings: Settings) -> None` and an
 optional boolean `enabled_by_default`.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
-`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env, [more](#settings).
+`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env ([see more below](#settings)).
 
 Simple example of the rule for running script with `sudo`:
 
@@ -243,7 +246,7 @@ The Fuck has a few settings parameters which can be changed in `~/.thefuck/setti
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
 * `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first;
-* `debug` &ndash; enables debug output, by default `False`;
+* `debug` &ndash; enables debug output, by default `False`.
 
 Example of `settings.py`:
 
