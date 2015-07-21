@@ -41,10 +41,10 @@ def test_not_match(command):
      Command('git commit unknown', stderr=did_not_match('unknown')),
      'git branch unknown && git commit unknown'),
     (['master'],
-     Command(script='git checkout amster', stderr=did_not_match('amster')),
+     Command(script='git checkout mster', stderr=did_not_match('mster')),
      'git checkout master'),
     (['master'],
-     Command(script='git commit amster', stderr=did_not_match('amster')),
+     Command(script='git commit mster', stderr=did_not_match('mster')),
      'git commit master')])
 def test_get_new_command(branches, command, new_command, get_branches):
     get_branches.return_value = branches
