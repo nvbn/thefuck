@@ -1,11 +1,9 @@
-import re
-from thefuck import utils, shells
+from thefuck import utils
 
 
 @utils.git_support
 def match(command, settings):
-    return ('git pull' in command.script
-            and 'fatal: Not a git repository' in command.stderr
+    return ('fatal: Not a git repository' in command.stderr
             and "Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set)." in command.stderr)
 
 

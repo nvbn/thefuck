@@ -5,7 +5,7 @@ from thefuck import shells, utils
 def match(command, settings):
     # catches "Please commit or stash them" and "Please, commit your changes or
     # stash them before you can switch branches."
-    return 'git' in command.script and 'or stash them' in command.stderr
+    return 'or stash them' in command.stderr
 
 
 @utils.git_support
