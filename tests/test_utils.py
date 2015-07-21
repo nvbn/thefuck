@@ -36,6 +36,20 @@ def test_git_support(called, command, stderr):
     assert fn(Command(script=called, stderr=stderr), None) == command
 
 
+@pytest.mark.parametrize('command, is_git', [
+    ('git pull', True),
+    ('hub pull', True),
+    ('git push --set-upstream origin foo', True),
+    ('hub push --set-upstream origin foo', True),
+    ('ls', False),
+    ('cat git', False),
+    ('cat hub', False)])
+def test_git_support_match(command, is_git):
+    @git_support
+    def fn(command, settings): return True
+    assert fn(Command(script=command), None) == is_git
+
+
 def test_memoize():
     fn = Mock(__name__='fn')
     memoized = memoize(fn)
