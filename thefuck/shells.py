@@ -100,7 +100,6 @@ class Bash(Generic):
         return u'{}\n'.format(command_script)
 
     def _script_from_history(self, line):
-        print(line)
         return line
 
 
