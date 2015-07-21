@@ -10,4 +10,4 @@ def match(command, settings):
 
 @utils.git_support
 def get_new_command(command, settings):
-    return '{} --staged'.format(command.script)
+    return command.script.replace(' diff', ' diff --staged')
