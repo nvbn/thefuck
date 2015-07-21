@@ -31,7 +31,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'no_colors': False,
                     'debug': False,
                     'priority': {},
-                    'env': {'LANG': 'C', 'GIT_TRACE': '1'}}
+                    'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_WAIT_COMMAND': 'wait_command',
