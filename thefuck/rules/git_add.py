@@ -4,8 +4,7 @@ from thefuck import utils, shells
 
 @utils.git_support
 def match(command, settings):
-    return ('git' in command.script
-            and 'did not match any file(s) known to git.' in command.stderr
+    return ('did not match any file(s) known to git.' in command.stderr
             and "Did you forget to 'git add'?" in command.stderr)
 
 

@@ -20,5 +20,5 @@ def test_match(stderr):
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command(stderr=stderr), None)\
+    assert get_new_command(Command('git push', stderr=stderr), None)\
         == "git push --set-upstream origin master"

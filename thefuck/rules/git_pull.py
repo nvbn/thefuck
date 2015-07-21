@@ -3,8 +3,7 @@ from thefuck import shells, utils
 
 @utils.git_support
 def match(command, settings):
-    return ('git' in command.script
-            and 'pull' in command.script
+    return ('pull' in command.script
             and 'set-upstream' in command.stderr)
 
 

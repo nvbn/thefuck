@@ -3,8 +3,7 @@ from thefuck import utils
 
 @utils.git_support
 def match(command, settings):
-    return ('git' in command.script and
-            'diff' in command.script and
+    return ('diff' in command.script and
             '--staged' not in command.script)
 
 

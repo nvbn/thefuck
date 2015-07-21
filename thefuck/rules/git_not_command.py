@@ -4,8 +4,7 @@ from thefuck.utils import get_closest, git_support
 
 @git_support
 def match(command, settings):
-    return ('git' in command.script
-            and " is not a git command. See 'git --help'." in command.stderr
+    return (" is not a git command. See 'git --help'." in command.stderr
             and 'Did you mean' in command.stderr)
 
 

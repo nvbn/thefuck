@@ -3,7 +3,7 @@ from thefuck import utils
 
 @utils.git_support
 def match(command, settings):
-    return ('git branch -d' in command.script
+    return ('branch -d' in command.script
             and 'If you are sure you want to delete it' in command.stderr)
 
 
