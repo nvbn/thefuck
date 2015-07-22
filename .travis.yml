@@ -4,9 +4,9 @@ python:
   - "3.3"
   - "2.7"
 install:
+  - pip install coveralls
   - pip install -r requirements.txt
   - python setup.py develop
-  - pip install coveralls
   - rm -rf build
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
