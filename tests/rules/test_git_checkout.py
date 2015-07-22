@@ -14,7 +14,7 @@ def did_not_match(target, did_you_forget=False):
 
 @pytest.fixture
 def get_branches(mocker):
-    return mocker.patch('thefuck.rules.git_checkout')
+    return mocker.patch('thefuck.rules.git_checkout.get_branches')
 
 
 @pytest.mark.parametrize('command', [
@@ -40,12 +40,14 @@ def test_not_match(command):
     ([],
      Command('git commit unknown', stderr=did_not_match('unknown')),
      'git branch unknown && git commit unknown'),
-    (['master'],
-     Command(script='git checkout mster', stderr=did_not_match('mster')),
-     'git checkout master'),
-    (['master'],
-     Command(script='git commit mster', stderr=did_not_match('mster')),
-     'git commit master')])
+    (['test-random-branch-123'],
+     Command(script='git checkout tst-rdm-brnch-123',
+             stderr=did_not_match('tst-rdm-brnch-123')),
+     'git checkout test-random-branch-123'),
+    (['test-random-branch-123'],
+     Command(script='git commit tst-rdm-brnch-123',
+             stderr=did_not_match('tst-rdm-brnch-123')),
+     'git commit test-random-branch-123')])
 def test_get_new_command(branches, command, new_command, get_branches):
     get_branches.return_value = branches
     assert get_new_command(command, None) == new_command
