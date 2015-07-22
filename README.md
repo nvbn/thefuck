@@ -148,7 +148,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
-* `git_no_command` &ndash; fixes wrong git commands like `git brnch`;
+* `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
@@ -157,6 +157,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to grep directory;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
+* `heroku_no_command` &ndash; fixes wrong heroku commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
