@@ -1,0 +1,33 @@
+from thefuck import utils
+
+
+@utils.git_support
+def match(command, settings):
+    return (command.script.split()[1] == 'stash'
+            and 'usage:' in command.stderr)
+
+
+# git's output here is too complicated to be parsed (see the test file)
+stash_commands = (
+        'apply',
+        'branch',
+        'clear',
+        'drop',
+        'list',
+        'pop',
+        'save',
+        'show',
+        )
+
+
+@utils.git_support
+def get_new_command(command, settings):
+    stash_cmd = command.script.split()[2]
+    fixed = utils.get_closest(stash_cmd, stash_commands, fallback_to_first=False)
+
+    if fixed is not None:
+        return command.script.replace(stash_cmd, fixed)
+    else:
+        cmd = command.script.split()
+        cmd.insert(2, 'save')
+        return ' '.join(cmd)

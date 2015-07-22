@@ -141,13 +141,14 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
-* `dry` &ndash; fixes repetitions like "git git push";
+* `dry` &ndash; fixes repetitions like `git git push`;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `git_add` &ndash; fixes *"Did you forget to 'git add'?"*;
 * `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
+* `git_fix_stash` &ndash; fixes `git stash` commands (misspelled subcommand and missing `save`);
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
@@ -155,14 +156,14 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
-* `grep_recursive` &ndash; adds `-r` when you trying to grep directory;
+* `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
-* `heroku_no_command` &ndash; fixes wrong heroku commands like `heroku log`;
+* `heroku_no_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
-* `ls_lah` &ndash; adds -lah to ls;
+* `ls_lah` &ndash; adds `-lah` to `ls`;
 * `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
@@ -170,7 +171,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `open` &ndash; prepends `http` to address passed to `open`;
-* `pip_unknown_command` &ndash; fixes wrong pip commands, for example `pip instatl/pip install`;
+* `pip_unknown_command` &ndash; fixes wrong `pip` commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args'
@@ -180,9 +181,9 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
 * `switch_layout` &ndash; switches command from your local layout to en;
-* `systemctl` &ndash; correctly orders parameters of confusing systemctl;
+* `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
-* `tmux` &ndash; fixes tmux commands;
+* `tmux` &ndash; fixes `tmux` commands;
 * `whois` &ndash; fixes `whois` command.
 
 Enabled by default only on specific platforms:
