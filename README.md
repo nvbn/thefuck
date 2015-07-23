@@ -141,6 +141,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
+* `docker_not_command` &ndash; fixes wrong docker commands like `docker tags`;
 * `dry` &ndash; fixes repetitions like `git git push`;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `git_add` &ndash; fixes *"Did you forget to 'git add'?"*;
