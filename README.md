@@ -158,6 +158,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
+* `gulp_not_task` &ndash; fixes misspelled gulp tasks;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `heroku_no_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
