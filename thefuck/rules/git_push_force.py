@@ -1,4 +1,5 @@
 from thefuck import utils
+from thefuck.utils import replace_argument
 
 
 @utils.git_support
@@ -11,7 +12,7 @@ def match(command, settings):
 
 @utils.git_support
 def get_new_command(command, settings):
-    return command.script.replace('push', 'push --force')
+    return replace_argument(command.script, 'push', 'push --force')
 
 
 enabled_by_default = False

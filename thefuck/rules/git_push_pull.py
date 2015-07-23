@@ -1,5 +1,6 @@
 from thefuck import utils
 from thefuck.shells import and_
+from thefuck.utils import replace_argument
 
 
 @utils.git_support
@@ -12,5 +13,5 @@ def match(command, settings):
 
 @utils.git_support
 def get_new_command(command, settings):
-    return and_(command.script.replace('push', 'pull'),
+    return and_(replace_argument(command.script, 'push', 'pull'),
                 command.script)

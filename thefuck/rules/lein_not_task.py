@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import sudo_support
+from thefuck.utils import sudo_support, replace_argument
 
 
 @sudo_support
@@ -15,4 +15,4 @@ def get_new_command(command, settings):
                             command.stderr)[0]
     new_cmd = re.findall(r'Did you mean this\?\n\s*([^\n]*)',
                          command.stderr)[0]
-    return command.script.replace(broken_cmd, new_cmd, 1)
+    return replace_argument(command.script, broken_cmd, new_cmd)

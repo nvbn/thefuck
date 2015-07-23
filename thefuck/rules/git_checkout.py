@@ -1,6 +1,7 @@
 import re
 import subprocess
 from thefuck import shells, utils
+from thefuck.utils import replace_argument
 
 
 @utils.git_support
@@ -30,7 +31,7 @@ def get_new_command(command, settings):
     closest_branch = utils.get_closest(missing_file, get_branches(),
                                        fallback_to_first=False)
     if closest_branch:
-        return command.script.replace(missing_file, closest_branch, 1)
+        return replace_argument(command.script, missing_file, closest_branch)
     else:
         return shells.and_('git branch {}', '{}').format(
             missing_file, command.script)

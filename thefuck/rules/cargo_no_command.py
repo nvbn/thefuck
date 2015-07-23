@@ -1,4 +1,5 @@
 import re
+from thefuck.utils import replace_argument
 
 
 def match(command, settings):
@@ -11,4 +12,4 @@ def get_new_command(command, settings):
     broken = command.script.split()[1]
     fix = re.findall(r'Did you mean `([^`]*)`', command.stderr)[0]
 
-    return command.script.replace(broken, fix, 1)
+    return replace_argument(command.script, broken, fix)

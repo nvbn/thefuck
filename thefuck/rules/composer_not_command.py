@@ -1,4 +1,5 @@
 import re
+from thefuck.utils import replace_argument
 
 
 def match(command, settings):
@@ -12,4 +13,4 @@ def get_new_command(command, settings):
     new_cmd = re.findall(r'Did you mean this\?[^\n]*\n\s*([^\n]*)', command.stderr)
     if not new_cmd:
         new_cmd = re.findall(r'Did you mean one of these\?[^\n]*\n\s*([^\n]*)', command.stderr)
-    return command.script.replace(broken_cmd, new_cmd[0].strip(), 1)
+    return replace_argument(command.script, broken_cmd, new_cmd[0].strip())

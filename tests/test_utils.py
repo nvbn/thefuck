@@ -1,7 +1,7 @@
 import pytest
 from mock import Mock
 from thefuck.utils import git_support, sudo_support, wrap_settings,\
-    memoize, get_closest, get_all_executables
+    memoize, get_closest, get_all_executables, replace_argument
 from thefuck.types import Settings
 from tests.utils import Command
 
@@ -92,3 +92,10 @@ def test_get_all_callables():
     assert 'vim' in all_callables
     assert 'fsck' in all_callables
     assert 'fuck' not in all_callables
+
+
+@pytest.mark.parametrize('args, result', [
+    (('apt-get instol vim', 'instol', 'install'), 'apt-get install vim'),
+    (('git brnch', 'brnch', 'branch'), 'git branch')])
+def test_replace_argument(args, result):
+    assert replace_argument(*args) == result

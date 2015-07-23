@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import get_closest, git_support
+from thefuck.utils import get_closest, git_support, replace_argument
 
 
 @git_support
@@ -23,5 +23,5 @@ def get_new_command(command, settings):
                             command.stderr)[0]
     new_cmd = get_closest(broken_cmd,
                           _get_all_git_matched_commands(command.stderr))
-    return command.script.replace(broken_cmd, new_cmd, 1)
+    return replace_argument(command.script, broken_cmd, new_cmd)
 

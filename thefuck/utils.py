@@ -148,3 +148,14 @@ def get_all_executables():
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)] + [
                 alias for alias in get_aliases() if alias != tf_alias]
+
+
+def replace_argument(script, from_, to):
+    """Replaces command line argument."""
+    replaced_in_the_end = re.sub(u' {}$'.format(from_), u' {}'.format(to),
+                                 script, count=1)
+    if replaced_in_the_end != script:
+        return replaced_in_the_end
+    else:
+        return script.replace(
+            u' {} '.format(from_), u' {} '.format(to), 1)

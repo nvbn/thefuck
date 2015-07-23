@@ -1,4 +1,5 @@
 from thefuck import utils
+from thefuck.utils import replace_argument
 
 
 @utils.git_support
@@ -9,4 +10,4 @@ def match(command, settings):
 
 @utils.git_support
 def get_new_command(command, settings):
-    return command.script.replace(' diff', ' diff --staged')
+    return replace_argument(command.script, 'diff', 'diff --staged')

@@ -1,7 +1,7 @@
 import os
 import re
 import subprocess
-from thefuck.utils import get_closest
+from thefuck.utils import get_closest, replace_argument
 
 BREW_CMD_PATH = '/Library/Homebrew/cmd'
 TAP_PATH = '/Library/Taps'
@@ -99,4 +99,4 @@ def get_new_command(command, settings):
                             command.stderr)[0]
     new_cmd = _get_similar_command(broken_cmd)
 
-    return command.script.replace(broken_cmd, new_cmd, 1)
+    return replace_argument(command.script, broken_cmd, new_cmd)

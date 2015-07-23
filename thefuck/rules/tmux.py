@@ -1,4 +1,4 @@
-from thefuck.utils import get_closest
+from thefuck.utils import get_closest, replace_argument
 import re
 
 
@@ -17,4 +17,4 @@ def get_new_command(command, settings):
 
     new_cmd = get_closest(old_cmd, suggestions)
 
-    return command.script.replace(old_cmd, new_cmd)
+    return replace_argument(command.script, old_cmd, new_cmd)

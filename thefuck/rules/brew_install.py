@@ -1,7 +1,7 @@
 import os
 import re
 from subprocess import check_output
-from thefuck.utils import get_closest
+from thefuck.utils import get_closest, replace_argument
 
 # Formulars are base on each local system's status
 
@@ -40,4 +40,4 @@ def get_new_command(command, settings):
                                    command.stderr)[0]
     exist_formula = _get_similar_formula(not_exist_formula)
 
-    return command.script.replace(not_exist_formula, exist_formula, 1)
+    return replace_argument(command.script, not_exist_formula, exist_formula)
