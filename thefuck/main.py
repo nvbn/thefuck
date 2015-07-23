@@ -80,25 +80,25 @@ def get_command(settings, args):
         return
 
     script = shells.from_shell(script)
-    logs.debug(u'Call: {}'.format(script), settings)
-
     env = dict(os.environ)
     env.update(settings.env)
-    logs.debug(u'Executing with env: {}'.format(env), settings)
 
-    result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
-    if wait_output(settings, result):
-        return types.Command(script, result.stdout.read().decode('utf-8'),
-                             result.stderr.read().decode('utf-8'))
+    with logs.debug_time(u'Call: {}; with env: {};'.format(script, env),
+                         settings):
+        result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
+        if wait_output(settings, result):
+            return types.Command(script, result.stdout.read().decode('utf-8'),
+                                 result.stderr.read().decode('utf-8'))
 
 
 def get_matched_rule(command, rules, settings):
     """Returns first matched rule for command."""
     for rule in rules:
         try:
-            logs.debug(u'Trying rule: {}'.format(rule.name), settings)
-            if rule.match(command, settings):
-                return rule
+            with logs.debug_time(u'Trying rule: {};'.format(rule.name),
+                                 settings):
+                if rule.match(command, settings):
+                    return rule
         except Exception:
             logs.rule_failed(rule, sys.exc_info(), settings)
 
@@ -134,25 +134,26 @@ def main():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
-    logs.debug(u'Run with settings: {}'.format(pformat(settings)), settings)
+    with logs.debug_time('Total', settings):
+        logs.debug(u'Run with settings: {}'.format(pformat(settings)), settings)
 
-    command = get_command(settings, sys.argv)
-    if command:
-        logs.debug(u'Received stdout: {}'.format(command.stdout), settings)
-        logs.debug(u'Received stderr: {}'.format(command.stderr), settings)
+        command = get_command(settings, sys.argv)
+        if command:
+            logs.debug(u'Received stdout: {}'.format(command.stdout), settings)
+            logs.debug(u'Received stderr: {}'.format(command.stderr), settings)
 
-        rules = get_rules(user_dir, settings)
-        logs.debug(
-            u'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
-            settings)
+            rules = get_rules(user_dir, settings)
+            logs.debug(
+                u'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
+                settings)
 
-        matched_rule = get_matched_rule(command, rules, settings)
-        if matched_rule:
-            logs.debug(u'Matched rule: {}'.format(matched_rule.name), settings)
-            run_rule(matched_rule, command, settings)
-            return
+            matched_rule = get_matched_rule(command, rules, settings)
+            if matched_rule:
+                logs.debug(u'Matched rule: {}'.format(matched_rule.name), settings)
+                run_rule(matched_rule, command, settings)
+                return
 
-    logs.failed('No fuck given', settings)
+        logs.failed('No fuck given', settings)
 
 
 def print_alias():

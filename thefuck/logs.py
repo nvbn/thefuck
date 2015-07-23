@@ -1,4 +1,5 @@
-from pprint import pformat
+from contextlib import contextmanager
+from datetime import datetime
 import sys
 from traceback import format_exception
 import colorama
@@ -62,3 +63,12 @@ def debug(msg, settings):
             reset=color(colorama.Style.RESET_ALL, settings),
             blue=color(colorama.Fore.BLUE, settings),
             bold=color(colorama.Style.BRIGHT, settings)))
+
+
+@contextmanager
+def debug_time(msg, settings):
+    started = datetime.now()
+    try:
+        yield
+    finally:
+        debug('{} took: {}'.format(msg, datetime.now() - started), settings)
