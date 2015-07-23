@@ -1,5 +1,5 @@
 from difflib import get_close_matches
-from thefuck.utils import sudo_support, get_all_executables
+from thefuck.utils import sudo_support, get_all_executables, get_closest
 
 
 @sudo_support
@@ -12,8 +12,7 @@ def match(command, settings):
 @sudo_support
 def get_new_command(command, settings):
     old_command = command.script.split(' ')[0]
-    new_command = get_close_matches(old_command,
-                                    get_all_executables())[0]
+    new_command = get_closest(old_command, get_all_executables())
     return ' '.join([new_command] + command.script.split(' ')[1:])
 
 
