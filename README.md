@@ -292,10 +292,16 @@ pip install -r requirements.txt
 python setup.py develop
 ```
 
-Run tests:
+Run unit tests:
 
 ```bash
 py.test
+```
+
+Run unit and functional tests (requires docker):
+
+```bash
+FUNCTIONAL=true py.test
 ```
 
 ## License MIT
