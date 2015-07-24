@@ -9,7 +9,6 @@ import pexpect
 import pytest
 
 root = str(Path(__file__).parent.parent.parent.resolve())
-docker = os.environ.get('DOCKER', 'docker').split(' ')
 
 
 def build_container(tag, dockerfile):

@@ -3,18 +3,12 @@ python:
   - "3.4"
   - "3.3"
   - "2.7"
-sudo: true
 install:
   - pip install coveralls
   - pip install -r requirements.txt
   - python setup.py develop
   - rm -rf build
-  - curl -sLo - http://j.mp/install-travis-docker | sh -xe
-env:
-  global:
-    - DOCKER="./run docker"
-    - FUNCTIONAL=true
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
-  - coverage run --source=thefuck,tests -m py.test -v --capture=sys
+  - coverage run --source=thefuck,tests -m py.test -v
 after_success: coveralls
