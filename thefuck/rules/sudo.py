@@ -13,7 +13,7 @@ patterns = ['permission denied',
             'must be root',
             'need to be root',
             'need root',
-            'only root can do that',
+            'only root can ',
             'You don\'t have access to the history DB.',
             'authentication is required']
 
