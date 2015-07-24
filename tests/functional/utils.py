@@ -1,4 +1,3 @@
-import sys
 import os
 import pytest
 from contextlib import contextmanager
@@ -15,38 +14,20 @@ def build_container(tag, dockerfile):
     tmpdir = mkdtemp()
     with Path(tmpdir).joinpath('Dockerfile').open('w') as file:
         file.write(dockerfile)
-    if subprocess.call(['docker', 'build', '--tag={}'.format(tag), tmpdir]) != 0:
+    if subprocess.call(['docker', 'build', '--tag={}'.format(tag), tmpdir],
+                       cwd=root) != 0:
         raise Exception("Can't build container")
     shutil.rmtree(tmpdir)
 
 
-def read_until(proc, string='\n$ '):
-    text = ''
-    while True:
-        text += proc.read(1)
-        sys.stdout.write(text[-1])
-        sys.stdout.flush()
-        if text.endswith(string):
-            return text
-
-
-def run(proc, cmd):
-    proc.sendline(cmd)
-    return read_until(proc)
-
-
 @contextmanager
-def spawn(tag, volume, prepare=None):
-    if prepare is None:
-        prepare = []
-
+def spawn(tag, dockerfile):
+    build_container(tag, dockerfile)
     proc = pexpect.spawnu(
-        'docker run --volume {} --tty=true --interactive=true {}'.format(
-            volume, tag))
+        'docker run --volume {}:/src --tty=true --interactive=true {}'.format(root, tag))
+    proc.sendline('pip install /src')
 
     try:
-        for line in prepare:
-            run(proc, line)
         yield proc
     finally:
         proc.terminate()
