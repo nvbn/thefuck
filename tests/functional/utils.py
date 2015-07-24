@@ -9,15 +9,16 @@ import pexpect
 import pytest
 
 root = str(Path(__file__).parent.parent.parent.resolve())
-docker = os.environ.get('DOCKER', 'docker').split(' ')
+docker = os.environ.get('DOCKER', 'docker')
 
 
 def build_container(tag, dockerfile):
     tmpdir = mkdtemp()
     with Path(tmpdir).joinpath('Dockerfile').open('w') as file:
         file.write(dockerfile)
-    if subprocess.call(['docker', 'build', '--tag={}'.format(tag), tmpdir],
-                       cwd=root) != 0:
+    if subprocess.call(
+            docker.split(' ') + ['build', '--tag={}'.format(tag), tmpdir],
+            cwd=root) != 0:
         raise Exception("Can't build a container")
     shutil.rmtree(tmpdir)
 
@@ -27,7 +28,8 @@ def spawn(tag, dockerfile):
     tag = 'thefuck/{}'.format(tag)
     build_container(tag, dockerfile)
     proc = pexpect.spawnu(
-        'docker run --volume {}:/src --tty=true --interactive=true {}'.format(root, tag))
+        '{} run --volume {}:/src --tty=true --interactive=true {}'.format(
+            docker, root, tag))
     proc.logfile = sys.stdout
     proc.sendline('pip install /src')
 
