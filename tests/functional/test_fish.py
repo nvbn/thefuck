@@ -2,7 +2,7 @@ import pytest
 from tests.functional.plots import with_confirmation, without_confirmation
 from tests.functional.utils import spawn, functional
 
-containers = [('thefuck/ubuntu-python3-bash', '''
+containers = [('ubuntu-python3-bash', '''
 FROM ubuntu:latest
 RUN apt-get update
 RUN apt-get install -yy python3 python3-pip python3-dev fish
@@ -10,7 +10,7 @@ RUN pip3 install -U setuptools
 RUN ln -s /usr/bin/pip3 /usr/bin/pip
 CMD ["/usr/bin/fish"]
 '''),
-              ('thefuck/ubuntu-python2-bash', '''
+              ('ubuntu-python2-bash', '''
 FROM ubuntu:latest
 RUN apt-get update
 RUN apt-get install -yy python python-pip python-dev fish

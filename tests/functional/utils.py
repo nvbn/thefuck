@@ -17,12 +17,13 @@ def build_container(tag, dockerfile):
         file.write(dockerfile)
     if subprocess.call(['docker', 'build', '--tag={}'.format(tag), tmpdir],
                        cwd=root) != 0:
-        raise Exception("Can't build container")
+        raise Exception("Can't build a container")
     shutil.rmtree(tmpdir)
 
 
 @contextmanager
 def spawn(tag, dockerfile):
+    tag = 'thefuck/{}'.format(tag)
     build_container(tag, dockerfile)
     proc = pexpect.spawnu(
         'docker run --volume {}:/src --tty=true --interactive=true {}'.format(root, tag))
