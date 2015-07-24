@@ -1,11 +1,12 @@
 import os
-import pytest
 from contextlib import contextmanager
-import pexpect
 import subprocess
 import shutil
 from tempfile import mkdtemp
 from pathlib import Path
+import sys
+import pexpect
+import pytest
 
 root = str(Path(__file__).parent.parent.parent.resolve())
 
@@ -25,6 +26,7 @@ def spawn(tag, dockerfile):
     build_container(tag, dockerfile)
     proc = pexpect.spawnu(
         'docker run --volume {}:/src --tty=true --interactive=true {}'.format(root, tag))
+    proc.logfile = sys.stdout
     proc.sendline('pip install /src')
 
     try:

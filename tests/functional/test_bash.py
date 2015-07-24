@@ -1,4 +1,5 @@
 import pytest
+from tests.functional.plots import with_confirmation, without_confirmation
 from tests.functional.utils import spawn, functional
 
 containers = [('thefuck/ubuntu-python3-bash', '''
@@ -23,17 +24,7 @@ CMD ["/bin/bash"]
 def test_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile) as proc:
         proc.sendline('eval $(thefuck-alias)')
-
-        proc.sendline('ehco test')
-        proc.expect('command not found')
-
-        proc.sendline('fuck')
-        proc.expect('echo test')
-        proc.expect('enter')
-        proc.expect_exact('ctrl+c')
-        proc.send('\n')
-
-        proc.expect('test')
+        with_confirmation(proc)
 
 
 @functional
@@ -42,10 +33,4 @@ def test_without_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile) as proc:
         proc.sendline('export THEFUCK_REQUIRE_CONFIRMATION=false')
         proc.sendline('eval $(thefuck-alias)')
-
-        proc.sendline('ehco test')
-        proc.expect('command not found')
-
-        proc.sendline('fuck')
-        proc.expect('echo test')
-        proc.expect('test')
+        without_confirmation(proc)
