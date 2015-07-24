@@ -1,5 +1,6 @@
 import pytest
-from tests.functional.plots import with_confirmation, without_confirmation
+from tests.functional.plots import with_confirmation, without_confirmation, \
+    refuse_with_confirmation
 from tests.functional.utils import spawn, functional
 
 containers = [('ubuntu-python3-bash', '''
@@ -26,6 +27,15 @@ def test_with_confirmation(tag, dockerfile):
         proc.sendline('thefuck-alias >> ~/.config/fish/config.fish')
         proc.sendline('fish')
         with_confirmation(proc)
+
+
+@functional
+@pytest.mark.parametrize('tag, dockerfile', containers)
+def test_refuse_with_confirmation(tag, dockerfile):
+    with spawn(tag, dockerfile) as proc:
+        proc.sendline('thefuck-alias >> ~/.config/fish/config.fish')
+        proc.sendline('fish')
+        refuse_with_confirmation(proc)
 
 
 @functional
