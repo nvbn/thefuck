@@ -11,8 +11,7 @@ addons:
       - fish
       - tcsh
 env:
-  - FUNCTIONAL=true
-  - BARE=true
+  - FUNCTIONAL=true BARE=true
 install:
   - pip install coveralls
   - pip install -r requirements.txt
