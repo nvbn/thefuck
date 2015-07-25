@@ -1,3 +1,6 @@
+from pexpect import TIMEOUT
+
+
 def with_confirmation(proc):
     """Ensures that command can be fixed when confirmation enabled."""
     proc.sendline(u'mkdir -p ~/.thefuck')
@@ -6,12 +9,12 @@ def with_confirmation(proc):
     proc.sendline(u'ehco test')
 
     proc.sendline(u'fuck')
-    proc.expect(u'echo test')
-    proc.expect(u'enter')
-    proc.expect_exact(u'ctrl+c')
+    assert proc.expect([TIMEOUT, u'echo test'])
+    assert proc.expect([TIMEOUT, u'enter'])
+    assert proc.expect_exact([TIMEOUT, u'ctrl+c'])
     proc.send('\n')
 
-    proc.expect(u'test')
+    assert proc.expect([TIMEOUT, u'test'])
 
 
 def refuse_with_confirmation(proc):
@@ -22,12 +25,12 @@ def refuse_with_confirmation(proc):
     proc.sendline(u'ehco test')
 
     proc.sendline(u'fuck')
-    proc.expect(u'echo test')
-    proc.expect(u'enter')
-    proc.expect_exact(u'ctrl+c')
+    assert proc.expect([TIMEOUT, u'echo test'])
+    assert proc.expect([TIMEOUT, u'enter'])
+    assert proc.expect_exact([TIMEOUT, u'ctrl+c'])
     proc.send('\003')
 
-    proc.expect(u'Aborted')
+    assert proc.expect([TIMEOUT, u'Aborted'])
 
 
 def without_confirmation(proc):
@@ -38,5 +41,5 @@ def without_confirmation(proc):
     proc.sendline(u'ehco test')
 
     proc.sendline(u'fuck')
-    proc.expect(u'echo test')
-    proc.expect(u'test')
+    assert proc.expect([TIMEOUT, u'echo test'])
+    assert proc.expect([TIMEOUT, u'test'])
