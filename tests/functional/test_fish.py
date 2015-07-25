@@ -1,7 +1,7 @@
 import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation
-from tests.functional.utils import spawn, images, bare, enabled
+from tests.functional.utils import spawn, functional, images, bare
 
 containers = images(('ubuntu-python3-fish', u'''
 FROM ubuntu:latest
@@ -18,8 +18,9 @@ RUN pip2 install -U pip setuptools
 '''))
 
 
+@functional
 @pytest.mark.skipif(
-    bare or not enabled, 'https://github.com/travis-ci/apt-source-whitelist/issues/71')
+    bare, reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'fish') as proc:
@@ -28,8 +29,9 @@ def test_with_confirmation(tag, dockerfile):
         with_confirmation(proc)
 
 
+@functional
 @pytest.mark.skipif(
-    bare or not enabled, 'https://github.com/travis-ci/apt-source-whitelist/issues/71')
+    bare, reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_refuse_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'fish') as proc:
@@ -38,8 +40,9 @@ def test_refuse_with_confirmation(tag, dockerfile):
         refuse_with_confirmation(proc)
 
 
+@functional
 @pytest.mark.skipif(
-    bare or not enabled, 'https://github.com/travis-ci/apt-source-whitelist/issues/71')
+    bare, reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_without_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'fish') as proc:
