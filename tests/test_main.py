@@ -14,7 +14,8 @@ def test_load_rule(mocker):
         return_value=Mock(match=match,
                           get_new_command=get_new_command,
                           enabled_by_default=True,
-                          priority=900))
+                          priority=900,
+                          requires_output=True))
     assert main.load_rule(Path('/rules/bash.py')) \
            == Rule('bash', match, get_new_command, priority=900)
     load_source.assert_called_once_with('bash', '/rules/bash.py')
