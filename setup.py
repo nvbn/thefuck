@@ -11,7 +11,7 @@ elif (3, 0) < sys.version_info < (3, 3):
           ' ({}.{} detected).'.format(*sys.version_info[:2]))
     sys.exit(-1)
 
-VERSION = '2.3'
+VERSION = '2.4'
 
 install_requires = ['psutil', 'colorama', 'six']
 extras_require = {':python_version<"3.4"': ['pathlib']}
