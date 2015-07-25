@@ -5,6 +5,8 @@ python:
   - "2.7"
 addons:
   apt:
+    sources:
+      - fish-shell/release-2
     packages:
       - bash
       - zsh
