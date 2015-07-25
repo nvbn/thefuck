@@ -10,6 +10,7 @@ import pytest
 
 root = str(Path(__file__).parent.parent.parent.resolve())
 bare = os.environ.get('BARE')
+enabled = os.environ.get('FUNCTIONAL')
 
 
 def build_container(tag, dockerfile):
@@ -49,5 +50,5 @@ def images(*items):
 
 
 functional = pytest.mark.skipif(
-    not os.environ.get('FUNCTIONAL'),
+    not enabled,
     reason='Functional tests are disabled by default.')
