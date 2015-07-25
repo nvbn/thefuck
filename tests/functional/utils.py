@@ -9,6 +9,7 @@ import pexpect
 import pytest
 
 root = str(Path(__file__).parent.parent.parent.resolve())
+bare = os.environ.get('BARE')
 
 
 def build_container(tag, dockerfile):
@@ -22,18 +23,29 @@ def build_container(tag, dockerfile):
 
 
 @contextmanager
-def spawn(tag, dockerfile):
-    tag = 'thefuck/{}'.format(tag)
-    build_container(tag, dockerfile)
-    proc = pexpect.spawnu(
-        'docker run --volume {}:/src --tty=true --interactive=true {}'.format(root, tag))
+def spawn(tag, dockerfile, cmd):
+    if bare:
+        proc = pexpect.spawnu(cmd)
+    else:
+        tag = 'thefuck/{}'.format(tag)
+        build_container(tag, dockerfile)
+        proc = pexpect.spawnu('docker run --volume {}:/src --tty=true '
+                              '--interactive=true {} {}'.format(root, tag, cmd))
+        proc.sendline('pip install /src')
+
     proc.logfile = sys.stdout
-    proc.sendline('pip install /src')
 
     try:
         yield proc
     finally:
-        proc.terminate()
+        proc.terminate(force=bare)
+
+
+def images(*items):
+    if bare:
+        return [items[0]]
+    else:
+        return items
 
 
 functional = pytest.mark.skipif(

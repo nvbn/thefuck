@@ -3,6 +3,16 @@ python:
   - "3.4"
   - "3.3"
   - "2.7"
+addons:
+  apt:
+    packages:
+      - bash
+      - zsh
+      - fish
+      - tcsh
+env:
+  - FUNCTIONAL=true
+  - BARE=true
 install:
   - pip install coveralls
   - pip install -r requirements.txt
@@ -10,5 +20,5 @@ install:
   - rm -rf build
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
-  - coverage run --source=thefuck,tests -m py.test -v
+  - coverage run --source=thefuck,tests -m py.test -v --capture=sys
 after_success: coveralls

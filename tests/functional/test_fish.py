@@ -1,30 +1,28 @@
 import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation
-from tests.functional.utils import spawn, functional
+from tests.functional.utils import spawn, functional, images
 
-containers = [('ubuntu-python3-fish', '''
+containers = images(('ubuntu-python3-fish', '''
 FROM ubuntu:latest
 RUN apt-get update
 RUN apt-get install -yy python3 python3-pip python3-dev fish
 RUN pip3 install -U setuptools
 RUN ln -s /usr/bin/pip3 /usr/bin/pip
-CMD ["/usr/bin/fish"]
 '''),
-              ('ubuntu-python2-fish', '''
+                    ('ubuntu-python2-fish', '''
 FROM ubuntu:latest
 RUN apt-get update
 RUN apt-get install -yy python python-pip python-dev fish
 RUN pip2 install -U pip setuptools
-CMD ["/usr/bin/fish"]
-''')]
+'''))
 
 
 @functional
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile) as proc:
-        proc.sendline('thefuck-alias >> ~/.config/fish/config.fish')
+    with spawn(tag, dockerfile, 'fish') as proc:
+        proc.sendline('thefuck-alias > ~/.config/fish/config.fish')
         proc.sendline('fish')
         with_confirmation(proc)
 
@@ -32,8 +30,8 @@ def test_with_confirmation(tag, dockerfile):
 @functional
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_refuse_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile) as proc:
-        proc.sendline('thefuck-alias >> ~/.config/fish/config.fish')
+    with spawn(tag, dockerfile, 'fish') as proc:
+        proc.sendline('thefuck-alias > ~/.config/fish/config.fish')
         proc.sendline('fish')
         refuse_with_confirmation(proc)
 
@@ -41,9 +39,7 @@ def test_refuse_with_confirmation(tag, dockerfile):
 @functional
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_without_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile) as proc:
-        proc.sendline('thefuck-alias >> ~/.config/fish/config.fish')
-        proc.sendline('mkdir ~/.thefuck')
-        proc.sendline('echo "require_confirmation = False" >> ~/.thefuck/settings.py')
+    with spawn(tag, dockerfile, 'fish') as proc:
+        proc.sendline('thefuck-alias > ~/.config/fish/config.fish')
         proc.sendline('fish')
         without_confirmation(proc)
