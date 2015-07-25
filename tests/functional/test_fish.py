@@ -20,7 +20,7 @@ RUN pip2 install -U pip setuptools
 
 @functional
 @pytest.mark.skipif(
-    bare, reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
+    bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'fish') as proc:
@@ -31,7 +31,7 @@ def test_with_confirmation(tag, dockerfile):
 
 @functional
 @pytest.mark.skipif(
-    bare, reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
+    bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_refuse_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'fish') as proc:
@@ -42,7 +42,7 @@ def test_refuse_with_confirmation(tag, dockerfile):
 
 @functional
 @pytest.mark.skipif(
-    bare, reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
+    bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_without_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'fish') as proc:

@@ -25,7 +25,6 @@ def build_container(tag, dockerfile):
 
 @contextmanager
 def spawn(tag, dockerfile, cmd):
-    raise Exception([bare, enabled])
     if bare:
         proc = pexpect.spawnu(cmd)
     else:
