@@ -11,6 +11,14 @@ def test_match(command):
     assert match(command, None)
 
 
+@pytest.mark.parametrize('command', [
+    Command(script='mv foo bar/', stderr=""),
+    Command(script='mv foo bar/foo', stderr="mv: permission denied"),
+    ])
+def test_not_match(command):
+    assert not match(command, None)
+
+
 @pytest.mark.parametrize('command, new_command', [
     (Command(script='mv foo bar/foo', stderr="mv: cannot move 'foo' to 'bar/foo': No such file or directory"), 'mkdir -p bar && mv foo bar/foo'),
     (Command(script='mv foo bar/', stderr="mv: cannot move 'foo' to 'bar/': No such file or directory"), 'mkdir -p bar && mv foo bar/'),
