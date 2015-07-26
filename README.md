@@ -185,6 +185,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `switch_layout` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
+* `tsuru_login.py` &ndash; runs `tsuru login` if not authenticated or session expired;
 * `tmux` &ndash; fixes `tmux` commands;
 * `whois` &ndash; fixes `whois` command.
 
