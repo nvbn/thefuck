@@ -2,13 +2,14 @@
 from setuptools import setup, find_packages
 import sys
 
-if sys.version_info < (2, 7):
+version = sys.version_info[:2]
+if version < (2, 7):
     print('thefuck requires Python version 2.7 or later' +
-          ' ({}.{} detected).'.format(*sys.version_info[:2]))
+          ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
-elif (3, 0) < sys.version_info < (3, 3):
+elif (3, 0) < version < (3, 3):
     print('thefuck requires Python version 3.3 or later' +
-          ' ({}.{} detected).'.format(*sys.version_info[:2]))
+          ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
 
 VERSION = '2.4'
