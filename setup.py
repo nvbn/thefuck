@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 import sys
+import os
 
-try:
+if os.environ.get('CONVERT_README'):
     import pypandoc
 
     long_description = pypandoc.convert('README.md', 'rst')
-except:
-    long_description = open('README.md').read()
+else:
+    long_description = ''
 
 version = sys.version_info[:2]
 if version < (2, 7):
@@ -19,7 +20,7 @@ elif (3, 0) < version < (3, 3):
           ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
 
-VERSION = '2.5.4'
+VERSION = '2.5.6'
 
 install_requires = ['psutil', 'colorama', 'six']
 extras_require = {':python_version<"3.4"': ['pathlib']}
