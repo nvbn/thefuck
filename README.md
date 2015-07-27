@@ -214,8 +214,8 @@ get_new_command(command: Command, settings: Settings) -> str
 ```
 
 Also the rule can contain an optional function
-`side_effect(command: Command, settings: Settings) -> None` and an
-optional boolean `enabled_by_default`.
+`side_effect(command: Command, settings: Settings) -> None` and
+optional `enabled_by_default`, `requires_output` and `priority` variables.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
@@ -239,6 +239,8 @@ def side_effect(command, settings):
     subprocess.call('chmod 777 .', shell=True)
 
 priority = 1000  # Lower first, default is 1000
+
+requires_output = True
 ```
 
 [More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
