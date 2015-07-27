@@ -1,6 +1,6 @@
 import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
-    refuse_with_confirmation
+    refuse_with_confirmation, history_changed, history_not_changed
 from tests.functional.utils import spawn, functional, images
 
 containers = images(('ubuntu-python3-bash', u'''
@@ -23,7 +23,9 @@ RUN pip2 install -U pip setuptools
 def test_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'bash') as proc:
         proc.sendline(u'eval $(thefuck-alias)')
+        proc.sendline(u'touch $HISTFILE')
         with_confirmation(proc)
+        history_changed(proc)
 
 
 @functional
@@ -31,7 +33,9 @@ def test_with_confirmation(tag, dockerfile):
 def test_refuse_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'bash') as proc:
         proc.sendline(u'eval $(thefuck-alias)')
+        proc.sendline(u'touch $HISTFILE')
         refuse_with_confirmation(proc)
+        history_not_changed(proc)
 
 
 @functional
@@ -39,4 +43,6 @@ def test_refuse_with_confirmation(tag, dockerfile):
 def test_without_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'bash') as proc:
         proc.sendline(u'eval $(thefuck-alias)')
+        proc.sendline(u'touch $HISTFILE')
         without_confirmation(proc)
+        history_changed(proc)

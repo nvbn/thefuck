@@ -43,3 +43,5 @@ def test_without_confirmation(tag, dockerfile):
         proc.sendline(u'tcsh')
         proc.sendline(u'eval `thefuck-alias`')
         without_confirmation(proc)
+
+# TODO: ensure that history changes.

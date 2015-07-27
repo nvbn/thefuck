@@ -49,3 +49,5 @@ def test_without_confirmation(tag, dockerfile):
         proc.sendline(u'thefuck-alias > ~/.config/fish/config.fish')
         proc.sendline(u'fish')
         without_confirmation(proc)
+
+# TODO: ensure that history changes.

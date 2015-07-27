@@ -17,6 +17,18 @@ def with_confirmation(proc):
     assert proc.expect([TIMEOUT, u'test'])
 
 
+def history_changed(proc):
+    """Ensures that history changed."""
+    proc.send('\033[A')
+    assert proc.expect([TIMEOUT, 'echo test'])
+
+
+def history_not_changed(proc):
+    """Ensures that history not changed."""
+    proc.send('\033[A')
+    assert proc.expect([TIMEOUT, 'fuck'])
+
+
 def refuse_with_confirmation(proc):
     """Ensures that fix can be refused when confirmation enabled."""
     proc.sendline(u'mkdir -p ~/.thefuck')
