@@ -20,13 +20,13 @@ def with_confirmation(proc):
 def history_changed(proc):
     """Ensures that history changed."""
     proc.send('\033[A')
-    assert proc.expect([TIMEOUT, 'echo test'])
+    assert proc.expect([TIMEOUT, u'echo test'])
 
 
 def history_not_changed(proc):
     """Ensures that history not changed."""
     proc.send('\033[A')
-    assert proc.expect([TIMEOUT, 'fuck'])
+    assert proc.expect([TIMEOUT, u'fuck'])
 
 
 def refuse_with_confirmation(proc):
