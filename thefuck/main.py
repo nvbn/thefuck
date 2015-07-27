@@ -97,12 +97,12 @@ def get_command(settings, args):
             return types.Command(script, stdout, stderr)
         else:
             logs.debug(u'Execution timed out!', settings)
-            return types.Script(script)
+            return types.Command(script, None, None)
 
 
 def get_matched_rule(command, rules, settings):
     """Returns first matched rule for command."""
-    script_only = isinstance(command, types.Script)
+    script_only = command.stdout is None and command.stderr is None
 
     for rule in rules:
         if script_only and rule.requires_output:

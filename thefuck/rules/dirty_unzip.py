@@ -1,6 +1,5 @@
 import os
 import zipfile
-from thefuck import logs
 
 
 def _is_bad_zip(file):
