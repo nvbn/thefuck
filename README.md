@@ -309,5 +309,12 @@ Run unit and functional tests (requires docker):
 FUNCTIONAL=true py.test
 ```
 
+For sending package to pypi:
+
+```bash
+sudo apt-get install pandoc
+./release.py
+```
+
 ## License MIT
 Project License can be found [here](LICENSE.md).
