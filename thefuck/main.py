@@ -28,7 +28,8 @@ def load_rule(rule):
                       rule_module.get_new_command,
                       getattr(rule_module, 'enabled_by_default', True),
                       getattr(rule_module, 'side_effect', None),
-                      getattr(rule_module, 'priority', conf.DEFAULT_PRIORITY))
+                      getattr(rule_module, 'priority', conf.DEFAULT_PRIORITY),
+                      getattr(rule_module, 'requires_output', True))
 
 
 def _get_loaded_rules(rules, settings):
@@ -87,13 +88,26 @@ def get_command(settings, args):
                          settings):
         result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
         if wait_output(settings, result):
-            return types.Command(script, result.stdout.read().decode('utf-8'),
-                                 result.stderr.read().decode('utf-8'))
+            stdout = result.stdout.read().decode('utf-8')
+            stderr = result.stderr.read().decode('utf-8')
+
+            logs.debug(u'Received stdout: {}'.format(stdout), settings)
+            logs.debug(u'Received stderr: {}'.format(stderr), settings)
+
+            return types.Command(script, stdout, stderr)
+        else:
+            logs.debug(u'Execution timed out!', settings)
+            return types.Command(script, None, None)
 
 
 def get_matched_rule(command, rules, settings):
     """Returns first matched rule for command."""
+    script_only = command.stdout is None and command.stderr is None
+
     for rule in rules:
+        if script_only and rule.requires_output:
+            continue
+
         try:
             with logs.debug_time(u'Trying rule: {};'.format(rule.name),
                                  settings):
@@ -138,20 +152,16 @@ def main():
         logs.debug(u'Run with settings: {}'.format(pformat(settings)), settings)
 
         command = get_command(settings, sys.argv)
-        if command:
-            logs.debug(u'Received stdout: {}'.format(command.stdout), settings)
-            logs.debug(u'Received stderr: {}'.format(command.stderr), settings)
+        rules = get_rules(user_dir, settings)
+        logs.debug(
+            u'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
+            settings)
 
-            rules = get_rules(user_dir, settings)
-            logs.debug(
-                u'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
-                settings)
-
-            matched_rule = get_matched_rule(command, rules, settings)
-            if matched_rule:
-                logs.debug(u'Matched rule: {}'.format(matched_rule.name), settings)
-                run_rule(matched_rule, command, settings)
-                return
+        matched_rule = get_matched_rule(command, rules, settings)
+        if matched_rule:
+            logs.debug(u'Matched rule: {}'.format(matched_rule.name), settings)
+            run_rule(matched_rule, command, settings)
+            return
 
         logs.failed('No fuck given', settings)
 

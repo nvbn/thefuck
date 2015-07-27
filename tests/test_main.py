@@ -14,7 +14,8 @@ def test_load_rule(mocker):
         return_value=Mock(match=match,
                           get_new_command=get_new_command,
                           enabled_by_default=True,
-                          priority=900))
+                          priority=900,
+                          requires_output=True))
     assert main.load_rule(Path('/rules/bash.py')) \
            == Rule('bash', match, get_new_command, priority=900)
     load_source.assert_called_once_with('bash', '/rules/bash.py')
@@ -152,7 +153,7 @@ class TestConfirm(object):
 
     def test_with_side_effect_and_without_confirmation(self, capsys):
         assert main.confirm('command', Mock(), Mock(require_confirmation=False))
-        assert capsys.readouterr() == ('', 'command*\n')
+        assert capsys.readouterr() == ('', 'command (+side effect)\n')
 
     # `stdin` fixture should be applied after `capsys`
     def test_when_confirmation_required_and_confirmed(self, capsys, stdin):
@@ -164,7 +165,7 @@ class TestConfirm(object):
     def test_when_confirmation_required_and_confirmed_with_side_effect(self, capsys, stdin):
         assert main.confirm('command', Mock(), Mock(require_confirmation=True,
                                                     no_colors=True))
-        assert capsys.readouterr() == ('', 'command* [enter/ctrl+c]')
+        assert capsys.readouterr() == ('', 'command (+side effect) [enter/ctrl+c]')
 
     def test_when_confirmation_required_and_aborted(self, capsys, stdin):
         stdin.side_effect = KeyboardInterrupt

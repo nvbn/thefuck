@@ -139,6 +139,8 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `composer_not_command` &ndash; fixes composer command name;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
+* `dirty_untar` &ndash; fixes `tar x` command that untarred in the current directory;
+* `dirty_unzip` &ndash; fixes `unzip` command that unzipped in the current directory;
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
 * `docker_not_command` &ndash; fixes wrong docker commands like `docker tags`;
@@ -212,8 +214,8 @@ get_new_command(command: Command, settings: Settings) -> str
 ```
 
 Also the rule can contain an optional function
-`side_effect(command: Command, settings: Settings) -> None` and an
-optional boolean `enabled_by_default`.
+`side_effect(command: Command, settings: Settings) -> None` and
+optional `enabled_by_default`, `requires_output` and `priority` variables.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
@@ -237,6 +239,8 @@ def side_effect(command, settings):
     subprocess.call('chmod 777 .', shell=True)
 
 priority = 1000  # Lower first, default is 1000
+
+requires_output = True
 ```
 
 [More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
