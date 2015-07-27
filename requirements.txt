@@ -4,3 +4,4 @@ pytest-mock
 wheel
 setuptools>=17.1
 pexpect
+pypandoc

@@ -4,7 +4,7 @@ Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
-![gif with examples](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)
+[![gif with examples](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)
 
 Few more examples:
 
@@ -208,14 +208,14 @@ Bundled, but not enabled by default:
 
 For adding your own rule you should create `your-rule-name.py`
 in `~/.thefuck/rules`. The rule should contain two functions:
+
 ```python
 match(command: Command, settings: Settings) -> bool
 get_new_command(command: Command, settings: Settings) -> str
 ```
 
-Also the rule can contain an optional function
-`side_effect(command: Command, settings: Settings) -> None` and
-optional `enabled_by_default`, `requires_output` and `priority` variables.
+Also the rule can contain an optional function `side_effect(command: Command, settings: Settings) -> None`
+and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
