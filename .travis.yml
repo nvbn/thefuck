@@ -12,6 +12,7 @@ addons:
       - zsh
       - fish
       - tcsh
+      - pandoc
 env:
   - FUNCTIONAL=true BARE=true
 install:
