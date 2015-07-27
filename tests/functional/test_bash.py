@@ -22,6 +22,7 @@ RUN pip2 install -U pip setuptools
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'bash') as proc:
+        proc.sendline(u"export PS1='$ '")
         proc.sendline(u'eval $(thefuck-alias)')
         proc.sendline(u'touch $HISTFILE')
         with_confirmation(proc)
@@ -32,6 +33,7 @@ def test_with_confirmation(tag, dockerfile):
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_refuse_with_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'bash') as proc:
+        proc.sendline(u"export PS1='$ '")
         proc.sendline(u'eval $(thefuck-alias)')
         proc.sendline(u'touch $HISTFILE')
         refuse_with_confirmation(proc)
@@ -42,6 +44,7 @@ def test_refuse_with_confirmation(tag, dockerfile):
 @pytest.mark.parametrize('tag, dockerfile', containers)
 def test_without_confirmation(tag, dockerfile):
     with spawn(tag, dockerfile, u'bash') as proc:
+        proc.sendline(u"export PS1='$ '")
         proc.sendline(u'eval $(thefuck-alias)')
         proc.sendline(u'touch $HISTFILE')
         without_confirmation(proc)
