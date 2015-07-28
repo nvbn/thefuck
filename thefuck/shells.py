@@ -224,6 +224,7 @@ shells = defaultdict(lambda: Generic(), {
     'tcsh': Tcsh()})
 
 
+@memoize
 def _get_shell():
     try:
         shell = Process(os.getpid()).parent().name()
