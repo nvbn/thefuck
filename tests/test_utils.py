@@ -1,7 +1,8 @@
 import pytest
 from mock import Mock
 from thefuck.utils import git_support, sudo_support, wrap_settings,\
-    memoize, get_closest, get_all_executables, replace_argument
+    memoize, get_closest, get_all_executables, replace_argument, \
+    get_all_matched_commands
 from thefuck.types import Settings
 from tests.utils import Command
 
@@ -99,3 +100,32 @@ def test_get_all_callables():
     (('git brnch', 'brnch', 'branch'), 'git branch')])
 def test_replace_argument(args, result):
     assert replace_argument(*args) == result
+
+
+@pytest.mark.parametrize('stderr, result', [
+    (("git: 'cone' is not a git command. See 'git --help'.\n"
+      '\n'
+      'Did you mean one of these?\n'
+      '\tclone'), ['clone']),
+    (("git: 're' is not a git command. See 'git --help'.\n"
+      '\n'
+      'Did you mean one of these?\n'
+      '\trebase\n'
+      '\treset\n'
+      '\tgrep\n'
+      '\trm'), ['rebase', 'reset', 'grep', 'rm']),
+    (('tsuru: "target" is not a tsuru command. See "tsuru help".\n'
+      '\n'
+      'Did you mean one of these?\n'
+      '\tservice-add\n'
+      '\tservice-bind\n'
+      '\tservice-doc\n'
+      '\tservice-info\n'
+      '\tservice-list\n'
+      '\tservice-remove\n'
+      '\tservice-status\n'
+      '\tservice-unbind'), ['service-add', 'service-bind', 'service-doc',
+                            'service-info', 'service-list', 'service-remove',
+                            'service-status', 'service-unbind'])])
+def test_get_all_matched_commands(stderr, result):
+    assert list(get_all_matched_commands(stderr)) == result

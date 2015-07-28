@@ -188,6 +188,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
+* `tsuru_not_command` &ndash; fixes wrong tsuru commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
 * `whois` &ndash; fixes `whois` command.
 
