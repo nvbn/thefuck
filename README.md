@@ -212,7 +212,7 @@ in `~/.thefuck/rules`. The rule should contain two functions:
 
 ```python
 match(command: Command, settings: Settings) -> bool
-get_new_command(command: Command, settings: Settings) -> str
+get_new_command(command: Command, settings: Settings) -> str | list[str]
 ```
 
 Also the rule can contain an optional function `side_effect(command: Command, settings: Settings) -> None`

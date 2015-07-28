@@ -22,7 +22,7 @@ elif (3, 0) < version < (3, 3):
 
 VERSION = '2.5.6'
 
-install_requires = ['psutil', 'colorama', 'six']
+install_requires = ['psutil', 'colorama', 'six', 'getch']
 extras_require = {':python_version<"3.4"': ['pathlib']}
 
 setup(name='thefuck',
