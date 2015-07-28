@@ -159,3 +159,12 @@ def replace_argument(script, from_, to):
     else:
         return script.replace(
             u' {} '.format(from_), u' {} '.format(to), 1)
+
+
+def get_all_matched_commands(stderr, separator='Did you mean'):
+    should_yield = False
+    for line in stderr.split('\n'):
+        if separator in line:
+            should_yield = True
+        elif should_yield and line:
+            yield line.strip()
