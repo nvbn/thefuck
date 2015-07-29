@@ -23,8 +23,7 @@ def build_container(tag, dockerfile):
     shutil.rmtree(tmpdir)
 
 
-@contextmanager
-def spawn(tag, dockerfile, cmd):
+def spawn(request, tag, dockerfile, cmd):
     if bare:
         proc = pexpect.spawnu(cmd)
     else:
@@ -36,10 +35,8 @@ def spawn(tag, dockerfile, cmd):
 
     proc.logfile = sys.stdout
 
-    try:
-        yield proc
-    finally:
-        proc.terminate(force=bare)
+    request.addfinalizer(proc.terminate)
+    return proc
 
 
 def images(*items):

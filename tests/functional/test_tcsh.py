@@ -18,30 +18,27 @@ RUN pip2 install -U pip setuptools
 '''))
 
 
-@functional
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'tcsh') as proc:
-        proc.sendline(u'tcsh')
-        proc.sendline(u'eval `thefuck-alias`')
-        with_confirmation(proc)
+@pytest.fixture(params=containers)
+def proc(request):
+    tag, dockerfile = request.param
+    proc = spawn(request, tag, dockerfile, u'tcsh')
+    proc.sendline(u'tcsh')
+    proc.sendline(u'eval `thefuck-alias`')
+    return proc
 
 
 @functional
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_refuse_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'tcsh') as proc:
-        proc.sendline(u'tcsh')
-        proc.sendline(u'eval `thefuck-alias`')
-        refuse_with_confirmation(proc)
+def test_with_confirmation(proc):
+    with_confirmation(proc)
 
 
 @functional
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_without_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'tcsh') as proc:
-        proc.sendline(u'tcsh')
-        proc.sendline(u'eval `thefuck-alias`')
-        without_confirmation(proc)
+def test_refuse_with_confirmation(proc):
+    refuse_with_confirmation(proc)
+
+
+@functional
+def test_without_confirmation(proc):
+    without_confirmation(proc)
 
 # TODO: ensure that history changes.

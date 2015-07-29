@@ -18,34 +18,29 @@ RUN pip2 install -U pip setuptools
 '''))
 
 
-@functional
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'zsh') as proc:
-        proc.sendline(u'eval $(thefuck-alias)')
-        proc.sendline(u'export HISTFILE=~/.zsh_history')
-        proc.sendline(u'touch $HISTFILE')
-        with_confirmation(proc)
-        history_changed(proc)
+@pytest.fixture(params=containers)
+def proc(request):
+    tag, dockerfile = request.param
+    proc = spawn(request, tag, dockerfile, u'zsh')
+    proc.sendline(u'eval $(thefuck-alias)')
+    proc.sendline(u'export HISTFILE=~/.zsh_history')
+    proc.sendline(u'touch $HISTFILE')
+    return proc
 
 
 @functional
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_refuse_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'zsh') as proc:
-        proc.sendline(u'eval $(thefuck-alias)')
-        proc.sendline(u'export HISTFILE=~/.zsh_history')
-        proc.sendline(u'touch $HISTFILE')
-        refuse_with_confirmation(proc)
-        history_not_changed(proc)
+def test_with_confirmation(proc):
+    with_confirmation(proc)
+    history_changed(proc)
 
 
 @functional
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_without_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'zsh') as proc:
-        proc.sendline(u'eval $(thefuck-alias)')
-        proc.sendline(u'export HISTFILE=~/.zsh_history')
-        proc.sendline(u'touch $HISTFILE')
-        without_confirmation(proc)
-        history_changed(proc)
+def test_refuse_with_confirmation(proc):
+    refuse_with_confirmation(proc)
+    history_not_changed(proc)
+
+
+@functional
+def test_without_confirmation(proc):
+    without_confirmation(proc)
+    history_changed(proc)

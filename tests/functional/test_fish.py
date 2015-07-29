@@ -18,36 +18,33 @@ RUN pip2 install -U pip setuptools
 '''))
 
 
-@functional
-@pytest.mark.skipif(
-    bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'fish') as proc:
-        proc.sendline(u'thefuck-alias > ~/.config/fish/config.fish')
-        proc.sendline(u'fish')
-        with_confirmation(proc)
+@pytest.fixture(params=containers)
+def proc(request):
+    tag, dockerfile = request.param
+    proc = spawn(request, tag, dockerfile, u'fish')
+    proc.sendline(u'thefuck-alias > ~/.config/fish/config.fish')
+    proc.sendline(u'fish')
+    return proc
 
 
 @functional
 @pytest.mark.skipif(
     bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_refuse_with_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'fish') as proc:
-        proc.sendline(u'thefuck-alias > ~/.config/fish/config.fish')
-        proc.sendline(u'fish')
-        refuse_with_confirmation(proc)
+def test_with_confirmation(proc):
+    with_confirmation(proc)
 
 
 @functional
 @pytest.mark.skipif(
     bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
-@pytest.mark.parametrize('tag, dockerfile', containers)
-def test_without_confirmation(tag, dockerfile):
-    with spawn(tag, dockerfile, u'fish') as proc:
-        proc.sendline(u'thefuck-alias > ~/.config/fish/config.fish')
-        proc.sendline(u'fish')
-        without_confirmation(proc)
+def test_refuse_with_confirmation(proc):
+    refuse_with_confirmation(proc)
+
+
+@functional
+@pytest.mark.skipif(
+    bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
+def test_without_confirmation(proc):
+    without_confirmation(proc)
 
 # TODO: ensure that history changes.
