@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from mock import Mock
 import pytest
 from itertools import islice
@@ -88,14 +90,14 @@ class TestSelectCommand(object):
         assert ui.select_command(commands,
                                  Mock(debug=False, no_color=True,
                                       require_confirmation=True)) == commands[0]
-        assert capsys.readouterr() == ('', '\x1b[1K\rls [enter/↑/↓/ctrl+c]\n')
+        assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\n')
 
     def test_with_confirmation_abort(self, capsys, patch_getch, commands):
         patch_getch([KeyboardInterrupt])
         assert ui.select_command(commands,
                                  Mock(debug=False, no_color=True,
                                       require_confirmation=True)) is None
-        assert capsys.readouterr() == ('', '\x1b[1K\rls [enter/↑/↓/ctrl+c]\nAborted\n')
+        assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\nAborted\n')
 
     def test_with_confirmation_with_side_effct(self, capsys, patch_getch,
                                                commands_with_side_effect):
@@ -104,7 +106,7 @@ class TestSelectCommand(object):
                                  Mock(debug=False, no_color=True,
                                       require_confirmation=True))\
                == commands_with_side_effect[0]
-        assert capsys.readouterr() == ('', '\x1b[1K\rls (+side effect) [enter/↑/↓/ctrl+c]\n')
+        assert capsys.readouterr() == ('', u'\x1b[1K\rls (+side effect) [enter/↑/↓/ctrl+c]\n')
 
     def test_with_confirmation_select_second(self, capsys, patch_getch, commands):
         patch_getch(['\x1b', '[', 'B', '\n'])
@@ -112,4 +114,4 @@ class TestSelectCommand(object):
                                  Mock(debug=False, no_color=True,
                                       require_confirmation=True)) == commands[1]
         assert capsys.readouterr() == (
-            '', '\x1b[1K\rls [enter/↑/↓/ctrl+c]\x1b[1K\rcd [enter/↑/↓/ctrl+c]\n')
+            '', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\x1b[1K\rcd [enter/↑/↓/ctrl+c]\n')

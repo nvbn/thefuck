@@ -1,6 +1,24 @@
+# -*- encoding: utf-8 -*-
+
 import sys
-from getch import getch
 from . import logs
+
+try:
+    from msvcrt import getch
+except ImportError:
+    def getch():
+        import tty
+        import termios
+
+        fd = sys.stdin.fileno()
+        old = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            ch = sys.stdin.read(1)
+            if ch == '\x03':  # For compatibility with msvcrt.getch
+                raise KeyboardInterrupt
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old)
 
 SELECT = 0
 ABORT = 1
@@ -11,14 +29,10 @@ NEXT = 3
 def read_actions():
     """Yields actions for pressed keys."""
     buffer = []
-    ch = None
     while True:
         try:
-            try:
-                ch = getch()
-            except OverflowError:  # Ctrl+C, KeyboardInterrupt will be reraised
-                pass
-        except KeyboardInterrupt:
+            ch = getch()
+        except KeyboardInterrupt:  # Ctrl+C
             yield ABORT
 
         if ch in ('\n', '\r'):  # Enter
