@@ -1,7 +1,8 @@
+import sys
 from imp import load_source
 from pathlib import Path
 from . import conf, types, logs
-import sys
+from .utils import eager
 
 
 def load_rule(rule, settings):
@@ -26,6 +27,7 @@ def get_loaded_rules(rules, settings):
                 yield loaded_rule
 
 
+@eager
 def get_rules(user_dir, settings):
     """Returns all enabled rules."""
     bundled = Path(__file__).parent \
@@ -35,6 +37,7 @@ def get_rules(user_dir, settings):
     return get_loaded_rules(sorted(bundled) + sorted(user), settings)
 
 
+@eager
 def get_matched_rules(command, rules, settings):
     """Returns first matched rule for command."""
     script_only = command.stdout is None and command.stderr is None
@@ -64,11 +67,11 @@ def make_corrected_commands(command, rules, settings):
 
 
 def get_corrected_commands(command, user_dir, settings):
-    rules = list(get_rules(user_dir, settings))
+    rules = get_rules(user_dir, settings)
     logs.debug(
         u'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
         settings)
-    matched = list(get_matched_rules(command, rules, settings))
+    matched = get_matched_rules(command, rules, settings)
     logs.debug(
         u'Matched rules: {}'.format(', '.join(rule.name for rule in matched)),
         settings)
