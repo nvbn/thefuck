@@ -17,6 +17,7 @@ except ImportError:
             ch = sys.stdin.read(1)
             if ch == '\x03':  # For compatibility with msvcrt.getch
                 raise KeyboardInterrupt
+            return ch
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old)
 
