@@ -158,15 +158,25 @@ ReferenceError: conole is not defined
 
 
 @pytest.mark.parametrize('test', tests)
-def test_match(monkeypatch, test):
+def test_match(mocker, monkeypatch, test):
+    mocker.patch('os.path.isfile', return_value=True)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
     assert match(Command(stderr=test[4]), None)
 
 
 @pytest.mark.parametrize('test', tests)
-def test_not_match(monkeypatch, test):
+def test_no_editor(mocker, monkeypatch, test):
+    mocker.patch('os.path.isfile', return_value=True)
     if 'EDITOR' in os.environ:
         monkeypatch.delenv('EDITOR')
+
+    assert not match(Command(stderr=test[4]), None)
+
+
+@pytest.mark.parametrize('test', tests)
+def test_not_file(mocker, monkeypatch, test):
+    mocker.patch('os.path.isfile', return_value=False)
+    monkeypatch.setenv('EDITOR', 'dummy_editor')
 
     assert not match(Command(stderr=test[4]), None)
 

@@ -50,7 +50,12 @@ def _search(stderr):
 
 
 def match(command, settings):
-    return 'EDITOR' in os.environ and _search(command.stderr)
+    if 'EDITOR' not in os.environ:
+        return False
+
+    m = _search(command.stderr)
+
+    return m and os.path.isfile(m.group('file'))
 
 
 def get_new_command(command, settings):
