@@ -1,4 +1,5 @@
 import pytest
+import os
 from thefuck.rules.fix_file import match, get_new_command
 from tests.utils import Command
 
@@ -157,11 +158,21 @@ ReferenceError: conole is not defined
 
 
 @pytest.mark.parametrize('test', tests)
-def test_match(test):
+def test_match(monkeypatch, test):
+    monkeypatch.setenv('EDITOR', 'dummy_editor')
     assert match(Command(stderr=test[4]), None)
 
 
 @pytest.mark.parametrize('test', tests)
+def test_not_match(monkeypatch, test):
+    if 'EDITOR' in os.environ:
+        monkeypatch.delenv('EDITOR')
+
+    assert not match(Command(stderr=test[4]), None)
+
+
+@pytest.mark.parametrize('test', tests)
 def test_get_new_command(monkeypatch, test):
+    monkeypatch.setenv('EDITOR', 'dummy_editor')
     assert (get_new_command(Command(script=test[0], stderr=test[4]), None) ==
-        '$EDITOR {} +{} && {}'.format(test[1], test[2], test[0]))
+        'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))

@@ -1,4 +1,5 @@
 import re
+import os
 from thefuck.utils import memoize
 from thefuck import shells
 
@@ -49,7 +50,7 @@ def _search(stderr):
 
 
 def match(command, settings):
-    return _search(command.stderr)
+    return 'EDITOR' in os.environ and _search(command.stderr)
 
 
 def get_new_command(command, settings):
@@ -57,5 +58,5 @@ def get_new_command(command, settings):
 
     # Note: there does not seem to be a standard for columns, so they are just
     # ignored for now
-    return shells.and_('$EDITOR {} +{}'.format(m.group('file'), m.group('line')),
+    return shells.and_('{} {} +{}'.format(os.environ['EDITOR'], m.group('file'), m.group('line')),
                        command.script)
