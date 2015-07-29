@@ -18,6 +18,7 @@ def test_wrap_settings(override, old, new):
 @pytest.mark.parametrize('return_value, command, called, result', [
     ('ls -lah', 'sudo ls', 'ls', 'sudo ls -lah'),
     ('ls -lah', 'ls', 'ls', 'ls -lah'),
+    (['ls -lah'], 'sudo ls', 'ls', ['sudo ls -lah']),
     (True, 'sudo ls', 'ls', True),
     (True, 'ls', 'ls', True),
     (False, 'sudo ls', 'ls', False),

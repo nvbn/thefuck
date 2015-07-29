@@ -69,6 +69,8 @@ def sudo_support(fn):
 
         if result and isinstance(result, six.string_types):
             return u'sudo {}'.format(result)
+        elif isinstance(result, list):
+            return [u'sudo {}'.format(x) for x in result]
         else:
             return result
     return wrapper
@@ -161,6 +163,14 @@ def replace_argument(script, from_, to):
             u' {} '.format(from_), u' {} '.format(to), 1)
 
 
+def eager(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        return list(fn(*args, **kwargs))
+    return wrapper
+
+
+@eager
 def get_all_matched_commands(stderr, separator='Did you mean'):
     should_yield = False
     for line in stderr.split('\n'):
