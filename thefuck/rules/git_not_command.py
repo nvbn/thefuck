@@ -1,6 +1,6 @@
 import re
-from thefuck.utils import (get_closest, git_support, replace_argument,
-                           get_all_matched_commands)
+from thefuck.utils import (git_support,
+                           get_all_matched_commands, replace_command)
 
 
 @git_support
@@ -13,7 +13,5 @@ def match(command, settings):
 def get_new_command(command, settings):
     broken_cmd = re.findall(r"git: '([^']*)' is not a git command",
                             command.stderr)[0]
-    new_cmd = get_closest(broken_cmd,
-                          get_all_matched_commands(command.stderr))
-    return replace_argument(command.script, broken_cmd, new_cmd)
-
+    matched = get_all_matched_commands(command.stderr)
+    return replace_command(command, broken_cmd, matched)

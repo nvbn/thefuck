@@ -25,4 +25,4 @@ def test_get_new_command(mocker):
     mocker.patch('thefuck.rules.gulp_not_task.get_gulp_tasks', return_value=[
         'serve', 'build', 'default'])
     command = Command('gulp srve', stdout('srve'))
-    assert get_new_command(command, None) == 'gulp serve'
+    assert get_new_command(command, None) == ['gulp serve', 'gulp default']

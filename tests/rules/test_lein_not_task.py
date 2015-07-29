@@ -9,6 +9,7 @@ def is_not_task():
 
 Did you mean this?
          repl
+         jar
 '''
 
 
@@ -19,4 +20,4 @@ def test_match(is_not_task):
 
 def test_get_new_command(is_not_task):
     assert get_new_command(Mock(script='lein rpl --help', stderr=is_not_task),
-                           None) == 'lein repl --help'
+                           None) == ['lein repl --help', 'lein jar --help']
