@@ -1,3 +1,4 @@
+from time import sleep
 from pexpect import TIMEOUT
 
 
@@ -25,12 +26,14 @@ def with_confirmation(proc):
 
 def history_changed(proc, to):
     """Ensures that history changed."""
+    sleep(2)
     proc.send('\033[A')
     assert proc.expect([TIMEOUT, to])
 
 
 def history_not_changed(proc):
     """Ensures that history not changed."""
+    sleep(2)
     proc.send('\033[A')
     assert proc.expect([TIMEOUT, u'fuck'])
 
