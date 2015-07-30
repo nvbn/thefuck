@@ -90,14 +90,14 @@ def select_command(corrected_commands, settings):
         return selector.value
 
     selector.on_change(lambda val: logs.confirm_text(val, settings))
-    for key in read_actions():
-        if key == SELECT:
+    for action in read_actions():
+        if action == SELECT:
             sys.stderr.write('\n')
             return selector.value
-        elif key == ABORT:
+        elif action == ABORT:
             logs.failed('\nAborted', settings)
             return
-        elif key == PREVIOUS:
+        elif action == PREVIOUS:
             selector.previous()
-        elif key == NEXT:
+        elif action == NEXT:
             selector.next()
