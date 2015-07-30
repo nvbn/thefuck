@@ -33,7 +33,7 @@ def spawn(request, tag, dockerfile, cmd):
         proc = pexpect.spawnu('docker run --volume {}:/src --tty=true '
                               '--interactive=true {} {}'.format(root, tag, cmd))
         proc.sendline('pip install /src')
-        proc.sendline('cd /')
+    proc.sendline('cd /')
 
     proc.logfile = sys.stdout
 

@@ -37,6 +37,8 @@ def test_with_confirmation(proc):
 
 
 @functional
+@pytest.mark.skipif(
+    bool(bare), reason='https://github.com/travis-ci/apt-source-whitelist/issues/71')
 def test_select_command_with_arrows(proc):
     select_command_with_arrows(proc)
 
