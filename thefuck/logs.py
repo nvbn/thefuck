@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from contextlib import contextmanager
 from datetime import datetime
 import sys
@@ -28,32 +30,32 @@ def rule_failed(rule, exc_info, settings):
     exception('Rule {}'.format(rule.name), exc_info, settings)
 
 
-def show_command(new_command, side_effect, settings):
-    sys.stderr.write('{bold}{command}{reset}{side_effect}\n'.format(
-        command=new_command,
-        side_effect=' (+side effect)' if side_effect else '',
-        bold=color(colorama.Style.BRIGHT, settings),
-        reset=color(colorama.Style.RESET_ALL, settings)))
-
-
-def confirm_command(new_command, side_effect, settings):
-    sys.stderr.write(
-        '{bold}{command}{reset}{side_effect} '
-        '[{green}enter{reset}/{red}ctrl+c{reset}]'.format(
-            command=new_command,
-            side_effect=' (+side effect)' if side_effect else '',
-            bold=color(colorama.Style.BRIGHT, settings),
-            green=color(colorama.Fore.GREEN, settings),
-            red=color(colorama.Fore.RED, settings),
-            reset=color(colorama.Style.RESET_ALL, settings)))
-    sys.stderr.flush()
-
-
 def failed(msg, settings):
     sys.stderr.write('{red}{msg}{reset}\n'.format(
         msg=msg,
         red=color(colorama.Fore.RED, settings),
         reset=color(colorama.Style.RESET_ALL, settings)))
+
+
+def show_corrected_command(corrected_command, settings):
+    sys.stderr.write('{bold}{script}{reset}{side_effect}\n'.format(
+        script=corrected_command.script,
+        side_effect=' (+side effect)' if corrected_command.side_effect else '',
+        bold=color(colorama.Style.BRIGHT, settings),
+        reset=color(colorama.Style.RESET_ALL, settings)))
+
+
+def confirm_text(corrected_command, settings):
+    sys.stderr.write(
+        '\033[1K\r{bold}{script}{reset}{side_effect} '
+        '[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}/{red}ctrl+c{reset}]'.format(
+            script=corrected_command.script,
+            side_effect=' (+side effect)' if corrected_command.side_effect else '',
+            bold=color(colorama.Style.BRIGHT, settings),
+            green=color(colorama.Fore.GREEN, settings),
+            red=color(colorama.Fore.RED, settings),
+            reset=color(colorama.Style.RESET_ALL, settings),
+            blue=color(colorama.Fore.BLUE, settings)))
 
 
 def debug(msg, settings):

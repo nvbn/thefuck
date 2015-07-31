@@ -13,6 +13,7 @@ addons:
       - fish
       - tcsh
       - pandoc
+      - git
 env:
   - FUNCTIONAL=true BARE=true
 install:

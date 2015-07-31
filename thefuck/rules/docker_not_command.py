@@ -1,7 +1,7 @@
 from itertools import dropwhile, takewhile, islice
 import re
 import subprocess
-from thefuck.utils import get_closest, sudo_support, replace_argument
+from thefuck.utils import get_closest, sudo_support, replace_argument, replace_command
 
 
 @sudo_support
@@ -23,5 +23,4 @@ def get_docker_commands():
 def get_new_command(command, settings):
     wrong_command = re.findall(
         r"docker: '(\w+)' is not a docker command.", command.stderr)[0]
-    fixed_command = get_closest(wrong_command, get_docker_commands())
-    return replace_argument(command.script, wrong_command, fixed_command)
+    return replace_command(command, wrong_command, get_docker_commands())

@@ -22,8 +22,8 @@ def test_get_new_command():
     assert get_new_command(
         Command(stderr='vom: not found',
                 script='vom file.py'),
-        None) == 'vim file.py'
+        None) == ['vim file.py']
     assert get_new_command(
         Command(stderr='fucck: not found',
                 script='fucck'),
-        Command) == 'fsck'
+        Command) == ['fsck']

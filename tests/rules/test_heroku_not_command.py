@@ -27,8 +27,8 @@ def test_not_match(script, stderr):
 
 
 @pytest.mark.parametrize('cmd, result', [
-    ('log', 'heroku logs'),
-    ('pge', 'heroku pg')])
+    ('log', ['heroku logs', 'heroku pg']),
+    ('pge', ['heroku pg', 'heroku logs'])])
 def test_get_new_command(cmd, result):
     command = Command('heroku {}'.format(cmd), stderr=suggest_stderr(cmd))
     assert get_new_command(command, None) == result

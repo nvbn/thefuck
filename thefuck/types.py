@@ -3,6 +3,8 @@ from collections import namedtuple
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
 
+CorrectedCommand = namedtuple('CorrectedCommand', ('script', 'side_effect', 'priority'))
+
 Rule = namedtuple('Rule', ('name', 'match', 'get_new_command',
                            'enabled_by_default', 'side_effect',
                            'priority', 'requires_output'))

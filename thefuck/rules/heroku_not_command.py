@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import get_closest, replace_argument
+from thefuck.utils import replace_command
 
 
 def match(command, settings):
@@ -16,5 +16,4 @@ def _get_suggests(stderr):
 
 def get_new_command(command, settings):
     wrong = re.findall(r'`(\w+)` is not a heroku command', command.stderr)[0]
-    correct = get_closest(wrong, _get_suggests(command.stderr))
-    return replace_argument(command.script, wrong, correct)
+    return replace_command(command, wrong, _get_suggests(command.stderr))
