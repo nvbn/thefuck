@@ -27,6 +27,9 @@ def proc(request):
     proc.sendline(u'eval $(thefuck-alias)')
     proc.sendline(u'export HISTFILE=~/.zsh_history')
     proc.sendline(u'echo > $HISTFILE')
+    proc.sendline(u'export SAVEHIST=100')
+    proc.sendline(u'export HISTSIZE=100')
+    proc.sendline(u'setopt INC_APPEND_HISTORY')
     return proc
 
 
