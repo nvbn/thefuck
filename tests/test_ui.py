@@ -92,6 +92,13 @@ class TestSelectCommand(object):
                                       require_confirmation=True)) == commands[0]
         assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\n')
 
+    def test_with_confirmation_one_match(self, capsys, patch_getch, commands):
+        patch_getch(['\n'])
+        assert ui.select_command((commands[0],),
+                                 Mock(debug=False, no_color=True,
+                                      require_confirmation=True)) == commands[0]
+        assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/ctrl+c]\n')
+
     def test_with_confirmation_abort(self, capsys, patch_getch, commands):
         patch_getch([KeyboardInterrupt])
         assert ui.select_command(commands,

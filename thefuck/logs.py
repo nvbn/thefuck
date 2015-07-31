@@ -45,12 +45,18 @@ def show_corrected_command(corrected_command, settings):
         reset=color(colorama.Style.RESET_ALL, settings)))
 
 
-def confirm_text(corrected_command, settings):
+def confirm_text(corrected_command, multiple_cmds, settings):
+    if multiple_cmds:
+        arrows = '{blue}↑{reset}/{blue}↓{reset}/'
+    else:
+        arrows = ''
+
     sys.stderr.write(
-        '\033[1K\r{bold}{script}{reset}{side_effect} '
-        '[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}/{red}ctrl+c{reset}]'.format(
+        ('{clear}{bold}{script}{reset}{side_effect} '
+         '[{green}enter{reset}/' + arrows + '{red}ctrl+c{reset}]').format(
             script=corrected_command.script,
             side_effect=' (+side effect)' if corrected_command.side_effect else '',
+            clear='\033[1K\r',
             bold=color(colorama.Style.BRIGHT, settings),
             green=color(colorama.Fore.GREEN, settings),
             red=color(colorama.Fore.RED, settings),
