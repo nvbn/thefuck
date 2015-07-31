@@ -7,17 +7,13 @@ from tests.utils import Command
 
 pacman_cmd = getattr(pacman, 'pacman', 'pacman')
 
-PKGFILE_OUTPUT_CONVERT = '''
-extra/imagemagick 6.9.1.0-1\t/usr/bin/convert
-'''
+PKGFILE_OUTPUT_CONVERT = 'extra/imagemagick 6.9.1.0-1\t/usr/bin/convert'
 
-PKGFILE_OUTPUT_VIM = '''
-extra/gvim 7.4.712-1        \t/usr/bin/vim
+PKGFILE_OUTPUT_VIM = '''extra/gvim 7.4.712-1        \t/usr/bin/vim
 extra/gvim-python3 7.4.712-1\t/usr/bin/vim
 extra/vim 7.4.712-1         \t/usr/bin/vim
 extra/vim-minimal 7.4.712-1 \t/usr/bin/vim
-extra/vim-python3 7.4.712-1 \t/usr/bin/vim
-'''
+extra/vim-python3 7.4.712-1 \t/usr/bin/vim'''
 
 
 @pytest.mark.skipif(not getattr(pacman, 'enabled_by_default', True),
@@ -46,22 +42,37 @@ def test_not_match(command):
     assert not match(command, None)
 
 
+sudo_vim_possibilities = ['{} -S extra/gvim && sudo vim',
+                          '{} -S extra/gvim-python3 && sudo vim',
+                          '{} -S extra/vim && sudo vim',
+                          '{} -S extra/vim-minimal && sudo vim',
+                          '{} -S extra/vim-python3 && sudo vim']
+sudo_vim_possibilities = [s.format(pacman_cmd) for s in sudo_vim_possibilities]
+
+vim_possibilities = ['{} -S extra/gvim && vim',
+                     '{} -S extra/gvim-python3 && vim',
+                     '{} -S extra/vim && vim',
+                     '{} -S extra/vim-minimal && vim',
+                     '{} -S extra/vim-python3 && vim']
+vim_possibilities = [s.format(pacman_cmd) for s in vim_possibilities]
+
+
 @pytest.mark.skipif(not getattr(pacman, 'enabled_by_default', True),
                     reason='Skip if pacman is not available')
 @pytest.mark.parametrize('command, new_command', [
-    (Command('vim'), '{} -S extra/gvim && vim'.format(pacman_cmd)),
-    (Command('sudo vim'), '{} -S extra/gvim && sudo vim'.format(pacman_cmd)),
-    (Command('convert'), '{} -S extra/imagemagick && convert'.format(pacman_cmd)),
-    (Command('sudo convert'), '{} -S extra/imagemagick && sudo convert'.format(pacman_cmd))])
+    (Command('vim'), vim_possibilities),
+    (Command('sudo vim'), sudo_vim_possibilities),
+    (Command('convert'), ['{} -S extra/imagemagick && convert'.format(pacman_cmd)]),
+    (Command('sudo convert'), ['{} -S extra/imagemagick && sudo convert'.format(pacman_cmd)])])
 def test_get_new_command(command, new_command, mocker):
     assert get_new_command(command, None) == new_command
 
 
 @pytest.mark.parametrize('command, new_command, return_value', [
-    (Command('vim'), '{} -S extra/gvim && vim'.format(pacman_cmd), PKGFILE_OUTPUT_VIM),
-    (Command('sudo vim'), '{} -S extra/gvim && sudo vim'.format(pacman_cmd), PKGFILE_OUTPUT_VIM),
-    (Command('convert'), '{} -S extra/imagemagick && convert'.format(pacman_cmd), PKGFILE_OUTPUT_CONVERT),
-    (Command('sudo convert'), '{} -S extra/imagemagick && sudo convert'.format(pacman_cmd), PKGFILE_OUTPUT_CONVERT)])
+    (Command('vim'), vim_possibilities, PKGFILE_OUTPUT_VIM),
+    (Command('sudo vim'), sudo_vim_possibilities, PKGFILE_OUTPUT_VIM),
+    (Command('convert'), ['{} -S extra/imagemagick && convert'.format(pacman_cmd)], PKGFILE_OUTPUT_CONVERT),
+    (Command('sudo convert'), ['{} -S extra/imagemagick && sudo convert'.format(pacman_cmd)], PKGFILE_OUTPUT_CONVERT)])
 @patch('thefuck.rules.pacman.subprocess')
 @patch.multiple(pacman, create=True, pacman=pacman_cmd)
 def test_get_new_command_mocked(subp_mock, command, new_command, return_value):

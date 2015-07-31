@@ -19,7 +19,7 @@ def match(command, settings):
         - www.google.fr → subdomain: www, domain: 'google.fr';
         - google.co.uk → subdomain: None, domain; 'google.co.uk'.
     """
-    return 'whois' in command.script and len(command.script.split()) > 1
+    return 'whois ' in command.script.strip()
 
 
 def get_new_command(command, settings):
@@ -28,4 +28,5 @@ def get_new_command(command, settings):
     if '/' in command.script:
         return 'whois ' + urlparse(url).netloc
     elif '.' in command.script:
-        return 'whois ' + '.'.join(urlparse(url).path.split('.')[1:])
+        path = urlparse(url).path.split('.')
+        return ['whois ' + '.'.join(path[n:]) for n in range(1, len(path))]

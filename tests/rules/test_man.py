@@ -23,7 +23,7 @@ def test_not_match(command):
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command('man read'), 'man 3 read'),
+    (Command('man read'), ['man 3 read', 'man 2 read']),
     (Command('man 2 read'), 'man 3 read'),
     (Command('man 3 read'), 'man 2 read'),
     (Command('man -s2 read'), 'man -s3 read'),

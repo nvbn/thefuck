@@ -14,10 +14,12 @@ def __get_pkgfile(command):
 
         command = command.split(" ")[0]
 
-        return subprocess.check_output(
+        packages = subprocess.check_output(
             ['pkgfile', '-b', '-v', command],
             universal_newlines=True, stderr=DEVNULL
-        ).split()
+        ).splitlines()
+
+        return [package.split()[0] for package in packages]
     except subprocess.CalledProcessError:
         return None
 
@@ -27,10 +29,11 @@ def match(command, settings):
 
 
 def get_new_command(command, settings):
-    package = __get_pkgfile(command)[0]
+    packages = __get_pkgfile(command)
 
     formatme = shells.and_('{} -S {}', '{}')
-    return formatme.format(pacman, package, command.script)
+    return [formatme.format(pacman, package, command.script)
+            for package in packages]
 
 
 if not which('pkgfile'):

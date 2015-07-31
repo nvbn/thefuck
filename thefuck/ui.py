@@ -44,8 +44,7 @@ def read_actions():
 
         if buffer == ['\x1b', '[', 'A']:  # ↑
             yield PREVIOUS
-
-        if buffer == ['\x1b', '[', 'B']:  # ↓
+        elif buffer == ['\x1b', '[', 'B']:  # ↓
             yield NEXT
 
 
@@ -89,7 +88,9 @@ def select_command(corrected_commands, settings):
         logs.show_corrected_command(selector.value, settings)
         return selector.value
 
-    selector.on_change(lambda val: logs.confirm_text(val, settings))
+    multiple_cmds = len(corrected_commands) > 1
+
+    selector.on_change(lambda val: logs.confirm_text(val, multiple_cmds, settings))
     for action in read_actions():
         if action == SELECT:
             sys.stderr.write('\n')
