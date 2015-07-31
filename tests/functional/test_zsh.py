@@ -26,7 +26,7 @@ def proc(request):
     proc = spawn(request, tag, dockerfile, u'zsh')
     proc.sendline(u'eval $(thefuck-alias)')
     proc.sendline(u'export HISTFILE=~/.zsh_history')
-    proc.sendline(u'touch $HISTFILE')
+    proc.sendline(u'echo > $HISTFILE')
     return proc
 
 
