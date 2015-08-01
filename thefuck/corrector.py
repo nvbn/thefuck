@@ -66,6 +66,13 @@ def make_corrected_commands(command, rules, settings):
                                          priority=(n + 1) * rule.priority)
 
 
+def remove_duplicates(corrected_commands):
+    commands = {(command.script, command.side_effect): command
+                for command in sorted(corrected_commands,
+                                      key=lambda command: -command.priority)}
+    return commands.values()
+
+
 def get_corrected_commands(command, user_dir, settings):
     rules = get_rules(user_dir, settings)
     logs.debug(
@@ -76,5 +83,5 @@ def get_corrected_commands(command, user_dir, settings):
         u'Matched rules: {}'.format(', '.join(rule.name for rule in matched)),
         settings)
     corrected_commands = make_corrected_commands(command, matched, settings)
-    return sorted(corrected_commands,
+    return sorted(remove_duplicates(corrected_commands),
                   key=lambda corrected_command: corrected_command.priority)

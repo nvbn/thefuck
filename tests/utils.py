@@ -15,3 +15,7 @@ def Rule(name='', match=lambda *_: True,
     return types.Rule(name, match, get_new_command,
                       enabled_by_default, side_effect,
                       priority, requires_output)
+
+
+def CorrectedCommand(script='', side_effect=None, priority=DEFAULT_PRIORITY):
+    return types.CorrectedCommand(script, side_effect, priority)

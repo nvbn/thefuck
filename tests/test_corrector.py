@@ -2,8 +2,8 @@ import pytest
 from pathlib import PosixPath, Path
 from mock import Mock
 from thefuck import corrector, conf, types
-from tests.utils import Rule, Command
-from thefuck.corrector import make_corrected_commands, get_corrected_commands
+from tests.utils import Rule, Command, CorrectedCommand
+from thefuck.corrector import make_corrected_commands, get_corrected_commands, remove_duplicates
 
 
 def test_load_rule(mocker):
@@ -65,14 +65,23 @@ class TestGetCorrectedCommands(object):
         rule = Rule(get_new_command=lambda x, _: [x.script + '!', x.script + '@'],
                     priority=100)
         assert list(make_corrected_commands(Command(script='test'), [rule], None)) \
-               == [types.CorrectedCommand(script='test!', priority=100, side_effect=None),
-                   types.CorrectedCommand(script='test@', priority=200, side_effect=None)]
+               == [CorrectedCommand(script='test!', priority=100),
+                   CorrectedCommand(script='test@', priority=200)]
 
     def test_with_rule_returns_command(self):
         rule = Rule(get_new_command=lambda x, _: x.script + '!',
                     priority=100)
         assert list(make_corrected_commands(Command(script='test'), [rule], None)) \
-               == [types.CorrectedCommand(script='test!', priority=100, side_effect=None)]
+               == [CorrectedCommand(script='test!', priority=100)]
+
+
+def test_remove_duplicates():
+    side_effect = lambda *_: None
+    assert set(remove_duplicates([CorrectedCommand('ls', priority=100),
+                                  CorrectedCommand('ls', priority=200),
+                                  CorrectedCommand('ls', side_effect, 300)])) \
+           == {CorrectedCommand('ls', priority=100),
+               CorrectedCommand('ls', side_effect, 300)}
 
 
 def test_get_corrected_commands(mocker):
@@ -84,5 +93,5 @@ def test_get_corrected_commands(mocker):
                   get_new_command=lambda x, _: [x.script + '@', x.script + ';'],
                   priority=60)]
     mocker.patch('thefuck.corrector.get_rules', return_value=rules)
-    assert [cmd.script for cmd in get_corrected_commands(command, None, Mock(debug=False))]\
-        == ['test@', 'test!', 'test;']
+    assert [cmd.script for cmd in get_corrected_commands(command, None, Mock(debug=False))] \
+           == ['test@', 'test!', 'test;']
