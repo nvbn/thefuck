@@ -79,4 +79,4 @@ def debug_time(msg, settings):
     try:
         yield
     finally:
-        debug('{} took: {}'.format(msg, datetime.now() - started), settings)
+        debug(u'{} took: {}'.format(msg, datetime.now() - started), settings)
