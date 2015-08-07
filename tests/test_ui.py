@@ -69,7 +69,7 @@ class TestSelectCommand(object):
 
     def test_without_commands(self, capsys):
         assert ui.select_command([], Mock(debug=False, no_color=True)) is None
-        assert capsys.readouterr() == ('', 'No fuck given\n')
+        assert capsys.readouterr() == ('', 'No fucks given\n')
 
     def test_without_confirmation(self, capsys, commands):
         assert ui.select_command(commands,

@@ -80,7 +80,7 @@ def select_command(corrected_commands, settings):
 
     """
     if not corrected_commands:
-        logs.failed('No fuck given', settings)
+        logs.failed('No fucks given', settings)
         return
 
     selector = CommandSelector(corrected_commands)
