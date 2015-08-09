@@ -107,9 +107,9 @@ sudo pip install thefuck
 You should place this command in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
 
 ```bash
-eval "$(thefuck-alias)"
+eval "$(thefuck --alias)"
 # You can use whatever you want as an alias, like for Mondays:
-eval "$(thefuck-alias FUCK)"
+eval "$(thefuck --alias FUCK)"
 ```
 
 [Or in your shell config (Bash, Zsh, Fish, Powershell, tcsh).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)

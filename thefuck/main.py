@@ -1,6 +1,9 @@
+from argparse import ArgumentParser
+from warnings import warn
 from pathlib import Path
 from os.path import expanduser
 from pprint import pformat
+import pkg_resources
 from subprocess import Popen, PIPE
 import os
 import sys
@@ -80,7 +83,7 @@ def run_command(command, settings):
 
 # Entry points:
 
-def main():
+def fix_command():
     colorama.init()
     user_dir = setup_user_dir()
     settings = conf.get_settings(user_dir)
@@ -94,8 +97,35 @@ def main():
             run_command(selected_command, settings)
 
 
-def print_alias():
+def print_alias(entry_point=True):
+    if entry_point:
+        warn('`thefuck-alias` is deprecated, us `thefuck --alias` instead.')
+        position = 1
+    else:
+        position = 2
+
     alias = shells.thefuck_alias()
-    if len(sys.argv) > 1:
-        alias = sys.argv[1]
+    if len(sys.argv) > position:
+        alias = sys.argv[position]
     print(shells.app_alias(alias))
+
+
+def main():
+    parser = ArgumentParser(prog='The Fuck')
+    parser.add_argument('-v', '--version',
+                        action='version',
+                        version='%(prog)s {}'.format(
+                            pkg_resources.require('thefuck')[0].version))
+    parser.add_argument('-a', '--alias',
+                        action='store_true',
+                        help='[custom-alias-name] prints alias for current shell')
+    parser.add_argument('command',
+                        nargs='*',
+                        help='command that should be fixed')
+    known_args = parser.parse_args(sys.argv[1:2])
+    if known_args.alias:
+        print_alias(False)
+    elif known_args.command:
+        fix_command()
+    else:
+        parser.print_usage()
