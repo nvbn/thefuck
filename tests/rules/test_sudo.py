@@ -21,5 +21,9 @@ def test_not_match():
     assert not match(Command(), None)
 
 
-def test_get_new_command():
-    assert get_new_command(Command('ls'), None) == 'sudo ls'
+@pytest.mark.parametrize('before, after', [
+    ('ls', 'sudo ls'),
+    ('echo a > b', 'sudo sh -c "echo a > b"'),
+    ('echo "a" >> b', 'sudo sh -c "echo \\"a\\" >> b"')])
+def test_get_new_command(before, after):
+    assert get_new_command(Command(before), None) == after
