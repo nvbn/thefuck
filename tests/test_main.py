@@ -35,6 +35,8 @@ class TestGetCommand(object):
                                       env={})
 
     @pytest.mark.parametrize('args, result', [
+        (['thefuck', ''], None),
+        (['thefuck', '', ''], None),
         (['thefuck', 'ls', '-la'], 'ls -la'),
         (['thefuck', 'ls'], 'ls')])
     def test_get_command_script(self, args, result):

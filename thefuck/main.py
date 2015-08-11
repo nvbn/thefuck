@@ -27,7 +27,7 @@ def setup_user_dir():
 
 def wait_output(settings, popen):
     """Returns `True` if we can get output of the command in the
-    `wait_command` time.
+    `settings.wait_command` time.
 
     Command will be killed if it wasn't finished in the time.
 
@@ -50,6 +50,7 @@ def get_command(settings, args):
     else:
         script = ' '.join(args[1:])
 
+    script = script.strip()
     if not script:
         return
 
@@ -91,6 +92,11 @@ def fix_command():
         logs.debug(u'Run with settings: {}'.format(pformat(settings)), settings)
 
         command = get_command(settings, sys.argv)
+
+        if not command:
+            logs.debug('Empty command, nothing to do', settings)
+            return
+
         corrected_commands = get_corrected_commands(command, user_dir, settings)
         selected_command = select_command(corrected_commands, settings)
         if selected_command:
