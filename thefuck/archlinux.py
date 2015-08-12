@@ -11,7 +11,7 @@ def get_pkgfile(command):
     instead.
     """
     try:
-        command = command.script.strip()
+        command = command.strip()
 
         if command.startswith('sudo '):
             command = command[5:]
