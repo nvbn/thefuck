@@ -162,6 +162,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
 * `gulp_not_task` &ndash; fixes misspelled gulp tasks;
+* `hadoop_dfs_missing_dash` &ndash; Add the missing dash to the command.
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `heroku_no_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
@@ -192,7 +193,6 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `tsuru_not_command` &ndash; fixes wrong tsuru commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
 * `whois` &ndash; fixes `whois` command.
-* `hdfs dfs` &ndash; Add the missing dash to the command.
 
 Enabled by default only on specific platforms:
 
