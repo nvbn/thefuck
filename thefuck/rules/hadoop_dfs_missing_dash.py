@@ -1,10 +1,13 @@
+import re
+from thefuck.utils import (replace_command, get_all_matched_commands)
+
 def match(command, settings):
-    return ('hdfs dfs' in command.script
-            and "this command begins with a dash." in command.stderr.lower())
+    return (re.search(r"([^:]*): Unknown command.*", command.stderr) != None
+            and re.search(r"Did you mean ([^?]*)?", command.stderr) != None)
 
 
 def get_new_command(command, settings):
-    data = command.script.split()
-    data[2] = '-' + data[2]
-    return ' '.join(data)
+    broken_cmd = re.findall(r"([^:]*): Unknown command.*", command.stderr)[0]
+    matched = re.findall(r"Did you mean ([^?]*)?", command.stderr)
+    return replace_command(command, broken_cmd, matched)
 
