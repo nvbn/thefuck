@@ -192,6 +192,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `tsuru_not_command` &ndash; fixes wrong tsuru commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
 * `whois` &ndash; fixes `whois` command.
+* `hdfs dfs` &ndash; Add the missing dash to the command.
 
 Enabled by default only on specific platforms:
 
