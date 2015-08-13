@@ -16,6 +16,8 @@ def test_match(command):
 
 @pytest.mark.parametrize('command, return_value', [
     (Command(script='vim', stderr='vim: command not found'),
+     [('vim', 'main'), ('vim-tiny', 'main')]),
+    (Command(script='sudo vim', stderr='vim: command not found'),
      [('vim', 'main'), ('vim-tiny', 'main')])])
 @patch('thefuck.rules.apt_get.CommandNotFound', create=True)
 @patch.multiple(apt_get, create=True, apt_get='apt_get')
@@ -38,7 +40,9 @@ def test_not_match(command):
                     reason='Skip if python-commandnotfound is not available')
 @pytest.mark.parametrize('command, new_command', [
     (Command('vim'), 'sudo apt-get install vim && vim'),
-    (Command('convert'), 'sudo apt-get install imagemagick && convert')])
+    (Command('convert'), 'sudo apt-get install imagemagick && convert'),
+    (Command('sudo vim'), 'sudo apt-get install vim && sudo vim'),
+    (Command('sudo convert'), 'sudo apt-get install imagemagick && sudo convert')])
 def test_get_new_command(command, new_command):
     assert get_new_command(command, None) == new_command
 
@@ -48,6 +52,11 @@ def test_get_new_command(command, new_command):
      [('vim', 'main'), ('vim-tiny', 'main')]),
     (Command('convert'), 'sudo apt-get install imagemagick && convert',
      [('imagemagick', 'main'),
+      ('graphicsmagick-imagemagick-compat', 'universe')]),
+    (Command('sudo vim'), 'sudo apt-get install vim && sudo vim',
+     [('vim', 'main'), ('vim-tiny', 'main')]),
+    (Command('sudo convert'), 'sudo apt-get install imagemagick && sudo convert',
+     [('imagemagick', 'main'),
       ('graphicsmagick-imagemagick-compat', 'universe')])])
 @patch('thefuck.rules.apt_get.CommandNotFound', create=True)
 @patch.multiple(apt_get, create=True, apt_get='apt_get')
@@ -55,5 +64,3 @@ def test_get_new_command_mocked(cmdnf_mock, command, new_command, return_value):
     get_packages = Mock(return_value=return_value)
     cmdnf_mock.CommandNotFound.return_value = Mock(getPackages=get_packages)
     assert get_new_command(command, None) == new_command
-    assert cmdnf_mock.CommandNotFound.called
-    assert get_packages.called
