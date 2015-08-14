@@ -1,5 +1,5 @@
 import pytest
-from thefuck.rules.hadoop_dfs_missing_dash import match, get_new_command
+from thefuck.rules.unknown_command import match, get_new_command
 from tests.utils import Command
 
 
