@@ -1,3 +1,4 @@
+from .types import Command
 from difflib import get_close_matches
 from functools import wraps
 from pathlib import Path
@@ -6,7 +7,6 @@ import os
 import pickle
 import re
 import six
-from .types import Command
 
 
 DEVNULL = open(os.devnull, 'w')

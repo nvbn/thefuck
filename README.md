@@ -189,7 +189,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
-* `tsuru_not_command` &ndash; fixes wrong tsuru commands like `tsuru shell`;
+* `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
 * `whois` &ndash; fixes `whois` command.
 
@@ -199,7 +199,7 @@ Enabled by default only on specific platforms:
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
-* `pacman` &ndash; installs app with `pacman` or `yaourt` if it is not installed.
+* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available).
 
 Bundled, but not enabled by default:
 
