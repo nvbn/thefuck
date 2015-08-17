@@ -163,7 +163,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
 * `gulp_not_task` &ndash; fixes misspelled gulp tasks;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
-* `heroku_no_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
+* `heroku_not_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
@@ -185,7 +185,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
-* `switch_layout` &ndash; switches command from your local layout to en;
+* `switch_lang` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
@@ -200,6 +200,7 @@ Enabled by default only on specific platforms:
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available).
+* `pacman_not_found` &ndash; fix package name with `pacman` or `yaourt`;
 
 Bundled, but not enabled by default:
 
