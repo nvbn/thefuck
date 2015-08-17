@@ -10,7 +10,7 @@ usage: git stash list [<options>]
    or: git stash ( pop | apply ) [--index] [-q|--quiet] [<stash>]
    or: git stash branch <branchname> [<stash>]
    or: git stash [save [--patch] [-k|--[no-]keep-index] [-q|--quiet]
-		       [-u|--include-untracked] [-a|--all] [<message>]]
+\t\t       [-u|--include-untracked] [-a|--all] [<message>]]
    or: git stash clear
 '''
 

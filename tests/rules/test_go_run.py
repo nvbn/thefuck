@@ -4,7 +4,7 @@ from tests.utils import Command
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='go run foo'), 
+    Command(script='go run foo'),
     Command(script='go run bar')])
 def test_match(command):
     assert match(command, None)

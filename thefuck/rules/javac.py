@@ -4,7 +4,7 @@
 # > javac foo
 # error: Class names, 'foo', are only accepted if annotation
 # processing is explicitly requested
- 
+
 
 def match(command, settings):
     return (command.script.startswith('javac ')

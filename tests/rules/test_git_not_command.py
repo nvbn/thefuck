@@ -30,8 +30,8 @@ def git_not_command_closest():
     return '''git: 'tags' is not a git command. See 'git --help'.
 
 Did you mean one of these?
-	stage
-	tag
+\tstage
+\ttag
 '''
 
 

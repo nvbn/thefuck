@@ -14,4 +14,3 @@ def get_new_command(command, settings):
                             command.stderr)[0]
     return replace_command(command, broken_cmd,
                            get_all_matched_commands(command.stderr))
-

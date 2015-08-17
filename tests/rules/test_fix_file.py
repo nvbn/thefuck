@@ -85,8 +85,7 @@ Traceback (most recent call last):
   File "/usr/lib/python3.4/re.py", line 293, in _compile
     raise TypeError("first argument must be string or compiled pattern")
 TypeError: first argument must be string or compiled pattern
-"""
-),
+"""),
 
 ('ruby a.rb', 'a.rb', 3, None,
 """

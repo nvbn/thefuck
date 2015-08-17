@@ -5,34 +5,38 @@ from tests.utils import Command
 
 @pytest.fixture
 def composer_not_command():
-    return """
-
-                                    
-  [InvalidArgumentException]        
-  Command "udpate" is not defined.  
-  Did you mean this?                
-      update
-
-
-"""
+    # that weird spacing is part of the actual command output
+    return (
+        '\n'
+        '\n'
+        '                                    \n'
+        '  [InvalidArgumentException]        \n'
+        '  Command "udpate" is not defined.  \n'
+        '  Did you mean this?                \n'
+        '      update                        \n'
+        '                                    \n'
+        '\n'
+        '\n'
+    )
 
 
 @pytest.fixture
 def composer_not_command_one_of_this():
-    return """
-                            
-
-
-  [InvalidArgumentException]       
-  Command "pdate" is not defined.  
-  Did you mean one of these?       
-      selfupdate                   
-      self-update                  
-      update                       
-
-
-
-"""
+    # that weird spacing is part of the actual command output
+    return (
+        '\n'
+        '\n'
+        '                                   \n'
+        '  [InvalidArgumentException]       \n'
+        '  Command "pdate" is not defined.  \n'
+        '  Did you mean one of these?       \n'
+        '      selfupdate                   \n'
+        '      self-update                  \n'
+        '      update                       \n'
+        '                                   \n'
+        '\n'
+        '\n'
+    )
 
 
 def test_match(composer_not_command, composer_not_command_one_of_this):
