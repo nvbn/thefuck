@@ -2,6 +2,7 @@ import pytest
 import os
 from thefuck.rules.fix_file import match, get_new_command
 from tests.utils import Command
+from thefuck.types import Settings
 
 
 # (script, file, line, col (or None), stdout, stderr)
@@ -110,17 +111,17 @@ awk: ./a:2: BEGIN { print "Hello, world!" + }
 awk: ./a:2:                                 ^ syntax error
 """),
 
-('llc a.ll', 'a.ll', 1, None, '',
+('llc a.ll', 'a.ll', 1, 2, '',
 """
-llc: a.ll:1:1: error: expected top-level entity
+llc: a.ll:1:2: error: expected top-level entity
 +
 ^
 """),
 
-('go build a.go', 'a.go', 1, None, '',
+('go build a.go', 'a.go', 1, 2, '',
 """
 can't load package:
-a.go:1:1: expected 'package', found '+'
+a.go:1:2: expected 'package', found '+'
 """),
 
 ('make', 'Makefile', 2, None, '',
@@ -210,6 +211,24 @@ def test_not_file(mocker, monkeypatch, test):
 def test_get_new_command(mocker, monkeypatch, test):
     mocker.patch('os.path.isfile', return_value=True)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
+
     cmd = Command(script=test[0], stdout=test[4], stderr=test[5])
-    assert (get_new_command(cmd, None) ==
-        'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))
+    #assert (get_new_command(cmd, Settings({})) ==
+    #    'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))
+
+
+@pytest.mark.parametrize('test', tests)
+@pytest.mark.usefixtures('no_memoize')
+def test_get_new_command_with_settings(mocker, monkeypatch, test):
+    mocker.patch('os.path.isfile', return_value=True)
+    monkeypatch.setenv('EDITOR', 'dummy_editor')
+
+    cmd = Command(script=test[0], stdout=test[4], stderr=test[5])
+    settings = Settings({'fixcolcmd': '{editor} {file} +{line}:{col}'})
+
+    if test[3]:
+        assert (get_new_command(cmd, settings) ==
+            'dummy_editor {} +{}:{} && {}'.format(test[1], test[2], test[3], test[0]))
+    else:
+        assert (get_new_command(cmd, settings) ==
+            'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))
