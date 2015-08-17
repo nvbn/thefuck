@@ -11,6 +11,7 @@ def test_rules_names_list():
 
 def test_update_settings():
     settings = Settings({'key': 'val'})
-    new_settings = settings.update(key='new-val')
-    assert new_settings.key == 'new-val'
+    new_settings = settings.update(key='new-val', unset='unset-value')
+    assert new_settings.key == 'val'
+    assert new_settings.unset == 'unset-value'
     assert settings.key == 'val'

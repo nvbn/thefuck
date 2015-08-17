@@ -9,7 +9,8 @@ from tests.utils import Command
 
 @pytest.mark.parametrize('override, old, new', [
     ({'key': 'val'}, {}, {'key': 'val'}),
-    ({'key': 'new-val'}, {'key': 'val'}, {'key': 'new-val'})])
+    ({'key': 'new-val'}, {'key': 'val'}, {'key': 'val'}),
+    ({'key': 'new-val', 'unset': 'unset'}, {'key': 'val'}, {'key': 'val', 'unset': 'unset'})])
 def test_wrap_settings(override, old, new):
     fn = lambda _, settings: settings
     assert wrap_settings(override)(fn)(None, Settings(old)) == new
