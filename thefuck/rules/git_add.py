@@ -12,7 +12,7 @@ def match(command, settings):
 def get_new_command(command, settings):
     missing_file = re.findall(
             r"error: pathspec '([^']*)' "
-            "did not match any file\(s\) known to git.", command.stderr)[0]
+            r"did not match any file\(s\) known to git.", command.stderr)[0]
 
     formatme = shells.and_('git add -- {}', '{}')
     return formatme.format(missing_file, command.script)

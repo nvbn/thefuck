@@ -1,6 +1,5 @@
 import re
-from thefuck.utils import (get_closest, replace_argument,
-                           get_all_matched_commands, replace_command)
+from thefuck.utils import get_all_matched_commands, replace_command
 
 
 def match(command, settings):

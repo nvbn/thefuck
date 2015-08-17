@@ -216,7 +216,7 @@ class Tcsh(Generic):
         return u'#+{}\n{}\n'.format(int(time()), command_script)
 
 
-shells = defaultdict(lambda: Generic(), {
+shells = defaultdict(Generic, {
     'bash': Bash(),
     'fish': Fish(),
     'zsh': Zsh(),
