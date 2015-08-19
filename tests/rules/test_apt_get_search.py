@@ -1,0 +1,20 @@
+import pytest
+from thefuck.rules.apt_get_search import get_new_command, match
+from tests.utils import Command
+
+
+def test_match():
+    assert match(Command('apt-get search foo'), None)
+
+
+@pytest.mark.parametrize('command', [
+    Command('apt-cache search foo'),
+    Command('aptitude search foo'),
+    Command('apt search foo')
+])
+def test_not_match(command):
+    assert not match(command, None)
+
+
+def test_get_new_command():
+    assert get_new_command(Command('apt-get search foo'), None) == 'apt-cache search foo'
