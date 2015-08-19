@@ -1,9 +1,10 @@
 import re
 import os
-from thefuck.utils import memoize
+from thefuck.utils import memoize, wrap_settings
 from thefuck import shells
 
 
+# order is important: only the first match is considered
 patterns = (
         # js, node:
         '^    at {file}:{line}:{col}',
@@ -20,13 +21,13 @@ patterns = (
         # lua:
         '^lua: {file}:{line}:',
         # fish:
-        '^{file} \(line {line}\):',
+        '^{file} \\(line {line}\\):',
         # bash, sh, ssh:
         '^{file}: line {line}: ',
+        # cargo, clang, gcc, go, pep8, rustc:
+        '^{file}:{line}:{col}',
         # ghc, make, ruby, zsh:
         '^{file}:{line}:',
-        # cargo, clang, gcc, go, rustc:
-        '^{file}:{line}:{col}',
         # perl:
         'at {file} line {line}',
     )
@@ -45,7 +46,7 @@ patterns = [_make_pattern(p) for p in patterns]
 def _search(stderr):
     for pattern in patterns:
         m = re.search(pattern, stderr)
-        if m:
+        if m and os.path.isfile(m.group('file')):
             return m
 
 
@@ -53,15 +54,24 @@ def match(command, settings):
     if 'EDITOR' not in os.environ:
         return False
 
-    m = _search(command.stderr)
-
-    return m and os.path.isfile(m.group('file'))
+    return _search(command.stderr) or _search(command.stdout)
 
 
+@wrap_settings({'fixlinecmd': '{editor} {file} +{line}',
+                'fixcolcmd': None})
 def get_new_command(command, settings):
-    m = _search(command.stderr)
+    m = _search(command.stderr) or _search(command.stdout)
 
     # Note: there does not seem to be a standard for columns, so they are just
-    # ignored for now
-    return shells.and_('{} {} +{}'.format(os.environ['EDITOR'], m.group('file'), m.group('line')),
-                       command.script)
+    # ignored by default
+    if settings.fixcolcmd and 'col' in m.groupdict():
+        editor_call = settings.fixcolcmd.format(editor=os.environ['EDITOR'],
+                                                file=m.group('file'),
+                                                line=m.group('line'),
+                                                col=m.group('col'))
+    else:
+        editor_call = settings.fixlinecmd.format(editor=os.environ['EDITOR'],
+                                                 file=m.group('file'),
+                                                 line=m.group('line'))
+
+    return shells.and_(editor_call, command.script)

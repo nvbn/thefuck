@@ -1,4 +1,4 @@
-from thefuck.utils import get_closest, replace_command
+from thefuck.utils import replace_command
 import re
 
 

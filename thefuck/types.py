@@ -23,7 +23,9 @@ class Settings(dict):
         return self.get(item)
 
     def update(self, **kwargs):
-        """Returns new settings with new values from `kwargs`."""
-        conf = dict(self)
-        conf.update(kwargs)
+        """
+        Returns new settings with values from `kwargs` for unset settings.
+        """
+        conf = dict(kwargs)
+        conf.update(self)
         return Settings(conf)

@@ -11,4 +11,3 @@ def match(command, settings):
 @sudo_support
 def get_new_command(command, settings):
     return u'./{}'.format(command.script)
-

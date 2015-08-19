@@ -7,8 +7,10 @@
 # > cd..
 # cd..: command not found
 
+
 def match(command, settings):
     return command.script == 'cd..'
+
 
 def get_new_command(command, settings):
     return 'cd ..'

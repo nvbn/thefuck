@@ -2,6 +2,7 @@ from thefuck import shells
 from thefuck.rules.git_branch_list import match, get_new_command
 from tests.utils import Command
 
+
 def test_match():
     assert match(Command('git branch list'), None)
 
