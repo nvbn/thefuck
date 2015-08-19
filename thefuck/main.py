@@ -74,10 +74,10 @@ def get_command(settings, args):
             return types.Command(script, None, None)
 
 
-def run_command(command, settings):
+def run_command(old_cmd, command, settings):
     """Runs command from rule for passed command."""
     if command.side_effect:
-        command.side_effect(command, settings)
+        command.side_effect(old_cmd, command.script, settings)
     shells.put_to_history(command.script)
     print(command.script)
 
@@ -100,7 +100,7 @@ def fix_command():
         corrected_commands = get_corrected_commands(command, user_dir, settings)
         selected_command = select_command(corrected_commands, settings)
         if selected_command:
-            run_command(selected_command, settings)
+            run_command(command, selected_command, settings)
 
 
 def print_alias(entry_point=True):

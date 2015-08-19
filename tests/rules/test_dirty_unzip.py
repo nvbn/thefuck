@@ -34,7 +34,7 @@ def test_match(zip_error, script):
     'unzip foo',
     'unzip foo.zip'])
 def test_side_effect(zip_error, script):
-    side_effect(Command(script=script), None)
+    side_effect(Command(script=script), None, None)
     assert(os.listdir('.') == ['foo.zip'])
 
 

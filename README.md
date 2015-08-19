@@ -216,7 +216,11 @@ match(command: Command, settings: Settings) -> bool
 get_new_command(command: Command, settings: Settings) -> str | list[str]
 ```
 
-Also the rule can contain an optional function `side_effect(command: Command, settings: Settings) -> None`
+Also the rule can contain an optional function
+
+```python
+side_effect(old_command: Command, fixed_command: str, settings: Settings) -> None
+```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
