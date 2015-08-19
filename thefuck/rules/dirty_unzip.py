@@ -30,8 +30,8 @@ def get_new_command(command, settings):
     return '{} -d {}'.format(command.script, _zip_file(command)[:-4])
 
 
-def side_effect(command, settings):
-    with zipfile.ZipFile(_zip_file(command), 'r') as archive:
+def side_effect(old_cmd, command, settings):
+    with zipfile.ZipFile(_zip_file(old_cmd), 'r') as archive:
         for file in archive.namelist():
             os.remove(file)
 

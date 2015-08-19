@@ -26,8 +26,8 @@ def get_new_command(command, settings):
     return command.script
 
 
-def side_effect(command, settings):
-    offending = offending_pattern.findall(command.stderr)
+def side_effect(old_cmd, command, settings):
+    offending = offending_pattern.findall(old_cmd.stderr)
     for filepath, lineno in offending:
         with open(filepath, 'r') as fh:
             lines = fh.readlines()

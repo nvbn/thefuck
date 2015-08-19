@@ -35,7 +35,7 @@ def get_new_command(command, settings):
                  .format(dir=_tar_file(command.script)[1], cmd=command.script)
 
 
-def side_effect(command, settings):
-    with tarfile.TarFile(_tar_file(command.script)[0]) as archive:
+def side_effect(old_cmd, command, settings):
+    with tarfile.TarFile(_tar_file(old_cmd.script)[0]) as archive:
         for file in archive.getnames():
             os.remove(file)

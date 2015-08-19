@@ -52,7 +52,7 @@ def test_match(tar_error, filename, script, fixed):
 @parametrize_script
 def test_side_effect(tar_error, filename, script, fixed):
     tar_error(filename)
-    side_effect(Command(script=script.format(filename)), None)
+    side_effect(Command(script=script.format(filename)), None, None)
     assert(os.listdir('.') == [filename])
 
 
