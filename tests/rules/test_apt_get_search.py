@@ -10,7 +10,12 @@ def test_match():
 @pytest.mark.parametrize('command', [
     Command('apt-cache search foo'),
     Command('aptitude search foo'),
-    Command('apt search foo')
+    Command('apt search foo'),
+    Command('apt-get install foo'),
+    Command('apt-get source foo'),
+    Command('apt-get clean'),
+    Command('apt-get remove'),
+    Command('apt-get update')
 ])
 def test_not_match(command):
     assert not match(command, None)
