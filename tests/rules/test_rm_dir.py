@@ -18,4 +18,4 @@ def test_not_match(command):
 
 
 def test_get_new_command():
-    assert get_new_command(Command('rm foo', '', ''), None) == 'rm -rf foo'
+    assert get_new_command(Command('rm foo', '', ''), None) == 'rmdir foo'

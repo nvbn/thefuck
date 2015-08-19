@@ -10,4 +10,4 @@ def match(command, settings):
 
 @sudo_support
 def get_new_command(command, settings):
-    return re.sub('^rm (.*)', 'rm -rf \\1', command.script)
+    return re.sub('^rm (.*)', 'rmdir \\1', command.script)
