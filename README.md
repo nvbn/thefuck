@@ -191,6 +191,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
 * `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
+* `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command" for example adds missing '-' to the command on `hdfs dfs ls`;
 * `whois` &ndash; fixes `whois` command.
 
 Enabled by default only on specific platforms:
