@@ -13,6 +13,15 @@ def test_match(command):
     assert match(command, None)
 
 
+@pytest.mark.parametrize('command', [
+    Command(script='vagrant ssh', stderr=''),
+    Command(script='vagrant ssh jeff', stderr='The machine with the name \'jeff\' was not found configured for this Vagrant environment.'),  
+    Command(script='vagrant ssh', stderr='A Vagrant environment or target machine is required to run this command. Run `vagrant init` to create a new Vagrant environment. Or, get an ID of a target machine from `vagrant global-status` to run this command on. A final option is to change to a directory with a Vagrantfile and to try again.'),  
+    Command()])
+def test_not_match(command):
+    assert not match(command, None)
+
+
 @pytest.mark.parametrize('command, new_command', [
     (Command(script='vagrant ssh', stderr='VM must be running to open SSH connection. Run `vagrant up`\nto start the virtual machine.'), 'vagrant up  && vagrant ssh'),
     (Command(script='vagrant ssh devbox', stderr='VM must be running to open SSH connection. Run `vagrant up`\nto start the virtual machine.'), 'vagrant up devbox && vagrant ssh devbox'),
