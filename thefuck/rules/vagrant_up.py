@@ -7,7 +7,12 @@ def match(command, settings):
 
 def get_new_command(command, settings):
     cmds = command.script.split(' ')
-    machine = ""
+    machine = None
     if len(cmds) >= 3:
         machine = cmds[2]
-    return shells.and_("vagrant up " +  machine, command.script)
+
+    startAllInstances = shells.and_("vagrant up", command.script)
+    if machine is None: 
+        return startAllInstances
+    else:
+        return [ shells.and_("vagrant up " +  machine, command.script), startAllInstances]
