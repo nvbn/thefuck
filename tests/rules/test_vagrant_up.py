@@ -2,6 +2,7 @@ import pytest
 from thefuck.rules.vagrant_up import match, get_new_command
 from tests.utils import Command
 
+
 @pytest.mark.parametrize('command', [
     Command(script='vagrant ssh', stderr='VM must be running to open SSH connection. Run `vagrant up`\nto start the virtual machine.'),
     Command(script='vagrant ssh devbox', stderr='VM must be running to open SSH connection. Run `vagrant up`\nto start the virtual machine.'),
