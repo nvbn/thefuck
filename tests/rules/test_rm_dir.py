@@ -11,7 +11,6 @@ from tests.utils import Command
     ])
 def test_match(command):
     assert match(command, None)
-    assert match(command, None)
 
 
 @pytest.mark.parametrize('command', [
