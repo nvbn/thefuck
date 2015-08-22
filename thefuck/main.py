@@ -105,7 +105,7 @@ def fix_command():
 
 def print_alias(entry_point=True):
     if entry_point:
-        warn('`thefuck-alias` is deprecated, us `thefuck --alias` instead.')
+        warn('`thefuck-alias` is deprecated, use `thefuck --alias` instead.')
         position = 1
     else:
         position = 2
