@@ -2,7 +2,7 @@ import re
 from thefuck.utils import get_closest
 
 
-def extract_possisiblities(command):
+def extract_possibilities(command):
     possib = re.findall(r'\n\(did you mean one of ([^\?]+)\?\)', command.stderr)
     if possib:
         return possib[0].split(', ')
@@ -24,6 +24,6 @@ def match(command, settings):
 
 def get_new_command(command, settings):
     script = command.script.split(' ')
-    possisiblities = extract_possisiblities(command)
-    script[1] = get_closest(script[1], possisiblities)
+    possibilities = extract_possibilities(command)
+    script[1] = get_closest(script[1], possibilities)
     return ' '.join(script)

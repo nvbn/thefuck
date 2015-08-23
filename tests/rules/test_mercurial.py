@@ -2,7 +2,7 @@ import pytest
 
 from tests.utils import Command
 from thefuck.rules.mercurial import (
-    extract_possisiblities, match, get_new_command
+    extract_possibilities, match, get_new_command
 )
 
 
@@ -96,8 +96,8 @@ def test_not_match(command):
         '\n    rebase recover remove rename resolve revert'
     )), ['rebase', 'recover', 'remove', 'rename', 'resolve', 'revert']),
 ])
-def test_extract_possisiblities(command, possibilities):
-    assert extract_possisiblities(command) == possibilities
+def test_extract_possibilities(command, possibilities):
+    assert extract_possibilities(command) == possibilities
 
 
 @pytest.mark.parametrize('command, new_command', [
