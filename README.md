@@ -94,7 +94,7 @@ Reading package lists... Done
 - pip
 - python-dev
 
-## Installation *experimental*
+## Installation [*experimental*]
 
 On Ubuntu and OS X you can install `The Fuck` with installation script:
  
