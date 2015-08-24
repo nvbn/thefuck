@@ -94,7 +94,15 @@ Reading package lists... Done
 - pip
 - python-dev
 
-## Installation
+## Installation *experimental*
+
+On Ubuntu and OS X you can install `The Fuck` with installation script:
+ 
+```bash
+wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh -
+```
+
+## Manual installation
 
 Install `The Fuck` with `pip`:
 
