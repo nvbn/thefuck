@@ -2,18 +2,16 @@ from pathlib import Path
 
 
 def test_readme():
-    with open('README.md') as f:
+    project_root = Path(__file__).parent.parent
+    with project_root.joinpath('README.md').open() as f:
         readme = f.read()
 
-        bundled = Path(__file__).parent.parent \
+        bundled = project_root \
             .joinpath('thefuck') \
             .joinpath('rules') \
             .glob('*.py')
 
         for rule in bundled:
-            if rule.stem != '__init__' and rule.stem not in readme:
-                raise Exception('Missing rule "{}" in README.md'.format(rule.stem))
-
-
-if __name__ == '__main__':
-    test_readme()
+            if rule.stem != '__init__':
+                assert rule.stem in readme,\
+                    'Missing rule "{}" in README.md'.format(rule.stem)
