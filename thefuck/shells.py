@@ -84,6 +84,7 @@ class Bash(Generic):
             value = value[1:-1]
         return name, value
 
+    @memoize
     def get_aliases(self):
         proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
@@ -118,15 +119,16 @@ class Fish(Generic):
                 "    set -l exit_code $status\n"
                 "    set -l eval_script"
                 " (mktemp 2>/dev/null ; or mktemp -t 'thefuck')\n"
-                "    set -l fucked_up_commandd $history[1]\n"
-                "    thefuck $fucked_up_commandd > $eval_script\n"
+                "    set -l fucked_up_command $history[1]\n"
+                "    thefuck $fucked_up_command > $eval_script\n"
                 "    . $eval_script\n"
                 "    rm $eval_script\n"
                 "    if test $exit_code -ne 0\n"
-                "        history --delete $fucked_up_commandd\n"
+                "        history --delete $fucked_up_command\n"
                 "    end\n"
                 "end").format(fuck)
 
+    @memoize
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
         proc = Popen('fish -ic functions', stdout=PIPE, stderr=DEVNULL,
@@ -168,6 +170,7 @@ class Zsh(Generic):
             value = value[1:-1]
         return name, value
 
+    @memoize
     def get_aliases(self):
         proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
@@ -200,6 +203,7 @@ class Tcsh(Generic):
         name, value = alias.split("\t", 1)
         return name, value
 
+    @memoize
     def get_aliases(self):
         proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL,
                      shell=True)
@@ -257,7 +261,6 @@ def and_(*commands):
     return _get_shell().and_(*commands)
 
 
-@memoize
 def get_aliases():
     return list(_get_shell().get_aliases().keys())
 

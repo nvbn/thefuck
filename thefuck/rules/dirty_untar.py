@@ -13,12 +13,12 @@ def _is_tar_extract(cmd):
 
 
 def _tar_file(cmd):
-    tar_extentions = ('.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',
+    tar_extensions = ('.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',
                       '.tar.lzma', '.tar.xz', '.taz', '.tb2', '.tbz', '.tbz2',
                       '.tgz', '.tlz', '.txz', '.tz')
 
     for c in cmd.split():
-        for ext in tar_extentions:
+        for ext in tar_extensions:
             if c.endswith(ext):
                 return (c, c[0:len(c)-len(ext)])
 
