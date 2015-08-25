@@ -99,7 +99,7 @@ Reading package lists... Done
 On Ubuntu and OS X you can install `The Fuck` with installation script:
  
 ```bash
-wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh -
+wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh - && $0
 ```
 
 ## Manual installation
