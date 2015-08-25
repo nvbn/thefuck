@@ -1,10 +1,16 @@
 #!/bin/sh
 
+should_add_alias () {
+    [ -f $1 ] && ! grep -q thefuck $1
+}
+
 # Install os dependencies:
 if [ -f $(which apt-get) ]; then
+    sudo apt-get update
     sudo apt-get install python-pip
 else
     if [ -f $(which brew) ]; then
+        brew update
         brew install python
     fi
 fi
@@ -14,22 +20,22 @@ sudo pip install -U pip setuptools
 sudo pip install -U thefuck
 
 # Setup aliases:
-if [ -f ~/.bashrc ]; then
+if should_add_alias ~/.bashrc; then
     echo 'eval $(thefuck --alias)' >> ~/.bashrc
 fi
 
-if [ -f ~/.bash_profile ]; then
+if should_add_alias ~/.bash_profile; then
     echo 'eval $(thefuck --alias)' >> ~/.bash_profile
 fi
 
-if [ -f ~/.zshrc ]; then
+if should_add_alias ~/.zshrc; then
     echo 'eval $(thefuck --alias)' >> ~/.zshrc
 fi
 
-if [ -f ~/.config/fish/config.fish ]; then
+if should_add_alias ~/.config/fish/config.fish; then
     thefuck --alias >> ~/.config/fish/config.fish
 fi
 
-if [ -f ~/.tcshrc ]; then
+if should_add_alias ~/.tcshrc; then
     echo 'eval `thefuck --alias`' >> ~/.tcshrc
 fi
