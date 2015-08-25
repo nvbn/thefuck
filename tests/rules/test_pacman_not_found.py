@@ -22,7 +22,7 @@ def test_match(command):
     Command(script='yaourt -S llc', stderr='error: target not found: llc'),
     Command(script='pacman llc', stderr='error: target not found: llc'),
     Command(script='sudo pacman llc', stderr='error: target not found: llc')])
-@patch('thefuck.archlinux.subprocess')
+@patch('thefuck.utils.subprocess')
 def test_match_mocked(subp_mock, command):
     subp_mock.check_output.return_value = PKGFILE_OUTPUT_LLC
     assert match(command, None)
@@ -42,7 +42,7 @@ def test_get_new_command(command, fixed):
     (Command(script='yaourt -S llc', stderr='error: target not found: llc'), ['yaourt -S extra/llvm', 'yaourt -S extra/llvm35']),
     (Command(script='pacman -S llc', stderr='error: target not found: llc'), ['pacman -S extra/llvm', 'pacman -S extra/llvm35']),
     (Command(script='sudo pacman -S llc', stderr='error: target not found: llc'), ['sudo pacman -S extra/llvm', 'sudo pacman -S extra/llvm35'])])
-@patch('thefuck.archlinux.subprocess')
+@patch('thefuck.utils.subprocess')
 def test_get_new_command_mocked(subp_mock, command, fixed):
     subp_mock.check_output.return_value = PKGFILE_OUTPUT_LLC
     assert get_new_command(command, None) == fixed

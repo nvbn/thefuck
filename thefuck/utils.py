@@ -1,4 +1,5 @@
-from .types import Command
+from subprocess import CalledProcessError
+import subprocess
 from difflib import get_close_matches
 from functools import wraps
 from pathlib import Path
@@ -7,6 +8,7 @@ import os
 import pickle
 import re
 import six
+from .types import Command
 
 
 DEVNULL = open(os.devnull, 'w')
@@ -185,3 +187,41 @@ def replace_command(command, broken, matched):
     new_cmds = get_close_matches(broken, matched, cutoff=0.1)
     return [replace_argument(command.script, broken, new_cmd.strip())
             for new_cmd in new_cmds]
+
+
+@memoize
+def get_pkgfile(command):
+    """ Gets the packages that provide the given command using `pkgfile`.
+
+    If the command is of the form `sudo foo`, searches for the `foo` command
+    instead.
+    """
+    try:
+        command = command.strip()
+
+        if command.startswith('sudo '):
+            command = command[5:]
+
+        command = command.split(" ")[0]
+
+        packages = subprocess.check_output(
+            ['pkgfile', '-b', '-v', command],
+            universal_newlines=True, stderr=DEVNULL
+        ).splitlines()
+
+        return [package.split()[0] for package in packages]
+    except CalledProcessError:
+        return None
+
+
+def archlinux_env():
+    if which('yaourt'):
+        pacman = 'yaourt'
+    elif which('pacman'):
+        pacman = 'sudo pacman'
+    else:
+        return False, None
+
+    enabled_by_default = which('pkgfile')
+
+    return enabled_by_default, pacman
