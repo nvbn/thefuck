@@ -1,7 +1,7 @@
 """
 The confusion in systemctl's param order is massive.
 """
-from thefuck.utils import sudo_support
+from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support

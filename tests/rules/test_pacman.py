@@ -29,7 +29,7 @@ def test_match(command):
 @pytest.mark.parametrize('command, return_value', [
     (Command(script='vim', stderr='vim: command not found'), PKGFILE_OUTPUT_VIM),
     (Command(script='sudo vim', stderr='sudo: vim: command not found'), PKGFILE_OUTPUT_VIM)])
-@patch('thefuck.utils.subprocess')
+@patch('thefuck.specific.archlinux.subprocess')
 @patch.multiple(pacman, create=True, pacman=pacman_cmd)
 def test_match_mocked(subp_mock, command, return_value):
     subp_mock.check_output.return_value = return_value
@@ -75,7 +75,7 @@ def test_get_new_command(command, new_command, mocker):
     (Command('convert'), ['{} -S extra/imagemagick && convert'.format(pacman_cmd)], PKGFILE_OUTPUT_CONVERT),
     (Command('sudo'), ['{} -S core/sudo && sudo'.format(pacman_cmd)], PKGFILE_OUTPUT_SUDO),
     (Command('sudo convert'), ['{} -S extra/imagemagick && sudo convert'.format(pacman_cmd)], PKGFILE_OUTPUT_CONVERT)])
-@patch('thefuck.utils.subprocess')
+@patch('thefuck.specific.archlinux.subprocess')
 @patch.multiple(pacman, create=True, pacman=pacman_cmd)
 def test_get_new_command_mocked(subp_mock, command, new_command, return_value):
     subp_mock.check_output.return_value = return_value

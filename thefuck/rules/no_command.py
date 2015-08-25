@@ -1,5 +1,6 @@
 from difflib import get_close_matches
-from thefuck.utils import sudo_support, get_all_executables
+from thefuck.utils import get_all_executables
+from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support

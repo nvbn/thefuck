@@ -1,5 +1,4 @@
-from thefuck.utils import sudo_support
-
+from thefuck.specific.sudo import sudo_support
 
 enabled_by_default = False
 

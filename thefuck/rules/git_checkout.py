@@ -2,9 +2,10 @@ import re
 import subprocess
 from thefuck import shells, utils
 from thefuck.utils import replace_argument
+from thefuck.specific.git import git_support
 
 
-@utils.git_support
+@git_support
 def match(command, settings):
     return ('did not match any file(s) known to git.' in command.stderr
             and "Did you forget to 'git add'?" not in command.stderr)
@@ -23,7 +24,7 @@ def get_branches():
         yield line.strip()
 
 
-@utils.git_support
+@git_support
 def get_new_command(command, settings):
     missing_file = re.findall(
         r"error: pathspec '([^']*)' "

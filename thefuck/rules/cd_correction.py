@@ -2,7 +2,7 @@
 
 import os
 from difflib import get_close_matches
-from thefuck.utils import sudo_support
+from thefuck.specific.sudo import sudo_support
 from thefuck.rules import cd_mkdir
 
 __author__ = "mmussomele"

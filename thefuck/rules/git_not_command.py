@@ -1,6 +1,6 @@
 import re
-from thefuck.utils import (git_support,
-                           get_all_matched_commands, replace_command)
+from thefuck.utils import get_all_matched_commands, replace_command
+from thefuck.specific.git import git_support
 
 
 @git_support

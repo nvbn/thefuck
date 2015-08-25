@@ -1,5 +1,5 @@
 import os
-from thefuck.utils import sudo_support
+from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support

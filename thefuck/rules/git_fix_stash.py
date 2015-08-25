@@ -1,8 +1,9 @@
 from thefuck import utils
 from thefuck.utils import replace_argument
+from thefuck.specific.git import git_support
 
 
-@utils.git_support
+@git_support
 def match(command, settings):
     return (command.script.split()[1] == 'stash'
             and 'usage:' in command.stderr)
@@ -19,7 +20,7 @@ stash_commands = (
     'show')
 
 
-@utils.git_support
+@git_support
 def get_new_command(command, settings):
     stash_cmd = command.script.split()[2]
     fixed = utils.get_closest(stash_cmd, stash_commands, fallback_to_first=False)

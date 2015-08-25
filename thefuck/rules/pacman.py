@@ -1,4 +1,4 @@
-from thefuck.utils import get_pkgfile, archlinux_env
+from thefuck.specific.archlinux import get_pkgfile, archlinux_env
 from thefuck import shells
 
 
