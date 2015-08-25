@@ -206,6 +206,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 Enabled by default only on specific platforms:
 
 * `apt_get` &ndash; installs app from apt if it not installed;
+* `apt_get_search` &ndash; changes trying to search using `apt-get` with searching using `apt-cache`
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
