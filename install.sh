@@ -6,12 +6,19 @@ should_add_alias () {
 
 # Install os dependencies:
 if [ -f $(which apt-get) ]; then
-    sudo apt-get update
-    sudo apt-get install python-pip
+    # Debian/ubuntu:
+    sudo apt-get update -yy
+    sudo apt-get install -yy python-pip python-dev
 else
     if [ -f $(which brew) ]; then
+        # OS X:
         brew update
         brew install python
+    else
+        # Genreic way:
+        wget https://bootstrap.pypa.io/get-pip.py
+        sudo python get-pip.py
+        rm get-pip.py
     fi
 fi
 

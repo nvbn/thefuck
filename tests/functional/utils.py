@@ -24,7 +24,7 @@ def build_container(tag, dockerfile):
         shutil.rmtree(tmpdir)
 
 
-def spawn(request, tag, dockerfile, cmd):
+def spawn(request, tag, dockerfile, cmd, install=True):
     if bare:
         proc = pexpect.spawnu(cmd)
     else:
@@ -32,7 +32,9 @@ def spawn(request, tag, dockerfile, cmd):
         build_container(tag, dockerfile)
         proc = pexpect.spawnu('docker run --volume {}:/src --tty=true '
                               '--interactive=true {} {}'.format(root, tag, cmd))
-        proc.sendline('pip install /src')
+        if install:
+            proc.sendline('pip install /src')
+
     proc.sendline('cd /')
 
     proc.logfile = sys.stdout
