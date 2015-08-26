@@ -1,6 +1,7 @@
 language: python
 sudo: false
 python:
+  - "3.5"
   - "3.4"
   - "3.3"
   - "2.7"
