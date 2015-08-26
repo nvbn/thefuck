@@ -5,3 +5,4 @@ wheel
 setuptools>=17.1
 pexpect
 pypandoc
+pytest-benchmark
