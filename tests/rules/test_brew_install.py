@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.brew_install import match, get_new_command
-from thefuck.rules.brew_install import brew_formulas
+from thefuck.rules.brew_install import _get_formulas
 from tests.utils import Command
 
 
@@ -20,9 +20,7 @@ def brew_already_installed():
 
 
 def _is_not_okay_to_test():
-    if 'elasticsearch' not in brew_formulas:
-        return True
-    return False
+    return 'elasticsearch' not in _get_formulas()
 
 
 @pytest.mark.skipif(_is_not_okay_to_test(),

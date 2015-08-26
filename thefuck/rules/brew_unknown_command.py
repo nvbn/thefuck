@@ -1,30 +1,19 @@
 import os
 import re
-import subprocess
 from thefuck.utils import get_closest, replace_command
+from thefuck.specific.brew import get_brew_path_prefix
 
 BREW_CMD_PATH = '/Library/Homebrew/cmd'
 TAP_PATH = '/Library/Taps'
 TAP_CMD_PATH = '/%s/%s/cmd'
 
 
-def _get_brew_path_prefix():
-    """To get brew path"""
-    try:
-        return subprocess.check_output(['brew', '--prefix'],
-                                       universal_newlines=True).strip()
-    except:
-        return None
-
-
 def _get_brew_commands(brew_path_prefix):
     """To get brew default commands on local environment"""
     brew_cmd_path = brew_path_prefix + BREW_CMD_PATH
 
-    commands = [name.replace('.rb', '') for name in os.listdir(brew_cmd_path)
-                if name.endswith('.rb')]
-
-    return commands
+    return [name[:-3] for name in os.listdir(brew_cmd_path)
+            if name.endswith('.rb')]
 
 
 def _get_brew_tap_specific_commands(brew_path_prefix):
@@ -51,10 +40,7 @@ def _get_brew_tap_specific_commands(brew_path_prefix):
 
 
 def _is_brew_tap_cmd_naming(name):
-    if name.startswith('brew-') and name.endswith('.rb'):
-        return True
-
-    return False
+    return name.startswith('brew-') and name.endswith('.rb')
 
 
 def _get_directory_names_only(path):
@@ -62,35 +48,33 @@ def _get_directory_names_only(path):
             if os.path.isdir(os.path.join(path, d))]
 
 
-brew_path_prefix = _get_brew_path_prefix()
+def _brew_commands():
+    brew_path_prefix = get_brew_path_prefix()
+    if brew_path_prefix:
+        try:
+            return _get_brew_commands(brew_path_prefix) \
+                 + _get_brew_tap_specific_commands(brew_path_prefix)
+        except OSError:
+            pass
 
-# Failback commands for testing (Based on Homebrew 0.9.5)
-brew_commands = ['info', 'home', 'options', 'install', 'uninstall',
-                 'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
-                 'doctor', 'create', 'edit']
-
-if brew_path_prefix:
-    try:
-        brew_commands = _get_brew_commands(brew_path_prefix) \
-                        + _get_brew_tap_specific_commands(brew_path_prefix)
-    except OSError:
-        pass
+    # Failback commands for testing (Based on Homebrew 0.9.5)
+    return ['info', 'home', 'options', 'install', 'uninstall',
+            'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
+            'doctor', 'create', 'edit']
 
 
 def match(command, settings):
     is_proper_command = ('brew' in command.script and
                          'Unknown command' in command.stderr)
 
-    has_possible_commands = False
     if is_proper_command:
         broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
                                 command.stderr)[0]
-        has_possible_commands = bool(get_closest(broken_cmd, brew_commands))
-
-    return has_possible_commands
+        return bool(get_closest(broken_cmd, _brew_commands()))
+    return False
 
 
 def get_new_command(command, settings):
     broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
                             command.stderr)[0]
-    return replace_command(command, broken_cmd, brew_commands)
+    return replace_command(command, broken_cmd, _brew_commands())
