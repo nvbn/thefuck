@@ -1,3 +1,4 @@
+import pytest
 import os
 import subprocess
 import shutil
@@ -5,9 +6,8 @@ from tempfile import mkdtemp
 from pathlib import Path
 import sys
 import pexpect
-import pytest
+from tests.utils import root
 
-root = str(Path(__file__).parent.parent.parent.resolve())
 bare = os.environ.get('BARE')
 enabled = os.environ.get('FUNCTIONAL')
 
@@ -18,7 +18,7 @@ def build_container(tag, dockerfile):
         with Path(tmpdir).joinpath('Dockerfile').open('w') as file:
             file.write(dockerfile)
         if subprocess.call(['docker', 'build', '--tag={}'.format(tag), tmpdir],
-                           cwd=root) != 0:
+                           cwd=str(root)) != 0:
             raise Exception("Can't build a container")
     finally:
         shutil.rmtree(tmpdir)

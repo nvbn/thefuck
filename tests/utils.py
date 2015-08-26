@@ -1,3 +1,4 @@
+from pathlib import Path
 from thefuck import types
 from thefuck.conf import DEFAULT_PRIORITY
 
@@ -19,3 +20,6 @@ def Rule(name='', match=lambda *_: True,
 
 def CorrectedCommand(script='', side_effect=None, priority=DEFAULT_PRIORITY):
     return types.CorrectedCommand(script, side_effect, priority)
+
+
+root = Path(__file__).parent.parent.resolve()

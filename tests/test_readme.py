@@ -1,12 +1,11 @@
-from pathlib import Path
+from tests.utils import root
 
 
 def test_readme():
-    project_root = Path(__file__).parent.parent
-    with project_root.joinpath('README.md').open() as f:
+    with root.joinpath('README.md').open() as f:
         readme = f.read()
 
-        bundled = project_root \
+        bundled = root \
             .joinpath('thefuck') \
             .joinpath('rules') \
             .glob('*.py')
