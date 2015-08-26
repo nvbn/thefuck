@@ -1,5 +1,5 @@
 import re
-from thefuck import utils, shells
+from thefuck import shells
 from thefuck.specific.git import git_support
 
 
