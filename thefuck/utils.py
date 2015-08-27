@@ -132,3 +132,26 @@ def replace_command(command, broken, matched):
     new_cmds = get_close_matches(broken, matched, cutoff=0.1)
     return [replace_argument(command.script, broken, new_cmd.strip())
             for new_cmd in new_cmds]
+
+
+@memoize
+def is_app(command, *app_names):
+    """Returns `True` if command is call to one of passed app names."""
+    for name in app_names:
+        if command.script.startswith(u'{} '.format(name)):
+            return True
+    return False
+
+
+def for_app(*app_names):
+    """Specifies that matching script is for on of app names."""
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(command, settings):
+            if is_app(command, *app_names):
+                return fn(command, settings)
+            else:
+                return False
+
+        return wrapper
+    return decorator

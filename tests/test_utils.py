@@ -2,8 +2,9 @@ import pytest
 from mock import Mock
 from thefuck.utils import wrap_settings,\
     memoize, get_closest, get_all_executables, replace_argument, \
-    get_all_matched_commands
+    get_all_matched_commands, is_app, for_app
 from thefuck.types import Settings
+from tests.utils import Command
 
 
 @pytest.mark.parametrize('override, old, new', [
@@ -93,3 +94,25 @@ def test_replace_argument(args, result):
                             'service-status', 'service-unbind'])])
 def test_get_all_matched_commands(stderr, result):
     assert list(get_all_matched_commands(stderr)) == result
+
+
+@pytest.mark.usefixtures('no_memoize')
+@pytest.mark.parametrize('script, names, result', [
+    ('git diff', ['git', 'hub'], True),
+    ('hub diff', ['git', 'hub'], True),
+    ('hg diff', ['git', 'hub'], False)])
+def test_is_app(script, names, result):
+    assert is_app(Command(script), *names) == result
+
+
+@pytest.mark.usefixtures('no_memoize')
+@pytest.mark.parametrize('script, names, result', [
+    ('git diff', ['git', 'hub'], True),
+    ('hub diff', ['git', 'hub'], True),
+    ('hg diff', ['git', 'hub'], False)])
+def test_for_app(script, names, result):
+    @for_app(*names)
+    def match(command, settings):
+        return True
+
+    assert match(Command(script), None) == result
