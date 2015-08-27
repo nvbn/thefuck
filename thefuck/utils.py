@@ -95,7 +95,7 @@ def get_all_executables():
     tf_alias = thefuck_alias()
     return [exe.name
             for path in os.environ.get('PATH', '').split(':')
-            for exe in _safe(Path(path).iterdir, [])
+            for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)] + [
                 alias for alias in get_aliases() if alias != tf_alias]
 
