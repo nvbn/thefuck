@@ -181,6 +181,8 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
+* `mvn_no_command` &ndash; adds `clean package` to `mvn`;
+* `mvn_unknown_lifecycle_phase` &ndash; fixes miss spelt lifecycle phases with `mvn`;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `open` &ndash; prepends `http` to address passed to `open`;
