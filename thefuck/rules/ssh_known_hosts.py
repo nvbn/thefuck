@@ -1,4 +1,5 @@
 import re
+from thefuck.utils import for_app
 
 patterns = [
     r'WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!',
@@ -12,6 +13,7 @@ offending_pattern = re.compile(
 commands = ['ssh', 'scp']
 
 
+@for_app(*commands)
 def match(command, settings):
     if not command.script:
         return False

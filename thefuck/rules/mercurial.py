@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import get_closest
+from thefuck.utils import get_closest, for_app
 
 
 def extract_possibilities(command):
@@ -12,14 +12,12 @@ def extract_possibilities(command):
     return possib
 
 
+@for_app('hg')
 def match(command, settings):
-    return (command.script.startswith('hg ')
-            and ('hg: unknown command' in command.stderr
-                 and '(did you mean one of ' in command.stderr
-                 or "hg: command '" in command.stderr
-                 and "' is ambiguous:" in command.stderr
-                 )
-            )
+    return ('hg: unknown command' in command.stderr
+            and '(did you mean one of ' in command.stderr
+            or "hg: command '" in command.stderr
+            and "' is ambiguous:" in command.stderr)
 
 
 def get_new_command(command, settings):

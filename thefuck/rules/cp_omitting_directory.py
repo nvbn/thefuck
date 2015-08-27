@@ -1,12 +1,13 @@
 import re
 from thefuck.specific.sudo import sudo_support
+from thefuck.utils import for_app
 
 
 @sudo_support
+@for_app('cp')
 def match(command, settings):
     stderr = command.stderr.lower()
-    return command.script.startswith('cp ') \
-        and ('omitting directory' in stderr or 'is a directory' in stderr)
+    return 'omitting directory' in stderr or 'is a directory' in stderr
 
 
 @sudo_support

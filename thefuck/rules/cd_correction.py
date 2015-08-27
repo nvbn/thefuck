@@ -4,6 +4,7 @@ import os
 from difflib import get_close_matches
 from thefuck.specific.sudo import sudo_support
 from thefuck.rules import cd_mkdir
+from thefuck.utils import for_app
 
 __author__ = "mmussomele"
 
@@ -16,6 +17,7 @@ def _get_sub_dirs(parent):
 
 
 @sudo_support
+@for_app('cd')
 def match(command, settings):
     """Match function copied from cd_mkdir.py"""
     return (command.script.startswith('cd ')

@@ -1,10 +1,10 @@
 import re
-from thefuck.utils import replace_argument
+from thefuck.utils import replace_argument, for_app
 
 
+@for_app('cargo')
 def match(command, settings):
-    return ('cargo' in command.script
-            and 'No such subcommand' in command.stderr
+    return ('No such subcommand' in command.stderr
             and 'Did you mean' in command.stderr)
 
 

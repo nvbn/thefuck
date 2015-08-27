@@ -1,11 +1,11 @@
 import re
 import subprocess
-from thefuck.utils import replace_command
+from thefuck.utils import replace_command, for_app
 
 
+@for_app('gulp')
 def match(command, script):
-    return command.script.startswith('gulp')\
-        and 'is not in your gulpfile' in command.stdout
+    return 'is not in your gulpfile' in command.stdout
 
 
 def get_gulp_tasks():

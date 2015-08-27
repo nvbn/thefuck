@@ -1,5 +1,6 @@
 import os
 import zipfile
+from thefuck.utils import for_app
 
 
 def _is_bad_zip(file):
@@ -20,9 +21,9 @@ def _zip_file(command):
                 return '{}.zip'.format(c)
 
 
+@for_app('unzip')
 def match(command, settings):
-    return (command.script.startswith('unzip')
-            and '-d' not in command.script
+    return ('-d' not in command.script
             and _is_bad_zip(_zip_file(command)))
 
 

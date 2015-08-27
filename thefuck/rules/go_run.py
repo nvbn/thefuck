@@ -1,3 +1,4 @@
+from thefuck.utils import for_app
 # Appends .go when compiling go files
 #
 # Example:
@@ -5,6 +6,7 @@
 # error: go run: no go files listed
 
 
+@for_app('go')
 def match(command, settings):
     return (command.script.startswith('go run ')
             and not command.script.endswith('.go'))

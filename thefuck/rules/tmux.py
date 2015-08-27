@@ -1,10 +1,10 @@
-from thefuck.utils import replace_command
 import re
+from thefuck.utils import replace_command, for_app
 
 
+@for_app('tmux')
 def match(command, settings):
-    return ('tmux' in command.script
-            and 'ambiguous command:' in command.stderr
+    return ('ambiguous command:' in command.stderr
             and 'could be:' in command.stderr)
 
 

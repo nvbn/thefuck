@@ -2,21 +2,18 @@ from functools import wraps
 import re
 from shlex import split
 from ..types import Command
-from ..utils import quote
+from ..utils import quote, for_app
 
 
 def git_support(fn):
     """Resolves git aliases and supports testing for both git and hub."""
+    # supports GitHub's `hub` command
+    # which is recommended to be used with `alias git=hub`
+    # but at this point, shell aliases have already been resolved
+
+    @for_app('git', 'hub')
     @wraps(fn)
     def wrapper(command, settings):
-        # supports GitHub's `hub` command
-        # which is recommended to be used with `alias git=hub`
-        # but at this point, shell aliases have already been resolved
-        is_git_cmd = command.script.startswith(('git', 'hub'))
-
-        if not is_git_cmd:
-            return False
-
         # perform git aliases expansion
         if 'trace: alias expansion:' in command.stderr:
             search = re.search("trace: alias expansion: ([^ ]*) => ([^\n]*)",
