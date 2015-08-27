@@ -13,6 +13,8 @@ from tests.utils import Command
     (False, 'sudo ls', 'ls', False),
     (False, 'ls', 'ls', False)])
 def test_sudo_support(return_value, command, called, result):
-    fn = Mock(return_value=return_value, __name__='')
+    def fn(command, settings):
+        assert command == Command(called)
+        return return_value
+
     assert sudo_support(fn)(Command(command), None) == result
-    fn.assert_called_once_with(Command(called), None)
