@@ -138,7 +138,8 @@ def replace_command(command, broken, matched):
 def is_app(command, *app_names):
     """Returns `True` if command is call to one of passed app names."""
     for name in app_names:
-        if command.script.startswith(u'{} '.format(name)):
+        if command.script == name \
+                or command.script.startswith(u'{} '.format(name)):
             return True
     return False
 
