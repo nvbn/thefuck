@@ -169,7 +169,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs
 * `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
-* `gulp_not_task` &ndash; fixes misspelled gulp tasks;
+* `gulp_not_task` &ndash; fixes misspelled `gulp` tasks;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `heroku_not_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
@@ -182,14 +182,14 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `mercurial` &ndash; fixes wrong `hg` commands;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `mvn_no_command` &ndash; adds `clean package` to `mvn`;
-* `mvn_unknown_lifecycle_phase` &ndash; fixes miss spelt lifecycle phases with `mvn`;
+* `mvn_unknown_lifecycle_phase` &ndash; fixes misspelled lifecycle phases with `mvn`;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `open` &ndash; prepends `http` to address passed to `open`;
 * `pip_unknown_command` &ndash; fixes wrong `pip` commands, for example `pip instatl/pip install`;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
-* `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args'
+* `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
@@ -201,19 +201,19 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
 * `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
-* `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command" for example adds missing '-' to the command on `hdfs dfs ls`;
+* `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command", for example adds missing '-' to the command on `hdfs dfs ls`;
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command.
 
 Enabled by default only on specific platforms:
 
 * `apt_get` &ndash; installs app from apt if it not installed (requires `python-commandnotfound` / `python3-commandnotfound`);
-* `apt_get_search` &ndash; changes trying to search using `apt-get` with searching using `apt-cache`
+* `apt_get_search` &ndash; changes trying to search using `apt-get` with searching using `apt-cache`;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
-* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available).
-* `pacman_not_found` &ndash; fix package name with `pacman` or `yaourt`;
+* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available);
+* `pacman_not_found` &ndash; fixes package name with `pacman` or `yaourt`.
 
 Bundled, but not enabled by default:
 
