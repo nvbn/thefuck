@@ -62,20 +62,14 @@ class SortedCorrectedCommandsSequence(object):
     def __init__(self, commands, settings):
         self._settings = settings
         self._commands = commands
-        self._cached = self._get_first_two_unique()
+        self._cached = self._realise_first()
         self._realised = False
 
-    def _get_first_two_unique(self):
-        """Returns first two unique commands."""
+    def _realise_first(self):
         try:
-            first = next(self._commands)
+            return [next(self._commands)]
         except StopIteration:
             return []
-
-        for command in self._commands:
-            if command != first:
-                return [first, command]
-        return [first]
 
     def _remove_duplicates(self, corrected_commands):
         """Removes low-priority duplicates."""
@@ -87,8 +81,7 @@ class SortedCorrectedCommandsSequence(object):
 
     def _realise(self):
         """Realises generator, removes duplicates and sorts commands."""
-        commands = self._cached[1:] + list(self._commands)
-        commands = self._remove_duplicates(commands)
+        commands = self._remove_duplicates(self._commands)
         self._cached = [self._cached[0]] + sorted(
             commands, key=lambda corrected_command: corrected_command.priority)
         self._realised = True
@@ -112,7 +105,3 @@ class SortedCorrectedCommandsSequence(object):
         if not self._realised:
             self._realise()
         return iter(self._cached)
-
-    @property
-    def is_multiple(self):
-        return len(self._cached) > 1

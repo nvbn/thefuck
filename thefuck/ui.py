@@ -88,9 +88,7 @@ def select_command(corrected_commands, settings):
         logs.show_corrected_command(selector.value, settings)
         return selector.value
 
-    selector.on_change(
-        lambda val: logs.confirm_text(val, corrected_commands.is_multiple,
-                                      settings))
+    selector.on_change(lambda val: logs.confirm_text(val, settings))
     for action in read_actions():
         if action == SELECT:
             sys.stderr.write('\n')
