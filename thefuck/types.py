@@ -4,11 +4,30 @@ from .logs import debug
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
 
-CorrectedCommand = namedtuple('CorrectedCommand', ('script', 'side_effect', 'priority'))
-
 Rule = namedtuple('Rule', ('name', 'match', 'get_new_command',
                            'enabled_by_default', 'side_effect',
                            'priority', 'requires_output'))
+
+class CorrectedCommand(object):
+    def __init__(self, script, side_effect, priority):
+        self.script = script
+        self.side_effect = side_effect
+        self.priority = priority
+
+    def __eq__(self, other):
+        """Ignores `priority` field."""
+        if isinstance(other, CorrectedCommand):
+            return (other.script, other.side_effect) ==\
+                   (self.script, self.side_effect)
+        else:
+            return False
+
+    def __hash__(self):
+        return (self.script, self.side_effect).__hash__()
+
+    def __repr__(self):
+        return 'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
+            self.script, self.side_effect, self.priority)
 
 
 class RulesNamesList(list):
@@ -54,19 +73,17 @@ class SortedCorrectedCommandsSequence(object):
             return []
 
         for command in self._commands:
-            if command.script != first.script or \
-                            command.side_effect != first.side_effect:
+            if command != first:
                 return [first, command]
         return [first]
 
     def _remove_duplicates(self, corrected_commands):
         """Removes low-priority duplicates."""
-        commands = {(command.script, command.side_effect): command
+        commands = {command
                     for command in sorted(corrected_commands,
                                           key=lambda command: -command.priority)
-                    if command.script != self._cached[0].script
-                    or command.side_effect != self._cached[0].side_effect}
-        return commands.values()
+                    if command.script != self._cached[0]}
+        return commands
 
     def _realise(self):
         """Realises generator, removes duplicates and sorts commands."""
