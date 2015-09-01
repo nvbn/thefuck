@@ -8,7 +8,12 @@ should_add_alias () {
 if [ -f $(which apt-get) ]; then
     # Debian/ubuntu:
     sudo apt-get update -yy
-    sudo apt-get install -yy python-pip python-dev
+    sudo apt-get install -yy python-pip python-dev command-not-found
+
+    if [[ -n $(apt-cache search python-commandnotfound) ]]; then
+        # In case of different python versions:
+        sudo apt-get install -yy python-commandnotfound
+    fi
 else
     if [ -f $(which brew) ]; then
         # OS X:
