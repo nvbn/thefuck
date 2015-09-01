@@ -23,7 +23,6 @@ class TestSortedCorrectedCommandsSequence(object):
         should_realise = False
 
         def gen():
-            nonlocal should_realise
             yield CorrectedCommand('git commit')
             yield CorrectedCommand('git branch', priority=200)
             assert should_realise

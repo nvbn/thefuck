@@ -41,39 +41,36 @@ class TestGetRules(object):
             rules)
 
 
-class TestGetMatchedRules(object):
-    def test_no_match(self):
-        assert list(corrector.get_matched_rules(
-            Command('ls'), [Rule('', lambda *_: False)],
-            Mock(no_colors=True))) == []
+class TestIsRuleMatch(object):
+    def test_no_match(self, settings):
+        assert not corrector.is_rule_match(
+            Command('ls'), Rule('', lambda *_: False), settings)
 
-    def test_match(self):
+    def test_match(self, settings):
         rule = Rule('', lambda x, _: x.script == 'cd ..')
-        assert list(corrector.get_matched_rules(
-            Command('cd ..'), [rule], Mock(no_colors=True))) == [rule]
+        assert corrector.is_rule_match(Command('cd ..'), rule, settings)
 
-    def test_when_rule_failed(self, capsys):
-        all(corrector.get_matched_rules(
-            Command('ls'), [Rule('test', Mock(side_effect=OSError('Denied')),
-                                 requires_output=False)],
-            Mock(no_colors=True, debug=False)))
+    def test_when_rule_failed(self, capsys, settings):
+        rule = Rule('test', Mock(side_effect=OSError('Denied')),
+                    requires_output=False)
+        assert not corrector.is_rule_match(
+            Command('ls'), rule, settings)
         assert capsys.readouterr()[1].split('\n')[0] == '[WARN] Rule test:'
 
 
-class TestGetCorrectedCommands(object):
+class TestMakeCorrectedCommands(object):
     def test_with_rule_returns_list(self):
         rule = Rule(get_new_command=lambda x, _: [x.script + '!', x.script + '@'],
                     priority=100)
-        assert list(make_corrected_commands(Command(script='test'), [rule], None)) \
+        assert list(make_corrected_commands(Command(script='test'), rule, None)) \
                == [CorrectedCommand(script='test!', priority=100),
                    CorrectedCommand(script='test@', priority=200)]
 
     def test_with_rule_returns_command(self):
         rule = Rule(get_new_command=lambda x, _: x.script + '!',
                     priority=100)
-        assert list(make_corrected_commands(Command(script='test'), [rule], None)) \
+        assert list(make_corrected_commands(Command(script='test'), rule, None)) \
                == [CorrectedCommand(script='test!', priority=100)]
-
 
 def test_get_corrected_commands(mocker):
     command = Command('test', 'test', 'test')
