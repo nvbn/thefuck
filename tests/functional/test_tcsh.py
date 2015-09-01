@@ -25,7 +25,7 @@ def proc(request):
     tag, dockerfile = request.param
     proc = spawn(request, tag, dockerfile, u'tcsh')
     proc.sendline(u'tcsh')
-    proc.sendline(u'eval `thefuck-alias`')
+    proc.sendline(u'eval `thefuck --alias`')
     return proc
 
 

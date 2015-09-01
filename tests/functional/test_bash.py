@@ -24,7 +24,7 @@ def proc(request):
     tag, dockerfile = request.param
     proc = spawn(request, tag, dockerfile, u'bash')
     proc.sendline(u"export PS1='$ '")
-    proc.sendline(u'eval $(thefuck-alias)')
+    proc.sendline(u'eval $(thefuck --alias)')
     proc.sendline(u'echo > $HISTFILE')
     return proc
 

@@ -24,7 +24,7 @@ RUN apt-get install -yy zsh
 def proc(request):
     tag, dockerfile = request.param
     proc = spawn(request, tag, dockerfile, u'zsh')
-    proc.sendline(u'eval $(thefuck-alias)')
+    proc.sendline(u'eval $(thefuck --alias)')
     proc.sendline(u'export HISTFILE=~/.zsh_history')
     proc.sendline(u'echo > $HISTFILE')
     proc.sendline(u'export SAVEHIST=100')

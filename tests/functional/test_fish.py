@@ -24,7 +24,7 @@ RUN apt-get install -yy fish
 def proc(request):
     tag, dockerfile = request.param
     proc = spawn(request, tag, dockerfile, u'fish')
-    proc.sendline(u'thefuck-alias > ~/.config/fish/config.fish')
+    proc.sendline(u'thefuck --alias > ~/.config/fish/config.fish')
     proc.sendline(u'fish')
     return proc
 
