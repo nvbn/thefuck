@@ -4,7 +4,7 @@ from mock import Mock
 import pytest
 from itertools import islice
 from thefuck import ui
-from thefuck.types import CorrectedCommand
+from thefuck.types import CorrectedCommand, SortedCorrectedCommandsSequence
 
 
 @pytest.fixture
@@ -58,14 +58,18 @@ def test_command_selector():
 
 class TestSelectCommand(object):
     @pytest.fixture
-    def commands_with_side_effect(self):
-        return [CorrectedCommand('ls', lambda *_: None, 100),
-                CorrectedCommand('cd', lambda *_: None, 100)]
+    def commands_with_side_effect(self, settings):
+        return SortedCorrectedCommandsSequence(
+            iter([CorrectedCommand('ls', lambda *_: None, 100),
+                  CorrectedCommand('cd', lambda *_: None, 100)]),
+            settings)
 
     @pytest.fixture
-    def commands(self):
-        return [CorrectedCommand('ls', None, 100),
-                CorrectedCommand('cd', None, 100)]
+    def commands(self, settings):
+        return SortedCorrectedCommandsSequence(
+            iter([CorrectedCommand('ls', None, 100),
+                  CorrectedCommand('cd', None, 100)]),
+            settings)
 
     def test_without_commands(self, capsys):
         assert ui.select_command([], Mock(debug=False, no_color=True)) is None
@@ -92,9 +96,11 @@ class TestSelectCommand(object):
                                       require_confirmation=True)) == commands[0]
         assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\n')
 
-    def test_with_confirmation_one_match(self, capsys, patch_getch, commands):
+    def test_with_confirmation_one_match(self, capsys, patch_getch, commands,
+                                         settings):
         patch_getch(['\n'])
-        assert ui.select_command((commands[0],),
+        seq = SortedCorrectedCommandsSequence(iter([commands[0]]), settings)
+        assert ui.select_command(seq,
                                  Mock(debug=False, no_color=True,
                                       require_confirmation=True)) == commands[0]
         assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/ctrl+c]\n')
