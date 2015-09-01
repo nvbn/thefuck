@@ -117,7 +117,7 @@ def print_alias(entry_point=True):
 
 
 def main():
-    parser = ArgumentParser(prog='The Fuck')
+    parser = ArgumentParser(prog='thefuck')
     parser.add_argument('-v', '--version',
                         action='version',
                         version='%(prog)s {}'.format(
