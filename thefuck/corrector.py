@@ -36,36 +36,35 @@ def get_rules(user_dir, settings):
                   key=lambda rule: rule.priority)
 
 
-def get_matched_rules(command, rules, settings):
+def is_rule_match(command, rule, settings):
     """Returns first matched rule for command."""
     script_only = command.stdout is None and command.stderr is None
 
-    for rule in rules:
-        if script_only and rule.requires_output:
-            continue
+    if script_only and rule.requires_output:
+        return False
 
-        try:
-            with logs.debug_time(u'Trying rule: {};'.format(rule.name),
-                                 settings):
-                if rule.match(command, settings):
-                    yield rule
-        except Exception:
-            logs.rule_failed(rule, sys.exc_info(), settings)
+    try:
+        with logs.debug_time(u'Trying rule: {};'.format(rule.name),
+                             settings):
+            if rule.match(command, settings):
+                return True
+    except Exception:
+        logs.rule_failed(rule, sys.exc_info(), settings)
 
 
-def make_corrected_commands(command, rules, settings):
-    for rule in rules:
-        new_commands = rule.get_new_command(command, settings)
-        if not isinstance(new_commands, list):
-            new_commands = [new_commands]
-        for n, new_command in enumerate(new_commands):
-            yield types.CorrectedCommand(script=new_command,
-                                         side_effect=rule.side_effect,
-                                         priority=(n + 1) * rule.priority)
+def make_corrected_commands(command, rule, settings):
+    new_commands = rule.get_new_command(command, settings)
+    if not isinstance(new_commands, list):
+        new_commands = [new_commands]
+    for n, new_command in enumerate(new_commands):
+        yield types.CorrectedCommand(script=new_command,
+                                     side_effect=rule.side_effect,
+                                     priority=(n + 1) * rule.priority)
 
 
 def get_corrected_commands(command, user_dir, settings):
-    rules = get_rules(user_dir, settings)
-    matched = get_matched_rules(command, rules, settings)
-    corrected_commands = make_corrected_commands(command, matched, settings)
+    corrected_commands = (
+        corrected for rule in get_rules(user_dir, settings)
+        if is_rule_match(command, rule, settings)
+        for corrected in make_corrected_commands(command, rule, settings))
     return types.SortedCorrectedCommandsSequence(corrected_commands, settings)
