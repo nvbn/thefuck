@@ -1,5 +1,4 @@
-from . import conf, logs
-from .utils import eager
+from . import conf, types, logs
 from imp import load_source
 from pathlib import Path
 from thefuck.types import CorrectedCommand, Rule
@@ -29,17 +28,16 @@ def get_loaded_rules(rules, settings):
                 yield loaded_rule
 
 
-@eager
 def get_rules(user_dir, settings):
     """Returns all enabled rules."""
     bundled = Path(__file__).parent \
         .joinpath('rules') \
         .glob('*.py')
     user = user_dir.joinpath('rules').glob('*.py')
-    return get_loaded_rules(sorted(bundled) + sorted(user), settings)
+    return sorted(get_loaded_rules(sorted(bundled) + sorted(user), settings),
+                  key=lambda rule: rule.priority)
 
 
-@eager
 def get_matched_rules(command, rules, settings):
     """Returns first matched rule for command."""
     script_only = command.stdout is None and command.stderr is None
@@ -68,22 +66,8 @@ def make_corrected_commands(command, rules, settings):
                                    priority=(n + 1) * rule.priority)
 
 
-def remove_duplicates(corrected_commands):
-    commands = {(command.script, command.side_effect): command
-                for command in sorted(corrected_commands,
-                                      key=lambda command: -command.priority)}
-    return commands.values()
-
-
 def get_corrected_commands(command, user_dir, settings):
     rules = get_rules(user_dir, settings)
-    logs.debug(
-        u'Loaded rules: {}'.format(', '.join(rule.name for rule in rules)),
-        settings)
     matched = get_matched_rules(command, rules, settings)
-    logs.debug(
-        u'Matched rules: {}'.format(', '.join(rule.name for rule in matched)),
-        settings)
     corrected_commands = make_corrected_commands(command, matched, settings)
-    return sorted(remove_duplicates(corrected_commands),
-                  key=lambda corrected_command: corrected_command.priority)
+    return types.SortedCorrectedCommandsSequence(corrected_commands, settings)

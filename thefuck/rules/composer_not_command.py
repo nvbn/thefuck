@@ -1,11 +1,11 @@
 import re
-from thefuck.utils import replace_argument
+from thefuck.utils import replace_argument, for_app
 
 
+@for_app('composer')
 def match(command, settings):
-    return ('composer' in command.script
-            and ('did you mean this?' in command.stderr.lower()
-                 or 'did you mean one of these?' in command.stderr.lower()))
+    return (('did you mean this?' in command.stderr.lower()
+             or 'did you mean one of these?' in command.stderr.lower()))
 
 
 def get_new_command(command, settings):

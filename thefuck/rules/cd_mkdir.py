@@ -1,13 +1,14 @@
 import re
 from thefuck import shells
+from thefuck.utils import for_app
 from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support
+@for_app('cd')
 def match(command, settings):
-    return (command.script.startswith('cd ')
-        and ('no such file or directory' in command.stderr.lower()
-            or 'cd: can\'t cd to' in command.stderr.lower()))
+    return (('no such file or directory' in command.stderr.lower()
+             or 'cd: can\'t cd to' in command.stderr.lower()))
 
 
 @sudo_support

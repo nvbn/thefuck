@@ -1,14 +1,14 @@
 from itertools import dropwhile, takewhile, islice
 import re
 import subprocess
-from thefuck.utils import replace_command
+from thefuck.utils import replace_command, for_app
 from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support
+@for_app('docker')
 def match(command, settings):
-    return command.script.startswith('docker') \
-           and 'is not a docker command' in command.stderr
+    return 'is not a docker command' in command.stderr
 
 
 def get_docker_commands():

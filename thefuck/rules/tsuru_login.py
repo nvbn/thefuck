@@ -1,9 +1,10 @@
 from thefuck import shells
+from thefuck.utils import for_app
 
 
+@for_app('tsuru')
 def match(command, settings):
-    return (command.script.startswith('tsuru')
-            and 'not authenticated' in command.stderr
+    return ('not authenticated' in command.stderr
             and 'session has expired' in command.stderr)
 
 

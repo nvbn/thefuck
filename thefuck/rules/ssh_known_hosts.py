@@ -1,10 +1,14 @@
 import re
+from thefuck.utils import for_app
+
+commands = ('ssh', 'scp')
 
 
+@for_app(*commands)
 def match(command, settings):
     if not command.script:
         return False
-    if not command.script.startswith(('ssh', 'scp')):
+    if not command.script.startswith(commands):
         return False
 
     patterns = (

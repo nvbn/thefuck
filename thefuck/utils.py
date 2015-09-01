@@ -1,5 +1,6 @@
 from difflib import get_close_matches
 from functools import wraps
+from decorator import decorator
 
 import os
 import pickle
@@ -64,12 +65,9 @@ def wrap_settings(params):
             print(settings.apt)
 
     """
-    def decorator(fn):
-        @wraps(fn)
-        def wrapper(command, settings):
-            return fn(command, settings.update(**params))
-        return wrapper
-    return decorator
+    def _wrap_settings(fn, command, settings):
+        return fn(command, settings.update(**params))
+    return decorator(_wrap_settings)
 
 
 def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
@@ -111,11 +109,9 @@ def replace_argument(script, from_, to):
             u' {} '.format(from_), u' {} '.format(to), 1)
 
 
-def eager(fn):
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        return list(fn(*args, **kwargs))
-    return wrapper
+@decorator
+def eager(fn, *args, **kwargs):
+    return list(fn(*args, **kwargs))
 
 
 @eager
@@ -133,3 +129,24 @@ def replace_command(command, broken, matched):
     new_cmds = get_close_matches(broken, matched, cutoff=0.1)
     return [replace_argument(command.script, broken, new_cmd.strip())
             for new_cmd in new_cmds]
+
+
+@memoize
+def is_app(command, *app_names):
+    """Returns `True` if command is call to one of passed app names."""
+    for name in app_names:
+        if command.script == name \
+                or command.script.startswith(u'{} '.format(name)):
+            return True
+    return False
+
+
+def for_app(*app_names):
+    """Specifies that matching script is for on of app names."""
+    def _for_app(fn, command, settings):
+        if is_app(command, *app_names):
+            return fn(command, settings)
+        else:
+            return False
+
+    return decorator(_for_app)

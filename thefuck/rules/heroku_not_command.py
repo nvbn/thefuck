@@ -1,10 +1,10 @@
 import re
-from thefuck.utils import replace_command
+from thefuck.utils import replace_command, for_app
 
 
+@for_app('heroku')
 def match(command, settings):
-    return command.script.startswith('heroku') and \
-           'is not a heroku command' in command.stderr and \
+    return 'is not a heroku command' in command.stderr and \
            'Perhaps you meant' in command.stderr
 
 

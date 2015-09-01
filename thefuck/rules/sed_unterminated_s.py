@@ -1,10 +1,10 @@
 import shlex
-from thefuck.utils import quote
+from thefuck.utils import quote, for_app
 
 
+@for_app('sed')
 def match(command, settings):
-    return ('sed' in command.script
-            and "unterminated `s' command" in command.stderr)
+    return "unterminated `s' command" in command.stderr
 
 
 def get_new_command(command, settings):

@@ -1,7 +1,9 @@
+from thefuck.utils import for_app
+
+
+@for_app('ls')
 def match(command, settings):
-    return (command.script == 'ls'
-            or command.script.startswith('ls ')
-            and 'ls -' not in command.script)
+    return 'ls -' not in command.script
 
 
 def get_new_command(command, settings):
