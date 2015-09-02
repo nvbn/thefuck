@@ -1,6 +1,6 @@
-from contextlib import contextmanager
 import pytest
 from mock import Mock
+import six
 from thefuck.utils import wrap_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
     get_all_matched_commands, is_app, for_app, cache
@@ -127,11 +127,23 @@ class TestCache(object):
     def shelve(self, mocker):
         value = {}
 
-        @contextmanager
-        def _shelve(path):
-            yield value
+        class _Shelve(object):
+            def __init__(self, path):
+                pass
 
-        mocker.patch('thefuck.utils.shelve.open', new_callable=lambda: _shelve)
+            def __setitem__(self, k, v):
+                value[k] = v
+
+            def __getitem__(self, k):
+                return value[k]
+
+            def get(self, k, v=None):
+                return value.get(k, v)
+
+            def close(self):
+                return
+
+        mocker.patch('thefuck.utils.shelve.open', new_callable=lambda: _Shelve)
         return value
 
     @pytest.fixture(autouse=True)
@@ -146,26 +158,25 @@ class TestCache(object):
 
         return fn
 
-    def test_with_blank_cache(self, shelve, fn):
+    @pytest.fixture
+    def key(self):
+        if six.PY3:
+            return 'tests.test_utils.<function TestCache.fn.<locals>.fn '
+        else:
+            return 'tests.test_utils.<function fn '
+
+    def test_with_blank_cache(self, shelve, fn, key):
         assert shelve == {}
         assert fn() == 'test'
-        assert shelve == {
-            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
-                'etag': '0', 'value': 'test'}}
+        assert shelve == {key: {'etag': '0', 'value': 'test'}}
 
-    def test_with_filled_cache(self, shelve, fn):
-        cache_value = {
-            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
-                'etag': '0', 'value': 'new-value'}}
+    def test_with_filled_cache(self, shelve, fn, key):
+        cache_value = {key: {'etag': '0', 'value': 'new-value'}}
         shelve.update(cache_value)
         assert fn() == 'new-value'
         assert shelve == cache_value
 
-    def test_when_etag_changed(self, shelve, fn):
-        shelve.update({
-            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
-                'etag': '-1', 'value': 'old-value'}})
+    def test_when_etag_changed(self, shelve, fn, key):
+        shelve.update({key: {'etag': '-1', 'value': 'old-value'}})
         assert fn() == 'test'
-        assert shelve == {
-            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
-                'etag': '0', 'value': 'test'}}
+        assert shelve == {key: {'etag': '0', 'value': 'test'}}

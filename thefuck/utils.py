@@ -2,6 +2,7 @@ from difflib import get_close_matches
 from functools import wraps
 import shelve
 from decorator import decorator
+from contextlib import closing
 import tempfile
 
 import os
@@ -176,11 +177,13 @@ def cache(*depends_on):
             return fn(*args, **kwargs)
 
         cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')
+        # A bit obscure, but simplest way to generate unique key for
+        # functions and methods in python 2 and 3:
         key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])
 
         etag = '.'.join(_get_mtime(name) for name in depends_on)
 
-        with shelve.open(cache_path) as db:
+        with closing(shelve.open(cache_path)) as db:
             if db.get(key, {}).get('etag') == etag:
                 return db[key]['value']
             else:
