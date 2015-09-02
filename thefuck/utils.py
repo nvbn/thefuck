@@ -1,6 +1,8 @@
 from difflib import get_close_matches
 from functools import wraps
+import shelve
 from decorator import decorator
+import tempfile
 
 import os
 import pickle
@@ -150,3 +152,40 @@ def for_app(*app_names):
             return False
 
     return decorator(_for_app)
+
+
+def cache(*depends_on):
+    """Caches function result in temporary file.
+
+    Cache will be expired when modification date of files from `depends_on`
+    will be changed.
+
+    Function wrapped in `cache` should be arguments agnostic.
+
+    """
+    def _get_mtime(name):
+        path = os.path.join(os.path.expanduser('~'), name)
+        try:
+            return str(os.path.getmtime(path))
+        except OSError:
+            return '0'
+
+    @decorator
+    def _cache(fn, *args, **kwargs):
+        if cache.disabled:
+            return fn(*args, **kwargs)
+
+        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')
+        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])
+
+        etag = '.'.join(_get_mtime(name) for name in depends_on)
+
+        with shelve.open(cache_path) as db:
+            if db.get(key, {}).get('etag') == etag:
+                return db[key]['value']
+            else:
+                value = fn(*args, **kwargs)
+                db[key] = {'etag': etag, 'value': value}
+                return value
+    return _cache
+cache.disabled = False

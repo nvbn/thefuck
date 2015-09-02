@@ -9,7 +9,7 @@ from subprocess import Popen, PIPE
 from time import time
 import io
 import os
-from .utils import DEVNULL, memoize
+from .utils import DEVNULL, memoize, cache
 
 
 class Generic(object):
@@ -85,6 +85,7 @@ class Bash(Generic):
         return name, value
 
     @memoize
+    @cache('.bashrc', '.bash_profile')
     def get_aliases(self):
         proc = Popen(['bash', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(
@@ -169,6 +170,7 @@ class Zsh(Generic):
         return name, value
 
     @memoize
+    @cache('.zshrc')
     def get_aliases(self):
         proc = Popen(['zsh', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(

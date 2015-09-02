@@ -1,8 +1,9 @@
+from contextlib import contextmanager
 import pytest
 from mock import Mock
-from thefuck.utils import wrap_settings,\
+from thefuck.utils import wrap_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
-    get_all_matched_commands, is_app, for_app
+    get_all_matched_commands, is_app, for_app, cache
 from thefuck.types import Settings
 from tests.utils import Command
 
@@ -34,7 +35,6 @@ def test_no_memoize():
 
 
 class TestGetClosest(object):
-
     def test_when_can_match(self):
         assert 'branch' == get_closest('brnch', ['branch', 'status'])
 
@@ -116,3 +116,56 @@ def test_for_app(script, names, result):
         return True
 
     assert match(Command(script), None) == result
+
+
+class TestCache(object):
+    @pytest.fixture(autouse=True)
+    def enable_cache(self, monkeypatch):
+        monkeypatch.setattr('thefuck.utils.cache.disabled', False)
+
+    @pytest.fixture
+    def shelve(self, mocker):
+        value = {}
+
+        @contextmanager
+        def _shelve(path):
+            yield value
+
+        mocker.patch('thefuck.utils.shelve.open', new_callable=lambda: _shelve)
+        return value
+
+    @pytest.fixture(autouse=True)
+    def mtime(self, mocker):
+        mocker.patch('thefuck.utils.os.path.getmtime', return_value=0)
+
+    @pytest.fixture
+    def fn(self):
+        @cache('~/.bashrc')
+        def fn():
+            return 'test'
+
+        return fn
+
+    def test_with_blank_cache(self, shelve, fn):
+        assert shelve == {}
+        assert fn() == 'test'
+        assert shelve == {
+            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
+                'etag': '0', 'value': 'test'}}
+
+    def test_with_filled_cache(self, shelve, fn):
+        cache_value = {
+            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
+                'etag': '0', 'value': 'new-value'}}
+        shelve.update(cache_value)
+        assert fn() == 'new-value'
+        assert shelve == cache_value
+
+    def test_when_etag_changed(self, shelve, fn):
+        shelve.update({
+            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
+                'etag': '-1', 'value': 'old-value'}})
+        assert fn() == 'test'
+        assert shelve == {
+            'tests.test_utils.<function TestCache.fn.<locals>.fn ': {
+                'etag': '0', 'value': 'test'}}
