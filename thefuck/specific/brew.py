@@ -1,5 +1,5 @@
 import subprocess
-from thefuck.utils import memoize, which
+from ..utils import memoize, which
 
 
 enabled_by_default = bool(which('brew'))

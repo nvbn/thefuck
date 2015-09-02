@@ -1,9 +1,9 @@
 """ This file provide some utility functions for Arch Linux specific rules."""
-import thefuck.utils
 import subprocess
+from .. import utils
 
 
-@thefuck.utils.memoize
+@utils.memoize
 def get_pkgfile(command):
     """ Gets the packages that provide the given command using `pkgfile`.
 
@@ -20,7 +20,7 @@ def get_pkgfile(command):
 
         packages = subprocess.check_output(
             ['pkgfile', '-b', '-v', command],
-            universal_newlines=True, stderr=thefuck.utils.DEVNULL
+            universal_newlines=True, stderr=utils.DEVNULL
         ).splitlines()
 
         return [package.split()[0] for package in packages]
@@ -29,13 +29,13 @@ def get_pkgfile(command):
 
 
 def archlinux_env():
-    if thefuck.utils.which('yaourt'):
+    if utils.which('yaourt'):
         pacman = 'yaourt'
-    elif thefuck.utils.which('pacman'):
+    elif utils.which('pacman'):
         pacman = 'sudo pacman'
     else:
         return False, None
 
-    enabled_by_default = thefuck.utils.which('pkgfile')
+    enabled_by_default = utils.which('pkgfile')
 
     return enabled_by_default, pacman

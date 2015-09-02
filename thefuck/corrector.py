@@ -1,8 +1,7 @@
-from . import conf, types, logs
+import sys
 from imp import load_source
 from pathlib import Path
-from thefuck.types import CorrectedCommand, Rule
-import sys
+from . import conf, types, logs
 
 
 def load_rule(rule, settings):
@@ -11,12 +10,12 @@ def load_rule(rule, settings):
     with logs.debug_time(u'Importing rule: {};'.format(name), settings):
         rule_module = load_source(name, str(rule))
         priority = getattr(rule_module, 'priority', conf.DEFAULT_PRIORITY)
-    return Rule(name, rule_module.match,
-                rule_module.get_new_command,
-                getattr(rule_module, 'enabled_by_default', True),
-                getattr(rule_module, 'side_effect', None),
-                settings.priority.get(name, priority),
-                getattr(rule_module, 'requires_output', True))
+    return types.Rule(name, rule_module.match,
+                      rule_module.get_new_command,
+                      getattr(rule_module, 'enabled_by_default', True),
+                      getattr(rule_module, 'side_effect', None),
+                      settings.priority.get(name, priority),
+                      getattr(rule_module, 'requires_output', True))
 
 
 def get_loaded_rules(rules, settings):
