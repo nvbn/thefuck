@@ -35,17 +35,17 @@ patterns = (
 
 # for the sake of readability do not use named groups above
 def _make_pattern(pattern):
-    pattern = pattern.replace('{file}', '(?P<file>[^:\n]+)')
-    pattern = pattern.replace('{line}', '(?P<line>[0-9]+)')
-    pattern = pattern.replace('{col}',  '(?P<col>[0-9]+)')
+    pattern = pattern.replace('{file}', '(?P<file>[^:\n]+)') \
+                     .replace('{line}', '(?P<line>[0-9]+)') \
+                     .replace('{col}',  '(?P<col>[0-9]+)')
     return re.compile(pattern, re.MULTILINE)
-patterns = [_make_pattern(p) for p in patterns]
+patterns = [_make_pattern(p).search for p in patterns]
 
 
 @memoize
 def _search(stderr):
     for pattern in patterns:
-        m = re.search(pattern, stderr)
+        m = pattern(stderr)
         if m and os.path.isfile(m.group('file')):
             return m
 

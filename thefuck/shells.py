@@ -86,8 +86,7 @@ class Bash(Generic):
 
     @memoize
     def get_aliases(self):
-        proc = Popen('bash -ic alias', stdout=PIPE, stderr=DEVNULL,
-                     shell=True)
+        proc = Popen(['bash', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')
@@ -131,8 +130,7 @@ class Fish(Generic):
     @memoize
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
-        proc = Popen('fish -ic functions', stdout=PIPE, stderr=DEVNULL,
-                     shell=True)
+        proc = Popen(['fish', '-ic', 'functions'], stdout=PIPE, stderr=DEVNULL)
         functions = proc.stdout.read().decode('utf-8').strip().split('\n')
         return {func: func for func in functions if func not in overridden}
 
@@ -172,8 +170,7 @@ class Zsh(Generic):
 
     @memoize
     def get_aliases(self):
-        proc = Popen('zsh -ic alias', stdout=PIPE, stderr=DEVNULL,
-                     shell=True)
+        proc = Popen(['zsh', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')
@@ -205,8 +202,7 @@ class Tcsh(Generic):
 
     @memoize
     def get_aliases(self):
-        proc = Popen('tcsh -ic alias', stdout=PIPE, stderr=DEVNULL,
-                     shell=True)
+        proc = Popen(['tcsh', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')

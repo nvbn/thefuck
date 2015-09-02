@@ -1,20 +1,22 @@
-import sys
+from . import conf, types, logs
 from imp import load_source
 from pathlib import Path
-from . import conf, types, logs
+from thefuck.types import CorrectedCommand, Rule
+import sys
 
 
 def load_rule(rule, settings):
     """Imports rule module and returns it."""
     name = rule.name[:-3]
-    rule_module = load_source(name, str(rule))
-    priority = getattr(rule_module, 'priority', conf.DEFAULT_PRIORITY)
-    return types.Rule(name, rule_module.match,
-                      rule_module.get_new_command,
-                      getattr(rule_module, 'enabled_by_default', True),
-                      getattr(rule_module, 'side_effect', None),
-                      settings.priority.get(name, priority),
-                      getattr(rule_module, 'requires_output', True))
+    with logs.debug_time(u'Importing rule: {};'.format(name), settings):
+        rule_module = load_source(name, str(rule))
+        priority = getattr(rule_module, 'priority', conf.DEFAULT_PRIORITY)
+    return Rule(name, rule_module.match,
+                rule_module.get_new_command,
+                getattr(rule_module, 'enabled_by_default', True),
+                getattr(rule_module, 'side_effect', None),
+                settings.priority.get(name, priority),
+                getattr(rule_module, 'requires_output', True))
 
 
 def get_loaded_rules(rules, settings):
@@ -55,7 +57,7 @@ def is_rule_match(command, rule, settings):
 def make_corrected_commands(command, rule, settings):
     new_commands = rule.get_new_command(command, settings)
     if not isinstance(new_commands, list):
-        new_commands = [new_commands]
+        new_commands = (new_commands,)
     for n, new_command in enumerate(new_commands):
         yield types.CorrectedCommand(script=new_command,
                                      side_effect=rule.side_effect,

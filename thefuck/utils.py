@@ -18,6 +18,23 @@ else:
     from shlex import quote
 
 
+def memoize(fn):
+    """Caches previous calls to the function."""
+    memo = {}
+
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        key = pickle.dumps((args, kwargs))
+        if key not in memo or memoize.disabled:
+            memo[key] = fn(*args, **kwargs)
+
+        return memo[key]
+
+    return wrapper
+memoize.disabled = False
+
+
+@memoize
 def which(program):
     """Returns `program` path or `None`."""
 
@@ -51,22 +68,6 @@ def wrap_settings(params):
     def _wrap_settings(fn, command, settings):
         return fn(command, settings.update(**params))
     return decorator(_wrap_settings)
-
-
-def memoize(fn):
-    """Caches previous calls to the function."""
-    memo = {}
-
-    @wraps(fn)
-    def wrapper(*args, **kwargs):
-        key = pickle.dumps((args, kwargs))
-        if key not in memo or memoize.disabled:
-            memo[key] = fn(*args, **kwargs)
-
-        return memo[key]
-
-    return wrapper
-memoize.disabled = False
 
 
 def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):

@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import (replace_command, get_all_matched_commands)
+from thefuck.utils import replace_command
 
 def match(command, settings):
     return (re.search(r"([^:]*): Unknown command.*", command.stderr) != None
