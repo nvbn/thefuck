@@ -44,9 +44,10 @@ def spawn(request, tag, dockerfile, cmd, install=True, copy_src=False):
 
     def _finalizer():
         proc.terminate()
-        container_id = subprocess.check_output(['docker', 'ps']) \
-                                 .decode('utf-8').split('\n')[-2].split()[0]
-        subprocess.check_call(['docker', 'kill', container_id])
+        if not bare:
+            container_id = subprocess.check_output(['docker', 'ps']) \
+                                     .decode('utf-8').split('\n')[-2].split()[0]
+            subprocess.check_call(['docker', 'kill', container_id])
 
     request.addfinalizer(_finalizer)
     return proc
