@@ -33,7 +33,7 @@ def spawn(request, tag, dockerfile, cmd, install=True, copy_src=False):
     else:
         tag = 'thefuck/{}'.format(tag)
         build_container(tag, dockerfile, copy_src)
-        proc = pexpect.spawnu('docker run --volume {}:/src --tty=true '
+        proc = pexpect.spawnu('docker run --rm=true --volume {}:/src --tty=true '
                               '--interactive=true {} {}'.format(root, tag, cmd))
         if install:
             proc.sendline('pip install /src')
@@ -42,7 +42,13 @@ def spawn(request, tag, dockerfile, cmd, install=True, copy_src=False):
 
     proc.logfile = sys.stdout
 
-    request.addfinalizer(lambda: proc.terminate(True))
+    def _finalizer():
+        proc.terminate()
+        container_id = subprocess.check_output(['docker', 'ps']) \
+                                 .decode('utf-8').split('\n')[-2].split()[0]
+        subprocess.check_call(['docker', 'kill', container_id])
+
+    request.addfinalizer(_finalizer)
     return proc
 
 
