@@ -1,7 +1,6 @@
-from pexpect import TIMEOUT
 import pytest
 import time
-from tests.functional.utils import spawn, functional, bare
+from tests.functional.utils import functional
 
 dockerfile = u'''
 FROM ubuntu:latest
@@ -11,24 +10,17 @@ RUN pip3 install -U setuptools
 RUN ln -s /usr/bin/pip3 /usr/bin/pip
 RUN adduser --disabled-password --gecos '' test
 ENV SEED "{seed}"
-COPY thefuck /src
 WORKDIR /src
-RUN pip install .
 USER test
 RUN echo 'eval $(thefuck --alias)' > /home/test/.bashrc
 RUN echo > /home/test/.bash_history
 RUN git config --global user.email "you@example.com"
 RUN git config --global user.name "Your Name"
+USER root
 '''.format(seed=time.time())
 
 
-@pytest.fixture
-def proc(request):
-    return spawn(request, 'ubuntu-python3-bash-performance',
-                 dockerfile, u'bash', install=False, copy_src=True)
-
-
-def plot(proc):
+def plot(proc, TIMEOUT):
     proc.sendline(u'cd /home/test/')
     proc.sendline(u'fuck')
     assert proc.expect([TIMEOUT, u'No fucks given'])
@@ -49,8 +41,11 @@ def plot(proc):
 
 
 @functional
-@pytest.mark.skipif(
-    bool(bare), reason='Would lie on a bare run')
+@pytest.mark.skip_without_docker
 @pytest.mark.benchmark(min_rounds=10)
-def test_performance(proc, benchmark):
-    assert benchmark(plot, proc) is None
+def test_performance(spawnu, TIMEOUT, benchmark):
+    proc = spawnu(u'thefuck/ubuntu-python3-bash-performance',
+                  dockerfile, u'bash')
+    proc.sendline(u'pip install /src')
+    proc.sendline(u'su test')
+    assert benchmark(plot, proc, TIMEOUT) is None

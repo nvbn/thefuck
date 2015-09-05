@@ -1,29 +1,30 @@
 import pytest
-from tests.functional.utils import spawn, functional, images
+from tests.functional.utils import functional
 from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation, history_changed, history_not_changed, select_command_with_arrows
 
-containers = images(('ubuntu-python3-zsh', u'''
-FROM ubuntu:latest
-RUN apt-get update
-RUN apt-get install -yy python3 python3-pip python3-dev git
-RUN pip3 install -U setuptools
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
-RUN apt-get install -yy zsh
-'''),
-                    ('ubuntu-python2-zsh', u'''
-FROM ubuntu:latest
-RUN apt-get update
-RUN apt-get install -yy python python-pip python-dev git
-RUN pip2 install -U pip setuptools
-RUN apt-get install -yy zsh
-'''))
+containers = (('ubuntu-python3-zsh',
+               u'''FROM ubuntu:latest
+                   RUN apt-get update
+                   RUN apt-get install -yy python3 python3-pip python3-dev git
+                   RUN pip3 install -U setuptools
+                   RUN ln -s /usr/bin/pip3 /usr/bin/pip
+                   RUN apt-get install -yy zsh''',
+               u'zsh'),
+              ('ubuntu-python2-zsh',
+               u'''FROM ubuntu:latest
+                   RUN apt-get update
+                   RUN apt-get install -yy python python-pip python-dev git
+                   RUN pip2 install -U pip setuptools
+                   RUN apt-get install -yy zsh''',
+               u'zsh'))
 
 
 @pytest.fixture(params=containers)
-def proc(request):
-    tag, dockerfile = request.param
-    proc = spawn(request, tag, dockerfile, u'zsh')
+def proc(request, spawnu, run_without_docker):
+    proc = spawnu(*request.param)
+    if not run_without_docker:
+        proc.sendline(u'pip install /src')
     proc.sendline(u'eval $(thefuck --alias)')
     proc.sendline(u'export HISTFILE=~/.zsh_history')
     proc.sendline(u'echo > $HISTFILE')
@@ -34,24 +35,24 @@ def proc(request):
 
 
 @functional
-def test_with_confirmation(proc):
-    with_confirmation(proc)
-    history_changed(proc, u'echo test')
+def test_with_confirmation(proc, TIMEOUT):
+    with_confirmation(proc, TIMEOUT)
+    history_changed(proc, TIMEOUT, u'echo test')
 
 
 @functional
-def test_select_command_with_arrows(proc):
-    select_command_with_arrows(proc)
-    history_changed(proc, u'git push')
+def test_select_command_with_arrows(proc, TIMEOUT):
+    select_command_with_arrows(proc, TIMEOUT)
+    history_changed(proc, TIMEOUT, u'git push')
 
 
 @functional
-def test_refuse_with_confirmation(proc):
-    refuse_with_confirmation(proc)
-    history_not_changed(proc)
+def test_refuse_with_confirmation(proc, TIMEOUT):
+    refuse_with_confirmation(proc, TIMEOUT)
+    history_not_changed(proc, TIMEOUT)
 
 
 @functional
-def test_without_confirmation(proc):
-    without_confirmation(proc)
-    history_changed(proc, u'echo test')
+def test_without_confirmation(proc, TIMEOUT):
+    without_confirmation(proc, TIMEOUT)
+    history_changed(proc, TIMEOUT, u'echo test')
