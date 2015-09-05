@@ -4,8 +4,12 @@ should_add_alias () {
     [ -f $1 ] && ! grep -q thefuck $1
 }
 
+installed () {
+    hash $1 2>/dev/null
+}
+
 # Install os dependencies:
-if [ -f $(which apt-get) ]; then
+if installed apt-get; then
     # Debian/ubuntu:
     sudo apt-get update -yy
     sudo apt-get install -yy python-pip python-dev command-not-found
@@ -15,7 +19,7 @@ if [ -f $(which apt-get) ]; then
         sudo apt-get install -yy python-commandnotfound
     fi
 else
-    if [ -f $(which brew) ]; then
+    if installed brew; then
         # OS X:
         brew update
         brew install python

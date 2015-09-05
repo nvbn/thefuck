@@ -8,7 +8,7 @@ RUN apt-get update
 RUN apt-get install -yy bash
 '''), (u'bash', 'generic-bash', u'''
 FROM fedora:latest
-RUN dnf install -yy python-devel sudo which gcc
+RUN dnf install -yy python-devel sudo wget gcc
 '''))
 
 
