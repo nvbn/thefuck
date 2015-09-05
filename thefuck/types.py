@@ -81,9 +81,10 @@ class SortedCorrectedCommandsSequence(object):
 
     def _realise(self):
         """Realises generator, removes duplicates and sorts commands."""
-        commands = self._remove_duplicates(self._commands)
-        self._cached = [self._cached[0]] + sorted(
-            commands, key=lambda corrected_command: corrected_command.priority)
+        if self._cached:
+            commands = self._remove_duplicates(self._commands)
+            self._cached = [self._cached[0]] + sorted(
+                commands, key=lambda corrected_command: corrected_command.priority)
         self._realised = True
         debug('SortedCommandsSequence was realised with: {}, after: {}'.format(
             self._cached, '\n'.join(format_stack())), self._settings)

@@ -44,6 +44,10 @@ class TestSortedCorrectedCommandsSequence(object):
         assert set(seq) == {CorrectedCommand('ls', priority=100),
                             CorrectedCommand('ls', side_effect, 300)}
 
+    def test_with_blank(self, settings):
+        seq = SortedCorrectedCommandsSequence(iter([]), settings)
+        assert list(seq) == []
+
 
 class TestCorrectedCommand(object):
 
