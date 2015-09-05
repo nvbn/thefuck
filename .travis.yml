@@ -1,4 +1,5 @@
 language: python
+sudo: false
 python:
   - "3.4"
   - "3.3"
@@ -14,8 +15,6 @@ addons:
       - tcsh
       - pandoc
       - git
-env:
-  - FUNCTIONAL=true BARE=true
 install:
   - pip install coveralls
   - pip install -r requirements.txt
@@ -23,5 +22,5 @@ install:
   - rm -rf build
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
-  - coverage run --source=thefuck,tests -m py.test -v --capture=sys
+  - coverage run --source=thefuck,tests -m py.test -v --capture=sys --run-without-docker --enable-functional
 after_success: coveralls

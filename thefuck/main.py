@@ -103,6 +103,10 @@ def fix_command():
             run_command(command, selected_command, settings)
 
 
+def _get_current_version():
+    return pkg_resources.require('thefuck')[0].version
+
+
 def print_alias(entry_point=True):
     if entry_point:
         warn('`thefuck-alias` is deprecated, use `thefuck --alias` instead.')
@@ -120,8 +124,7 @@ def main():
     parser = ArgumentParser(prog='thefuck')
     parser.add_argument('-v', '--version',
                         action='version',
-                        version='%(prog)s {}'.format(
-                            pkg_resources.require('thefuck')[0].version))
+                        version='%(prog)s {}'.format(_get_current_version()))
     parser.add_argument('-a', '--alias',
                         action='store_true',
                         help='[custom-alias-name] prints alias for current shell')
