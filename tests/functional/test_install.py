@@ -1,7 +1,5 @@
 import pytest
 from thefuck.main import _get_current_version
-from tests.functional.utils import functional
-
 
 envs = ((u'bash', 'thefuck/ubuntu-bash', u'''
 FROM ubuntu:latest
@@ -13,7 +11,7 @@ RUN dnf install -yy python-devel sudo wget gcc
 '''))
 
 
-@functional
+@pytest.mark.functional
 @pytest.mark.skip_without_docker
 @pytest.mark.parametrize('shell, tag, dockerfile', envs)
 def test_installation(spawnu, shell, TIMEOUT, tag, dockerfile):

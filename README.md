@@ -326,7 +326,7 @@ py.test
 Run unit and functional tests (requires docker):
 
 ```bash
-FUNCTIONAL=true py.test
+py.test --enable-functional
 ```
 
 For sending package to pypi:

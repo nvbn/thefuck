@@ -2,7 +2,6 @@ import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation, history_changed, history_not_changed, \
     select_command_with_arrows
-from tests.functional.utils import functional
 
 containers = ((u'thefuck/ubuntu-python3-bash',
                u'''FROM ubuntu:latest
@@ -30,25 +29,25 @@ def proc(request, spawnu, run_without_docker):
     return proc
 
 
-@functional
+@pytest.mark.functional
 def test_with_confirmation(proc, TIMEOUT):
     with_confirmation(proc, TIMEOUT)
     history_changed(proc, TIMEOUT, u'echo test')
 
 
-@functional
+@pytest.mark.functional
 def test_select_command_with_arrows(proc, TIMEOUT):
     select_command_with_arrows(proc, TIMEOUT)
     history_changed(proc, TIMEOUT, u'git push')
 
 
-@functional
+@pytest.mark.functional
 def test_refuse_with_confirmation(proc, TIMEOUT):
     refuse_with_confirmation(proc, TIMEOUT)
     history_not_changed(proc, TIMEOUT)
 
 
-@functional
+@pytest.mark.functional
 def test_without_confirmation(proc, TIMEOUT):
     without_confirmation(proc, TIMEOUT)
     history_changed(proc, TIMEOUT, u'echo test')

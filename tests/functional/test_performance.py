@@ -1,6 +1,5 @@
 import pytest
 import time
-from tests.functional.utils import functional
 
 dockerfile = u'''
 FROM ubuntu:latest
@@ -40,7 +39,7 @@ def plot(proc, TIMEOUT):
     assert proc.expect([TIMEOUT, u'test'])
 
 
-@functional
+@pytest.mark.functional
 @pytest.mark.skip_without_docker
 @pytest.mark.benchmark(min_rounds=10)
 def test_performance(spawnu, TIMEOUT, benchmark):
