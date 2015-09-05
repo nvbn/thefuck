@@ -47,9 +47,11 @@ def select_command_with_arrows(proc, TIMEOUT):
     assert proc.expect([TIMEOUT, u'git help'])
     proc.send('\033[A')
     assert proc.expect([TIMEOUT, u'git push'])
+    proc.send('\033[B')
+    assert proc.expect([TIMEOUT, u'git help'])
     proc.send('\n')
 
-    assert proc.expect([TIMEOUT, u'Not a git repository'])
+    assert proc.expect([TIMEOUT, u'usage'])
 
 
 def refuse_with_confirmation(proc, TIMEOUT):

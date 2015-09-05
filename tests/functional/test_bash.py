@@ -40,7 +40,7 @@ def test_with_confirmation(proc, TIMEOUT):
 @pytest.mark.once_without_docker
 def test_select_command_with_arrows(proc, TIMEOUT):
     select_command_with_arrows(proc, TIMEOUT)
-    history_changed(proc, TIMEOUT, u'git push')
+    history_changed(proc, TIMEOUT, u'git help')
 
 
 @pytest.mark.functional
