@@ -39,17 +39,20 @@ class TestSettingsFromFile(object):
                                         wait_command=10,
                                         require_confirmation=True,
                                         no_colors=True,
-                                        priority={'vim': 100})
+                                        priority={'vim': 100},
+                                        exclude_rules=['git'])
         settings = conf.get_settings(Mock())
         assert settings.rules == ['test']
         assert settings.wait_command == 10
         assert settings.require_confirmation is True
         assert settings.no_colors is True
         assert settings.priority == {'vim': 100}
+        assert settings.exclude_rules == ['git']
 
     def test_from_file_with_DEFAULT(self, load_source):
         load_source.return_value = Mock(rules=conf.DEFAULT_RULES + ['test'],
                                         wait_command=10,
+                                        exclude_rules=[],
                                         require_confirmation=True,
                                         no_colors=True)
         settings = conf.get_settings(Mock())
@@ -60,12 +63,14 @@ class TestSettingsFromFile(object):
 class TestSettingsFromEnv(object):
     def test_from_env(self, environ):
         environ.update({'THEFUCK_RULES': 'bash:lisp',
+                        'THEFUCK_EXCLUDE_RULES': 'git:vim',
                         'THEFUCK_WAIT_COMMAND': '55',
                         'THEFUCK_REQUIRE_CONFIRMATION': 'true',
                         'THEFUCK_NO_COLORS': 'false',
                         'THEFUCK_PRIORITY': 'bash=10:lisp=wrong:vim=15'})
         settings = conf.get_settings(Mock())
         assert settings.rules == ['bash', 'lisp']
+        assert settings.exclude_rules == ['git', 'vim']
         assert settings.wait_command == 55
         assert settings.require_confirmation is True
         assert settings.no_colors is False

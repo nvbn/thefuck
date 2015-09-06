@@ -22,23 +22,39 @@ def test_load_rule(mocker):
 
 
 class TestGetRules(object):
-    @pytest.fixture(autouse=True)
+    @pytest.fixture
     def glob(self, mocker):
-        return mocker.patch('thefuck.corrector.Path.glob', return_value=[])
+        results = {}
+        mocker.patch('thefuck.corrector.Path.glob',
+                     new_callable=lambda: lambda *_: results.pop('value', []))
+        return lambda value: results.update({'value': value})
 
-    def _compare_names(self, rules, names):
-        return [r.name for r in rules] == names
-
-    @pytest.mark.parametrize('conf_rules, rules', [
-        (conf.DEFAULT_RULES, ['bash', 'lisp', 'bash', 'lisp']),
-        (types.RulesNamesList(['bash']), ['bash', 'bash'])])
-    def test_get(self, monkeypatch, glob, conf_rules, rules):
-        glob.return_value = [PosixPath('bash.py'), PosixPath('lisp.py')]
+    @pytest.fixture(autouse=True)
+    def load_source(self, monkeypatch):
         monkeypatch.setattr('thefuck.corrector.load_source',
                             lambda x, _: Rule(x))
-        assert self._compare_names(
-            corrector.get_rules(Path('~'), Mock(rules=conf_rules, priority={})),
-            rules)
+
+    def _compare_names(self, rules, names):
+        assert {r.name for r in rules} == set(names)
+
+    def _prepare_rules(self, rules):
+        if rules == conf.DEFAULT_RULES:
+            return rules
+        else:
+            return types.RulesNamesList(rules)
+
+    @pytest.mark.parametrize('paths, conf_rules, exclude_rules, loaded_rules', [
+        (['git.py', 'bash.py'], conf.DEFAULT_RULES, [], ['git', 'bash']),
+        (['git.py', 'bash.py'], ['git'], [], ['git']),
+        (['git.py', 'bash.py'], conf.DEFAULT_RULES, ['git'], ['bash']),
+        (['git.py', 'bash.py'], ['git'], ['git'], [])])
+    def test_get_rules(self, glob, paths, conf_rules, exclude_rules, loaded_rules):
+        glob([PosixPath(path) for path in paths])
+        settings = Mock(rules=self._prepare_rules(conf_rules),
+                        priority={},
+                        exclude_rules=self._prepare_rules(exclude_rules))
+        rules = corrector.get_rules(Path('~'), settings)
+        self._compare_names(rules, loaded_rules)
 
 
 class TestIsRuleMatch(object):

@@ -271,6 +271,7 @@ requires_output = True
 The Fuck has a few settings parameters which can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
+* `exclude_rules` &ndash; list of disabled rules, by default `[]`;
 * `require_confirmation` &ndash; requires confirmation before running new command, by default `True`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
@@ -281,6 +282,7 @@ Example of `settings.py`:
 
 ```python
 rules = ['sudo', 'no_command']
+exclude_rules = ['git_push']
 require_confirmation = True
 wait_command = 10
 no_colors = False
@@ -291,6 +293,7 @@ debug = False
 Or via environment variables:
 
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
+* `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`; 
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
@@ -302,6 +305,7 @@ For example:
 
 ```bash
 export THEFUCK_RULES='sudo:no_command'
+export THEFUCK_EXCLUDE_RULES='git_pull:git_push'
 export THEFUCK_REQUIRE_CONFIRMATION='true'
 export THEFUCK_WAIT_COMMAND=10
 export THEFUCK_NO_COLORS='false'
