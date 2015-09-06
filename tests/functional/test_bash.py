@@ -1,7 +1,7 @@
 import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation, history_changed, history_not_changed, \
-    select_command_with_arrows
+    select_command_with_arrows, how_to_configure
 
 containers = ((u'thefuck/ubuntu-python3-bash',
                u'''FROM ubuntu:latest
@@ -55,3 +55,9 @@ def test_refuse_with_confirmation(proc, TIMEOUT):
 def test_without_confirmation(proc, TIMEOUT):
     without_confirmation(proc, TIMEOUT)
     history_changed(proc, TIMEOUT, u'echo test')
+
+
+@pytest.mark.functional
+@pytest.mark.once_without_docker
+def test_how_to_configure_alias(proc, TIMEOUT):
+    how_to_configure(proc, TIMEOUT)

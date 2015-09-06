@@ -72,6 +72,9 @@ class Generic(object):
     def and_(self, *commands):
         return u' && '.join(commands)
 
+    def how_to_configure(self):
+        return
+
 
 class Bash(Generic):
     def app_alias(self, fuck):
@@ -102,6 +105,15 @@ class Bash(Generic):
 
     def _script_from_history(self, line):
         return line
+
+    def how_to_configure(self):
+        if os.path.join(os.path.expanduser('~'), '.bashrc'):
+            config = '~/.bashrc'
+        elif os.path.join(os.path.expanduser('~'), '.bash_profile'):
+            config = '~/.bashrc'
+        else:
+            config = 'bash config'
+        return 'eval $(thefuck --alias)', config
 
 
 class Fish(Generic):
@@ -156,6 +168,9 @@ class Fish(Generic):
     def and_(self, *commands):
         return u'; and '.join(commands)
 
+    def how_to_configure(self):
+        return 'eval thefuck --alias', '~/.config/fish/config.fish'
+
 
 class Zsh(Generic):
     def app_alias(self, fuck):
@@ -191,6 +206,9 @@ class Zsh(Generic):
         else:
             return ''
 
+    def how_to_configure(self):
+        return 'eval $(thefuck --alias)', '~/.zshrc'
+
 
 class Tcsh(Generic):
     def app_alias(self, fuck):
@@ -216,6 +234,9 @@ class Tcsh(Generic):
 
     def _get_history_line(self, command_script):
         return u'#+{}\n{}\n'.format(int(time()), command_script)
+
+    def how_to_configure(self):
+        return 'eval `thefuck --alias`', '~/.tcshrc'
 
 
 shells = defaultdict(Generic, {
@@ -266,3 +287,6 @@ def get_aliases():
 @memoize
 def get_history():
     return list(_get_shell().get_history())
+
+def how_to_configure():
+    return _get_shell().how_to_configure()

@@ -76,3 +76,19 @@ def debug_time(msg, settings):
         yield
     finally:
         debug(u'{} took: {}'.format(msg, datetime.now() - started), settings)
+
+
+def how_to_configure_alias(configuration_details, settings):
+    print("Seems like {bold}fuck{reset} alias isn't configured!".format(
+        bold=color(colorama.Style.BRIGHT, settings),
+        reset=color(colorama.Style.RESET_ALL, settings)))
+    if configuration_details:
+        content, path = configuration_details
+        print(
+            "Please put {bold}{content}{reset} in your "
+            "{bold}{path}{reset}.".format(
+                bold=color(colorama.Style.BRIGHT, settings),
+                reset=color(colorama.Style.RESET_ALL, settings),
+                path=path,
+                content=content))
+    print('More details - https://github.com/nvbn/thefuck#manual-installation')

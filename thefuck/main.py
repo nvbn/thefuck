@@ -120,6 +120,18 @@ def print_alias(entry_point=True):
     print(shells.app_alias(alias))
 
 
+def how_to_configure_alias():
+    """Shows useful information about how-to configure alias.
+
+    It'll be only visible when user type fuck and when alias isn't configured.
+
+    """
+    colorama.init()
+    user_dir = setup_user_dir()
+    settings = conf.get_settings(user_dir)
+    logs.how_to_configure_alias(shells.how_to_configure(), settings)
+
+
 def main():
     parser = ArgumentParser(prog='thefuck')
     parser.add_argument('-v', '--version',
