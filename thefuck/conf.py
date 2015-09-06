@@ -34,6 +34,8 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'priority': {},
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
+DEFAULT_FUCKUPS = {'cd..':'cd ..'}
+
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_EXCLUDE_RULES': 'exclude_rules',
                'THEFUCK_WAIT_COMMAND': 'wait_command',
@@ -138,3 +140,13 @@ def initialize_settings_file(user_dir):
             settings_file.write(SETTINGS_HEADER)
             for setting in DEFAULT_SETTINGS.items():
                 settings_file.write(u'# {} = {}\n'.format(*setting))
+
+
+def initialize_fuckups_file(user_dir):
+    fuckups_path = user_dir.joinpath('.my_fuckups')
+    if not fuckups_path.is_file():
+        with fuckups_path.open(mode='w') as fuckups_file:
+            for key, fix in DEFAULT_FUCKUPS.iteritems():
+                fuckups_file.write(key + '\n')
+                fuckups_file.write(fix + '\n')
+    return
