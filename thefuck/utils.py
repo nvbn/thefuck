@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 import pkg_resources
 import six
+from .types import Settings
 
 
 DEVNULL = open(os.devnull, 'w')
@@ -70,7 +71,7 @@ def wrap_settings(params):
 
     """
     def _wrap_settings(fn, command, settings):
-        return fn(command, settings.update(**params))
+        return fn(command, Settings(settings, **params))
     return decorator(_wrap_settings)
 
 

@@ -10,7 +10,8 @@ import sys
 from psutil import Process, TimeoutExpired
 import colorama
 import six
-from . import logs, conf, types, shells
+from . import logs, types, shells
+from .conf import initialize_settings_file, init_settings, settings
 from .corrector import get_corrected_commands
 from .ui import select_command
 
@@ -21,11 +22,11 @@ def setup_user_dir():
     rules_dir = user_dir.joinpath('rules')
     if not rules_dir.is_dir():
         rules_dir.mkdir(parents=True)
-    conf.initialize_settings_file(user_dir)
+    initialize_settings_file(user_dir)
     return user_dir
 
 
-def wait_output(settings, popen):
+def wait_output(popen):
     """Returns `True` if we can get output of the command in the
     `settings.wait_command` time.
 
@@ -43,7 +44,7 @@ def wait_output(settings, popen):
         return False
 
 
-def get_command(settings, args):
+def get_command(args):
     """Creates command from `args` and executes it."""
     if six.PY2:
         script = ' '.join(arg.decode('utf-8') for arg in args[1:])
@@ -58,23 +59,22 @@ def get_command(settings, args):
     env = dict(os.environ)
     env.update(settings.env)
 
-    with logs.debug_time(u'Call: {}; with env: {};'.format(script, env),
-                         settings):
+    with logs.debug_time(u'Call: {}; with env: {};'.format(script, env)):
         result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
-        if wait_output(settings, result):
+        if wait_output(result):
             stdout = result.stdout.read().decode('utf-8')
             stderr = result.stderr.read().decode('utf-8')
 
-            logs.debug(u'Received stdout: {}'.format(stdout), settings)
-            logs.debug(u'Received stderr: {}'.format(stderr), settings)
+            logs.debug(u'Received stdout: {}'.format(stdout))
+            logs.debug(u'Received stderr: {}'.format(stderr))
 
             return types.Command(script, stdout, stderr)
         else:
-            logs.debug(u'Execution timed out!', settings)
+            logs.debug(u'Execution timed out!')
             return types.Command(script, None, None)
 
 
-def run_command(old_cmd, command, settings):
+def run_command(old_cmd, command):
     """Runs command from rule for passed command."""
     if command.side_effect:
         command.side_effect(old_cmd, command.script, settings)
@@ -87,20 +87,20 @@ def run_command(old_cmd, command, settings):
 def fix_command():
     colorama.init()
     user_dir = setup_user_dir()
-    settings = conf.get_settings(user_dir)
-    with logs.debug_time('Total', settings):
-        logs.debug(u'Run with settings: {}'.format(pformat(settings)), settings)
+    init_settings(user_dir)
+    with logs.debug_time('Total'):
+        logs.debug(u'Run with settings: {}'.format(pformat(settings)))
 
-        command = get_command(settings, sys.argv)
+        command = get_command(sys.argv)
 
         if not command:
-            logs.debug('Empty command, nothing to do', settings)
+            logs.debug('Empty command, nothing to do')
             return
 
-        corrected_commands = get_corrected_commands(command, user_dir, settings)
-        selected_command = select_command(corrected_commands, settings)
+        corrected_commands = get_corrected_commands(command, user_dir)
+        selected_command = select_command(corrected_commands)
         if selected_command:
-            run_command(command, selected_command, settings)
+            run_command(command, selected_command)
 
 
 def _get_current_version():
@@ -128,8 +128,8 @@ def how_to_configure_alias():
     """
     colorama.init()
     user_dir = setup_user_dir()
-    settings = conf.get_settings(user_dir)
-    logs.how_to_configure_alias(shells.how_to_configure(), settings)
+    init_settings(user_dir)
+    logs.how_to_configure_alias(shells.how_to_configure())
 
 
 def main():

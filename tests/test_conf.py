@@ -29,7 +29,7 @@ def environ(monkeypatch):
 def test_settings_defaults(load_source):
     load_source.return_value = object()
     for key, val in conf.DEFAULT_SETTINGS.items():
-        assert getattr(conf.get_settings(Mock()), key) == val
+        assert getattr(conf.init_settings(Mock()), key) == val
 
 
 @pytest.mark.usefixture('environ')
@@ -41,7 +41,7 @@ class TestSettingsFromFile(object):
                                         no_colors=True,
                                         priority={'vim': 100},
                                         exclude_rules=['git'])
-        settings = conf.get_settings(Mock())
+        settings = conf.init_settings(Mock())
         assert settings.rules == ['test']
         assert settings.wait_command == 10
         assert settings.require_confirmation is True
@@ -55,7 +55,7 @@ class TestSettingsFromFile(object):
                                         exclude_rules=[],
                                         require_confirmation=True,
                                         no_colors=True)
-        settings = conf.get_settings(Mock())
+        settings = conf.init_settings(Mock())
         assert settings.rules == conf.DEFAULT_RULES + ['test']
 
 
@@ -68,7 +68,7 @@ class TestSettingsFromEnv(object):
                         'THEFUCK_REQUIRE_CONFIRMATION': 'true',
                         'THEFUCK_NO_COLORS': 'false',
                         'THEFUCK_PRIORITY': 'bash=10:lisp=wrong:vim=15'})
-        settings = conf.get_settings(Mock())
+        settings = conf.init_settings(Mock())
         assert settings.rules == ['bash', 'lisp']
         assert settings.exclude_rules == ['git', 'vim']
         assert settings.wait_command == 55
@@ -78,7 +78,7 @@ class TestSettingsFromEnv(object):
 
     def test_from_env_with_DEFAULT(self, environ):
         environ.update({'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'})
-        settings = conf.get_settings(Mock())
+        settings = conf.init_settings(Mock())
         assert settings.rules == conf.DEFAULT_RULES + ['bash', 'lisp']
 
 
