@@ -10,6 +10,7 @@ import pickle
 import re
 
 from pathlib import Path
+import pkg_resources
 import six
 
 
@@ -94,11 +95,17 @@ def get_all_executables():
             return fallback
 
     tf_alias = thefuck_alias()
-    return [exe.name
+    tf_entry_points = pkg_resources.require('thefuck')[0]\
+                                   .get_entry_map()\
+                                   .get('console_scripts', {})\
+                                   .keys()
+    bins = [exe.name
             for path in os.environ.get('PATH', '').split(':')
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
-            if not _safe(exe.is_dir, True)] + [
-                alias for alias in get_aliases() if alias != tf_alias]
+            if not _safe(exe.is_dir, True)
+            and exe.name not in tf_entry_points]
+    aliases = [alias for alias in get_aliases() if alias != tf_alias]
+    return bins + aliases
 
 
 def replace_argument(script, from_, to):
