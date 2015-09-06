@@ -83,4 +83,4 @@ def without_confirmation(proc, TIMEOUT):
 def how_to_configure(proc, TIMEOUT):
     proc.sendline(u'unalias fuck')
     proc.sendline(u'fuck')
-    assert proc.expect([TIMEOUT, "alias isn't configured"])
+    assert proc.expect([TIMEOUT, u"alias isn't configured"])
