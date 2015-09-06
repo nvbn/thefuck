@@ -223,7 +223,7 @@ Bundled, but not enabled by default:
 ## Creating your own rules
 
 For adding your own rule you should create `your-rule-name.py`
-in `~/.thefuck/rules`. The rule should contain two functions:
+in `~/.config/thefuck/rules`. The rule should contain two functions:
 
 ```python
 match(command: Command, settings: Settings) -> bool
@@ -239,7 +239,7 @@ and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
-`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env ([see more below](#settings)).
+`Settings` is a special object filled with `~/.config/thefuck/settings.py` and values from env ([see more below](#settings)).
 
 Simple example of the rule for running script with `sudo`:
 
@@ -268,7 +268,7 @@ requires_output = True
 
 ## Settings
 
-The Fuck has a few settings parameters which can be changed in `~/.thefuck/settings.py`:
+The Fuck has a few settings parameters which can be changed in `~/.config/thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
 * `exclude_rules` &ndash; list of disabled rules, by default `[]`;
