@@ -26,6 +26,7 @@ DEFAULT_PRIORITY = 1000
 
 
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
+                    'exclude_rules': [],
                     'wait_command': 3,
                     'require_confirmation': True,
                     'no_colors': False,
@@ -34,6 +35,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
+               'THEFUCK_EXCLUDE_RULES': 'exclude_rules',
                'THEFUCK_WAIT_COMMAND': 'wait_command',
                'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
                'THEFUCK_NO_COLORS': 'no_colors',
@@ -84,7 +86,7 @@ def _priority_from_env(val):
 def _val_from_env(env, attr):
     """Transforms env-strings to python."""
     val = os.environ[env]
-    if attr == 'rules':
+    if attr in ('rules', 'exclude_rules'):
         return _rules_from_env(val)
     elif attr == 'priority':
         return dict(_priority_from_env(val))
@@ -122,6 +124,9 @@ def get_settings(user_dir):
 
     if not isinstance(conf['rules'], types.RulesNamesList):
         conf['rules'] = types.RulesNamesList(conf['rules'])
+
+    if not isinstance(conf['exclude_rules'], types.RulesNamesList):
+        conf['exclude_rules'] = types.RulesNamesList(conf['exclude_rules'])
 
     return types.Settings(conf)
 

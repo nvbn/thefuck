@@ -23,7 +23,8 @@ def get_loaded_rules(rules, settings):
     for rule in rules:
         if rule.name != '__init__.py':
             loaded_rule = load_rule(rule, settings)
-            if loaded_rule in settings.rules:
+            if loaded_rule in settings.rules and \
+                    loaded_rule not in settings.exclude_rules:
                 yield loaded_rule
 
 
