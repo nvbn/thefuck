@@ -11,7 +11,7 @@ from tests.utils import Command
 @pytest.mark.parametrize('command', [
     Command(script='vim', stderr='vim: command not found')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command, return_value', [
@@ -24,7 +24,7 @@ def test_match(command):
 def test_match_mocked(cmdnf_mock, command, return_value):
     get_packages = Mock(return_value=return_value)
     cmdnf_mock.CommandNotFound.return_value = Mock(getPackages=get_packages)
-    assert match(command, None)
+    assert match(command)
     assert cmdnf_mock.CommandNotFound.called
     assert get_packages.called
 
@@ -32,7 +32,7 @@ def test_match_mocked(cmdnf_mock, command, return_value):
 @pytest.mark.parametrize('command', [
     Command(script='vim', stderr=''), Command()])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 # python-commandnotfound is available in ubuntu 14.04+
@@ -44,7 +44,7 @@ def test_not_match(command):
     (Command('sudo vim'), 'sudo apt-get install vim && sudo vim'),
     (Command('sudo convert'), 'sudo apt-get install imagemagick && sudo convert')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command
 
 
 @pytest.mark.parametrize('command, new_command, return_value', [
@@ -63,4 +63,4 @@ def test_get_new_command(command, new_command):
 def test_get_new_command_mocked(cmdnf_mock, command, new_command, return_value):
     get_packages = Mock(return_value=return_value)
     cmdnf_mock.CommandNotFound.return_value = Mock(getPackages=get_packages)
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

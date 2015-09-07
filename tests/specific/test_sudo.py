@@ -13,8 +13,8 @@ from tests.utils import Command
     (False, 'sudo ls', 'ls', False),
     (False, 'ls', 'ls', False)])
 def test_sudo_support(return_value, command, called, result):
-    def fn(command, settings):
+    def fn(command):
         assert command == Command(called)
         return return_value
 
-    assert sudo_support(fn)(Command(command), None) == result
+    assert sudo_support(fn)(Command(command)) == result

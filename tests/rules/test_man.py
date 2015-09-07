@@ -12,14 +12,14 @@ from tests.utils import Command
     Command('man -s 2 read'),
     Command('man -s 3 read')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
     Command('man'),
     Command('man ')])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -31,4 +31,4 @@ def test_not_match(command):
     (Command('man -s 2 read'), 'man -s 3 read'),
     (Command('man -s 3 read'), 'man -s 2 read')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

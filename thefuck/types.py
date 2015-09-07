@@ -1,12 +1,12 @@
 from collections import namedtuple
 from traceback import format_stack
-from .logs import debug
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
 
 Rule = namedtuple('Rule', ('name', 'match', 'get_new_command',
                            'enabled_by_default', 'side_effect',
                            'priority', 'requires_output'))
+
 
 class CorrectedCommand(object):
     def __init__(self, script, side_effect, priority):
@@ -17,7 +17,7 @@ class CorrectedCommand(object):
     def __eq__(self, other):
         """Ignores `priority` field."""
         if isinstance(other, CorrectedCommand):
-            return (other.script, other.side_effect) ==\
+            return (other.script, other.side_effect) == \
                    (self.script, self.side_effect)
         else:
             return False
@@ -41,13 +41,8 @@ class Settings(dict):
     def __getattr__(self, item):
         return self.get(item)
 
-    def update(self, **kwargs):
-        """
-        Returns new settings with values from `kwargs` for unset settings.
-        """
-        conf = dict(kwargs)
-        conf.update(self)
-        return Settings(conf)
+    def __setattr__(self, key, value):
+        self[key] = value
 
 
 class SortedCorrectedCommandsSequence(object):
@@ -59,8 +54,7 @@ class SortedCorrectedCommandsSequence(object):
 
     """
 
-    def __init__(self, commands, settings):
-        self._settings = settings
+    def __init__(self, commands):
         self._commands = commands
         self._cached = self._realise_first()
         self._realised = False
@@ -81,13 +75,15 @@ class SortedCorrectedCommandsSequence(object):
 
     def _realise(self):
         """Realises generator, removes duplicates and sorts commands."""
+        from .logs import debug
+
         if self._cached:
             commands = self._remove_duplicates(self._commands)
             self._cached = [self._cached[0]] + sorted(
                 commands, key=lambda corrected_command: corrected_command.priority)
         self._realised = True
         debug('SortedCommandsSequence was realised with: {}, after: {}'.format(
-            self._cached, '\n'.join(format_stack())), self._settings)
+            self._cached, '\n'.join(format_stack())))
 
     def __getitem__(self, item):
         if item != 0 and not self._realised:

@@ -3,12 +3,12 @@ from thefuck.utils import replace_command, for_app
 
 
 @for_app('tmux')
-def match(command, settings):
+def match(command):
     return ('ambiguous command:' in command.stderr
             and 'could be:' in command.stderr)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     cmd = re.match(r"ambiguous command: (.*), could be: (.*)",
                    command.stderr)
 

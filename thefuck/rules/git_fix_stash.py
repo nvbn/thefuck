@@ -4,7 +4,7 @@ from thefuck.specific.git import git_support
 
 
 @git_support
-def match(command, settings):
+def match(command):
     return (command.script.split()[1] == 'stash'
             and 'usage:' in command.stderr)
 
@@ -21,7 +21,7 @@ stash_commands = (
 
 
 @git_support
-def get_new_command(command, settings):
+def get_new_command(command):
     stash_cmd = command.script.split()[2]
     fixed = utils.get_closest(stash_cmd, stash_commands, fallback_to_first=False)
 

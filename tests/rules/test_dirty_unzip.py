@@ -30,14 +30,14 @@ def zip_error(tmpdir):
     'unzip foo',
     'unzip foo.zip'])
 def test_match(zip_error, script):
-    assert match(Command(script=script), None)
+    assert match(Command(script=script))
 
 
 @pytest.mark.parametrize('script', [
     'unzip foo',
     'unzip foo.zip'])
 def test_side_effect(zip_error, script):
-    side_effect(Command(script=script), None, None)
+    side_effect(Command(script=script), None)
     assert set(os.listdir('.')) == {'foo.zip', 'd'}
 
 
@@ -45,4 +45,4 @@ def test_side_effect(zip_error, script):
     ('unzip foo', 'unzip foo -d foo'),
     ('unzip foo.zip', 'unzip foo.zip -d foo')])
 def test_get_new_command(zip_error, script, fixed):
-    assert get_new_command(Command(script=script), None) == fixed
+    assert get_new_command(Command(script=script)) == fixed

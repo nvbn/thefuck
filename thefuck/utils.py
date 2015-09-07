@@ -1,6 +1,7 @@
 from difflib import get_close_matches
 from functools import wraps
 import shelve
+from warnings import warn
 from decorator import decorator
 from contextlib import closing
 import tempfile
@@ -8,10 +9,12 @@ import tempfile
 import os
 import pickle
 import re
+from inspect import getargspec
 
 from pathlib import Path
+import pkg_resources
 import six
-
+from .conf import settings
 
 DEVNULL = open(os.devnull, 'w')
 
@@ -58,19 +61,21 @@ def which(program):
     return None
 
 
-def wrap_settings(params):
+def default_settings(params):
     """Adds default values to settings if it not presented.
 
     Usage:
 
-        @wrap_settings({'apt': '/usr/bin/apt'})
+        @default_settings({'apt': '/usr/bin/apt'})
         def match(command, settings):
             print(settings.apt)
 
     """
-    def _wrap_settings(fn, command, settings):
-        return fn(command, settings.update(**params))
-    return decorator(_wrap_settings)
+    def _default_settings(fn, command):
+        for k, w in params.items():
+            settings.setdefault(k, w)
+        return fn(command)
+    return decorator(_default_settings)
 
 
 def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
@@ -94,11 +99,17 @@ def get_all_executables():
             return fallback
 
     tf_alias = thefuck_alias()
-    return [exe.name
+    tf_entry_points = pkg_resources.require('thefuck')[0]\
+                                   .get_entry_map()\
+                                   .get('console_scripts', {})\
+                                   .keys()
+    bins = [exe.name
             for path in os.environ.get('PATH', '').split(':')
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
-            if not _safe(exe.is_dir, True)] + [
-                alias for alias in get_aliases() if alias != tf_alias]
+            if not _safe(exe.is_dir, True)
+            and exe.name not in tf_entry_points]
+    aliases = [alias for alias in get_aliases() if alias != tf_alias]
+    return bins + aliases
 
 
 def replace_argument(script, from_, to):
@@ -146,9 +157,9 @@ def is_app(command, *app_names):
 
 def for_app(*app_names):
     """Specifies that matching script is for on of app names."""
-    def _for_app(fn, command, settings):
+    def _for_app(fn, command):
         if is_app(command, *app_names):
-            return fn(command, settings)
+            return fn(command)
         else:
             return False
 
@@ -176,7 +187,7 @@ def cache(*depends_on):
         if cache.disabled:
             return fn(*args, **kwargs)
 
-        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')
+        cache_path = settings.user_dir.joinpath('.thefuck-cache').as_posix()
         # A bit obscure, but simplest way to generate unique key for
         # functions and methods in python 2 and 3:
         key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])
@@ -192,3 +203,24 @@ def cache(*depends_on):
                 return value
     return _cache
 cache.disabled = False
+
+
+def compatibility_call(fn, *args):
+    """Special call for compatibility with user-defined old-style rules
+    with `settings` param.
+
+    """
+    fn_args_count = len(getargspec(fn).args)
+    if fn.__name__ in ('match', 'get_new_command') and fn_args_count == 2:
+        warn("Two arguments `{}` from rule `{}` is deprecated, please "
+             "remove `settings` argument and use "
+             "`from thefuck.conf import settings` instead."
+             .format(fn.__name__, fn.__module__))
+        args += (settings,)
+    if fn.__name__ == 'side_effect' and fn_args_count == 3:
+        warn("Three arguments `side_effect` from rule `{}` is deprecated, "
+             "please remove `settings` argument and use `from thefuck.conf "
+             "import settings` instead."
+             .format(fn.__name__, fn.__module__))
+        args += (settings,)
+    return fn(*args)

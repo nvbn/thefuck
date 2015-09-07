@@ -1,8 +1,8 @@
-def match(command, settings):
+def match(command):
     return 'manage.py' in command.script and \
            'migrate' in command.script \
            and 'or pass --delete-ghost-migrations' in command.stderr
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return u'{} --delete-ghost-migrations'.format(command.script)

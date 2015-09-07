@@ -9,7 +9,7 @@ from tests.utils import Command
     Command('hdfs dfs -mkdir foo/bar/baz', stderr='mkdir: `foo/bar/baz\': No such file or directory')
     ])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -19,7 +19,7 @@ def test_match(command):
     Command('./bin/hdfs dfs -mkdir foo/bar/baz'),
     Command()])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -27,5 +27,5 @@ def test_not_match(command):
     (Command('hdfs dfs -mkdir foo/bar/baz'), 'hdfs dfs -mkdir -p foo/bar/baz'),
     (Command('./bin/hdfs dfs -mkdir foo/bar/baz'), './bin/hdfs dfs -mkdir -p foo/bar/baz')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command
 

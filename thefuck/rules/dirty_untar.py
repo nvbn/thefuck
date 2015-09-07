@@ -25,18 +25,18 @@ def _tar_file(cmd):
 
 
 @for_app('tar')
-def match(command, settings):
+def match(command):
     return ('-C' not in command.script
             and _is_tar_extract(command.script)
             and _tar_file(command.script) is not None)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return shells.and_('mkdir -p {dir}', '{cmd} -C {dir}') \
         .format(dir=_tar_file(command.script)[1], cmd=command.script)
 
 
-def side_effect(old_cmd, command, settings):
+def side_effect(old_cmd, command):
     with tarfile.TarFile(_tar_file(old_cmd.script)[0]) as archive:
         for file in archive.getnames():
             try:

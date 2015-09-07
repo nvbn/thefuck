@@ -8,9 +8,9 @@
 # cd..: command not found
 
 
-def match(command, settings):
+def match(command):
     return command.script == 'cd..'
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return 'cd ..'

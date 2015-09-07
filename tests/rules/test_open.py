@@ -14,7 +14,7 @@ from tests.utils import Command
     Command(script='gnome-open foo.com'),
     Command(script='kde-open foo.com')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -28,4 +28,4 @@ def test_match(command):
     (Command('gnome-open foo.io'), 'gnome-open http://foo.io'),
     (Command('kde-open foo.io'), 'kde-open http://foo.io')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

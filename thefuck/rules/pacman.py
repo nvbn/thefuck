@@ -2,11 +2,11 @@ from thefuck.specific.archlinux import get_pkgfile, archlinux_env
 from thefuck import shells
 
 
-def match(command, settings):
+def match(command):
     return 'not found' in command.stderr and get_pkgfile(command.script)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     packages = get_pkgfile(command.script)
 
     formatme = shells.and_('{} -S {}', '{}')

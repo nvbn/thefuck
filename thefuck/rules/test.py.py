@@ -1,8 +1,8 @@
-def match(command, settings):
+def match(command):
     return command.script == 'test.py' and 'not found' in command.stderr
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return 'py.test'
 
 

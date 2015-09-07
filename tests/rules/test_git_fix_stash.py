@@ -20,7 +20,7 @@ usage: git stash list [<options>]
     'git stash Some message',
     'git stash saev Some message'])
 def test_match(wrong):
-    assert match(Command(wrong, stderr=git_stash_err), None)
+    assert match(Command(wrong, stderr=git_stash_err))
 
 
 @pytest.mark.parametrize('wrong,fixed', [
@@ -28,4 +28,4 @@ def test_match(wrong):
     ('git stash Some message', 'git stash save Some message'),
     ('git stash saev Some message', 'git stash save Some message')])
 def test_get_new_command(wrong, fixed):
-    assert get_new_command(Command(wrong, stderr=git_stash_err), None) == fixed
+    assert get_new_command(Command(wrong, stderr=git_stash_err)) == fixed

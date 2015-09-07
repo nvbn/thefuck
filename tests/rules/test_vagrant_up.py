@@ -11,7 +11,7 @@ from tests.utils import Command
     Command(script='vagrant rdp devbox',
             stderr='VM must be created before running this command. Run `vagrant up` first.')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -20,7 +20,7 @@ def test_match(command):
     Command(script='vagrant ssh', stderr='A Vagrant environment or target machine is required to run this command. Run `vagrant init` to create a new Vagrant environment. Or, get an ID of a target machine from `vagrant global-status` to run this command on. A final option is to change to a directory with a Vagrantfile and to try again.'),  
     Command()])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -31,5 +31,5 @@ def test_not_match(command):
     (Command(script='vagrant rdp devbox',
             stderr='VM must be created before running this command. Run `vagrant up` first.'), ['vagrant up devbox && vagrant rdp devbox', 'vagrant up && vagrant rdp devbox'])])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command
 

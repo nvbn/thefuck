@@ -6,3 +6,4 @@ setuptools>=17.1
 pexpect
 pypandoc
 pytest-benchmark
+pytest-docker-pexpect

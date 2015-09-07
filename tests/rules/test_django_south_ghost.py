@@ -41,13 +41,13 @@ south.exceptions.GhostMigrations:
 
 
 def test_match(stderr):
-    assert match(Command('./manage.py migrate', stderr=stderr), None)
-    assert match(Command('python manage.py migrate', stderr=stderr), None)
-    assert not match(Command('./manage.py migrate'), None)
-    assert not match(Command('app migrate', stderr=stderr), None)
-    assert not match(Command('./manage.py test', stderr=stderr), None)
+    assert match(Command('./manage.py migrate', stderr=stderr))
+    assert match(Command('python manage.py migrate', stderr=stderr))
+    assert not match(Command('./manage.py migrate'))
+    assert not match(Command('app migrate', stderr=stderr))
+    assert not match(Command('./manage.py test', stderr=stderr))
 
 
 def test_get_new_command():
-    assert get_new_command(Command('./manage.py migrate auth'), None)\
+    assert get_new_command(Command('./manage.py migrate auth'))\
         == './manage.py migrate auth --delete-ghost-migrations'

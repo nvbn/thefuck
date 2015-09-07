@@ -3,11 +3,11 @@ from thefuck.utils import for_app
 
 
 @for_app('vagrant')
-def match(command, settings):
+def match(command):
     return 'run `vagrant up`' in command.stderr.lower()
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     cmds = command.script.split(' ')
     machine = None
     if len(cmds) >= 3:

@@ -1,14 +1,20 @@
+import pytest
 from mock import Mock
 from thefuck import logs
 
 
-def test_color():
-    assert logs.color('red', Mock(no_colors=False)) == 'red'
-    assert logs.color('red', Mock(no_colors=True)) == ''
+def test_color(settings):
+    settings.no_colors = False
+    assert logs.color('red') == 'red'
+    settings.no_colors = True
+    assert logs.color('red') == ''
 
 
-def test_debug(capsys):
-    logs.debug('test', Mock(no_colors=True, debug=True))
-    assert capsys.readouterr() == ('', 'DEBUG: test\n')
-    logs.debug('test', Mock(no_colors=True, debug=False))
-    assert capsys.readouterr() == ('', '')
+@pytest.mark.usefixtures('no_colors')
+@pytest.mark.parametrize('debug, stderr', [
+    (True, 'DEBUG: test\n'),
+    (False, '')])
+def test_debug(capsys, settings, debug, stderr):
+    settings.debug = debug
+    logs.debug('test')
+    assert capsys.readouterr() == ('', stderr)

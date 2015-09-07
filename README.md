@@ -226,36 +226,37 @@ For adding your own rule you should create `your-rule-name.py`
 in `~/.thefuck/rules`. The rule should contain two functions:
 
 ```python
-match(command: Command, settings: Settings) -> bool
-get_new_command(command: Command, settings: Settings) -> str | list[str]
+match(command: Command) -> bool
+get_new_command(command: Command) -> str | list[str]
 ```
 
 Also the rule can contain an optional function
 
 ```python
-side_effect(old_command: Command, fixed_command: str, settings: Settings) -> None
+side_effect(old_command: Command, fixed_command: str) -> None
 ```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
-`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env ([see more below](#settings)).
+*Rules api changed in 3.0:* For accessing settings in rule you need to import it with `from thefuck.conf import settings`.
+`settings` is a special object filled with `~/.thefuck/settings.py` and values from env ([see more below](#settings)).
 
 Simple example of the rule for running script with `sudo`:
 
 ```python
-def match(command, settings):
+def match(command):
     return ('permission denied' in command.stderr.lower()
             or 'EACCES' in command.stderr)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return 'sudo {}'.format(command.script)
 
 # Optional:
 enabled_by_default = True
 
-def side_effect(command, settings):
+def side_effect(command, fixed_command):
     subprocess.call('chmod 777 .', shell=True)
 
 priority = 1000  # Lower first, default is 1000
@@ -264,13 +265,15 @@ requires_output = True
 ```
 
 [More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
-[utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py).
+[utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py),
+[app/os-specific helpers](https://github.com/nvbn/thefuck/tree/master/thefuck/specific/).
 
 ## Settings
 
 The Fuck has a few settings parameters which can be changed in `~/.thefuck/settings.py`:
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
+* `exclude_rules` &ndash; list of disabled rules, by default `[]`;
 * `require_confirmation` &ndash; requires confirmation before running new command, by default `True`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
@@ -281,6 +284,7 @@ Example of `settings.py`:
 
 ```python
 rules = ['sudo', 'no_command']
+exclude_rules = ['git_push']
 require_confirmation = True
 wait_command = 10
 no_colors = False
@@ -291,6 +295,7 @@ debug = False
 Or via environment variables:
 
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
+* `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`; 
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
@@ -302,6 +307,7 @@ For example:
 
 ```bash
 export THEFUCK_RULES='sudo:no_command'
+export THEFUCK_EXCLUDE_RULES='git_pull:git_push'
 export THEFUCK_REQUIRE_CONFIRMATION='true'
 export THEFUCK_WAIT_COMMAND=10
 export THEFUCK_NO_COLORS='false'
@@ -326,7 +332,7 @@ py.test
 Run unit and functional tests (requires docker):
 
 ```bash
-FUNCTIONAL=true py.test
+py.test --enable-functional
 ```
 
 For sending package to pypi:

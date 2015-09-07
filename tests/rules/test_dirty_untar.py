@@ -47,14 +47,14 @@ parametrize_script = pytest.mark.parametrize('script, fixed', [
 @parametrize_script
 def test_match(tar_error, filename, script, fixed):
     tar_error(filename)
-    assert match(Command(script=script.format(filename)), None)
+    assert match(Command(script=script.format(filename)))
 
 
 @parametrize_filename
 @parametrize_script
 def test_side_effect(tar_error, filename, script, fixed):
     tar_error(filename)
-    side_effect(Command(script=script.format(filename)), None, None)
+    side_effect(Command(script=script.format(filename)), None)
     assert set(os.listdir('.')) == {filename, 'd'}
 
 
@@ -62,4 +62,4 @@ def test_side_effect(tar_error, filename, script, fixed):
 @parametrize_script
 def test_get_new_command(tar_error, filename, script, fixed):
     tar_error(filename)
-    assert get_new_command(Command(script=script.format(filename)), None) == fixed.format(filename)
+    assert get_new_command(Command(script=script.format(filename))) == fixed.format(filename)

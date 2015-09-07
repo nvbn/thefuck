@@ -9,9 +9,9 @@ from thefuck.utils import for_app
 
 
 @for_app('java')
-def match(command, settings):
+def match(command):
     return command.script.endswith('.java')
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return command.script[:-5]

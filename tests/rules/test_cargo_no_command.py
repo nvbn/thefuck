@@ -12,10 +12,10 @@ no_such_subcommand = """No such subcommand
 @pytest.mark.parametrize('command', [
     Command(script='cargo buid', stderr=no_such_subcommand)])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
     (Command('cargo buid', stderr=no_such_subcommand), 'cargo build')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

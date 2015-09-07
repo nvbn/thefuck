@@ -3,10 +3,10 @@ from tests.utils import Command
 
 
 def test_match():
-    assert match(Command('mandiff', stderr='mandiff: command not found'), None)
-    assert not match(Command(), None)
+    assert match(Command('mandiff', stderr='mandiff: command not found'))
+    assert not match(Command())
 
 
 def test_get_new_command():
     assert get_new_command(
-        Command('mandiff'), None) == 'man diff'
+        Command('mandiff')) == 'man diff'

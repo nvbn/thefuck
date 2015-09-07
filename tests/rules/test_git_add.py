@@ -18,7 +18,7 @@ def did_not_match(target, did_you_forget=True):
     Command(script='git commit unknown',
             stderr=did_not_match('unknown'))])  # Older versions of Git
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -27,7 +27,7 @@ def test_match(command):
     Command(script='git commit unknown',  # Newer versions of Git
             stderr=did_not_match('unknown', False))])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -36,4 +36,4 @@ def test_not_match(command):
     (Command('git commit unknown', stderr=did_not_match('unknown')),  # Old Git
      'git add -- unknown && git commit unknown')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

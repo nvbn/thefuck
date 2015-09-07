@@ -24,9 +24,9 @@ class TestGetCommand(object):
         monkeypatch.setattr('thefuck.shells.from_shell', lambda x: x)
         monkeypatch.setattr('thefuck.shells.to_shell', lambda x: x)
 
-    def test_get_command_calls(self, Popen):
-        assert main.get_command(Mock(env={}),
-                                ['thefuck', 'apt-get', 'search', 'vim']) \
+    def test_get_command_calls(self, Popen, settings):
+        settings.env = {}
+        assert main.get_command(['thefuck', 'apt-get', 'search', 'vim']) \
                == Command('apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,
@@ -41,6 +41,6 @@ class TestGetCommand(object):
         (['thefuck', 'ls'], 'ls')])
     def test_get_command_script(self, args, result):
         if result:
-            assert main.get_command(Mock(env={}), args).script == result
+            assert main.get_command(args).script == result
         else:
-            assert main.get_command(Mock(env={}), args) is None
+            assert main.get_command(args) is None

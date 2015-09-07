@@ -7,7 +7,7 @@ from tests.utils import Command
     Command(script='git diff foo'),
     Command(script='git diff')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -16,11 +16,11 @@ def test_match(command):
     Command(script='git branch'),
     Command(script='git log')])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
     (Command('git diff'), 'git diff --staged'),
     (Command('git diff foo'), 'git diff --staged foo')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

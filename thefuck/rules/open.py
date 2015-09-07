@@ -9,7 +9,7 @@ from thefuck.utils import for_app
 
 
 @for_app('open', 'xdg-open', 'gnome-open', 'kde-open')
-def match(command, settings):
+def match(command):
     return ('.com' in command.script
             or '.net' in command.script
             or '.org' in command.script
@@ -22,5 +22,5 @@ def match(command, settings):
             or 'www.' in command.script)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return command.script.replace('open ', 'open http://')

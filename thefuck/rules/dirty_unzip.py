@@ -22,16 +22,16 @@ def _zip_file(command):
 
 
 @for_app('unzip')
-def match(command, settings):
+def match(command):
     return ('-d' not in command.script
             and _is_bad_zip(_zip_file(command)))
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return '{} -d {}'.format(command.script, _zip_file(command)[:-4])
 
 
-def side_effect(old_cmd, command, settings):
+def side_effect(old_cmd, command):
     with zipfile.ZipFile(_zip_file(old_cmd), 'r') as archive:
         for file in archive.namelist():
             try:
