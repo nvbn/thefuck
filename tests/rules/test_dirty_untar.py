@@ -11,8 +11,9 @@ def tar_error(tmpdir):
         path = os.path.join(str(tmpdir), filename)
 
         def reset(path):
+            os.mkdir('d')
             with tarfile.TarFile(path, 'w') as archive:
-                for file in ('a', 'b', 'c'):
+                for file in ('a', 'b', 'c', 'd/e'):
                     with open(file, 'w') as f:
                         f.write('*')
 
@@ -26,7 +27,8 @@ def tar_error(tmpdir):
         os.chdir(str(tmpdir))
         reset(path)
 
-        assert(set(os.listdir('.')) == {filename, 'a', 'b', 'c'})
+        assert set(os.listdir('.')) == {filename, 'a', 'b', 'c', 'd'}
+        assert set(os.listdir('./d')) == {'e'}
 
     return fixture
 
@@ -53,7 +55,7 @@ def test_match(tar_error, filename, script, fixed):
 def test_side_effect(tar_error, filename, script, fixed):
     tar_error(filename)
     side_effect(Command(script=script.format(filename)), None, None)
-    assert(os.listdir('.') == [filename])
+    assert set(os.listdir('.')) == {filename, 'd'}
 
 
 @parametrize_filename

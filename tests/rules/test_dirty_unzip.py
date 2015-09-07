@@ -15,12 +15,15 @@ def zip_error(tmpdir):
             archive.writestr('b', '2')
             archive.writestr('c', '3')
 
+            archive.writestr('d/e', '4')
+
             archive.extractall()
 
     os.chdir(str(tmpdir))
     reset(path)
 
-    assert(set(os.listdir('.')) == {'foo.zip', 'a', 'b', 'c'})
+    assert set(os.listdir('.')) == {'foo.zip', 'a', 'b', 'c', 'd'}
+    assert set(os.listdir('./d')) == {'e'}
 
 
 @pytest.mark.parametrize('script', [
@@ -35,7 +38,7 @@ def test_match(zip_error, script):
     'unzip foo.zip'])
 def test_side_effect(zip_error, script):
     side_effect(Command(script=script), None, None)
-    assert(os.listdir('.') == ['foo.zip'])
+    assert set(os.listdir('.')) == {'foo.zip', 'd'}
 
 
 @pytest.mark.parametrize('script,fixed', [
