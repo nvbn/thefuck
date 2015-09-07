@@ -1,5 +1,5 @@
-import os
 import tarfile
+import os
 from thefuck import shells
 from thefuck.utils import for_app
 
@@ -39,4 +39,9 @@ def get_new_command(command):
 def side_effect(old_cmd, command):
     with tarfile.TarFile(_tar_file(old_cmd.script)[0]) as archive:
         for file in archive.getnames():
-            os.remove(file)
+            try:
+                os.remove(file)
+            except OSError:
+                # does not try to remove directories as we cannot know if they
+                # already existed before
+                pass

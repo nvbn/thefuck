@@ -34,7 +34,12 @@ def get_new_command(command):
 def side_effect(old_cmd, command):
     with zipfile.ZipFile(_zip_file(old_cmd), 'r') as archive:
         for file in archive.namelist():
-            os.remove(file)
+            try:
+                os.remove(file)
+            except OSError:
+                # does not try to remove directories as we cannot know if they
+                # already existed before
+                pass
 
 
 requires_output = False
