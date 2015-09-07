@@ -187,7 +187,7 @@ def cache(*depends_on):
         if cache.disabled:
             return fn(*args, **kwargs)
 
-        cache_path = os.path.join(tempfile.gettempdir(), '.thefuck-cache')
+        cache_path = settings.user_dir.joinpath('.thefuck-cache').as_posix()
         # A bit obscure, but simplest way to generate unique key for
         # functions and methods in python 2 and 3:
         key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])
