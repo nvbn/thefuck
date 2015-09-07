@@ -109,6 +109,8 @@ def init_settings(user_dir):
     """Fills `settings` with values from `settings.py` and env."""
     from .logs import exception
 
+    settings.user_dir = user_dir
+
     try:
         settings.update(_settings_from_file(user_dir))
     except Exception:

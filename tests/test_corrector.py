@@ -25,7 +25,7 @@ class TestGetRules(object):
     @pytest.fixture
     def glob(self, mocker):
         results = {}
-        mocker.patch('thefuck.corrector.Path.glob',
+        mocker.patch('pathlib.Path.glob',
                      new_callable=lambda: lambda *_: results.pop('value', []))
         return lambda value: results.update({'value': value})
 
@@ -54,7 +54,7 @@ class TestGetRules(object):
         settings.update(rules=self._prepare_rules(conf_rules),
                         priority={},
                         exclude_rules=self._prepare_rules(exclude_rules))
-        rules = corrector.get_rules(Path('~'))
+        rules = corrector.get_rules()
         self._compare_names(rules, loaded_rules)
 
 
@@ -98,5 +98,5 @@ def test_get_corrected_commands(mocker):
                   get_new_command=lambda x: [x.script + '@', x.script + ';'],
                   priority=60)]
     mocker.patch('thefuck.corrector.get_rules', return_value=rules)
-    assert [cmd.script for cmd in get_corrected_commands(command, None)] \
+    assert [cmd.script for cmd in get_corrected_commands(command)] \
            == ['test!', 'test@', 'test;']

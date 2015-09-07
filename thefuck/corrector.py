@@ -31,12 +31,12 @@ def get_loaded_rules(rules):
                 yield loaded_rule
 
 
-def get_rules(user_dir):
+def get_rules():
     """Returns all enabled rules."""
     bundled = Path(__file__).parent \
         .joinpath('rules') \
         .glob('*.py')
-    user = user_dir.joinpath('rules').glob('*.py')
+    user = settings.user_dir.joinpath('rules').glob('*.py')
     return sorted(get_loaded_rules(sorted(bundled) + sorted(user)),
                   key=lambda rule: rule.priority)
 
@@ -66,9 +66,9 @@ def make_corrected_commands(command, rule):
                                priority=(n + 1) * rule.priority)
 
 
-def get_corrected_commands(command, user_dir):
+def get_corrected_commands(command):
     corrected_commands = (
-        corrected for rule in get_rules(user_dir)
+        corrected for rule in get_rules()
         if is_rule_match(command, rule)
         for corrected in make_corrected_commands(command, rule))
     return SortedCorrectedCommandsSequence(corrected_commands)

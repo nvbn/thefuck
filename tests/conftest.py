@@ -1,3 +1,4 @@
+from pathlib import Path
 import pytest
 from thefuck import conf
 
@@ -16,7 +17,12 @@ def no_memoize(monkeypatch):
 
 @pytest.fixture(autouse=True)
 def settings(request):
-    request.addfinalizer(lambda: conf.settings.update(conf.DEFAULT_SETTINGS))
+    def _reset_settings():
+        conf.settings.clear()
+        conf.settings.update(conf.DEFAULT_SETTINGS)
+
+    request.addfinalizer(_reset_settings)
+    conf.settings.user_dir = Path('~/.thefuck')
     return conf.settings
 
 

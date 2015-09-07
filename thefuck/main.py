@@ -98,7 +98,7 @@ def fix_command():
             logs.debug('Empty command, nothing to do')
             return
 
-        corrected_commands = get_corrected_commands(command, user_dir)
+        corrected_commands = get_corrected_commands(command)
         selected_command = select_command(corrected_commands)
         if selected_command:
             run_command(command, selected_command)
