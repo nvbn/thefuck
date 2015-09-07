@@ -11,19 +11,17 @@ def get_all_executables(mocker):
 
 @pytest.mark.usefixtures('no_memoize')
 def test_match():
-    assert match(Command(stderr='vom: not found', script='vom file.py'), None)
-    assert match(Command(stderr='fucck: not found', script='fucck'), None)
-    assert not match(Command(stderr='qweqwe: not found', script='qweqwe'), None)
-    assert not match(Command(stderr='some text', script='vom file.py'), None)
+    assert match(Command(stderr='vom: not found', script='vom file.py'))
+    assert match(Command(stderr='fucck: not found', script='fucck'))
+    assert not match(Command(stderr='qweqwe: not found', script='qweqwe'))
+    assert not match(Command(stderr='some text', script='vom file.py'))
 
 
 @pytest.mark.usefixtures('no_memoize')
 def test_get_new_command():
     assert get_new_command(
         Command(stderr='vom: not found',
-                script='vom file.py'),
-        None) == ['vim file.py']
+                script='vom file.py')) == ['vim file.py']
     assert get_new_command(
         Command(stderr='fucck: not found',
-                script='fucck'),
-        Command) == ['fsck']
+                script='fucck')) == ['fsck']

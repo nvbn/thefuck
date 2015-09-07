@@ -3,10 +3,10 @@ from tests.utils import Command
 
 
 def test_match():
-    assert match(Command('cd..', stderr='cd..: command not found'), None)
-    assert not match(Command(), None)
+    assert match(Command('cd..', stderr='cd..: command not found'))
+    assert not match(Command())
 
 
 def test_get_new_command():
     assert get_new_command(
-        Command('cd..'), None) == 'cd ..'
+        Command('cd..')) == 'cd ..'

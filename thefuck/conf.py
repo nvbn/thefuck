@@ -1,12 +1,11 @@
-from copy import copy
 from imp import load_source
 import os
 import sys
 from six import text_type
-from . import logs, types
+from .types import RulesNamesList, Settings
 
 
-class _DefaultRulesNames(types.RulesNamesList):
+class _DefaultRulesNames(RulesNamesList):
     def __add__(self, items):
         return _DefaultRulesNames(list(self) + items)
 
@@ -24,7 +23,6 @@ class _DefaultRulesNames(types.RulesNamesList):
 DEFAULT_RULES = _DefaultRulesNames([])
 DEFAULT_PRIORITY = 1000
 
-
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'exclude_rules': [],
                     'wait_command': 3,
@@ -41,7 +39,6 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_NO_COLORS': 'no_colors',
                'THEFUCK_PRIORITY': 'priority',
                'THEFUCK_DEBUG': 'debug'}
-
 
 SETTINGS_HEADER = u"""# ~/.thefuck/settings.py: The Fuck settings file
 #
@@ -105,30 +102,30 @@ def _settings_from_env():
             if env in os.environ}
 
 
-def get_settings(user_dir):
-    """Returns settings filled with values from `settings.py` and env."""
-    conf = copy(DEFAULT_SETTINGS)
-    try:
-        conf.update(_settings_from_file(user_dir))
-    except Exception:
-        logs.exception("Can't load settings from file",
-                       sys.exc_info(),
-                       types.Settings(conf))
+settings = Settings(DEFAULT_SETTINGS)
+
+
+def init_settings(user_dir):
+    """Fills `settings` with values from `settings.py` and env."""
+    from .logs import exception
+
+    settings.user_dir = user_dir
 
     try:
-        conf.update(_settings_from_env())
+        settings.update(_settings_from_file(user_dir))
     except Exception:
-        logs.exception("Can't load settings from env",
-                       sys.exc_info(),
-                       types.Settings(conf))
+        exception("Can't load settings from file", sys.exc_info())
 
-    if not isinstance(conf['rules'], types.RulesNamesList):
-        conf['rules'] = types.RulesNamesList(conf['rules'])
+    try:
+        settings.update(_settings_from_env())
+    except Exception:
+        exception("Can't load settings from env", sys.exc_info())
 
-    if not isinstance(conf['exclude_rules'], types.RulesNamesList):
-        conf['exclude_rules'] = types.RulesNamesList(conf['exclude_rules'])
+    if not isinstance(settings['rules'], RulesNamesList):
+        settings.rules = RulesNamesList(settings['rules'])
 
-    return types.Settings(conf)
+    if not isinstance(settings.exclude_rules, RulesNamesList):
+        settings.exclude_rules = RulesNamesList(settings.exclude_rules)
 
 
 def initialize_settings_file(user_dir):

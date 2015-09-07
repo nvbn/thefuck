@@ -3,10 +3,10 @@ from tests.utils import Command
 
 
 def test_match():
-    assert match(Command('grep blah .', stderr='grep: .: Is a directory'), None)
-    assert not match(Command(), None)
+    assert match(Command('grep blah .', stderr='grep: .: Is a directory'))
+    assert not match(Command())
 
 
 def test_get_new_command():
     assert get_new_command(
-        Command('grep blah .'), None) == 'grep -r blah .'
+        Command('grep blah .')) == 'grep -r blah .'

@@ -10,7 +10,7 @@ from tests.utils import Command
     Command('./bin/hdfs dfs -rm foo', stderr='rm: `foo`: Is a directory')
     ])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -19,13 +19,13 @@ def test_match(command):
     Command('./bin/hdfs dfs -rm foo'),  
     Command()])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
     (Command('rm foo'), 'rm -rf foo'),
     (Command('hdfs dfs -rm foo'), 'hdfs dfs -rm -r foo')])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command
 
 

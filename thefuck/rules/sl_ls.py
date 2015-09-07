@@ -6,9 +6,9 @@ I often fuck up 'ls' and type 'sl'. No more!
 """
 
 
-def match(command, settings):
+def match(command):
     return command.script == 'sl'
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return 'ls'

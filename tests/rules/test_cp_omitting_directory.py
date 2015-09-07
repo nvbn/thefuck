@@ -7,7 +7,7 @@ from tests.utils import Command
     ('cp dir', 'cp: dor: is a directory'),
     ('cp dir', "cp: omitting directory 'dir'")])
 def test_match(script, stderr):
-    assert match(Command(script, stderr=stderr), None)
+    assert match(Command(script, stderr=stderr))
 
 
 @pytest.mark.parametrize('script, stderr', [
@@ -15,8 +15,8 @@ def test_match(script, stderr):
     ('some dir', "cp: omitting directory 'dir'"),
     ('cp dir', '')])
 def test_not_match(script, stderr):
-    assert not match(Command(script, stderr=stderr), None)
+    assert not match(Command(script, stderr=stderr))
 
 
 def test_get_new_command():
-    assert get_new_command(Command(script='cp dir'), None) == 'cp -a dir'
+    assert get_new_command(Command(script='cp dir')) == 'cp -a dir'

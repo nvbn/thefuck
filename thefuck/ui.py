@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 import sys
+from .conf import settings
 from . import logs
 
 try:
@@ -71,7 +72,7 @@ class CommandSelector(object):
         fn(self.value)
 
 
-def select_command(corrected_commands, settings):
+def select_command(corrected_commands):
     """Returns:
 
      - the first command when confirmation disabled;
@@ -80,21 +81,21 @@ def select_command(corrected_commands, settings):
 
     """
     if not corrected_commands:
-        logs.failed('No fucks given', settings)
+        logs.failed('No fucks given')
         return
 
     selector = CommandSelector(corrected_commands)
     if not settings.require_confirmation:
-        logs.show_corrected_command(selector.value, settings)
+        logs.show_corrected_command(selector.value)
         return selector.value
 
-    selector.on_change(lambda val: logs.confirm_text(val, settings))
+    selector.on_change(lambda val: logs.confirm_text(val))
     for action in read_actions():
         if action == SELECT:
             sys.stderr.write('\n')
             return selector.value
         elif action == ABORT:
-            logs.failed('\nAborted', settings)
+            logs.failed('\nAborted')
             return
         elif action == PREVIOUS:
             selector.previous()

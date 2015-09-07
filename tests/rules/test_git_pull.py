@@ -19,11 +19,11 @@ If you wish to set tracking information for this branch you can do so with:
 
 
 def test_match(stderr):
-    assert match(Command('git pull', stderr=stderr), None)
-    assert not match(Command('git pull'), None)
-    assert not match(Command('ls', stderr=stderr), None)
+    assert match(Command('git pull', stderr=stderr))
+    assert not match(Command('git pull'))
+    assert not match(Command('ls', stderr=stderr))
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command('git pull', stderr=stderr), None) \
+    assert get_new_command(Command('git pull', stderr=stderr)) \
            == "git branch --set-upstream-to=origin/master master && git pull"

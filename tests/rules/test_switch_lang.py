@@ -9,7 +9,7 @@ from tests.utils import Command
     Command(stderr='command not found: фзе-пуе', script=u'фзе-пуе'),
     Command(stderr='command not found: λσ', script=u'λσ')])
 def test_match(command):
-    assert switch_lang.match(command, None)
+    assert switch_lang.match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -18,11 +18,11 @@ def test_match(command):
     Command(stderr='command not found: агсл', script=u'агсл'),
     Command(stderr='some info', script=u'фзе-пуе')])
 def test_not_match(command):
-    assert not switch_lang.match(command, None)
+    assert not switch_lang.match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
     (Command(u'фзе-пуе штыефдд мшь'), 'apt-get install vim'),
     (Command(u'λσ -λα'), 'ls -la')])
 def test_get_new_command(command, new_command):
-    assert switch_lang.get_new_command(command, None) == new_command
+    assert switch_lang.get_new_command(command) == new_command

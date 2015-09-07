@@ -16,14 +16,14 @@ no_suggest_stderr = ''' !    `aaaaa` is not a heroku command.
 @pytest.mark.parametrize('cmd', ['log', 'pge'])
 def test_match(cmd):
     assert match(
-        Command('heroku {}'.format(cmd), stderr=suggest_stderr(cmd)), None)
+        Command('heroku {}'.format(cmd), stderr=suggest_stderr(cmd)))
 
 
 @pytest.mark.parametrize('script, stderr', [
     ('cat log', suggest_stderr('log')),
     ('heroku aaa', no_suggest_stderr)])
 def test_not_match(script, stderr):
-    assert not match(Command(script, stderr=stderr), None)
+    assert not match(Command(script, stderr=stderr))
 
 
 @pytest.mark.parametrize('cmd, result', [
@@ -31,4 +31,4 @@ def test_not_match(script, stderr):
     ('pge', ['heroku pg', 'heroku logs'])])
 def test_get_new_command(cmd, result):
     command = Command('heroku {}'.format(cmd), stderr=suggest_stderr(cmd))
-    assert get_new_command(command, None) == result
+    assert get_new_command(command) == result

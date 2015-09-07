@@ -30,7 +30,7 @@ from thefuck.rules.tsuru_not_command import match, get_new_command
     )),
 ])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -58,7 +58,7 @@ def test_match(command):
     Command('tsuru env-get', stderr='Error: App thefuck not found.'),
 ])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_commands', [
@@ -87,4 +87,4 @@ def test_not_match(command):
     )), ['tsuru target-list']),
 ])
 def test_get_new_command(command, new_commands):
-    assert get_new_command(command, None) == new_commands
+    assert get_new_command(command) == new_commands

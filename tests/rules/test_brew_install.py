@@ -28,9 +28,9 @@ def _is_not_okay_to_test():
 def test_match(brew_no_available_formula, brew_already_installed,
                brew_install_no_argument):
     assert match(Command('brew install elsticsearch',
-                         stderr=brew_no_available_formula), None)
+                         stderr=brew_no_available_formula))
     assert not match(Command('brew install git',
-                             stderr=brew_already_installed), None)
+                             stderr=brew_already_installed))
     assert not match(Command('brew install', stderr=brew_install_no_argument),
                      None)
 
@@ -39,7 +39,7 @@ def test_match(brew_no_available_formula, brew_already_installed,
                     reason='No need to run if there\'s no formula')
 def test_get_new_command(brew_no_available_formula):
     assert get_new_command(Command('brew install elsticsearch',
-                                   stderr=brew_no_available_formula), None)\
+                                   stderr=brew_no_available_formula))\
         == 'brew install elasticsearch'
 
     assert get_new_command(Command('brew install aa',

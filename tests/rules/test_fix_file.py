@@ -184,7 +184,7 @@ E       NameError: name 'mocker' is not defined
 def test_match(mocker, monkeypatch, test):
     mocker.patch('os.path.isfile', return_value=True)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
-    assert match(Command(stdout=test[4], stderr=test[5]), None)
+    assert match(Command(stdout=test[4], stderr=test[5]))
 
 
 @pytest.mark.parametrize('test', tests)
@@ -194,7 +194,7 @@ def test_no_editor(mocker, monkeypatch, test):
     if 'EDITOR' in os.environ:
         monkeypatch.delenv('EDITOR')
 
-    assert not match(Command(stdout=test[4], stderr=test[5]), None)
+    assert not match(Command(stdout=test[4], stderr=test[5]))
 
 
 @pytest.mark.parametrize('test', tests)
@@ -203,7 +203,7 @@ def test_not_file(mocker, monkeypatch, test):
     mocker.patch('os.path.isfile', return_value=False)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
 
-    assert not match(Command(stdout=test[4], stderr=test[5]), None)
+    assert not match(Command(stdout=test[4], stderr=test[5]))
 
 
 @pytest.mark.parametrize('test', tests)
@@ -219,16 +219,16 @@ def test_get_new_command(mocker, monkeypatch, test):
 
 @pytest.mark.parametrize('test', tests)
 @pytest.mark.usefixtures('no_memoize')
-def test_get_new_command_with_settings(mocker, monkeypatch, test):
+def test_get_new_command_with_settings(mocker, monkeypatch, test, settings):
     mocker.patch('os.path.isfile', return_value=True)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
 
     cmd = Command(script=test[0], stdout=test[4], stderr=test[5])
-    settings = Settings({'fixcolcmd': '{editor} {file} +{line}:{col}'})
+    settings.fixcolcmd = '{editor} {file} +{line}:{col}'
 
     if test[3]:
-        assert (get_new_command(cmd, settings) ==
+        assert (get_new_command(cmd) ==
             'dummy_editor {} +{}:{} && {}'.format(test[1], test[2], test[3], test[0]))
     else:
-        assert (get_new_command(cmd, settings) ==
+        assert (get_new_command(cmd) ==
             'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))

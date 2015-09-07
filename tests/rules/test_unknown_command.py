@@ -9,7 +9,7 @@ from tests.utils import Command
             stderr='ls: Unknown command\nDid you mean -ls?  This command begins with a dash.'),
     Command(script='hdfs dfs ls /foo/bar', stderr='ls: Unknown command\nDid you mean -ls?  This command begins with a dash.')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -18,7 +18,7 @@ def test_match(command):
     Command(script='hdfs dfs -ls -R /foo/bar', stderr=''),  
     Command()])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -31,5 +31,5 @@ def test_not_match(command):
     (Command('./bin/hdfs dfs -Dtest=fred ls -R /foo/bar',
         stderr='ls: Unknown command\nDid you mean -ls?  This command begins with a dash.'), ['./bin/hdfs dfs -Dtest=fred -ls -R /foo/bar'])])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command
 

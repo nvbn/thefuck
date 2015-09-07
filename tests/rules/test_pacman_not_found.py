@@ -15,7 +15,7 @@ extra/llvm35 3.5.2-13/usr/bin/llc'''
     Command(script='pacman llc', stderr='error: target not found: llc'),
     Command(script='sudo pacman llc', stderr='error: target not found: llc')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -25,7 +25,7 @@ def test_match(command):
 @patch('thefuck.specific.archlinux.subprocess')
 def test_match_mocked(subp_mock, command):
     subp_mock.check_output.return_value = PKGFILE_OUTPUT_LLC
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.skipif(not getattr(pacman_not_found, 'enabled_by_default', True),
@@ -35,7 +35,7 @@ def test_match_mocked(subp_mock, command):
     (Command(script='pacman -S llc', stderr='error: target not found: llc'), ['pacman -S extra/llvm', 'pacman -S extra/llvm35']),
     (Command(script='sudo pacman -S llc', stderr='error: target not found: llc'), ['sudo pacman -S extra/llvm', 'sudo pacman -S extra/llvm35'])])
 def test_get_new_command(command, fixed):
-    assert get_new_command(command, None) == fixed
+    assert get_new_command(command) == fixed
 
 
 @pytest.mark.parametrize('command, fixed', [
@@ -45,4 +45,4 @@ def test_get_new_command(command, fixed):
 @patch('thefuck.specific.archlinux.subprocess')
 def test_get_new_command_mocked(subp_mock, command, fixed):
     subp_mock.check_output.return_value = PKGFILE_OUTPUT_LLC
-    assert get_new_command(command, None) == fixed
+    assert get_new_command(command) == fixed

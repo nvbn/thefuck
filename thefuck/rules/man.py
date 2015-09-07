@@ -1,8 +1,8 @@
-def match(command, settings):
+def match(command):
     return command.script.strip().startswith('man ')
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     if '3' in command.script:
         return command.script.replace("3", "2")
     if '2' in command.script:

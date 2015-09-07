@@ -14,13 +14,13 @@ def _getavailable_lifecycles(command):
 
 
 @for_app('mvn')
-def match(command, settings):
+def match(command):
     failed_lifecycle = _get_failed_lifecycle(command)
     available_lifecycles = _getavailable_lifecycles(command)
     return available_lifecycles and failed_lifecycle
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     failed_lifecycle = _get_failed_lifecycle(command)
     available_lifecycles = _getavailable_lifecycles(command)
     if available_lifecycles and failed_lifecycle:

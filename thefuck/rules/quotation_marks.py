@@ -4,9 +4,9 @@
 # > git commit -m 'My Message"
 
 
-def match(command, settings):
+def match(command):
     return '\'' in command.script and '\"' in command.script
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return command.script.replace('\'', '\"')

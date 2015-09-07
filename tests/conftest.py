@@ -1,5 +1,6 @@
+from pathlib import Path
 import pytest
-from mock import Mock
+from thefuck import conf
 
 
 def pytest_addoption(parser):
@@ -14,9 +15,20 @@ def no_memoize(monkeypatch):
     monkeypatch.setattr('thefuck.utils.memoize.disabled', True)
 
 
+@pytest.fixture(autouse=True)
+def settings(request):
+    def _reset_settings():
+        conf.settings.clear()
+        conf.settings.update(conf.DEFAULT_SETTINGS)
+
+    request.addfinalizer(_reset_settings)
+    conf.settings.user_dir = Path('~/.thefuck')
+    return conf.settings
+
+
 @pytest.fixture
-def settings():
-    return Mock(debug=False, no_colors=True)
+def no_colors(settings):
+    settings.no_colors = True
 
 
 @pytest.fixture(autouse=True)

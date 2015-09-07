@@ -23,7 +23,7 @@ extra/vim-python3 7.4.712-1 \t/usr/bin/vim'''
     Command(script='vim', stderr='vim: command not found'),
     Command(script='sudo vim', stderr='sudo: vim: command not found')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command, return_value', [
@@ -33,14 +33,14 @@ def test_match(command):
 @patch.multiple(pacman, create=True, pacman=pacman_cmd)
 def test_match_mocked(subp_mock, command, return_value):
     subp_mock.check_output.return_value = return_value
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
     Command(script='vim', stderr=''), Command(),
     Command(script='sudo vim', stderr=''), Command()])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 sudo_vim_possibilities = ['{} -S extra/gvim && sudo vim',
@@ -66,7 +66,7 @@ vim_possibilities = [s.format(pacman_cmd) for s in vim_possibilities]
     (Command('convert'), ['{} -S extra/imagemagick && convert'.format(pacman_cmd)]),
     (Command('sudo convert'), ['{} -S extra/imagemagick && sudo convert'.format(pacman_cmd)])])
 def test_get_new_command(command, new_command, mocker):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command
 
 
 @pytest.mark.parametrize('command, new_command, return_value', [
@@ -79,4 +79,4 @@ def test_get_new_command(command, new_command, mocker):
 @patch.multiple(pacman, create=True, pacman=pacman_cmd)
 def test_get_new_command_mocked(subp_mock, command, new_command, return_value):
     subp_mock.check_output.return_value = return_value
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

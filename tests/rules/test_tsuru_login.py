@@ -15,7 +15,7 @@ error_msg = (
     Command(script='tsuru app-log -f', stderr=error_msg[1]),
 ])
 def test_match(command):
-    assert match(command, {})
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -24,7 +24,7 @@ def test_match(command):
     Command(script='tsuru app-log -f', stderr=('Error: unparseable data')),
 ])
 def test_not_match(command):
-    assert not match(command, {})
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -34,4 +34,4 @@ def test_not_match(command):
      'tsuru login && tsuru app-log -f'),
 ])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, {}) == new_command
+    assert get_new_command(command) == new_command

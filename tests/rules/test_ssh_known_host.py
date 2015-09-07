@@ -44,23 +44,23 @@ Host key verification failed.""".format(path, '98.765.432.321')
 
 def test_match(ssh_error):
     errormsg, _, _, _ = ssh_error
-    assert match(Command('ssh', stderr=errormsg), None)
-    assert match(Command('ssh', stderr=errormsg), None)
-    assert match(Command('scp something something', stderr=errormsg), None)
-    assert match(Command('scp something something', stderr=errormsg), None)
-    assert not match(Command(stderr=errormsg), None)
-    assert not match(Command('notssh', stderr=errormsg), None)
-    assert not match(Command('ssh'), None)
+    assert match(Command('ssh', stderr=errormsg))
+    assert match(Command('ssh', stderr=errormsg))
+    assert match(Command('scp something something', stderr=errormsg))
+    assert match(Command('scp something something', stderr=errormsg))
+    assert not match(Command(stderr=errormsg))
+    assert not match(Command('notssh', stderr=errormsg))
+    assert not match(Command('ssh'))
 
 
 def test_side_effect(ssh_error):
     errormsg, path, reset, known_hosts = ssh_error
     command = Command('ssh user@host', stderr=errormsg)
-    side_effect(command, None, None)
+    side_effect(command, None)
     expected = ['123.234.567.890 asdjkasjdakjsd\n', '111.222.333.444 qwepoiwqepoiss\n']
     assert known_hosts(path) == expected
 
 
 def test_get_new_command(ssh_error, monkeypatch):
     errormsg, _, _, _ = ssh_error
-    assert get_new_command(Command('ssh user@host', stderr=errormsg), None) == 'ssh user@host'
+    assert get_new_command(Command('ssh user@host', stderr=errormsg)) == 'ssh user@host'

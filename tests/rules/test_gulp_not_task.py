@@ -11,18 +11,18 @@ def stdout(task):
 
 
 def test_match():
-    assert match(Command('gulp srve', stdout('srve')), None)
+    assert match(Command('gulp srve', stdout('srve')))
 
 
 @pytest.mark.parametrize('script, stdout', [
     ('gulp serve', ''),
     ('cat srve', stdout('srve'))])
 def test_not_march(script, stdout):
-    assert not match(Command(script, stdout), None)
+    assert not match(Command(script, stdout))
 
 
 def test_get_new_command(mocker):
     mocker.patch('thefuck.rules.gulp_not_task.get_gulp_tasks', return_value=[
         'serve', 'build', 'default'])
     command = Command('gulp srve', stdout('srve'))
-    assert get_new_command(command, None) == ['gulp serve', 'gulp default']
+    assert get_new_command(command) == ['gulp serve', 'gulp default']
