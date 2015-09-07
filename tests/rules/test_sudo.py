@@ -14,11 +14,11 @@ from tests.utils import Command
     ('You don\'t have access to the history DB.', ''),
     ('', "error: [Errno 13] Permission denied: '/usr/local/lib/python2.7/dist-packages/ipaddr.py'")])
 def test_match(stderr, stdout):
-    assert match(Command(stderr=stderr, stdout=stdout), None)
+    assert match(Command(stderr=stderr, stdout=stdout))
 
 
 def test_not_match():
-    assert not match(Command(), None)
+    assert not match(Command())
 
 
 @pytest.mark.parametrize('before, after', [
@@ -26,4 +26,4 @@ def test_not_match():
     ('echo a > b', 'sudo sh -c "echo a > b"'),
     ('echo "a" >> b', 'sudo sh -c "echo \\"a\\" >> b"')])
 def test_get_new_command(before, after):
-    assert get_new_command(Command(before), None) == after
+    assert get_new_command(Command(before)) == after

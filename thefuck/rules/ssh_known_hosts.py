@@ -5,7 +5,7 @@ commands = ('ssh', 'scp')
 
 
 @for_app(*commands)
-def match(command, settings):
+def match(command):
     if not command.script:
         return False
     if not command.script.startswith(commands):
@@ -20,11 +20,11 @@ def match(command, settings):
     return any(re.findall(pattern, command.stderr) for pattern in patterns)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     return command.script
 
 
-def side_effect(old_cmd, command, settings):
+def side_effect(old_cmd, command):
     offending_pattern = re.compile(
         r'(?:Offending (?:key for IP|\S+ key)|Matching host key) in ([^:]+):(\d+)',
         re.MULTILINE)

@@ -8,7 +8,7 @@ from tests.utils import Command
     Command(script="git commit -am \"Mismatched Quotation Marks\'"),
     Command(script="echo \"hello\'")])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
@@ -16,4 +16,4 @@ def test_match(command):
     (Command("git commit -am \"Mismatched Quotation Marks\'"), "git commit -am \"Mismatched Quotation Marks\""),
     (Command("echo \"hello\'"), "echo \"hello\"")])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

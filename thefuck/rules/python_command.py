@@ -5,7 +5,7 @@ from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support
-def match(command, settings):
+def match(command):
     toks = command.script.split()
     return (len(toks) > 0
             and toks[0].endswith('.py')
@@ -14,5 +14,5 @@ def match(command, settings):
 
 
 @sudo_support
-def get_new_command(command, settings):
+def get_new_command(command):
     return 'python ' + command.script

@@ -37,7 +37,7 @@ from thefuck.rules.mercurial import (
     )),
 ])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -63,7 +63,7 @@ def test_match(command):
     )),
 ])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, possibilities', [
@@ -131,4 +131,4 @@ def test_extract_possibilities(command, possibilities):
     )), 'hg rebase re'),
 ])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

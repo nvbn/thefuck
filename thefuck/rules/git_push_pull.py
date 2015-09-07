@@ -4,7 +4,7 @@ from thefuck.specific.git import git_support
 
 
 @git_support
-def match(command, settings):
+def match(command):
     return ('push' in command.script
             and '! [rejected]' in command.stderr
             and 'failed to push some refs to' in command.stderr
@@ -12,6 +12,6 @@ def match(command, settings):
 
 
 @git_support
-def get_new_command(command, settings):
+def get_new_command(command):
     return shells.and_(replace_argument(command.script, 'push', 'pull'),
                        command.script)

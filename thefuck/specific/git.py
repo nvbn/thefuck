@@ -6,7 +6,7 @@ from ..utils import quote, is_app
 
 
 @decorator
-def git_support(fn, command, settings):
+def git_support(fn, command):
     """Resolves git aliases and supports testing for both git and hub."""
     # supports GitHub's `hub` command
     # which is recommended to be used with `alias git=hub`
@@ -29,4 +29,4 @@ def git_support(fn, command, settings):
 
         command = Command._replace(command, script=new_script)
 
-    return fn(command, settings)
+    return fn(command)

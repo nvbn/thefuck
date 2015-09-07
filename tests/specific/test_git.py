@@ -9,9 +9,10 @@ from tests.utils import Command
      "19:23:25.470911 git.c:282   trace: alias expansion: com => 'commit' '--verbose'")])
 def test_git_support(called, command, stderr):
     @git_support
-    def fn(command, settings): return command.script
+    def fn(command):
+        return command.script
 
-    assert fn(Command(script=called, stderr=stderr), None) == command
+    assert fn(Command(script=called, stderr=stderr)) == command
 
 
 @pytest.mark.parametrize('command, is_git', [
@@ -24,6 +25,7 @@ def test_git_support(called, command, stderr):
     ('cat hub', False)])
 def test_git_support_match(command, is_git):
     @git_support
-    def fn(command, settings): return True
+    def fn(command):
+        return True
 
-    assert fn(Command(script=command), None) == is_git
+    assert fn(Command(script=command)) == is_git

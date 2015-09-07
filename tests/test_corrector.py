@@ -61,10 +61,10 @@ class TestGetRules(object):
 class TestIsRuleMatch(object):
     def test_no_match(self):
         assert not corrector.is_rule_match(
-            Command('ls'), Rule('', lambda *_: False))
+            Command('ls'), Rule('', lambda _: False))
 
     def test_match(self):
-        rule = Rule('', lambda x, _: x.script == 'cd ..')
+        rule = Rule('', lambda x: x.script == 'cd ..')
         assert corrector.is_rule_match(Command('cd ..'), rule)
 
     @pytest.mark.usefixtures('no_colors')
@@ -77,25 +77,25 @@ class TestIsRuleMatch(object):
 
 class TestMakeCorrectedCommands(object):
     def test_with_rule_returns_list(self):
-        rule = Rule(get_new_command=lambda x, _: [x.script + '!', x.script + '@'],
+        rule = Rule(get_new_command=lambda x: [x.script + '!', x.script + '@'],
                     priority=100)
         assert list(make_corrected_commands(Command(script='test'), rule)) \
                == [CorrectedCommand(script='test!', priority=100),
                    CorrectedCommand(script='test@', priority=200)]
 
     def test_with_rule_returns_command(self):
-        rule = Rule(get_new_command=lambda x, _: x.script + '!',
+        rule = Rule(get_new_command=lambda x: x.script + '!',
                     priority=100)
         assert list(make_corrected_commands(Command(script='test'), rule)) \
                == [CorrectedCommand(script='test!', priority=100)]
 
 def test_get_corrected_commands(mocker):
     command = Command('test', 'test', 'test')
-    rules = [Rule(match=lambda *_: False),
-             Rule(match=lambda *_: True,
-                  get_new_command=lambda x, _: x.script + '!', priority=100),
-             Rule(match=lambda *_: True,
-                  get_new_command=lambda x, _: [x.script + '@', x.script + ';'],
+    rules = [Rule(match=lambda _: False),
+             Rule(match=lambda _: True,
+                  get_new_command=lambda x: x.script + '!', priority=100),
+             Rule(match=lambda _: True,
+                  get_new_command=lambda x: [x.script + '@', x.script + ';'],
                   priority=60)]
     mocker.patch('thefuck.corrector.get_rules', return_value=rules)
     assert [cmd.script for cmd in get_corrected_commands(command, None)] \

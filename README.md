@@ -226,20 +226,21 @@ For adding your own rule you should create `your-rule-name.py`
 in `~/.thefuck/rules`. The rule should contain two functions:
 
 ```python
-match(command: Command, settings: Settings) -> bool
-get_new_command(command: Command, settings: Settings) -> str | list[str]
+match(command: Command) -> bool
+get_new_command(command: Command) -> str | list[str]
 ```
 
 Also the rule can contain an optional function
 
 ```python
-side_effect(old_command: Command, fixed_command: str, settings: Settings) -> None
+side_effect(old_command: Command, fixed_command: str) -> None
 ```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
 `Command` has three attributes: `script`, `stdout` and `stderr`.
 
-`Settings` is a special object filled with `~/.thefuck/settings.py` and values from env ([see more below](#settings)).
+*Rules api changed in 3.0:* For accessing settings in rule you need to import it with `from thefuck.conf import settings`.
+`settings` is a special object filled with `~/.thefuck/settings.py` and values from env ([see more below](#settings)).
 
 Simple example of the rule for running script with `sudo`:
 
@@ -264,7 +265,8 @@ requires_output = True
 ```
 
 [More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
-[utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py).
+[utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py),
+[app/os-specific helpers](https://github.com/nvbn/thefuck/tree/master/thefuck/specific/).
 
 ## Settings
 

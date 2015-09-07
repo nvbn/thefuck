@@ -4,7 +4,7 @@ from tests.utils import Command
 
 
 def test_match():
-    assert match(Command('apt-get search foo'), None)
+    assert match(Command('apt-get search foo'))
 
 
 @pytest.mark.parametrize('command', [
@@ -18,8 +18,8 @@ def test_match():
     Command('apt-get update')
 ])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 def test_get_new_command():
-    assert get_new_command(Command('apt-get search foo'), None) == 'apt-cache search foo'
+    assert get_new_command(Command('apt-get search foo')) == 'apt-cache search foo'

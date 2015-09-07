@@ -3,6 +3,7 @@ from imp import load_source
 from pathlib import Path
 from .conf import settings, DEFAULT_PRIORITY
 from .types import Rule, CorrectedCommand, SortedCorrectedCommandsSequence
+from .utils import compatibility_call
 from . import logs
 
 
@@ -49,14 +50,14 @@ def is_rule_match(command, rule):
 
     try:
         with logs.debug_time(u'Trying rule: {};'.format(rule.name)):
-            if rule.match(command, settings):
+            if compatibility_call(rule.match, command):
                 return True
     except Exception:
         logs.rule_failed(rule, sys.exc_info())
 
 
 def make_corrected_commands(command, rule):
-    new_commands = rule.get_new_command(command, settings)
+    new_commands = compatibility_call(rule.get_new_command, command)
     if not isinstance(new_commands, list):
         new_commands = (new_commands,)
     for n, new_command in enumerate(new_commands):

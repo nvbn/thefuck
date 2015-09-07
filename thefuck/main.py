@@ -13,6 +13,7 @@ import six
 from . import logs, types, shells
 from .conf import initialize_settings_file, init_settings, settings
 from .corrector import get_corrected_commands
+from .utils import compatibility_call
 from .ui import select_command
 
 
@@ -77,7 +78,7 @@ def get_command(args):
 def run_command(old_cmd, command):
     """Runs command from rule for passed command."""
     if command.side_effect:
-        command.side_effect(old_cmd, command.script, settings)
+        compatibility_call(command.side_effect, old_cmd, command.script)
     shells.put_to_history(command.script)
     print(command.script)
 

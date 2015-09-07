@@ -20,11 +20,11 @@ def get_package(command):
         return None
 
 
-def match(command, settings):
+def match(command):
     return 'not found' in command.stderr and get_package(command.script)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     name = get_package(command.script)
     formatme = shells.and_('sudo apt-get install {}', '{}')
     return formatme.format(name, command.script)

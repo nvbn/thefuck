@@ -3,10 +3,10 @@ from tests.utils import Command
 
 
 def test_match():
-    assert match(Command('temp.py', stderr='Permission denied'), None)
-    assert not match(Command(), None)
+    assert match(Command('temp.py', stderr='Permission denied'))
+    assert not match(Command())
 
 
 def test_get_new_command():
-    assert get_new_command(Command('./test_sudo.py'), None)\
+    assert get_new_command(Command('./test_sudo.py'))\
            == 'python ./test_sudo.py'

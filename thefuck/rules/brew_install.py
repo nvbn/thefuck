@@ -24,7 +24,7 @@ def _get_similar_formula(formula_name):
     return get_closest(formula_name, _get_formulas(), 1, 0.85)
 
 
-def match(command, settings):
+def match(command):
     is_proper_command = ('brew install' in command.script and
                          'No available formula' in command.stderr)
 
@@ -35,7 +35,7 @@ def match(command, settings):
     return False
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     not_exist_formula = re.findall(r'Error: No available formula for ([a-z]+)',
                                    command.stderr)[0]
     exist_formula = _get_similar_formula(not_exist_formula)

@@ -1,6 +1,7 @@
 from difflib import get_close_matches
 from functools import wraps
 import shelve
+from warnings import warn
 from decorator import decorator
 from contextlib import closing
 import tempfile
@@ -8,12 +9,12 @@ import tempfile
 import os
 import pickle
 import re
+from inspect import getargspec
 
 from pathlib import Path
 import pkg_resources
 import six
-from .types import Settings
-
+from .conf import settings
 
 DEVNULL = open(os.devnull, 'w')
 
@@ -70,11 +71,11 @@ def default_settings(params):
             print(settings.apt)
 
     """
-    def _wrap_settings(fn, command, settings):
+    def _default_settings(fn, command):
         for k, w in params.items():
             settings.setdefault(k, w)
-        return fn(command, settings)
-    return decorator(_wrap_settings)
+        return fn(command)
+    return decorator(_default_settings)
 
 
 def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
@@ -156,9 +157,9 @@ def is_app(command, *app_names):
 
 def for_app(*app_names):
     """Specifies that matching script is for on of app names."""
-    def _for_app(fn, command, settings):
+    def _for_app(fn, command):
         if is_app(command, *app_names):
-            return fn(command, settings)
+            return fn(command)
         else:
             return False
 
@@ -202,3 +203,24 @@ def cache(*depends_on):
                 return value
     return _cache
 cache.disabled = False
+
+
+def compatibility_call(fn, *args):
+    """Special call for compatibility with user-defined old-style rules
+    with `settings` param.
+
+    """
+    fn_args_count = len(getargspec(fn).args)
+    if fn.__name__ in ('match', 'get_new_command') and fn_args_count == 2:
+        warn("Two arguments `{}` from rule `{}` is deprecated, please "
+             "remove `settings` argument and use "
+             "`from thefuck.conf import settings` instead."
+             .format(fn.__name__, fn.__module__))
+        args += (settings,)
+    if fn.__name__ == 'side_effect' and fn_args_count == 3:
+        warn("Three arguments `side_effect` from rule `{}` is deprecated, "
+             "please remove `settings` argument and use `from thefuck.conf "
+             "import settings` instead."
+             .format(fn.__name__, fn.__module__))
+        args += (settings,)
+    return fn(*args)

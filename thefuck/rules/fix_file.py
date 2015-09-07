@@ -1,6 +1,7 @@
 import re
 import os
 from thefuck.utils import memoize, default_settings
+from thefuck.conf import settings
 from thefuck import shells
 
 
@@ -50,7 +51,7 @@ def _search(stderr):
             return m
 
 
-def match(command, settings):
+def match(command):
     if 'EDITOR' not in os.environ:
         return False
 
@@ -58,8 +59,8 @@ def match(command, settings):
 
 
 @default_settings({'fixlinecmd': '{editor} {file} +{line}',
-                'fixcolcmd': None})
-def get_new_command(command, settings):
+                   'fixcolcmd': None})
+def get_new_command(command):
     m = _search(command.stderr) or _search(command.stdout)
 
     # Note: there does not seem to be a standard for columns, so they are just

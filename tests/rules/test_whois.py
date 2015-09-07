@@ -8,11 +8,11 @@ from tests.utils import Command
     Command(script='whois https://en.wikipedia.org/'),
     Command(script='whois meta.unix.stackexchange.com')])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 def test_not_match():
-    assert not match(Command(script='whois'), None)
+    assert not match(Command(script='whois'))
 
 
 # `whois com` actually makes sense
@@ -23,4 +23,4 @@ def test_not_match():
                                                     'whois stackexchange.com',
                                                     'whois com'])])
 def test_get_new_command(command, new_command):
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

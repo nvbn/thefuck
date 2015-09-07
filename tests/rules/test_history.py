@@ -25,13 +25,13 @@ def callables(mocker):
 @pytest.mark.usefixtures('history', 'callables', 'no_memoize', 'alias')
 @pytest.mark.parametrize('script', ['ls cet', 'daff x'])
 def test_match(script):
-    assert match(Command(script=script), None)
+    assert match(Command(script=script))
 
 
 @pytest.mark.usefixtures('history', 'callables', 'no_memoize', 'alias')
 @pytest.mark.parametrize('script', ['apt-get', 'nocommand y'])
 def test_not_match(script):
-    assert not match(Command(script=script), None)
+    assert not match(Command(script=script))
 
 
 @pytest.mark.usefixtures('history', 'callables', 'no_memoize', 'alias')
@@ -39,4 +39,4 @@ def test_not_match(script):
     ('ls cet', 'ls cat'),
     ('daff x', 'diff x')])
 def test_get_new_command(script, result):
-    assert get_new_command(Command(script), None) == result
+    assert get_new_command(Command(script)) == result

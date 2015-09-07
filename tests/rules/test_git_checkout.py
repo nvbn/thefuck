@@ -21,7 +21,7 @@ def get_branches(mocker):
     Command(script='git checkout unknown', stderr=did_not_match('unknown')),
     Command(script='git commit unknown', stderr=did_not_match('unknown'))])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -30,7 +30,7 @@ def test_match(command):
     Command(script='git checkout known', stderr=('')),
     Command(script='git commit known', stderr=(''))])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('branches, command, new_command', [
@@ -50,4 +50,4 @@ def test_not_match(command):
      'git commit test-random-branch-123')])
 def test_get_new_command(branches, command, new_command, get_branches):
     get_branches.return_value = branches
-    assert get_new_command(command, None) == new_command
+    assert get_new_command(command) == new_command

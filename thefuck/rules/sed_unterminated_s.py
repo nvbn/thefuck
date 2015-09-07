@@ -3,11 +3,11 @@ from thefuck.utils import quote, for_app
 
 
 @for_app('sed')
-def match(command, settings):
+def match(command):
     return "unterminated `s' command" in command.stderr
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     script = shlex.split(command.script)
 
     for (i, e) in enumerate(script):

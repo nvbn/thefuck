@@ -14,12 +14,11 @@ def pip_unknown_cmd_without_recommend():
 
 
 def test_match(pip_unknown_cmd, pip_unknown_cmd_without_recommend):
-    assert match(Command('pip instatl', stderr=pip_unknown_cmd), None)
+    assert match(Command('pip instatl', stderr=pip_unknown_cmd))
     assert not match(Command('pip i',
-                             stderr=pip_unknown_cmd_without_recommend),
-                     None)
+                             stderr=pip_unknown_cmd_without_recommend))
 
 
 def test_get_new_command(pip_unknown_cmd):
-    assert get_new_command(Command('pip instatl', stderr=pip_unknown_cmd),
-                           None) == 'pip install'
+    assert get_new_command(Command('pip instatl',
+                                   stderr=pip_unknown_cmd)) == 'pip install'

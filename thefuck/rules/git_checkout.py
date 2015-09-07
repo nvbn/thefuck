@@ -6,7 +6,7 @@ from thefuck.specific.git import git_support
 
 
 @git_support
-def match(command, settings):
+def match(command):
     return ('did not match any file(s) known to git.' in command.stderr
             and "Did you forget to 'git add'?" not in command.stderr)
 
@@ -25,7 +25,7 @@ def get_branches():
 
 
 @git_support
-def get_new_command(command, settings):
+def get_new_command(command):
     missing_file = re.findall(
         r"error: pathspec '([^']*)' "
         r"did not match any file\(s\) known to git.", command.stderr)[0]

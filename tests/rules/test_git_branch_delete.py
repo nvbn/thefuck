@@ -12,11 +12,11 @@ If you are sure you want to delete it, run 'git branch -D branch'.
 
 
 def test_match(stderr):
-    assert match(Command('git branch -d branch', stderr=stderr), None)
-    assert not match(Command('git branch -d branch'), None)
-    assert not match(Command('ls', stderr=stderr), None)
+    assert match(Command('git branch -d branch', stderr=stderr))
+    assert not match(Command('git branch -d branch'))
+    assert not match(Command('ls', stderr=stderr))
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command('git branch -d branch', stderr=stderr), None)\
+    assert get_new_command(Command('git branch -d branch', stderr=stderr))\
         == "git branch -D branch"

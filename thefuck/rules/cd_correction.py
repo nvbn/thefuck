@@ -18,7 +18,7 @@ def _get_sub_dirs(parent):
 
 @sudo_support
 @for_app('cd')
-def match(command, settings):
+def match(command):
     """Match function copied from cd_mkdir.py"""
     return (command.script.startswith('cd ')
             and ('no such file or directory' in command.stderr.lower()
@@ -26,7 +26,7 @@ def match(command, settings):
 
 
 @sudo_support
-def get_new_command(command, settings):
+def get_new_command(command):
     """
     Attempt to rebuild the path string by spellchecking the directories.
     If it fails (i.e. no directories are a close enough match), then it
@@ -47,7 +47,7 @@ def get_new_command(command, settings):
         if best_matches:
             cwd = os.path.join(cwd, best_matches[0])
         else:
-            return cd_mkdir.get_new_command(command, settings)
+            return cd_mkdir.get_new_command(command)
     return 'cd "{0}"'.format(cwd)
 
 

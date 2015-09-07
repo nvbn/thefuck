@@ -2,7 +2,7 @@
 from six.moves.urllib.parse import urlparse
 
 
-def match(command, settings):
+def match(command):
     """
     What the `whois` command returns depends on the 'Whois server' it contacted
     and is not consistent through different servers. But there can be only two
@@ -22,7 +22,7 @@ def match(command, settings):
     return 'whois ' in command.script.strip()
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     url = command.script.split()[1]
 
     if '/' in command.script:

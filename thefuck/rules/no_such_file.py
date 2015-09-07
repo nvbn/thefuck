@@ -10,7 +10,7 @@ patterns = (
 )
 
 
-def match(command, settings):
+def match(command):
     for pattern in patterns:
         if re.search(pattern, command.stderr):
             return True
@@ -18,7 +18,7 @@ def match(command, settings):
     return False
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     for pattern in patterns:
         file = re.findall(pattern, command.stderr)
 

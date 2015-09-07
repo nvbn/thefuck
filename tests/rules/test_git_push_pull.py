@@ -30,7 +30,7 @@ To /tmp/bar
     Command(script='git push nvbn', stderr=git_err),
     Command(script='git push nvbn master', stderr=git_err)])
 def test_match(command):
-    assert match(command, None)
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -41,7 +41,7 @@ def test_match(command):
     Command(script='git push nvbn', stderr=git_ok),
     Command(script='git push nvbn master', stderr=git_uptodate)])
 def test_not_match(command):
-    assert not match(command, None)
+    assert not match(command)
 
 
 @pytest.mark.parametrize('command, output', [
@@ -51,4 +51,4 @@ def test_not_match(command):
     (Command(script='git push nvbn master', stderr=git_err),
      'git pull nvbn master && git push nvbn master')])
 def test_get_new_command(command, output):
-    assert get_new_command(command, None) == output
+    assert get_new_command(command) == output

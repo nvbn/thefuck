@@ -13,14 +13,14 @@ def extract_possibilities(command):
 
 
 @for_app('hg')
-def match(command, settings):
+def match(command):
     return ('hg: unknown command' in command.stderr
             and '(did you mean one of ' in command.stderr
             or "hg: command '" in command.stderr
             and "' is ambiguous:" in command.stderr)
 
 
-def get_new_command(command, settings):
+def get_new_command(command):
     script = command.script.split(' ')
     possibilities = extract_possibilities(command)
     script[1] = get_closest(script[1], possibilities)
