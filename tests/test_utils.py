@@ -1,7 +1,7 @@
 import pytest
 from mock import Mock
 import six
-from thefuck.utils import wrap_settings, \
+from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
     get_all_matched_commands, is_app, for_app, cache
 from thefuck.types import Settings
@@ -12,9 +12,9 @@ from tests.utils import Command
     ({'key': 'val'}, {}, {'key': 'val'}),
     ({'key': 'new-val'}, {'key': 'val'}, {'key': 'val'}),
     ({'key': 'new-val', 'unset': 'unset'}, {'key': 'val'}, {'key': 'val', 'unset': 'unset'})])
-def test_wrap_settings(override, old, new):
+def test_default_settings(override, old, new):
     fn = lambda _, settings: settings
-    assert wrap_settings(override)(fn)(None, Settings(old)) == new
+    assert default_settings(override)(fn)(None, Settings(old)) == new
 
 
 def test_memoize():

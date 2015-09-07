@@ -13,11 +13,11 @@ def load_rule(rule):
         rule_module = load_source(name, str(rule))
         priority = getattr(rule_module, 'priority', DEFAULT_PRIORITY)
     return Rule(name, rule_module.match,
-                      rule_module.get_new_command,
-                      getattr(rule_module, 'enabled_by_default', True),
-                      getattr(rule_module, 'side_effect', None),
-                      settings.priority.get(name, priority),
-                      getattr(rule_module, 'requires_output', True))
+                rule_module.get_new_command,
+                getattr(rule_module, 'enabled_by_default', True),
+                getattr(rule_module, 'side_effect', None),
+                settings.priority.get(name, priority),
+                getattr(rule_module, 'requires_output', True))
 
 
 def get_loaded_rules(rules):

@@ -60,18 +60,20 @@ def which(program):
     return None
 
 
-def wrap_settings(params):
+def default_settings(params):
     """Adds default values to settings if it not presented.
 
     Usage:
 
-        @wrap_settings({'apt': '/usr/bin/apt'})
+        @default_settings({'apt': '/usr/bin/apt'})
         def match(command, settings):
             print(settings.apt)
 
     """
     def _wrap_settings(fn, command, settings):
-        return fn(command, Settings(settings, **params))
+        for k, w in params.items():
+            settings.setdefault(k, w)
+        return fn(command, settings)
     return decorator(_wrap_settings)
 
 

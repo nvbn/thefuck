@@ -1,6 +1,6 @@
 import re
 import os
-from thefuck.utils import memoize, wrap_settings
+from thefuck.utils import memoize, default_settings
 from thefuck import shells
 
 
@@ -57,7 +57,7 @@ def match(command, settings):
     return _search(command.stderr) or _search(command.stdout)
 
 
-@wrap_settings({'fixlinecmd': '{editor} {file} +{line}',
+@default_settings({'fixlinecmd': '{editor} {file} +{line}',
                 'fixcolcmd': None})
 def get_new_command(command, settings):
     m = _search(command.stderr) or _search(command.stdout)

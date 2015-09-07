@@ -26,22 +26,23 @@ def environ(monkeypatch):
 
 
 @pytest.mark.usefixture('environ')
-def test_settings_defaults(load_source):
+def test_settings_defaults(load_source, settings):
     load_source.return_value = object()
+    conf.init_settings(Mock())
     for key, val in conf.DEFAULT_SETTINGS.items():
-        assert getattr(conf.init_settings(Mock()), key) == val
+        assert getattr(settings, key) == val
 
 
 @pytest.mark.usefixture('environ')
 class TestSettingsFromFile(object):
-    def test_from_file(self, load_source):
+    def test_from_file(self, load_source, settings):
         load_source.return_value = Mock(rules=['test'],
                                         wait_command=10,
                                         require_confirmation=True,
                                         no_colors=True,
                                         priority={'vim': 100},
                                         exclude_rules=['git'])
-        settings = conf.init_settings(Mock())
+        conf.init_settings(Mock())
         assert settings.rules == ['test']
         assert settings.wait_command == 10
         assert settings.require_confirmation is True
@@ -49,26 +50,26 @@ class TestSettingsFromFile(object):
         assert settings.priority == {'vim': 100}
         assert settings.exclude_rules == ['git']
 
-    def test_from_file_with_DEFAULT(self, load_source):
+    def test_from_file_with_DEFAULT(self, load_source, settings):
         load_source.return_value = Mock(rules=conf.DEFAULT_RULES + ['test'],
                                         wait_command=10,
                                         exclude_rules=[],
                                         require_confirmation=True,
                                         no_colors=True)
-        settings = conf.init_settings(Mock())
+        conf.init_settings(Mock())
         assert settings.rules == conf.DEFAULT_RULES + ['test']
 
 
 @pytest.mark.usefixture('load_source')
 class TestSettingsFromEnv(object):
-    def test_from_env(self, environ):
+    def test_from_env(self, environ, settings):
         environ.update({'THEFUCK_RULES': 'bash:lisp',
                         'THEFUCK_EXCLUDE_RULES': 'git:vim',
                         'THEFUCK_WAIT_COMMAND': '55',
                         'THEFUCK_REQUIRE_CONFIRMATION': 'true',
                         'THEFUCK_NO_COLORS': 'false',
                         'THEFUCK_PRIORITY': 'bash=10:lisp=wrong:vim=15'})
-        settings = conf.init_settings(Mock())
+        conf.init_settings(Mock())
         assert settings.rules == ['bash', 'lisp']
         assert settings.exclude_rules == ['git', 'vim']
         assert settings.wait_command == 55
@@ -76,9 +77,9 @@ class TestSettingsFromEnv(object):
         assert settings.no_colors is False
         assert settings.priority == {'bash': 10, 'vim': 15}
 
-    def test_from_env_with_DEFAULT(self, environ):
+    def test_from_env_with_DEFAULT(self, environ, settings):
         environ.update({'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'})
-        settings = conf.init_settings(Mock())
+        conf.init_settings(Mock())
         assert settings.rules == conf.DEFAULT_RULES + ['bash', 'lisp']
 
 
