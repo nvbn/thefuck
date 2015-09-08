@@ -1,8 +1,10 @@
+from subprocess import PIPE
 from mock import Mock
 from pathlib import Path
 import pytest
 from tests.utils import CorrectedCommand, Rule, Command
 from thefuck import conf
+from thefuck.exceptions import EmptyCommand
 
 
 class TestCorrectedCommand(object):
@@ -76,3 +78,48 @@ class TestRule(object):
                     priority=100)
         assert list(rule.get_corrected_commands(Command(script='test'))) \
                == [CorrectedCommand(script='test!', priority=100)]
+
+
+class TestCommand(object):
+    @pytest.fixture(autouse=True)
+    def Popen(self, monkeypatch):
+        Popen = Mock()
+        Popen.return_value.stdout.read.return_value = b'stdout'
+        Popen.return_value.stderr.read.return_value = b'stderr'
+        monkeypatch.setattr('thefuck.types.Popen', Popen)
+        return Popen
+
+    @pytest.fixture(autouse=True)
+    def prepare(self, monkeypatch):
+        monkeypatch.setattr('thefuck.types.os.environ', {})
+        monkeypatch.setattr('thefuck.types.Command._wait_output',
+                            staticmethod(lambda *_: True))
+
+    @pytest.fixture(autouse=True)
+    def generic_shell(self, monkeypatch):
+        monkeypatch.setattr('thefuck.shells.from_shell', lambda x: x)
+        monkeypatch.setattr('thefuck.shells.to_shell', lambda x: x)
+
+    def test_from_script_calls(self, Popen, settings):
+        settings.env = {}
+        assert Command.from_raw_script(
+            ['apt-get', 'search', 'vim']) == Command(
+            'apt-get search vim', 'stdout', 'stderr')
+        Popen.assert_called_once_with('apt-get search vim',
+                                      shell=True,
+                                      stdout=PIPE,
+                                      stderr=PIPE,
+                                      env={})
+
+    @pytest.mark.parametrize('script, result', [
+        ([''], None),
+        (['', ''], None),
+        (['ls', '-la'], 'ls -la'),
+        (['ls'], 'ls')])
+    def test_from_script(self, script, result):
+        if result:
+            assert Command.from_raw_script(script).script == result
+        else:
+            with pytest.raises(EmptyCommand):
+                Command.from_raw_script(script)
+

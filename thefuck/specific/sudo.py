@@ -9,9 +9,7 @@ def sudo_support(fn, command):
     if not command.script.startswith('sudo '):
         return fn(command)
 
-    result = fn(Command(command.script[5:],
-                        command.stdout,
-                        command.stderr))
+    result = fn(command.update(script=command.script[5:]))
 
     if result and isinstance(result, six.string_types):
         return u'sudo {}'.format(result)

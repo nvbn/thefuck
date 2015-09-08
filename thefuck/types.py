@@ -1,11 +1,91 @@
-from collections import namedtuple
 from imp import load_source
+import os
+from subprocess import Popen, PIPE, TimeoutExpired
 import sys
+from psutil import Process
+import six
 from .conf import settings, DEFAULT_PRIORITY, ALL_ENABLED
 from .utils import compatibility_call
-from . import logs
+from .exceptions import EmptyCommand
+from . import logs, shells
 
-Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
+
+class Command(object):
+    """Command that should be fixed."""
+
+    def __init__(self, script, stdout, stderr):
+        self.script = script
+        self.stdout = stdout
+        self.stderr = stderr
+
+    def __eq__(self, other):
+        if isinstance(other, Command):
+            return (self.script, self.stdout, self.stderr) \
+                == (other.script, other.stdout, other.stderr)
+        else:
+            return False
+
+    def __repr__(self):
+        return 'Command(script={}, stdout={}, stderr={})'.format(
+            self.script, self.stdout, self.stderr)
+
+    def update(self, **kwargs):
+        """Returns new command with replaced fields."""
+        kwargs.setdefault('script', self.script)
+        kwargs.setdefault('stdout', self.stdout)
+        kwargs.setdefault('stderr', self.stderr)
+        return Command(**kwargs)
+
+    @staticmethod
+    def _wait_output(popen):
+        """Returns `True` if we can get output of the command in the
+        `settings.wait_command` time.
+
+        Command will be killed if it wasn't finished in the time.
+
+        """
+        proc = Process(popen.pid)
+        try:
+            proc.wait(settings.wait_command)
+            return True
+        except TimeoutExpired:
+            for child in proc.children(recursive=True):
+                child.kill()
+            proc.kill()
+            return False
+
+    @staticmethod
+    def _prepare_script(raw_script):
+        if six.PY2:
+            script = ' '.join(arg.decode('utf-8') for arg in raw_script)
+        else:
+            script = ' '.join(raw_script)
+
+        script = script.strip()
+        return shells.from_shell(script)
+
+    @classmethod
+    def from_raw_script(cls, raw_script):
+        script = cls._prepare_script(raw_script)
+        if not script:
+            raise EmptyCommand
+
+        env = dict(os.environ)
+        env.update(settings.env)
+
+        with logs.debug_time(u'Call: {}; with env: {};'.format(script, env)):
+            result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
+            if cls._wait_output(result):
+                stdout = result.stdout.read().decode('utf-8')
+                stderr = result.stderr.read().decode('utf-8')
+
+                logs.debug(u'Received stdout: {}'.format(stdout))
+                logs.debug(u'Received stderr: {}'.format(stderr))
+
+                return cls(script, stdout, stderr)
+            else:
+                logs.debug(u'Execution timed out!')
+                return cls(script, None, None)
 
 
 class Rule(object):
@@ -108,3 +188,10 @@ class CorrectedCommand(object):
     def __repr__(self):
         return 'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
             self.script, self.side_effect, self.priority)
+    
+    def run(self, old_cmd):
+        """Runs command from rule for passed command."""
+        if self.side_effect:
+            compatibility_call(self.side_effect, old_cmd, self.script)
+        shells.put_to_history(self.script)
+        print(self.script)

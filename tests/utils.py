@@ -3,8 +3,9 @@ from thefuck import types
 from thefuck.conf import DEFAULT_PRIORITY
 
 
-def Command(script='', stdout='', stderr=''):
-    return types.Command(script, stdout, stderr)
+class Command(types.Command):
+    def __init__(self, script='', stdout='', stderr=''):
+        super(Command, self).__init__(script, stdout, stderr)
 
 
 class Rule(types.Rule):

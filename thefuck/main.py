@@ -4,16 +4,12 @@ from pathlib import Path
 from os.path import expanduser
 from pprint import pformat
 import pkg_resources
-from subprocess import Popen, PIPE
-import os
 import sys
-from psutil import Process, TimeoutExpired
 import colorama
-import six
 from . import logs, types, shells
 from .conf import initialize_settings_file, init_settings, settings
 from .corrector import get_corrected_commands
-from .utils import compatibility_call
+from .exceptions import EmptyCommand
 from .ui import select_command
 
 
@@ -27,62 +23,6 @@ def setup_user_dir():
     return user_dir
 
 
-def wait_output(popen):
-    """Returns `True` if we can get output of the command in the
-    `settings.wait_command` time.
-
-    Command will be killed if it wasn't finished in the time.
-
-    """
-    proc = Process(popen.pid)
-    try:
-        proc.wait(settings.wait_command)
-        return True
-    except TimeoutExpired:
-        for child in proc.children(recursive=True):
-            child.kill()
-        proc.kill()
-        return False
-
-
-def get_command(args):
-    """Creates command from `args` and executes it."""
-    if six.PY2:
-        script = ' '.join(arg.decode('utf-8') for arg in args[1:])
-    else:
-        script = ' '.join(args[1:])
-
-    script = script.strip()
-    if not script:
-        return
-
-    script = shells.from_shell(script)
-    env = dict(os.environ)
-    env.update(settings.env)
-
-    with logs.debug_time(u'Call: {}; with env: {};'.format(script, env)):
-        result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
-        if wait_output(result):
-            stdout = result.stdout.read().decode('utf-8')
-            stderr = result.stderr.read().decode('utf-8')
-
-            logs.debug(u'Received stdout: {}'.format(stdout))
-            logs.debug(u'Received stderr: {}'.format(stderr))
-
-            return types.Command(script, stdout, stderr)
-        else:
-            logs.debug(u'Execution timed out!')
-            return types.Command(script, None, None)
-
-
-def run_command(old_cmd, command):
-    """Runs command from rule for passed command."""
-    if command.side_effect:
-        compatibility_call(command.side_effect, old_cmd, command.script)
-    shells.put_to_history(command.script)
-    print(command.script)
-
-
 # Entry points:
 
 def fix_command():
@@ -92,16 +32,16 @@ def fix_command():
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))
 
-        command = get_command(sys.argv)
-
-        if not command:
+        try:
+            command = types.Command.from_raw_script(sys.argv[1:])
+        except EmptyCommand:
             logs.debug('Empty command, nothing to do')
             return
 
         corrected_commands = get_corrected_commands(command)
         selected_command = select_command(corrected_commands)
         if selected_command:
-            run_command(command, selected_command)
+            selected_command.run(command)
 
 
 def _get_current_version():
