@@ -1,34 +1,19 @@
 from argparse import ArgumentParser
 from warnings import warn
-from pathlib import Path
-from os.path import expanduser
 from pprint import pformat
 import pkg_resources
 import sys
 import colorama
 from . import logs, types, shells
-from .conf import initialize_settings_file, init_settings, settings
+from .conf import settings
 from .corrector import get_corrected_commands
 from .exceptions import EmptyCommand
 from .ui import select_command
 
 
-def setup_user_dir():
-    """Returns user config dir, create it when it doesn't exist."""
-    user_dir = Path(expanduser('~/.thefuck'))
-    rules_dir = user_dir.joinpath('rules')
-    if not rules_dir.is_dir():
-        rules_dir.mkdir(parents=True)
-    initialize_settings_file(user_dir)
-    return user_dir
-
-
-# Entry points:
-
 def fix_command():
     colorama.init()
-    user_dir = setup_user_dir()
-    init_settings(user_dir)
+    settings.init()
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))
 
@@ -68,8 +53,7 @@ def how_to_configure_alias():
 
     """
     colorama.init()
-    user_dir = setup_user_dir()
-    init_settings(user_dir)
+    settings.init()
     logs.how_to_configure_alias(shells.how_to_configure())
 
 

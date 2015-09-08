@@ -19,7 +19,7 @@ def environ(monkeypatch):
 @pytest.mark.usefixture('environ')
 def test_settings_defaults(load_source, settings):
     load_source.return_value = object()
-    conf.init_settings(Mock())
+    settings.init()
     for key, val in conf.DEFAULT_SETTINGS.items():
         assert getattr(settings, key) == val
 
@@ -33,7 +33,7 @@ class TestSettingsFromFile(object):
                                         no_colors=True,
                                         priority={'vim': 100},
                                         exclude_rules=['git'])
-        conf.init_settings(Mock())
+        settings.init()
         assert settings.rules == ['test']
         assert settings.wait_command == 10
         assert settings.require_confirmation is True
@@ -47,7 +47,7 @@ class TestSettingsFromFile(object):
                                         exclude_rules=[],
                                         require_confirmation=True,
                                         no_colors=True)
-        conf.init_settings(Mock())
+        settings.init()
         assert settings.rules == conf.DEFAULT_RULES + ['test']
 
 
@@ -60,7 +60,7 @@ class TestSettingsFromEnv(object):
                         'THEFUCK_REQUIRE_CONFIRMATION': 'true',
                         'THEFUCK_NO_COLORS': 'false',
                         'THEFUCK_PRIORITY': 'bash=10:lisp=wrong:vim=15'})
-        conf.init_settings(Mock())
+        settings.init()
         assert settings.rules == ['bash', 'lisp']
         assert settings.exclude_rules == ['git', 'vim']
         assert settings.wait_command == 55
@@ -70,26 +70,26 @@ class TestSettingsFromEnv(object):
 
     def test_from_env_with_DEFAULT(self, environ, settings):
         environ.update({'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'})
-        conf.init_settings(Mock())
+        settings.init()
         assert settings.rules == conf.DEFAULT_RULES + ['bash', 'lisp']
 
 
 class TestInitializeSettingsFile(object):
-    def test_ignore_if_exists(self):
+    def test_ignore_if_exists(self, settings):
         settings_path_mock = Mock(is_file=Mock(return_value=True), open=Mock())
-        user_dir_mock = Mock(joinpath=Mock(return_value=settings_path_mock))
-        conf.initialize_settings_file(user_dir_mock)
+        settings.user_dir = Mock(joinpath=Mock(return_value=settings_path_mock))
+        settings._init_settings_file()
         assert settings_path_mock.is_file.call_count == 1
         assert not settings_path_mock.open.called
 
-    def test_create_if_doesnt_exists(self):
+    def test_create_if_doesnt_exists(self, settings):
         settings_file = six.StringIO()
         settings_path_mock = Mock(
             is_file=Mock(return_value=False),
             open=Mock(return_value=Mock(
                 __exit__=lambda *args: None, __enter__=lambda *args: settings_file)))
-        user_dir_mock = Mock(joinpath=Mock(return_value=settings_path_mock))
-        conf.initialize_settings_file(user_dir_mock)
+        settings.user_dir = Mock(joinpath=Mock(return_value=settings_path_mock))
+        settings._init_settings_file()
         settings_file_contents = settings_file.getvalue()
         assert settings_path_mock.is_file.call_count == 1
         assert settings_path_mock.open.call_count == 1
