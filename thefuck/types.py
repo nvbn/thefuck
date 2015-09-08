@@ -1,5 +1,4 @@
 from collections import namedtuple
-from traceback import format_stack
 
 Command = namedtuple('Command', ('script', 'stdout', 'stderr'))
 
@@ -36,62 +35,3 @@ class Settings(dict):
 
     def __setattr__(self, key, value):
         self[key] = value
-
-
-class SortedCorrectedCommandsSequence(object):
-    """List-like collection/wrapper around generator, that:
-
-    - immediately gives access to the first commands through [];
-    - realises generator and sorts commands on first access to other
-      commands through [], or when len called.
-
-    """
-
-    def __init__(self, commands):
-        self._commands = commands
-        self._cached = self._realise_first()
-        self._realised = False
-
-    def _realise_first(self):
-        try:
-            return [next(self._commands)]
-        except StopIteration:
-            return []
-
-    def _remove_duplicates(self, corrected_commands):
-        """Removes low-priority duplicates."""
-        commands = {command
-                    for command in sorted(corrected_commands,
-                                          key=lambda command: -command.priority)
-                    if command.script != self._cached[0]}
-        return commands
-
-    def _realise(self):
-        """Realises generator, removes duplicates and sorts commands."""
-        from .logs import debug
-
-        if self._cached:
-            commands = self._remove_duplicates(self._commands)
-            self._cached = [self._cached[0]] + sorted(
-                commands, key=lambda corrected_command: corrected_command.priority)
-        self._realised = True
-        debug('SortedCommandsSequence was realised with: {}, after: {}'.format(
-            self._cached, '\n'.join(format_stack())))
-
-    def __getitem__(self, item):
-        if item != 0 and not self._realised:
-            self._realise()
-        return self._cached[item]
-
-    def __bool__(self):
-        return bool(self._cached)
-
-    def __len__(self):
-        if not self._realised:
-            self._realise()
-        return len(self._cached)
-
-    def __iter__(self):
-        if not self._realised:
-            self._realise()
-        return iter(self._cached)

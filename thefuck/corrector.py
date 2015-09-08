@@ -2,7 +2,7 @@ import sys
 from imp import load_source
 from pathlib import Path
 from .conf import settings, DEFAULT_PRIORITY, ALL_ENABLED
-from .types import Rule, CorrectedCommand, SortedCorrectedCommandsSequence
+from .types import Rule, CorrectedCommand
 from .utils import compatibility_call
 from . import logs
 
@@ -76,10 +76,33 @@ def make_corrected_commands(command, rule):
                                side_effect=rule.side_effect,
                                priority=(n + 1) * rule.priority)
 
+def organize_commands(corrected_commands):
+    """Yields sorted commands without duplicates."""
+    try:
+        first_command = next(corrected_commands)
+        yield first_command
+    except StopIteration:
+        return
+
+    without_duplicates = {
+        command for command in sorted(
+            corrected_commands, key=lambda command: command.priority)
+        if command != first_command}
+
+    sorted_commands = sorted(
+        without_duplicates,
+        key=lambda corrected_command: corrected_command.priority)
+
+    logs.debug('Corrected commands: '.format(
+        ', '.join(str(cmd) for cmd in [first_command] + sorted_commands)))
+
+    for command in sorted_commands:
+        yield command
+
 
 def get_corrected_commands(command):
     corrected_commands = (
         corrected for rule in get_rules()
         if is_rule_match(command, rule)
         for corrected in make_corrected_commands(command, rule))
-    return SortedCorrectedCommandsSequence(corrected_commands)
+    return organize_commands(corrected_commands)

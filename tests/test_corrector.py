@@ -3,7 +3,8 @@ from pathlib import PosixPath, Path
 from mock import Mock
 from thefuck import corrector, conf
 from tests.utils import Rule, Command, CorrectedCommand
-from thefuck.corrector import make_corrected_commands, get_corrected_commands, is_rule_enabled
+from thefuck.corrector import make_corrected_commands, get_corrected_commands,\
+    is_rule_enabled, organize_commands
 
 
 def test_load_rule(mocker):
@@ -111,3 +112,13 @@ def test_get_corrected_commands(mocker):
     mocker.patch('thefuck.corrector.get_rules', return_value=rules)
     assert [cmd.script for cmd in get_corrected_commands(command)] \
            == ['test!', 'test@', 'test;']
+
+
+def test_organize_commands():
+    """Ensures that the function removes duplicates and sorts commands."""
+    commands = [CorrectedCommand('ls'), CorrectedCommand('ls -la', priority=9000),
+                CorrectedCommand('ls -lh', priority=100),
+                CorrectedCommand('ls -lh', priority=9999)]
+    assert list(organize_commands(iter(commands))) \
+        == [CorrectedCommand('ls'), CorrectedCommand('ls -lh', priority=100),
+            CorrectedCommand('ls -la', priority=9000)]

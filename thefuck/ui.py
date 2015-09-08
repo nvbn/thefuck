@@ -50,14 +50,25 @@ def read_actions():
 
 
 class CommandSelector(object):
+    """Helper for selecting rule from rules list."""
+
     def __init__(self, commands):
-        self._commands = commands
+        self._commands_gen = commands
+        self._commands = [next(self._commands_gen)]
+        self._realised = False
         self._index = 0
 
+    def _realise(self):
+        if not self._realised:
+            self._commands += list(self._commands_gen)
+            self._realised = True
+
     def next(self):
+        self._realise()
         self._index = (self._index + 1) % len(self._commands)
 
     def previous(self):
+        self._realise()
         self._index = (self._index - 1) % len(self._commands)
 
     @property
@@ -73,11 +84,12 @@ def select_command(corrected_commands):
      - selected command.
 
     """
-    if not corrected_commands:
+    try:
+        selector = CommandSelector(corrected_commands)
+    except StopIteration:
         logs.failed('No fucks given')
         return
 
-    selector = CommandSelector(corrected_commands)
     if not settings.require_confirmation:
         logs.show_corrected_command(selector.value)
         return selector.value
