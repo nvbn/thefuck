@@ -1,13 +1,5 @@
-from thefuck.types import RulesNamesList, Settings, \
-    SortedCorrectedCommandsSequence
-from tests.utils import Rule, CorrectedCommand
-
-
-def test_rules_names_list():
-    assert RulesNamesList(['bash', 'lisp']) == ['bash', 'lisp']
-    assert RulesNamesList(['bash', 'lisp']) == RulesNamesList(['bash', 'lisp'])
-    assert Rule('lisp') in RulesNamesList(['lisp'])
-    assert Rule('bash') not in RulesNamesList(['lisp'])
+from thefuck.types import SortedCorrectedCommandsSequence
+from tests.utils import CorrectedCommand
 
 
 class TestSortedCorrectedCommandsSequence(object):

@@ -2,25 +2,10 @@ from imp import load_source
 import os
 import sys
 from six import text_type
-from .types import RulesNamesList, Settings
+from .types import Settings
 
-
-class _DefaultRulesNames(RulesNamesList):
-    def __add__(self, items):
-        return _DefaultRulesNames(list(self) + items)
-
-    def __contains__(self, item):
-        return item.enabled_by_default or \
-               super(_DefaultRulesNames, self).__contains__(item)
-
-    def __eq__(self, other):
-        if isinstance(other, _DefaultRulesNames):
-            return super(_DefaultRulesNames, self).__eq__(other)
-        else:
-            return False
-
-
-DEFAULT_RULES = _DefaultRulesNames([])
+ALL_ENABLED = object()
+DEFAULT_RULES = [ALL_ENABLED]
 DEFAULT_PRIORITY = 1000
 
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
@@ -120,12 +105,6 @@ def init_settings(user_dir):
         settings.update(_settings_from_env())
     except Exception:
         exception("Can't load settings from env", sys.exc_info())
-
-    if not isinstance(settings['rules'], RulesNamesList):
-        settings.rules = RulesNamesList(settings['rules'])
-
-    if not isinstance(settings.exclude_rules, RulesNamesList):
-        settings.exclude_rules = RulesNamesList(settings.exclude_rules)
 
 
 def initialize_settings_file(user_dir):

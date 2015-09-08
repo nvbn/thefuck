@@ -1,9 +1,9 @@
 import pytest
 from pathlib import PosixPath, Path
 from mock import Mock
-from thefuck import corrector, conf, types
+from thefuck import corrector, conf
 from tests.utils import Rule, Command, CorrectedCommand
-from thefuck.corrector import make_corrected_commands, get_corrected_commands
+from thefuck.corrector import make_corrected_commands, get_corrected_commands, is_rule_enabled
 
 
 def test_load_rule(mocker):
@@ -19,6 +19,23 @@ def test_load_rule(mocker):
     assert corrector.load_rule(Path('/rules/bash.py')) \
            == Rule('bash', match, get_new_command, priority=900)
     load_source.assert_called_once_with('bash', '/rules/bash.py')
+
+
+@pytest.mark.parametrize('rules, exclude_rules, rule, is_enabled', [
+    (conf.DEFAULT_RULES, [], Rule('git', enabled_by_default=True), True),
+    (conf.DEFAULT_RULES, [], Rule('git', enabled_by_default=False), False),
+    ([], [], Rule('git', enabled_by_default=False), False),
+    ([], [], Rule('git', enabled_by_default=True), False),
+    (conf.DEFAULT_RULES + ['git'], [], Rule('git', enabled_by_default=False), True),
+    (['git'], [], Rule('git', enabled_by_default=False), True),
+    (conf.DEFAULT_RULES, ['git'], Rule('git', enabled_by_default=True), False),
+    (conf.DEFAULT_RULES, ['git'], Rule('git', enabled_by_default=False), False),
+    ([], ['git'], Rule('git', enabled_by_default=True), False),
+    ([], ['git'], Rule('git', enabled_by_default=False), False)])
+def test_is_rule_enabled(settings, rules, exclude_rules, rule, is_enabled):
+    settings.update(rules=rules,
+                    exclude_rules=exclude_rules)
+    assert is_rule_enabled(rule) == is_enabled
 
 
 class TestGetRules(object):
@@ -37,12 +54,6 @@ class TestGetRules(object):
     def _compare_names(self, rules, names):
         assert {r.name for r in rules} == set(names)
 
-    def _prepare_rules(self, rules):
-        if rules == conf.DEFAULT_RULES:
-            return rules
-        else:
-            return types.RulesNamesList(rules)
-
     @pytest.mark.parametrize('paths, conf_rules, exclude_rules, loaded_rules', [
         (['git.py', 'bash.py'], conf.DEFAULT_RULES, [], ['git', 'bash']),
         (['git.py', 'bash.py'], ['git'], [], ['git']),
@@ -51,9 +62,9 @@ class TestGetRules(object):
     def test_get_rules(self, glob, settings, paths, conf_rules, exclude_rules,
                        loaded_rules):
         glob([PosixPath(path) for path in paths])
-        settings.update(rules=self._prepare_rules(conf_rules),
+        settings.update(rules=conf_rules,
                         priority={},
-                        exclude_rules=self._prepare_rules(exclude_rules))
+                        exclude_rules=exclude_rules)
         rules = corrector.get_rules()
         self._compare_names(rules, loaded_rules)
 

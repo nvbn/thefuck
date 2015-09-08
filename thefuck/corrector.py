@@ -1,7 +1,7 @@
 import sys
 from imp import load_source
 from pathlib import Path
-from .conf import settings, DEFAULT_PRIORITY
+from .conf import settings, DEFAULT_PRIORITY, ALL_ENABLED
 from .types import Rule, CorrectedCommand, SortedCorrectedCommandsSequence
 from .utils import compatibility_call
 from . import logs
@@ -21,13 +21,24 @@ def load_rule(rule):
                 getattr(rule_module, 'requires_output', True))
 
 
+def is_rule_enabled(rule):
+    """Returns `True` when rule enabled."""
+    if rule.name in settings.exclude_rules:
+        return False
+    elif rule.name in settings.rules:
+        return True
+    elif rule.enabled_by_default and ALL_ENABLED in settings.rules:
+        return True
+    else:
+        return False
+
+
 def get_loaded_rules(rules):
     """Yields all available rules."""
     for rule in rules:
         if rule.name != '__init__.py':
             loaded_rule = load_rule(rule)
-            if loaded_rule in settings.rules and \
-                            loaded_rule not in settings.exclude_rules:
+            if is_rule_enabled(loaded_rule):
                 yield loaded_rule
 
 

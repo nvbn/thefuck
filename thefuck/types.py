@@ -30,13 +30,6 @@ class CorrectedCommand(object):
             self.script, self.side_effect, self.priority)
 
 
-class RulesNamesList(list):
-    """Wrapper a top of list for storing rules names."""
-
-    def __contains__(self, item):
-        return super(RulesNamesList, self).__contains__(item.name)
-
-
 class Settings(dict):
     def __getattr__(self, item):
         return self.get(item)

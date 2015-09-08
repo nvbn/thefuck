@@ -2,15 +2,6 @@ import pytest
 import six
 from mock import Mock
 from thefuck import conf
-from tests.utils import Rule
-
-
-@pytest.mark.parametrize('enabled, rules, result', [
-    (True, conf.DEFAULT_RULES, True),
-    (False, conf.DEFAULT_RULES, False),
-    (False, conf.DEFAULT_RULES + ['test'], True)])
-def test_default(enabled, rules, result):
-    assert (Rule('test', enabled_by_default=enabled) in rules) == result
 
 
 @pytest.fixture
