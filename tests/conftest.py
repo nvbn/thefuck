@@ -41,3 +41,8 @@ def functional(request):
     if request.node.get_marker('functional') \
             and not request.config.getoption('enable_functional'):
         pytest.skip('functional tests are disabled')
+
+
+@pytest.fixture
+def source_root():
+    return Path(__file__).parent.parent.resolve()

@@ -31,30 +31,34 @@ def proc(request, spawnu, run_without_docker):
 
 @pytest.mark.functional
 @pytest.mark.once_without_docker
-def test_with_confirmation(proc, TIMEOUT):
+def test_with_confirmation(proc, TIMEOUT, run_without_docker):
     with_confirmation(proc, TIMEOUT)
-    history_changed(proc, TIMEOUT, u'echo test')
+    if not run_without_docker:
+        history_changed(proc, TIMEOUT, u'echo test')
 
 
 @pytest.mark.functional
 @pytest.mark.once_without_docker
-def test_select_command_with_arrows(proc, TIMEOUT):
+def test_select_command_with_arrows(proc, TIMEOUT, run_without_docker):
     select_command_with_arrows(proc, TIMEOUT)
-    history_changed(proc, TIMEOUT, u'git help')
+    if not run_without_docker:
+        history_changed(proc, TIMEOUT, u'git help')
 
 
 @pytest.mark.functional
 @pytest.mark.once_without_docker
-def test_refuse_with_confirmation(proc, TIMEOUT):
+def test_refuse_with_confirmation(proc, TIMEOUT, run_without_docker):
     refuse_with_confirmation(proc, TIMEOUT)
-    history_not_changed(proc, TIMEOUT)
+    if not run_without_docker:
+        history_not_changed(proc, TIMEOUT)
 
 
 @pytest.mark.functional
 @pytest.mark.once_without_docker
-def test_without_confirmation(proc, TIMEOUT):
+def test_without_confirmation(proc, TIMEOUT, run_without_docker):
     without_confirmation(proc, TIMEOUT)
-    history_changed(proc, TIMEOUT, u'echo test')
+    if not run_without_docker:
+        history_changed(proc, TIMEOUT, u'echo test')
 
 
 @pytest.mark.functional

@@ -27,6 +27,6 @@ def git_support(fn, command):
         expansion = ' '.join(map(quote, split(search.group(2))))
         new_script = command.script.replace(alias, expansion)
 
-        command = Command._replace(command, script=new_script)
+        command = command.update(script=new_script)
 
     return fn(command)
