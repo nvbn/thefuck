@@ -1,8 +1,8 @@
 from imp import load_source
 import os
-from subprocess import Popen, PIPE, TimeoutExpired
+from subprocess import Popen, PIPE
 import sys
-from psutil import Process
+from psutil import Process, TimeoutExpired
 import six
 from .conf import settings, DEFAULT_PRIORITY, ALL_ENABLED
 from .utils import compatibility_call
