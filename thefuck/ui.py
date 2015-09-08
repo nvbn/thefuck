@@ -53,23 +53,16 @@ class CommandSelector(object):
     def __init__(self, commands):
         self._commands = commands
         self._index = 0
-        self._on_change = lambda x: x
 
     def next(self):
         self._index = (self._index + 1) % len(self._commands)
-        self._on_change(self.value)
 
     def previous(self):
         self._index = (self._index - 1) % len(self._commands)
-        self._on_change(self.value)
 
     @property
     def value(self):
         return self._commands[self._index]
-
-    def on_change(self, fn):
-        self._on_change = fn
-        fn(self.value)
 
 
 def select_command(corrected_commands):
@@ -89,7 +82,8 @@ def select_command(corrected_commands):
         logs.show_corrected_command(selector.value)
         return selector.value
 
-    selector.on_change(lambda val: logs.confirm_text(val))
+    logs.confirm_text(selector.value)
+
     for action in read_actions():
         if action == SELECT:
             sys.stderr.write('\n')
@@ -99,5 +93,7 @@ def select_command(corrected_commands):
             return
         elif action == PREVIOUS:
             selector.previous()
+            logs.confirm_text(selector.value)
         elif action == NEXT:
             selector.next()
+            logs.confirm_text(selector.value)

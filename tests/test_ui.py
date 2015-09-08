@@ -43,8 +43,6 @@ def test_read_actions(patch_getch):
 def test_command_selector():
     selector = ui.CommandSelector([1, 2, 3])
     assert selector.value == 1
-    changes = []
-    selector.on_change(changes.append)
     selector.next()
     assert selector.value == 2
     selector.next()
@@ -53,7 +51,6 @@ def test_command_selector():
     assert selector.value == 1
     selector.previous()
     assert selector.value == 3
-    assert changes == [1, 2, 3, 1, 3]
 
 
 @pytest.mark.usefixtures('no_colors')
