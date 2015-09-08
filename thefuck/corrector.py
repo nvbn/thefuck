@@ -5,7 +5,12 @@ from . import logs
 
 
 def get_loaded_rules(rules_paths):
-    """Yields all available rules."""
+    """Yields all available rules.
+
+    :type rules_paths: [Path]
+    :rtype: Iterable[Rule]
+
+    """
     for path in rules_paths:
         if path.name != '__init__.py':
             rule = Rule.from_path(path)
@@ -14,7 +19,11 @@ def get_loaded_rules(rules_paths):
 
 
 def get_rules():
-    """Returns all enabled rules."""
+    """Returns all enabled rules.
+
+    :rtype: [Rule]
+
+    """
     bundled = Path(__file__).parent \
         .joinpath('rules') \
         .glob('*.py')
@@ -24,7 +33,12 @@ def get_rules():
 
 
 def organize_commands(corrected_commands):
-    """Yields sorted commands without duplicates."""
+    """Yields sorted commands without duplicates.
+
+    :type corrected_commands: Iterable[thefuck.types.CorrectedCommand]
+    :rtype: Iterable[thefuck.types.CorrectedCommand]
+
+    """
     try:
         first_command = next(corrected_commands)
         yield first_command
@@ -48,6 +62,12 @@ def organize_commands(corrected_commands):
 
 
 def get_corrected_commands(command):
+    """Returns generator with sorted and unique corrected commands.
+
+    :type command: thefuck.types.Command
+    :rtype: Iterable[thefuck.types.CorrectedCommand]
+
+    """
     corrected_commands = (
         corrected for rule in get_rules()
         if rule.is_match(command)

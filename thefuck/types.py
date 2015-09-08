@@ -14,6 +14,13 @@ class Command(object):
     """Command that should be fixed."""
 
     def __init__(self, script, stdout, stderr):
+        """Initializes command with given values.
+
+        :type script: basestring
+        :type stdout: basestring
+        :type stderr: basestring
+
+        """
         self.script = script
         self.stdout = stdout
         self.stderr = stderr
@@ -30,7 +37,11 @@ class Command(object):
             self.script, self.stdout, self.stderr)
 
     def update(self, **kwargs):
-        """Returns new command with replaced fields."""
+        """Returns new command with replaced fields.
+
+        :rtype: Command
+
+        """
         kwargs.setdefault('script', self.script)
         kwargs.setdefault('stdout', self.stdout)
         kwargs.setdefault('stderr', self.stderr)
@@ -42,6 +53,9 @@ class Command(object):
         `settings.wait_command` time.
 
         Command will be killed if it wasn't finished in the time.
+
+        :type popen: Popen
+        :rtype: bool
 
         """
         proc = Process(popen.pid)
@@ -56,6 +70,12 @@ class Command(object):
 
     @staticmethod
     def _prepare_script(raw_script):
+        """Creates single script from a list of script parts.
+
+        :type raw_script: [basestring]
+        :rtype: basestring
+
+        """
         if six.PY2:
             script = ' '.join(arg.decode('utf-8') for arg in raw_script)
         else:
@@ -66,6 +86,13 @@ class Command(object):
 
     @classmethod
     def from_raw_script(cls, raw_script):
+        """Creates instance of `Command` from a list of script parts.
+
+        :type raw_script: [basestring]
+        :rtype: Command
+        :raises: EmptyCommand
+
+        """
         script = cls._prepare_script(raw_script)
         if not script:
             raise EmptyCommand
@@ -89,9 +116,22 @@ class Command(object):
 
 
 class Rule(object):
+    """Rule for fixing commands."""
+
     def __init__(self, name, match, get_new_command,
                  enabled_by_default, side_effect,
                  priority, requires_output):
+        """Initializes rule with given fields.
+
+        :type name: basestring
+        :type match: (Command) -> bool
+        :type get_new_command: (Command) -> (basestring | [basestring])
+        :type enabled_by_default: boolean
+        :type side_effect: (Command, basestring) -> None
+        :type priority: int
+        :type requires_output: bool
+
+        """
         self.name = name
         self.match = match
         self.get_new_command = get_new_command
@@ -121,7 +161,12 @@ class Rule(object):
 
     @classmethod
     def from_path(cls, path):
-        """Creates rule instance from path."""
+        """Creates rule instance from path.
+
+        :type path: pathlib.Path
+        :rtype: Rule
+
+        """
         name = path.name[:-3]
         with logs.debug_time(u'Importing rule: {};'.format(name)):
             rule_module = load_source(name, str(path))
@@ -135,6 +180,11 @@ class Rule(object):
 
     @property
     def is_enabled(self):
+        """Returns `True` when rule enabled.
+
+        :rtype: bool
+
+        """
         if self.name in settings.exclude_rules:
             return False
         elif self.name in settings.rules:
@@ -145,7 +195,12 @@ class Rule(object):
             return False
 
     def is_match(self, command):
-        """Returns `True` if rule matches the command."""
+        """Returns `True` if rule matches the command.
+
+        :type command: Command
+        :rtype: bool
+
+        """
         script_only = command.stdout is None and command.stderr is None
 
         if script_only and self.requires_output:
@@ -159,6 +214,12 @@ class Rule(object):
             logs.rule_failed(self, sys.exc_info())
 
     def get_corrected_commands(self, command):
+        """Returns generator with corrected commands.
+
+        :type command: Command
+        :rtype: Iterable[CorrectedCommand]
+
+        """
         new_commands = compatibility_call(self.get_new_command, command)
         if not isinstance(new_commands, list):
             new_commands = (new_commands,)
@@ -169,7 +230,16 @@ class Rule(object):
 
 
 class CorrectedCommand(object):
+    """Corrected by rule command."""
+
     def __init__(self, script, side_effect, priority):
+        """Initializes instance with given fields.
+
+        :type script: basestring
+        :type side_effect: (Command, basestring) -> None
+        :type priority: int
+
+        """
         self.script = script
         self.side_effect = side_effect
         self.priority = priority
@@ -190,7 +260,11 @@ class CorrectedCommand(object):
             self.script, self.side_effect, self.priority)
     
     def run(self, old_cmd):
-        """Runs command from rule for passed command."""
+        """Runs command from rule for passed command.
+
+        :type old_cmd: Command
+
+        """
         if self.side_effect:
             compatibility_call(self.side_effect, old_cmd, self.script)
         shells.put_to_history(self.script)

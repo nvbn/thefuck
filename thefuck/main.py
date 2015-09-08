@@ -26,6 +26,7 @@ def fix_command():
 
         corrected_commands = get_corrected_commands(command)
         selected_command = select_command(corrected_commands)
+
         if selected_command:
             selected_command.run(command)
 
