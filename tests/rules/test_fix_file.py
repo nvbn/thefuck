@@ -2,7 +2,6 @@ import pytest
 import os
 from thefuck.rules.fix_file import match, get_new_command
 from tests.utils import Command
-from thefuck.types import Settings
 
 
 # (script, file, line, col (or None), stdout, stderr)

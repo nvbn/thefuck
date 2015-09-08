@@ -2,7 +2,15 @@ from imp import load_source
 import os
 import sys
 from six import text_type
-from .types import Settings
+
+
+class Settings(dict):
+    def __getattr__(self, item):
+        return self.get(item)
+
+    def __setattr__(self, key, value):
+        self[key] = value
+
 
 ALL_ENABLED = object()
 DEFAULT_RULES = [ALL_ENABLED]
