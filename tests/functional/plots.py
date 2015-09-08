@@ -1,3 +1,6 @@
+from time import sleep
+
+
 def _set_confirmation(proc, require):
     proc.sendline(u'mkdir -p ~/.thefuck')
     proc.sendline(
@@ -22,12 +25,14 @@ def with_confirmation(proc, TIMEOUT):
 
 def history_changed(proc, TIMEOUT, to):
     """Ensures that history changed."""
+    sleep(1)
     proc.send('\033[A')
     assert proc.expect([TIMEOUT, to])
 
 
 def history_not_changed(proc, TIMEOUT):
     """Ensures that history not changed."""
+    sleep(1)
     proc.send('\033[A')
     assert proc.expect([TIMEOUT, u'fuck'])
 
