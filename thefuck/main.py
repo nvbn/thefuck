@@ -1,17 +1,18 @@
 from argparse import ArgumentParser
 from warnings import warn
 from pprint import pformat
-import pkg_resources
 import sys
 import colorama
 from . import logs, types, shells
 from .conf import settings
 from .corrector import get_corrected_commands
 from .exceptions import EmptyCommand
+from .utils import get_installation_info
 from .ui import select_command
 
 
 def fix_command():
+    """Fixes previous command. Used when `thefuck` called without arguments."""
     colorama.init()
     settings.init()
     with logs.debug_time('Total'):
@@ -29,11 +30,8 @@ def fix_command():
             selected_command.run(command)
 
 
-def _get_current_version():
-    return pkg_resources.require('thefuck')[0].version
-
-
 def print_alias(entry_point=True):
+    """Prints alias for current shell."""
     if entry_point:
         warn('`thefuck-alias` is deprecated, use `thefuck --alias` instead.')
         position = 1
@@ -59,9 +57,10 @@ def how_to_configure_alias():
 
 def main():
     parser = ArgumentParser(prog='thefuck')
+    version = get_installation_info().version
     parser.add_argument('-v', '--version',
                         action='version',
-                        version='%(prog)s {}'.format(_get_current_version()))
+                        version='%(prog)s {}'.format(version))
     parser.add_argument('-a', '--alias',
                         action='store_true',
                         help='[custom-alias-name] prints alias for current shell')

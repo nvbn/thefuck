@@ -2,6 +2,7 @@
 
 import sys
 from .conf import settings
+from .exceptions import NoRuleMatched
 from . import logs
 
 try:
@@ -54,7 +55,10 @@ class CommandSelector(object):
 
     def __init__(self, commands):
         self._commands_gen = commands
-        self._commands = [next(self._commands_gen)]
+        try:
+            self._commands = [next(self._commands_gen)]
+        except StopIteration:
+            raise NoRuleMatched
         self._realised = False
         self._index = 0
 
@@ -86,7 +90,7 @@ def select_command(corrected_commands):
     """
     try:
         selector = CommandSelector(corrected_commands)
-    except StopIteration:
+    except NoRuleMatched:
         logs.failed('No fucks given')
         return
 

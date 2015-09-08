@@ -1,4 +1,3 @@
-from pathlib import Path
 from thefuck import types
 from thefuck.conf import DEFAULT_PRIORITY
 
@@ -24,6 +23,3 @@ class CorrectedCommand(types.CorrectedCommand):
     def __init__(self, script='', side_effect=None, priority=DEFAULT_PRIORITY):
         super(CorrectedCommand, self).__init__(
             script, side_effect, priority)
-
-
-root = Path(__file__).parent.parent.resolve()

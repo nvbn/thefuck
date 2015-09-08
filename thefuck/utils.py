@@ -4,7 +4,6 @@ import shelve
 from warnings import warn
 from decorator import decorator
 from contextlib import closing
-import tempfile
 
 import os
 import pickle
@@ -99,10 +98,9 @@ def get_all_executables():
             return fallback
 
     tf_alias = thefuck_alias()
-    tf_entry_points = pkg_resources.require('thefuck')[0]\
-                                   .get_entry_map()\
-                                   .get('console_scripts', {})\
-                                   .keys()
+    tf_entry_points = get_installation_info().get_entry_map()\
+                                             .get('console_scripts', {})\
+                                             .keys()
     bins = [exe.name
             for path in os.environ.get('PATH', '').split(':')
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
@@ -224,3 +222,7 @@ def compatibility_call(fn, *args):
              .format(fn.__name__, fn.__module__))
         args += (settings,)
     return fn(*args)
+
+
+def get_installation_info():
+    return pkg_resources.require('thefuck')[0]
