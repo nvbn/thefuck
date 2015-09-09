@@ -198,6 +198,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `switch_lang` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
+* `touch` &ndash; creates missing directories before "touching";
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
 * `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
