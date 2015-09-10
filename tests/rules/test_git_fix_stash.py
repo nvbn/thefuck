@@ -23,6 +23,10 @@ def test_match(wrong):
     assert match(Command(wrong, stderr=git_stash_err))
 
 
+def test_not_match():
+    assert not match(Command("git", stderr=git_stash_err))
+
+
 @pytest.mark.parametrize('wrong,fixed', [
     ('git stash opp', 'git stash pop'),
     ('git stash Some message', 'git stash save Some message'),

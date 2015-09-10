@@ -5,8 +5,12 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return (command.script.split()[1] == 'stash'
-            and 'usage:' in command.stderr)
+    splited_script = command.script.split()
+    if len(splited_script) > 1:
+        return (splited_script[1] == 'stash'
+                and 'usage:' in command.stderr)
+    else:
+        return False
 
 # git's output here is too complicated to be parsed (see the test file)
 stash_commands = (
