@@ -44,9 +44,9 @@ def read_actions():
         buffer.append(ch)
         buffer = buffer[-3:]
 
-        if buffer == ['\x1b', '[', 'A']:  # ↑
+        if buffer == ['\x1b', '[', 'A'] or ch == 'k':  # ↑
             yield PREVIOUS
-        elif buffer == ['\x1b', '[', 'B']:  # ↓
+        elif buffer == ['\x1b', '[', 'B'] or ch == 'j':  # ↓
             yield NEXT
 
 
