@@ -59,9 +59,11 @@ def how_to_configure_alias():
 def main():
     parser = ArgumentParser(prog='thefuck')
     version = get_installation_info().version
-    parser.add_argument('-v', '--version',
-                        action='version',
-                        version='%(prog)s {}'.format(version))
+    parser.add_argument(
+        '-v', '--version',
+        action='version',
+        version='The Fuck {} using Python {}'.format(
+            version, sys.version.split()[0]))
     parser.add_argument('-a', '--alias',
                         action='store_true',
                         help='[custom-alias-name] prints alias for current shell')
