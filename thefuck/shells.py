@@ -134,7 +134,7 @@ class Fish(Generic):
                 "    set -l fucked_up_command $history[1]\n"
                 "    thefuck $fucked_up_command > $eval_script\n"
                 "    . $eval_script\n"
-                "    rm $eval_script\n"
+                "    rm -f $eval_script\n"
                 "    if test $exit_code -ne 0\n"
                 "        history --delete $fucked_up_command\n"
                 "    end\n"
