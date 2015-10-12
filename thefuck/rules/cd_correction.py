@@ -2,9 +2,10 @@
 
 import os
 from difflib import get_close_matches
+import re
 from thefuck.specific.sudo import sudo_support
-from thefuck.rules import cd_mkdir
 from thefuck.utils import for_app
+from thefuck import shells
 
 __author__ = "mmussomele"
 
@@ -43,11 +44,13 @@ def get_new_command(command):
         elif directory == "..":
             cwd = os.path.split(cwd)[0]
             continue
-        best_matches = get_close_matches(directory, _get_sub_dirs(cwd), cutoff=MAX_ALLOWED_DIFF)
+        best_matches = get_close_matches(
+            directory, _get_sub_dirs(cwd), cutoff=MAX_ALLOWED_DIFF)
         if best_matches:
             cwd = os.path.join(cwd, best_matches[0])
         else:
-            return cd_mkdir.get_new_command(command)
+            repl = shells.and_('mkdir -p \\1', 'cd \\1')
+            return re.sub(r'^cd (.*)', repl, command.script)
     return 'cd "{0}"'.format(cwd)
 
 
