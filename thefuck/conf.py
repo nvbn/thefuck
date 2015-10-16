@@ -26,7 +26,7 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_PRIORITY': 'priority',
                'THEFUCK_DEBUG': 'debug'}
 
-SETTINGS_HEADER = u"""# ~/.thefuck/settings.py: The Fuck settings file
+SETTINGS_HEADER = u"""# The Fuck settings file
 #
 # The rules are defined as in the example bellow:
 #
@@ -73,7 +73,15 @@ class Settings(dict):
 
     def _setup_user_dir(self):
         """Returns user config dir, create it when it doesn't exist."""
+
+        # for backward compatibility, use `~/.thefuck` if it exists
         user_dir = Path(os.path.expanduser('~/.thefuck'))
+
+        if not user_dir.is_dir():
+            default_xdg_config_dir = os.path.expanduser("~/.config")
+            xdg_config_dir = os.getenv("XDG_CONFIG_HOME", default_xdg_config_dir)
+            user_dir = Path(os.path.join(xdg_config_dir, 'thefuck'))
+
         rules_dir = user_dir.joinpath('rules')
         if not rules_dir.is_dir():
             rules_dir.mkdir(parents=True)
