@@ -185,7 +185,18 @@ def cache(*depends_on):
         if cache.disabled:
             return fn(*args, **kwargs)
 
-        cache_path = settings.user_dir.joinpath('.thefuck-cache').as_posix()
+        default_xdg_cache_dir = os.path.expanduser("~/.cache")
+        cache_dir = os.getenv("XDG_CACHE_HOME", default_xdg_cache_dir)
+        cache_path = Path(cache_dir).joinpath('thefuck').as_posix()
+
+        # Ensure the cache_path exists, Python 2 does not have the exist_ok
+        # parameter
+        try:
+            os.makedirs(cache_dir)
+        except OSError:
+            if not os.path.isdir(cache_dir):
+                raise
+
         # A bit obscure, but simplest way to generate unique key for
         # functions and methods in python 2 and 3:
         key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])
