@@ -31,8 +31,7 @@ def test_match(brew_no_available_formula, brew_already_installed,
                          stderr=brew_no_available_formula))
     assert not match(Command('brew install git',
                              stderr=brew_already_installed))
-    assert not match(Command('brew install', stderr=brew_install_no_argument),
-                     None)
+    assert not match(Command('brew install', stderr=brew_install_no_argument))
 
 
 @pytest.mark.skipif(_is_not_okay_to_test(),
@@ -43,5 +42,5 @@ def test_get_new_command(brew_no_available_formula):
         == 'brew install elasticsearch'
 
     assert get_new_command(Command('brew install aa',
-                                   stderr=brew_no_available_formula),
-                           None) != 'brew install aha'
+                                   stderr=brew_no_available_formula))\
+        != 'brew install aha'
