@@ -180,11 +180,7 @@ def cache(*depends_on):
         except OSError:
             return '0'
 
-    @decorator
-    def _cache(fn, *args, **kwargs):
-        if cache.disabled:
-            return fn(*args, **kwargs)
-
+    def _get_cache_path():
         default_xdg_cache_dir = os.path.expanduser("~/.cache")
         cache_dir = os.getenv("XDG_CACHE_HOME", default_xdg_cache_dir)
         cache_path = Path(cache_dir).joinpath('thefuck').as_posix()
@@ -197,11 +193,19 @@ def cache(*depends_on):
             if not os.path.isdir(cache_dir):
                 raise
 
+        return cache_path
+
+    @decorator
+    def _cache(fn, *args, **kwargs):
+        if cache.disabled:
+            return fn(*args, **kwargs)
+
         # A bit obscure, but simplest way to generate unique key for
         # functions and methods in python 2 and 3:
         key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])
 
         etag = '.'.join(_get_mtime(name) for name in depends_on)
+        cache_path = _get_cache_path()
 
         with closing(shelve.open(cache_path)) as db:
             if db.get(key, {}).get('etag') == etag:

@@ -71,16 +71,20 @@ class Settings(dict):
                 for setting in DEFAULT_SETTINGS.items():
                     settings_file.write(u'# {} = {}\n'.format(*setting))
 
-    def _setup_user_dir(self):
-        """Returns user config dir, create it when it doesn't exist."""
-
+    def _get_user_dir_path(self):
         # for backward compatibility, use `~/.thefuck` if it exists
-        user_dir = Path(os.path.expanduser('~/.thefuck'))
+        legacy_user_dir = Path(os.path.expanduser('~/.thefuck'))
 
-        if not user_dir.is_dir():
+        if legacy_user_dir.is_dir():
+            return legacy_user_dir
+        else:
             default_xdg_config_dir = os.path.expanduser("~/.config")
             xdg_config_dir = os.getenv("XDG_CONFIG_HOME", default_xdg_config_dir)
-            user_dir = Path(os.path.join(xdg_config_dir, 'thefuck'))
+            return Path(os.path.join(xdg_config_dir, 'thefuck'))
+
+    def _setup_user_dir(self):
+        """Returns user config dir, create it when it doesn't exist."""
+        user_dir = self._get_user_dir_path()
 
         rules_dir = user_dir.joinpath('rules')
         if not rules_dir.is_dir():
