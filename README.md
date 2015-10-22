@@ -302,7 +302,8 @@ Or via environment variables:
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
 * `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
 rule with lower `priority` will be matched first;
-* `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`.
+* `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`;
+* `THEFUCK_HISTORY_LIMIT` &ndash; how many history commands will be scanned, like `2000`.
 
 For example:
 

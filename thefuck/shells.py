@@ -10,6 +10,7 @@ from time import time
 import io
 import os
 from .utils import DEVNULL, memoize, cache
+from .conf import settings
 
 
 class Generic(object):
@@ -59,10 +60,16 @@ class Generic(object):
 
     def get_history(self):
         """Returns list of history entries."""
+        tail_num = settings.get("history_limit", None)
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
-            with io.open(history_file_name, 'r',
-                         encoding='utf-8', errors='ignore') as history:
+            if tail_num is not None:
+                _, f = os.popen2("tail -n {} {}".format(tail_num, history_file_name))
+                _.close()
+            else:
+                f = io.open(history_file_name, 'r',
+                         encoding='utf-8', errors='ignore')
+            with f as history:
                 for line in history:
                     prepared = self._script_from_history(line)\
                                    .strip()

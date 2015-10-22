@@ -24,7 +24,8 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
                'THEFUCK_NO_COLORS': 'no_colors',
                'THEFUCK_PRIORITY': 'priority',
-               'THEFUCK_DEBUG': 'debug'}
+               'THEFUCK_DEBUG': 'debug',
+               'THEFUCK_HISTORY_LIMIT': 'history_limit'}
 
 SETTINGS_HEADER = u"""# ~/.thefuck/settings.py: The Fuck settings file
 #
@@ -125,3 +126,4 @@ class Settings(dict):
 
 
 settings = Settings(DEFAULT_SETTINGS)
+settings.init()
