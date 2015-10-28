@@ -1,7 +1,8 @@
 import os
 import pytest
 import tarfile
-from thefuck.rules.dirty_untar import match, get_new_command, side_effect
+from thefuck.rules.dirty_untar import match, get_new_command, side_effect, \
+                                      tar_extensions
 from tests.utils import Command
 
 
@@ -32,34 +33,40 @@ def tar_error(tmpdir):
 
     return fixture
 
-parametrize_filename = pytest.mark.parametrize('filename', [
-    'foo.tar',
-    'foo.tar.gz',
-    'foo.tgz'])
+parametrize_extensions = pytest.mark.parametrize('ext', tar_extensions)
+
+# (filename as typed by the user, unquoted filename, quoted filename as per shells.quote)
+parametrize_filename = pytest.mark.parametrize('filename, unquoted, quoted', [
+    ('foo{}', 'foo{}', 'foo{}'),
+    ('foo\ bar{}', 'foo bar{}', "'foo bar{}'"),
+    ('"foo bar{}"', 'foo bar{}', "'foo bar{}'")])
 
 parametrize_script = pytest.mark.parametrize('script, fixed', [
-    ('tar xvf {}', 'mkdir -p foo && tar xvf {} -C foo'),
-    ('tar -xvf {}', 'mkdir -p foo && tar -xvf {} -C foo'),
-    ('tar --extract -f {}', 'mkdir -p foo && tar --extract -f {} -C foo')])
+    ('tar xvf {}', 'mkdir -p {dir} && tar xvf {filename} -C {dir}'),
+    ('tar -xvf {}', 'mkdir -p {dir} && tar -xvf {filename} -C {dir}'),
+    ('tar --extract -f {}', 'mkdir -p {dir} && tar --extract -f {filename} -C {dir}')])
 
 
+@parametrize_extensions
 @parametrize_filename
 @parametrize_script
-def test_match(tar_error, filename, script, fixed):
-    tar_error(filename)
-    assert match(Command(script=script.format(filename)))
+def test_match(ext, tar_error, filename, unquoted, quoted, script, fixed):
+    tar_error(unquoted.format(ext))
+    assert match(Command(script=script.format(filename.format(ext))))
 
 
+@parametrize_extensions
 @parametrize_filename
 @parametrize_script
-def test_side_effect(tar_error, filename, script, fixed):
-    tar_error(filename)
-    side_effect(Command(script=script.format(filename)), None)
-    assert set(os.listdir('.')) == {filename, 'd'}
+def test_side_effect(ext, tar_error, filename, unquoted, quoted, script, fixed):
+    tar_error(unquoted.format(ext))
+    side_effect(Command(script=script.format(filename.format(ext))), None)
+    assert set(os.listdir('.')) == {unquoted.format(ext), 'd'}
 
-
+@parametrize_extensions
 @parametrize_filename
 @parametrize_script
-def test_get_new_command(tar_error, filename, script, fixed):
-    tar_error(filename)
-    assert get_new_command(Command(script=script.format(filename))) == fixed.format(filename)
+def test_get_new_command(ext, tar_error, filename, unquoted, quoted, script, fixed):
+    tar_error(unquoted.format(ext))
+    assert (get_new_command(Command(script=script.format(filename.format(ext))))
+            == fixed.format(dir=quoted.format(''), filename=filename.format(ext)))
