@@ -43,6 +43,8 @@ def test_side_effect(zip_error, script):
 
 @pytest.mark.parametrize('script,fixed', [
     ('unzip foo', 'unzip foo -d foo'),
+    (R"unzip foo\ bar.zip", R"unzip foo\ bar.zip -d 'foo bar'"),
+    (R"unzip 'foo bar.zip'", R"unzip 'foo bar.zip' -d 'foo bar'"),
     ('unzip foo.zip', 'unzip foo.zip -d foo')])
 def test_get_new_command(zip_error, script, fixed):
     assert get_new_command(Command(script=script)) == fixed
