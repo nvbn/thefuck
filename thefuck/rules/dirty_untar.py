@@ -30,17 +30,17 @@ def _tar_file(cmd):
 def match(command):
     return ('-C' not in command.script
             and _is_tar_extract(command.script)
-            and _tar_file(command.split_script) is not None)
+            and _tar_file(command.script_parts) is not None)
 
 
 def get_new_command(command):
-    dir = shells.quote(_tar_file(command.split_script)[1])
+    dir = shells.quote(_tar_file(command.script_parts)[1])
     return shells.and_('mkdir -p {dir}', '{cmd} -C {dir}') \
         .format(dir=dir, cmd=command.script)
 
 
 def side_effect(old_cmd, command):
-    with tarfile.TarFile(_tar_file(old_cmd.split_script)[0]) as archive:
+    with tarfile.TarFile(_tar_file(old_cmd.script_parts)[0]) as archive:
         for file in archive.getnames():
             try:
                 os.remove(file)

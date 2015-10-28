@@ -8,7 +8,7 @@ def match(command):
 
 
 def get_new_command(command):
-    cmds = command.split_script
+    cmds = command.script_parts
     machine = None
     if len(cmds) >= 3:
         machine = cmds[2]

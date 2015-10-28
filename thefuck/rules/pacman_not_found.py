@@ -11,14 +11,14 @@ from thefuck.specific.archlinux import get_pkgfile, archlinux_env
 
 
 def match(command):
-    return (command.split_script
-            and (command.split_script[0] in ('pacman', 'yaourt')
-                 or command.split_script[0:2] == ['sudo', 'pacman'])
+    return (command.script_parts
+            and (command.script_parts[0] in ('pacman', 'yaourt')
+                 or command.script_parts[0:2] == ['sudo', 'pacman'])
             and 'error: target not found:' in command.stderr)
 
 
 def get_new_command(command):
-    pgr = command.split_script[-1]
+    pgr = command.script_parts[-1]
 
     return replace_command(command, pgr, get_pkgfile(pgr))
 

@@ -5,8 +5,8 @@ from thefuck.specific.git import git_support
 @git_support
 def match(command):
     # catches "git branch list" in place of "git branch"
-    return (command.split_script
-            and command.split_script[1:] == 'branch list'.split())
+    return (command.script_parts
+            and command.script_parts[1:] == 'branch list'.split())
 
 
 @git_support

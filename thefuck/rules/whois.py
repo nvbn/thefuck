@@ -25,7 +25,7 @@ def match(command):
 
 
 def get_new_command(command):
-    url = command.split_script[1]
+    url = command.script_parts[1]
 
     if '/' in command.script:
         return 'whois ' + urlparse(url).netloc

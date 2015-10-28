@@ -12,7 +12,7 @@ def get_new_command(command):
     if '2' in command.script:
         return command.script.replace("2", "3")
 
-    split_cmd2 = command.split_script
+    split_cmd2 = command.script_parts
     split_cmd3 = split_cmd2[:]
 
     split_cmd2.insert(1, ' 2 ')

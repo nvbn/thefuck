@@ -1,13 +1,13 @@
+from imp import load_source
+from subprocess import Popen, PIPE
+import os
+import sys
+import six
+from psutil import Process, TimeoutExpired
 from . import logs, shells
 from .conf import settings, DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
 from .utils import compatibility_call
-from imp import load_source
-from psutil import Process, TimeoutExpired
-from subprocess import Popen, PIPE
-import os
-import six
-import sys
 
 
 class Command(object):
@@ -21,22 +21,20 @@ class Command(object):
         :type stderr: basestring
 
         """
-        self._script = script
+        self.script = script
         self.stdout = stdout
         self.stderr = stderr
 
-        try:
-            self._split_script = shells.split_command(script)
-        except:
-            self._split_script = None
-
     @property
-    def script(self):
-        return self._script
-
-    @property
-    def split_script(self):
-        return self._split_script
+    def script_parts(self):
+        if not hasattr(self, '_script_parts'):
+            try:
+                self._script_parts = shells.split_command(self.script)
+            except Exception as e:
+                logs.exception("Can't split command script {}".format(self),
+                               sys.exc_info())
+                self._script_parts = None
+        return self._script_parts
 
     def __eq__(self, other):
         if isinstance(other, Command):

@@ -6,7 +6,7 @@ from thefuck.specific.sudo import sudo_support
 
 @sudo_support
 def match(command):
-    toks = command.split_script
+    toks = command.script_parts
     return (toks
             and toks[0].endswith('.py')
             and ('Permission denied' in command.stderr or
