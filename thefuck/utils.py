@@ -146,10 +146,10 @@ def replace_command(command, broken, matched):
 @memoize
 def is_app(command, *app_names):
     """Returns `True` if command is call to one of passed app names."""
-    for name in app_names:
-        if command.script == name \
-                or command.script.startswith(u'{} '.format(name)):
-            return True
+    if command.split_script is not None and len(command.split_script) > 0:
+        app = command.split_script[0]
+        return app in app_names
+
     return False
 
 
