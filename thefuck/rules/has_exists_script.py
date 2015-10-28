@@ -4,7 +4,7 @@ from thefuck.specific.sudo import sudo_support
 
 @sudo_support
 def match(command):
-    return os.path.exists(command.script.split()[0]) \
+    return command.split_script and os.path.exists(command.split_script[0]) \
         and 'command not found' in command.stderr
 
 

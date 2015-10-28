@@ -1,5 +1,6 @@
 import shlex
-from thefuck.utils import quote, for_app
+from thefuck.shells import quote
+from thefuck.utils import for_app
 
 
 @for_app('sed')

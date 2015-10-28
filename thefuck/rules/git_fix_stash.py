@@ -5,9 +5,8 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    splited_script = command.script.split()
-    if len(splited_script) > 1:
-        return (splited_script[1] == 'stash'
+    if command.split_script and len(command.split_script) > 1:
+        return (command.split_script[1] == 'stash'
                 and 'usage:' in command.stderr)
     else:
         return False
@@ -26,12 +25,12 @@ stash_commands = (
 
 @git_support
 def get_new_command(command):
-    stash_cmd = command.script.split()[2]
+    stash_cmd = command.split_script[2]
     fixed = utils.get_closest(stash_cmd, stash_commands, fallback_to_first=False)
 
     if fixed is not None:
         return replace_argument(command.script, stash_cmd, fixed)
     else:
-        cmd = command.script.split()
+        cmd = command.split_script[:]
         cmd.insert(2, 'save')
         return ' '.join(cmd)

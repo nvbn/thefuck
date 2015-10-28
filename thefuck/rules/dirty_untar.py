@@ -4,6 +4,11 @@ from thefuck import shells
 from thefuck.utils import for_app
 
 
+tar_extensions = ('.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',
+                  '.tar.lzma', '.tar.xz', '.taz', '.tb2', '.tbz', '.tbz2',
+                  '.tgz', '.tlz', '.txz', '.tz')
+
+
 def _is_tar_extract(cmd):
     if '--extract' in cmd:
         return True
@@ -14,11 +19,8 @@ def _is_tar_extract(cmd):
 
 
 def _tar_file(cmd):
-    tar_extensions = ('.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',
-                      '.tar.lzma', '.tar.xz', '.taz', '.tb2', '.tbz', '.tbz2',
-                      '.tgz', '.tlz', '.txz', '.tz')
 
-    for c in cmd.split():
+    for c in cmd:
         for ext in tar_extensions:
             if c.endswith(ext):
                 return (c, c[0:len(c) - len(ext)])
@@ -28,16 +30,17 @@ def _tar_file(cmd):
 def match(command):
     return ('-C' not in command.script
             and _is_tar_extract(command.script)
-            and _tar_file(command.script) is not None)
+            and _tar_file(command.split_script) is not None)
 
 
 def get_new_command(command):
+    dir = shells.quote(_tar_file(command.split_script)[1])
     return shells.and_('mkdir -p {dir}', '{cmd} -C {dir}') \
-        .format(dir=_tar_file(command.script)[1], cmd=command.script)
+        .format(dir=dir, cmd=command.script)
 
 
 def side_effect(old_cmd, command):
-    with tarfile.TarFile(_tar_file(old_cmd.script)[0]) as archive:
+    with tarfile.TarFile(_tar_file(old_cmd.split_script)[0]) as archive:
         for file in archive.getnames():
             try:
                 os.remove(file)

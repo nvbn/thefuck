@@ -12,15 +12,9 @@ from inspect import getargspec
 
 from pathlib import Path
 import pkg_resources
-import six
 from .conf import settings
 
 DEVNULL = open(os.devnull, 'w')
-
-if six.PY2:
-    from pipes import quote
-else:
-    from shlex import quote
 
 
 def memoize(fn):
@@ -144,19 +138,23 @@ def replace_command(command, broken, matched):
 
 
 @memoize
-def is_app(command, *app_names):
+def is_app(command, *app_names, **kwargs):
     """Returns `True` if command is call to one of passed app names."""
-    for name in app_names:
-        if command.script == name \
-                or command.script.startswith(u'{} '.format(name)):
-            return True
+
+    at_least = kwargs.pop('at_least', 0)
+    if kwargs:
+        raise TypeError("got an unexpected keyword argument '{}'".format(kwargs.keys()))
+
+    if command.split_script is not None and len(command.split_script) > at_least:
+        return command.split_script[0] in app_names
+
     return False
 
 
-def for_app(*app_names):
+def for_app(*app_names, **kwargs):
     """Specifies that matching script is for on of app names."""
     def _for_app(fn, command):
-        if is_app(command, *app_names):
+        if is_app(command, *app_names, **kwargs):
             return fn(command)
         else:
             return False

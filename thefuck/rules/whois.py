@@ -1,7 +1,9 @@
 # -*- encoding: utf-8 -*-
 from six.moves.urllib.parse import urlparse
+from thefuck.utils import for_app
 
 
+@for_app('whois', at_least=1)
 def match(command):
     """
     What the `whois` command returns depends on the 'Whois server' it contacted
@@ -19,11 +21,11 @@ def match(command):
         - www.google.fr → subdomain: www, domain: 'google.fr';
         - google.co.uk → subdomain: None, domain; 'google.co.uk'.
     """
-    return 'whois ' in command.script.strip()
+    return True
 
 
 def get_new_command(command):
-    url = command.script.split()[1]
+    url = command.split_script[1]
 
     if '/' in command.script:
         return 'whois ' + urlparse(url).netloc

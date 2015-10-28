@@ -1,11 +1,13 @@
 def match(command):
-    split_command = command.script.split()
+    split_command = command.split_script
 
-    return len(split_command) >= 2 and split_command[0] == split_command[1]
+    return (split_command
+            and len(split_command) >= 2
+            and split_command[0] == split_command[1])
 
 
 def get_new_command(command):
-    return command.script[command.script.find(' ')+1:]
+    return ' '.join(command.split_script[1:])
 
 # it should be rare enough to actually have to type twice the same word, so
 # this rule can have a higher priority to come before things like "cd cd foo"
