@@ -10,6 +10,7 @@ from time import time
 import io
 import os
 import shlex
+import six
 from .utils import DEVNULL, memoize, cache
 
 
@@ -79,6 +80,16 @@ class Generic(object):
     def split_command(self, command):
         """Split the command using shell-like syntax."""
         return shlex.split(command)
+
+    def quote(self, s):
+        """Return a shell-escaped version of the string s."""
+
+        if six.PY2:
+            from pipes import quote
+        else:
+            from shlex import quote
+
+        return quote(s)
 
 
 class Bash(Generic):
@@ -292,6 +303,10 @@ def get_aliases():
 
 def split_command(command):
     return _get_shell().split_command(command)
+
+
+def quote(s):
+    return _get_shell().quote(s)
 
 
 @memoize

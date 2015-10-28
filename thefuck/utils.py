@@ -12,15 +12,9 @@ from inspect import getargspec
 
 from pathlib import Path
 import pkg_resources
-import six
 from .conf import settings
 
 DEVNULL = open(os.devnull, 'w')
-
-if six.PY2:
-    from pipes import quote
-else:
-    from shlex import quote
 
 
 def memoize(fn):
