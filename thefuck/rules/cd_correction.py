@@ -33,7 +33,7 @@ def get_new_command(command):
     defaults to the rules of cd_mkdir.
     Change sensitivity by changing MAX_ALLOWED_DIFF. Default value is 0.6
     """
-    dest = command.script.split()[1].split(os.sep)
+    dest = command.split_script[1].split(os.sep)
     if dest[-1] == '':
         dest = dest[:-1]
     cwd = os.getcwd()

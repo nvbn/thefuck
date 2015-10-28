@@ -8,13 +8,13 @@ def match(command):
 
 
 def get_new_command(command):
-    cmds = command.script.split(' ')
+    cmds = command.split_script
     machine = None
     if len(cmds) >= 3:
         machine = cmds[2]
 
     startAllInstances = shells.and_("vagrant up", command.script)
-    if machine is None: 
+    if machine is None:
         return startAllInstances
     else:
         return [ shells.and_("vagrant up " +  machine, command.script), startAllInstances]

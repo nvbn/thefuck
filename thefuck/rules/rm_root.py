@@ -5,7 +5,8 @@ enabled_by_default = False
 
 @sudo_support
 def match(command):
-    return ({'rm', '/'}.issubset(command.script.split())
+    return (command.split_script
+            and {'rm', '/'}.issubset(command.split_script)
             and '--no-preserve-root' not in command.script
             and '--no-preserve-root' in command.stderr)
 
