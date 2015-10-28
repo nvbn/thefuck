@@ -30,9 +30,9 @@ class Command(object):
         if not hasattr(self, '_script_parts'):
             try:
                 self._script_parts = shells.split_command(self.script)
-            except Exception as e:
-                logs.exception("Can't split command script {}".format(self),
-                               sys.exc_info())
+            except Exception:
+                logs.debug("Can't split command script {} because:\n {}".format(
+                    self, sys.exc_info()))
                 self._script_parts = None
         return self._script_parts
 
