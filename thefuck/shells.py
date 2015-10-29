@@ -60,19 +60,29 @@ class Generic(object):
         """
         return ''
 
+    def _get_history_lines(self, history_file):
+        """Returns all history lines.
+
+        If `settings.history_limit` defined, limits result to `settings.history_limit`.
+
+        """
+        if not settings.history_limit:
+            return history_file.readlines()
+
+        buffer = []
+        for line in history_file.readlines():
+            if len(buffer) > settings.history_limit:
+                buffer.pop(0)
+            buffer.append(line)
+        return buffer
+
     def get_history(self):
         """Returns list of history entries."""
-        tail_num = settings.history_limit
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
-            if tail_num is not None and tail_num.isdigit():
-                _, f = os.popen2("tail -n {} {}".format(tail_num, history_file_name))
-                _.close()
-            else:
-                f = io.open(history_file_name, 'r',
-                         encoding='utf-8', errors='ignore')
-            with f as history:
-                for line in history:
+            with io.open(history_file_name, 'r',
+                         encoding='utf-8', errors='ignore') as history_file:
+                for line in self._get_history_lines(history_file):
                     prepared = self._script_from_history(line)\
                                    .strip()
                     if prepared:
