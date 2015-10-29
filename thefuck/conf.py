@@ -16,6 +16,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'no_colors': False,
                     'debug': False,
                     'priority': {},
+                    'history_limit': None,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
@@ -126,4 +127,3 @@ class Settings(dict):
 
 
 settings = Settings(DEFAULT_SETTINGS)
-settings.init()

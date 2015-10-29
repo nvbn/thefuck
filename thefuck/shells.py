@@ -60,10 +60,10 @@ class Generic(object):
 
     def get_history(self):
         """Returns list of history entries."""
-        tail_num = settings.get("history_limit", None)
+        tail_num = settings.history_limit
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
-            if tail_num is not None:
+            if tail_num is not None and tail_num.isdigit():
                 _, f = os.popen2("tail -n {} {}".format(tail_num, history_file_name))
                 _.close()
             else:
