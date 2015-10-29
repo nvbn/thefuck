@@ -52,37 +52,18 @@ class Generic(object):
             with open(history_file_name, 'a') as history:
                 history.write(self._get_history_line(command_script))
 
-    def _script_from_history(self, line):
-        """Returns prepared history line.
-
-        Should return a blank line if history line is corrupted or empty.
-
-        """
-        return ''
-
-    def _get_history_lines(self, history_file):
-        """Returns all history lines.
-
-        If `settings.history_limit` defined, limits result to `settings.history_limit`.
-
-        """
-        if not settings.history_limit:
-            return history_file.readlines()
-
-        buffer = []
-        for line in history_file.readlines():
-            if len(buffer) > settings.history_limit:
-                buffer.pop(0)
-            buffer.append(line)
-        return buffer
-
     def get_history(self):
         """Returns list of history entries."""
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
             with io.open(history_file_name, 'r',
                          encoding='utf-8', errors='ignore') as history_file:
-                for line in self._get_history_lines(history_file):
+
+                lines = history_file.readlines()
+                if settings.history_limit:
+                    lines = lines[-settings.history_limit:]
+
+                for line in lines:
                     prepared = self._script_from_history(line)\
                                    .strip()
                     if prepared:
