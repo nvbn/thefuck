@@ -128,6 +128,8 @@ class Settings(dict):
             return int(val)
         elif attr in ('require_confirmation', 'no_colors', 'debug'):
             return val.lower() == 'true'
+        elif attr == 'history_limit':
+            return int(val)
         else:
             return val
 
