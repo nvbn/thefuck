@@ -114,6 +114,8 @@ class Settings(dict):
             return dict(self._priority_from_env(val))
         elif attr == 'wait_command':
             return int(val)
+        elif attr == 'history_limit':
+            return int(val)
         elif attr in ('require_confirmation', 'no_colors', 'debug'):
             return val.lower() == 'true'
         else:
