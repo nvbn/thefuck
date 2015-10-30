@@ -12,7 +12,7 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return replace_argument(command.script, 'push', 'push --force')
+    return replace_argument(command.script, 'push', 'push --force-with-lease')
 
 
 enabled_by_default = False
