@@ -219,7 +219,7 @@ Enabled by default only on specific platforms:
 
 Bundled, but not enabled by default:
 
-* `git_push_force` &ndash; adds `--force` to a `git push` (may conflict with `git_push_pull`);
+* `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
 ## Creating your own rules
