@@ -32,14 +32,14 @@ def rule_failed(rule, exc_info):
 
 
 def failed(msg):
-    sys.stderr.write('{red}{msg}{reset}\n'.format(
+    sys.stderr.write(u'{red}{msg}{reset}\n'.format(
         msg=msg,
         red=color(colorama.Fore.RED),
         reset=color(colorama.Style.RESET_ALL)))
 
 
 def show_corrected_command(corrected_command):
-    sys.stderr.write('{bold}{script}{reset}{side_effect}\n'.format(
+    sys.stderr.write(u'{bold}{script}{reset}{side_effect}\n'.format(
         script=corrected_command.script,
         side_effect=' (+side effect)' if corrected_command.side_effect else '',
         bold=color(colorama.Style.BRIGHT),
@@ -48,7 +48,7 @@ def show_corrected_command(corrected_command):
 
 def confirm_text(corrected_command):
     sys.stderr.write(
-        ('{clear}{bold}{script}{reset}{side_effect} '
+        (u'{clear}{bold}{script}{reset}{side_effect} '
          '[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
          '/{red}ctrl+c{reset}]').format(
             script=corrected_command.script,
