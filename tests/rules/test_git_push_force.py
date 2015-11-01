@@ -45,8 +45,8 @@ def test_not_match(command):
 
 
 @pytest.mark.parametrize('command, output', [
-    (Command(script='git push', stderr=git_err), 'git push --force'),
-    (Command(script='git push nvbn', stderr=git_err), 'git push --force nvbn'),
-    (Command(script='git push nvbn master', stderr=git_err), 'git push --force nvbn master')])
+    (Command(script='git push', stderr=git_err), 'git push --force-with-lease'),
+    (Command(script='git push nvbn', stderr=git_err), 'git push --force-with-lease nvbn'),
+    (Command(script='git push nvbn master', stderr=git_err), 'git push --force-with-lease nvbn master')])
 def test_get_new_command(command, output):
     assert get_new_command(command) == output
