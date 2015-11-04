@@ -23,11 +23,16 @@ def memoize(fn):
 
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        key = pickle.dumps((args, kwargs))
-        if key not in memo or memoize.disabled:
-            memo[key] = fn(*args, **kwargs)
+        if not memoize.disabled:
+            key = pickle.dumps((args, kwargs))
+            if key not in memo:
+                memo[key] = fn(*args, **kwargs)
+            value = memo[key]
+        else:
+            # Memoize is disabled, call the function
+            value = fn(*args, **kwargs)
 
-        return memo[key]
+        return value
 
     return wrapper
 memoize.disabled = False
