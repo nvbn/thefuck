@@ -7,4 +7,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return 'grep -r {}'.format(command.script[5:])
+    return u'grep -r {}'.format(command.script[5:])

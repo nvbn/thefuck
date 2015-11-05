@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 from thefuck import shells
 
@@ -35,6 +37,7 @@ class TestGeneric(object):
 
     def test_put_to_history(self, builtins_open, shell):
         assert shell.put_to_history('ls') is None
+        assert shell.put_to_history(u'echo café') is None
         assert builtins_open.call_count == 0
 
     def test_and_(self, shell):
@@ -54,6 +57,10 @@ class TestGeneric(object):
         # We don't know what to do in generic shell with history lines,
         # so just ignore them:
         assert list(shell.get_history()) == []
+
+    def test_split_command(self, shell):
+        assert shell.split_command('ls') == ['ls']
+        assert shell.split_command(u'echo café') == [u'echo', u'café']
 
 
 @pytest.mark.usefixtures('isfile')
@@ -83,10 +90,13 @@ class TestBash(object):
     def test_to_shell(self, shell):
         assert shell.to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open, shell):
-        shell.put_to_history('ls')
+    @pytest.mark.parametrize('entry, entry_utf8', [
+        ('ls', 'ls\n'),
+        (u'echo café', 'echo café\n')])
+    def test_put_to_history(self, entry, entry_utf8, builtins_open, shell):
+        shell.put_to_history(entry)
         builtins_open.return_value.__enter__.return_value. \
-            write.assert_called_once_with('ls\n')
+            write.assert_called_once_with(entry_utf8)
 
     def test_and_(self, shell):
         assert shell.and_('ls', 'cd') == 'ls && cd'
@@ -152,12 +162,15 @@ class TestFish(object):
     def test_to_shell(self, shell):
         assert shell.to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open, mocker, shell):
+    @pytest.mark.parametrize('entry, entry_utf8', [
+        ('ls', '- cmd: ls\n   when: 1430707243\n'),
+        (u'echo café', '- cmd: echo café\n   when: 1430707243\n')])
+    def test_put_to_history(self, entry, entry_utf8, builtins_open, mocker, shell):
         mocker.patch('thefuck.shells.time',
                      return_value=1430707243.3517463)
-        shell.put_to_history('ls')
+        shell.put_to_history(entry)
         builtins_open.return_value.__enter__.return_value. \
-            write.assert_called_once_with('- cmd: ls\n   when: 1430707243\n')
+            write.assert_called_once_with(entry_utf8)
 
     def test_and_(self, shell):
         assert shell.and_('foo', 'bar') == 'foo; and bar'
@@ -212,12 +225,15 @@ class TestZsh(object):
     def test_to_shell(self, shell):
         assert shell.to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open, mocker, shell):
+    @pytest.mark.parametrize('entry, entry_utf8', [
+        ('ls', ': 1430707243:0;ls\n'),
+        (u'echo café', ': 1430707243:0;echo café\n')])
+    def test_put_to_history(self, entry, entry_utf8, builtins_open, mocker, shell):
         mocker.patch('thefuck.shells.time',
                      return_value=1430707243.3517463)
-        shell.put_to_history('ls')
+        shell.put_to_history(entry)
         builtins_open.return_value.__enter__.return_value. \
-            write.assert_called_once_with(': 1430707243:0;ls\n')
+            write.assert_called_once_with(entry_utf8)
 
     def test_and_(self, shell):
         assert shell.and_('ls', 'cd') == 'ls && cd'

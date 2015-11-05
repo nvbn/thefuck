@@ -55,7 +55,7 @@ def organize_commands(corrected_commands):
         key=lambda corrected_command: corrected_command.priority)
 
     logs.debug('Corrected commands: '.format(
-        ', '.join(str(cmd) for cmd in [first_command] + sorted_commands)))
+        ', '.join(u'{}'.format(cmd) for cmd in [first_command] + sorted_commands)))
 
     for command in sorted_commands:
         yield command

@@ -267,7 +267,7 @@ class CorrectedCommand(object):
         return (self.script, self.side_effect).__hash__()
 
     def __repr__(self):
-        return 'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
+        return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
             self.script, self.side_effect, self.priority)
 
     def run(self, old_cmd):
@@ -279,4 +279,5 @@ class CorrectedCommand(object):
         if self.side_effect:
             compatibility_call(self.side_effect, old_cmd, self.script)
         shells.put_to_history(self.script)
+        # This depends on correct setting of PYTHONIOENCODING by the alias:
         print(self.script)

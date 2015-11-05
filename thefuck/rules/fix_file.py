@@ -58,7 +58,7 @@ def match(command):
     return _search(command.stderr) or _search(command.stdout)
 
 
-@default_settings({'fixlinecmd': '{editor} {file} +{line}',
+@default_settings({'fixlinecmd': u'{editor} {file} +{line}',
                    'fixcolcmd': None})
 def get_new_command(command):
     m = _search(command.stderr) or _search(command.stdout)
