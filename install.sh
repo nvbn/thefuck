@@ -13,7 +13,7 @@ install_thefuck () {
     if installed apt-get; then
         # Debian/ubuntu:
         sudo apt-get update -yy
-        sudo apt-get install -yy python-pip python-dev command-not-found
+        sudo apt-get install -yy python-pip python-dev command-not-found python-gdbm
 
         if [[ -n $(apt-cache search python-commandnotfound) ]]; then
             # In case of different python versions:
