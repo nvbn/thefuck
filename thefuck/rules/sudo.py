@@ -16,7 +16,8 @@ patterns = ['permission denied',
             'need root',
             'only root can ',
             'You don\'t have access to the history DB.',
-            'authentication is required']
+            'authentication is required',
+            'eDSPermissionError']
 
 
 def match(command):
