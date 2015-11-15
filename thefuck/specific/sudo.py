@@ -1,6 +1,5 @@
 import six
 from decorator import decorator
-from ..types import Command
 
 
 @decorator
