@@ -1,18 +1,17 @@
-from difflib import get_close_matches
-from functools import wraps
-import shelve
-from warnings import warn
-from decorator import decorator
-from contextlib import closing
-
+import dbm
 import os
 import pickle
-import re
-from inspect import getargspec
-
-from pathlib import Path
 import pkg_resources
+import re
+import shelve
 from .conf import settings
+from contextlib import closing
+from decorator import decorator
+from difflib import get_close_matches
+from functools import wraps
+from inspect import getargspec
+from pathlib import Path
+from warnings import warn
 
 DEVNULL = open(os.devnull, 'w')
 
@@ -210,13 +209,24 @@ def cache(*depends_on):
         etag = '.'.join(_get_mtime(name) for name in depends_on)
         cache_path = _get_cache_path()
 
-        with closing(shelve.open(cache_path)) as db:
-            if db.get(key, {}).get('etag') == etag:
-                return db[key]['value']
-            else:
+        try:
+            with closing(shelve.open(cache_path)) as db:
+                if db.get(key, {}).get('etag') == etag:
+                    return db[key]['value']
+                else:
+                    value = fn(*args, **kwargs)
+                    db[key] = {'etag': etag, 'value': value}
+                    return value
+        except dbm.error:
+            # Caused when going from Python 2 to Python 3
+            warn("Removing possibly out-dated cache")
+            os.remove(cache_path)
+
+            with closing(shelve.open(cache_path)) as db:
                 value = fn(*args, **kwargs)
                 db[key] = {'etag': etag, 'value': value}
                 return value
+
     return _cache
 cache.disabled = False
 
