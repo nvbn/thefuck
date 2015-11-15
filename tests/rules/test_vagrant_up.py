@@ -16,8 +16,8 @@ def test_match(command):
 
 @pytest.mark.parametrize('command', [
     Command(script='vagrant ssh', stderr=''),
-    Command(script='vagrant ssh jeff', stderr='The machine with the name \'jeff\' was not found configured for this Vagrant environment.'),  
-    Command(script='vagrant ssh', stderr='A Vagrant environment or target machine is required to run this command. Run `vagrant init` to create a new Vagrant environment. Or, get an ID of a target machine from `vagrant global-status` to run this command on. A final option is to change to a directory with a Vagrantfile and to try again.'),  
+    Command(script='vagrant ssh jeff', stderr='The machine with the name \'jeff\' was not found configured for this Vagrant environment.'),
+    Command(script='vagrant ssh', stderr='A Vagrant environment or target machine is required to run this command. Run `vagrant init` to create a new Vagrant environment. Or, get an ID of a target machine from `vagrant global-status` to run this command on. A final option is to change to a directory with a Vagrantfile and to try again.'),
     Command()])
 def test_not_match(command):
     assert not match(command)
@@ -32,4 +32,3 @@ def test_not_match(command):
             stderr='VM must be created before running this command. Run `vagrant up` first.'), ['vagrant up devbox && vagrant rdp devbox', 'vagrant up && vagrant rdp devbox'])])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command
-

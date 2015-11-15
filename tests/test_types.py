@@ -122,4 +122,3 @@ class TestCommand(object):
         else:
             with pytest.raises(EmptyCommand):
                 Command.from_raw_script(script)
-

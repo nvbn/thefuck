@@ -63,6 +63,7 @@ def test_side_effect(ext, tar_error, filename, unquoted, quoted, script, fixed):
     side_effect(Command(script=script.format(filename.format(ext))), None)
     assert set(os.listdir('.')) == {unquoted.format(ext), 'd'}
 
+
 @parametrize_extensions
 @parametrize_filename
 @parametrize_script

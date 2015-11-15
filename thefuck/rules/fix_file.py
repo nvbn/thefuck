@@ -7,31 +7,31 @@ from thefuck import shells
 
 # order is important: only the first match is considered
 patterns = (
-        # js, node:
-        '^    at {file}:{line}:{col}',
-        # cargo:
-        '^   {file}:{line}:{col}',
-        # python, thefuck:
-        '^  File "{file}", line {line}',
-        # awk:
-        '^awk: {file}:{line}:',
-        # git
-        '^fatal: bad config file line {line} in {file}',
-        # llc:
-        '^llc: {file}:{line}:{col}:',
-        # lua:
-        '^lua: {file}:{line}:',
-        # fish:
-        '^{file} \\(line {line}\\):',
-        # bash, sh, ssh:
-        '^{file}: line {line}: ',
-        # cargo, clang, gcc, go, pep8, rustc:
-        '^{file}:{line}:{col}',
-        # ghc, make, ruby, zsh:
-        '^{file}:{line}:',
-        # perl:
-        'at {file} line {line}',
-    )
+    # js, node:
+    '^    at {file}:{line}:{col}',
+    # cargo:
+    '^   {file}:{line}:{col}',
+    # python, thefuck:
+    '^  File "{file}", line {line}',
+    # awk:
+    '^awk: {file}:{line}:',
+    # git
+    '^fatal: bad config file line {line} in {file}',
+    # llc:
+    '^llc: {file}:{line}:{col}:',
+    # lua:
+    '^lua: {file}:{line}:',
+    # fish:
+    '^{file} \\(line {line}\\):',
+    # bash, sh, ssh:
+    '^{file}: line {line}: ',
+    # cargo, clang, gcc, go, pep8, rustc:
+    '^{file}:{line}:{col}',
+    # ghc, make, ruby, zsh:
+    '^{file}:{line}:',
+    # perl:
+    'at {file} line {line}',
+)
 
 
 # for the sake of readability do not use named groups above

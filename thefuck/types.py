@@ -269,7 +269,7 @@ class CorrectedCommand(object):
     def __repr__(self):
         return 'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
             self.script, self.side_effect, self.priority)
-    
+
     def run(self, old_cmd):
         """Runs command from rule for passed command.
 
