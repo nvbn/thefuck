@@ -31,10 +31,8 @@ class Command(object):
             try:
                 self._script_parts = shells.split_command(self.script)
             except Exception:
-                import traceback
                 logs.debug(u"Can't split command script {} because:\n {}".format(
                     self, sys.exc_info()))
-                logs.debug(traceback.format_exc())
                 self._script_parts = None
         return self._script_parts
 
