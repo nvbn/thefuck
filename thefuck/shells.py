@@ -4,6 +4,7 @@ implement `from_shell`, `to_shell`, `app_alias`, `put_to_history` and
 
 """
 from collections import defaultdict
+import codecs
 from psutil import Process
 from subprocess import Popen, PIPE
 from time import time
@@ -48,7 +49,7 @@ class Generic(object):
         """Puts command script to shell history."""
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
-            with open(history_file_name, 'a') as history:
+            with codecs.open(history_file_name, 'a', encoding='utf8') as history:
                 history.write(self._get_history_line(command_script))
 
     def _script_from_history(self, line):
@@ -79,7 +80,7 @@ class Generic(object):
 
     def split_command(self, command):
         """Split the command using shell-like syntax."""
-        return shlex.split(command)
+        return shlex.split(command.encode("utf-8"))
 
     def quote(self, s):
         """Return a shell-escaped version of the string s."""
