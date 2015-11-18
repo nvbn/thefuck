@@ -14,8 +14,8 @@ def test_match(command):
 
 @pytest.mark.parametrize('command', [
     Command(script='./bin/hdfs dfs -ls', stderr=''),
-    Command(script='./bin/hdfs dfs -ls /foo/bar', stderr=''),  
-    Command(script='hdfs dfs -ls -R /foo/bar', stderr=''),  
+    Command(script='./bin/hdfs dfs -ls /foo/bar', stderr=''),
+    Command(script='hdfs dfs -ls -R /foo/bar', stderr=''),
     Command()])
 def test_not_match(command):
     assert not match(command)
@@ -32,4 +32,3 @@ def test_not_match(command):
         stderr='ls: Unknown command\nDid you mean -ls?  This command begins with a dash.'), ['./bin/hdfs dfs -Dtest=fred -ls -R /foo/bar'])])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command
-

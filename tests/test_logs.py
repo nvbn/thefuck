@@ -1,5 +1,4 @@
 import pytest
-from mock import Mock
 from thefuck import logs
 
 

@@ -17,4 +17,4 @@ def get_new_command(command):
     if machine is None:
         return startAllInstances
     else:
-        return [ shells.and_("vagrant up " +  machine, command.script), startAllInstances]
+        return [shells.and_("vagrant up " + machine, command.script), startAllInstances]

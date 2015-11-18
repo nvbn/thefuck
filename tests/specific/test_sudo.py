@@ -1,5 +1,4 @@
 import pytest
-from mock import Mock
 from thefuck.specific.sudo import sudo_support
 from tests.utils import Command
 
