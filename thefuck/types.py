@@ -31,7 +31,7 @@ class Command(object):
             try:
                 self._script_parts = shells.split_command(self.script)
             except Exception:
-                logs.debug("Can't split command script {} because:\n {}".format(
+                logs.debug(u"Can't split command script {} because:\n {}".format(
                     self, sys.exc_info()))
                 self._script_parts = None
         return self._script_parts
@@ -44,7 +44,7 @@ class Command(object):
             return False
 
     def __repr__(self):
-        return 'Command(script={}, stdout={}, stderr={})'.format(
+        return u'Command(script={}, stdout={}, stderr={})'.format(
             self.script, self.stdout, self.stderr)
 
     def update(self, **kwargs):

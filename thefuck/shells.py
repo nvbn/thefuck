@@ -11,6 +11,7 @@ import io
 import os
 import shlex
 import six
+import sys
 from .utils import DEVNULL, memoize, cache
 
 
@@ -50,7 +51,10 @@ class Generic(object):
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
             with open(history_file_name, 'a') as history:
-                history.write(self._get_history_line(command_script))
+                if sys.version_info >= (3, 0):
+                    history.write(self._get_history_line(command_script))
+                else:
+                    history.write(self._get_history_line(command_script).encode("utf-8"))
 
     def _script_from_history(self, line):
         """Returns prepared history line.
@@ -80,7 +84,10 @@ class Generic(object):
 
     def split_command(self, command):
         """Split the command using shell-like syntax."""
-        return shlex.split(command)
+        if sys.version_info >= (3, 0):
+            return shlex.split(command)
+        else:
+            return shlex.split(command.encode("utf-8"))
 
     def quote(self, s):
         """Return a shell-escaped version of the string s."""
