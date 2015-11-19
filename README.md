@@ -280,7 +280,8 @@ The Fuck has a few settings parameters which can be changed in `$XDG_CONFIG_HOME
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
 * `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first;
-* `debug` &ndash; enables debug output, by default `False`.
+* `debug` &ndash; enables debug output, by default `False`;
+* `history_limit` &ndash numeric value of how many history commands will be scanned, like `2000`; 
 
 Example of `settings.py`:
 
@@ -303,7 +304,8 @@ Or via environment variables:
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
 * `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
 rule with lower `priority` will be matched first;
-* `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`.
+* `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`;
+* `THEFUCK_HISTORY_LIMIT` &ndash; how many history commands will be scanned, like `2000`.
 
 For example:
 
@@ -314,6 +316,7 @@ export THEFUCK_REQUIRE_CONFIRMATION='true'
 export THEFUCK_WAIT_COMMAND=10
 export THEFUCK_NO_COLORS='false'
 export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
+export THEFUCK_HISTORY_LIMIT='2000'
 ```
 
 ## Developing

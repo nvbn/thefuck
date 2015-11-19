@@ -16,6 +16,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'no_colors': False,
                     'debug': False,
                     'priority': {},
+                    'history_limit': None,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
@@ -24,7 +25,8 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
                'THEFUCK_NO_COLORS': 'no_colors',
                'THEFUCK_PRIORITY': 'priority',
-               'THEFUCK_DEBUG': 'debug'}
+               'THEFUCK_DEBUG': 'debug',
+               'THEFUCK_HISTORY_LIMIT': 'history_limit'}
 
 SETTINGS_HEADER = u"""# The Fuck settings file
 #
@@ -126,6 +128,8 @@ class Settings(dict):
             return int(val)
         elif attr in ('require_confirmation', 'no_colors', 'debug'):
             return val.lower() == 'true'
+        elif attr == 'history_limit':
+            return int(val)
         else:
             return val
 

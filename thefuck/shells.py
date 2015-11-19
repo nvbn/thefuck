@@ -12,6 +12,7 @@ import os
 import shlex
 import six
 from .utils import DEVNULL, memoize, cache
+from .conf import settings
 
 
 class Generic(object):
@@ -52,21 +53,18 @@ class Generic(object):
             with open(history_file_name, 'a') as history:
                 history.write(self._get_history_line(command_script))
 
-    def _script_from_history(self, line):
-        """Returns prepared history line.
-
-        Should return a blank line if history line is corrupted or empty.
-
-        """
-        return ''
-
     def get_history(self):
         """Returns list of history entries."""
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
             with io.open(history_file_name, 'r',
-                         encoding='utf-8', errors='ignore') as history:
-                for line in history:
+                         encoding='utf-8', errors='ignore') as history_file:
+
+                lines = history_file.readlines()
+                if settings.history_limit:
+                    lines = lines[-settings.history_limit:]
+
+                for line in lines:
                     prepared = self._script_from_history(line)\
                                    .strip()
                     if prepared:
