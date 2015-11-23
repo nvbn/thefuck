@@ -153,7 +153,7 @@ class Fish(Generic):
         return ('function {0} -d "Correct your previous console command"\n'
                 '  set -l exit_code $status\n'
                 '  set -l fucked_up_command $history[1]\n'
-                '  env TF_ALIAS={0}'
+                '  env TF_ALIAS={0} PYTHONIOENCODING=utf-8'
                 '    thefuck $fucked_up_command | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n'
