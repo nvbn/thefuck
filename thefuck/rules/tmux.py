@@ -13,6 +13,6 @@ def get_new_command(command):
                    command.stderr)
 
     old_cmd = cmd.group(1)
-    suggestions = [cmd.strip() for cmd in cmd.group(2).split(',')]
+    suggestions = [c.strip() for c in cmd.group(2).split(',')]
 
     return replace_command(command, old_cmd, suggestions)

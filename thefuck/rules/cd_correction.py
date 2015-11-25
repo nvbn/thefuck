@@ -1,6 +1,7 @@
 """Attempts to spellcheck and correct failed cd commands"""
 
 import os
+import six
 from difflib import get_close_matches
 from thefuck.specific.sudo import sudo_support
 from thefuck.rules import cd_mkdir
@@ -36,7 +37,10 @@ def get_new_command(command):
     dest = command.script_parts[1].split(os.sep)
     if dest[-1] == '':
         dest = dest[:-1]
-    cwd = os.getcwd()
+    if six.PY2:
+        cwd = os.getcwdu()
+    else:
+        cwd = os.getcwd()
     for directory in dest:
         if directory == ".":
             continue
@@ -48,7 +52,7 @@ def get_new_command(command):
             cwd = os.path.join(cwd, best_matches[0])
         else:
             return cd_mkdir.get_new_command(command)
-    return 'cd "{0}"'.format(cwd)
+    return u'cd "{0}"'.format(cwd)
 
 
 enabled_by_default = True

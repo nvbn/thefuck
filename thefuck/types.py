@@ -31,7 +31,7 @@ class Command(object):
             try:
                 self._script_parts = shells.split_command(self.script)
             except Exception:
-                logs.debug("Can't split command script {} because:\n {}".format(
+                logs.debug(u"Can't split command script {} because:\n {}".format(
                     self, sys.exc_info()))
                 self._script_parts = None
         return self._script_parts
@@ -44,7 +44,7 @@ class Command(object):
             return False
 
     def __repr__(self):
-        return 'Command(script={}, stdout={}, stderr={})'.format(
+        return u'Command(script={}, stdout={}, stderr={})'.format(
             self.script, self.stdout, self.stderr)
 
     def update(self, **kwargs):
@@ -267,7 +267,7 @@ class CorrectedCommand(object):
         return (self.script, self.side_effect).__hash__()
 
     def __repr__(self):
-        return 'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
+        return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
             self.script, self.side_effect, self.priority)
 
     def run(self, old_cmd):
@@ -279,4 +279,5 @@ class CorrectedCommand(object):
         if self.side_effect:
             compatibility_call(self.side_effect, old_cmd, self.script)
         shells.put_to_history(self.script)
+        # This depends on correct setting of PYTHONIOENCODING by the alias:
         print(self.script)
