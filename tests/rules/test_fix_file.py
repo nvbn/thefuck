@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 import os
 from thefuck.rules.fix_file import match, get_new_command
@@ -79,6 +81,20 @@ Traceback (most recent call last):
   File "a.py", line 8, in <module>
     match("foo")
   File "a.py", line 5, in match
+    m = re.search(None, command)
+  File "/usr/lib/python3.4/re.py", line 170, in search
+    return _compile(pattern, flags).search(string)
+  File "/usr/lib/python3.4/re.py", line 293, in _compile
+    raise TypeError("first argument must be string or compiled pattern")
+TypeError: first argument must be string or compiled pattern
+"""),
+
+(u'python café.py', u'café.py', 8, None, '',
+u"""
+Traceback (most recent call last):
+  File "café.py", line 8, in <module>
+    match("foo")
+  File "café.py", line 5, in match
     m = re.search(None, command)
   File "/usr/lib/python3.4/re.py", line 170, in search
     return _compile(pattern, flags).search(string)
@@ -227,7 +243,7 @@ def test_get_new_command_with_settings(mocker, monkeypatch, test, settings):
 
     if test[3]:
         assert (get_new_command(cmd) ==
-            'dummy_editor {} +{}:{} && {}'.format(test[1], test[2], test[3], test[0]))
+            u'dummy_editor {} +{}:{} && {}'.format(test[1], test[2], test[3], test[0]))
     else:
         assert (get_new_command(cmd) ==
-            'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))
+            u'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))

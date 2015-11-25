@@ -51,7 +51,11 @@ class Generic(object):
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
             with open(history_file_name, 'a') as history:
-                history.write(self._get_history_line(command_script))
+                entry = self._get_history_line(command_script)
+                if six.PY2:
+                    history.write(entry.encode('utf-8'))
+                else:
+                    history.write(entry)
 
     def get_history(self):
         """Returns list of history entries."""
@@ -78,6 +82,8 @@ class Generic(object):
 
     def split_command(self, command):
         """Split the command using shell-like syntax."""
+        if six.PY2:
+            return [s.decode('utf8') for s in shlex.split(command.encode('utf8'))]
         return shlex.split(command)
 
     def quote(self, s):
@@ -143,18 +149,18 @@ class Fish(Generic):
 
     def app_alias(self, fuck):
         return ('function {0} -d "Correct your previous console command"\n'
-                '    set -l exit_code $status\n'
-                '    set -x TF_ALIAS {0}\n'
-                '    set -l fucked_up_command $history[1]\n'
+                '  set -l exit_code $status\n'
+                '  set -l fucked_up_command $history[1]\n'
+                '  env TF_ALIAS={0} PYTHONIOENCODING=utf-8'
                 '    thefuck $fucked_up_command | read -l unfucked_command\n'
-                '    if [ "$unfucked_command" != "" ]\n'
-                '        eval $unfucked_command\n'
-                '        if test $exit_code -ne 0\n'
-                '            history --delete $fucked_up_command\n'
-                '            history --merge ^ /dev/null\n'
-                '            return 0\n'
-                '        end\n'
+                '  if [ "$unfucked_command" != "" ]\n'
+                '    eval $unfucked_command\n'
+                '    if test $exit_code -ne 0\n'
+                '      history --delete $fucked_up_command\n'
+                '      history --merge ^ /dev/null\n'
+                '      return 0\n'
                 '    end\n'
+                '  end\n'
                 'end').format(fuck)
 
     @memoize
@@ -181,6 +187,12 @@ class Fish(Generic):
 
     def _get_history_line(self, command_script):
         return u'- cmd: {}\n   when: {}\n'.format(command_script, int(time()))
+
+    def _script_from_history(self, line):
+        if '- cmd: ' in line:
+            return line.split('- cmd: ', 1)[1]
+        else:
+            return ''
 
     def and_(self, *commands):
         return u'; and '.join(commands)

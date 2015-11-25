@@ -38,7 +38,7 @@ patterns = (
 def _make_pattern(pattern):
     pattern = pattern.replace('{file}', '(?P<file>[^:\n]+)') \
                      .replace('{line}', '(?P<line>[0-9]+)') \
-                     .replace('{col}',  '(?P<col>[0-9]+)')
+                     .replace('{col}', '(?P<col>[0-9]+)')
     return re.compile(pattern, re.MULTILINE)
 patterns = [_make_pattern(p).search for p in patterns]
 
@@ -58,7 +58,7 @@ def match(command):
     return _search(command.stderr) or _search(command.stdout)
 
 
-@default_settings({'fixlinecmd': '{editor} {file} +{line}',
+@default_settings({'fixlinecmd': u'{editor} {file} +{line}',
                    'fixcolcmd': None})
 def get_new_command(command):
     m = _search(command.stderr) or _search(command.stdout)
