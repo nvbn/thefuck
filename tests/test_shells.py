@@ -51,6 +51,7 @@ class TestGeneric(object):
         assert 'alias FUCK' in shell.app_alias('FUCK')
         assert 'thefuck' in shell.app_alias('fuck')
         assert 'TF_ALIAS' in shell.app_alias('fuck')
+        assert 'PYTHONIOENCODING=utf-8' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines(['ls', 'rm'])
@@ -112,6 +113,7 @@ class TestBash(object):
         assert 'alias FUCK' in shell.app_alias('FUCK')
         assert 'thefuck' in shell.app_alias('fuck')
         assert 'TF_ALIAS' in shell.app_alias('fuck')
+        assert 'PYTHONIOENCODING=utf-8' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines(['ls', 'rm'])
@@ -192,6 +194,7 @@ class TestFish(object):
         assert 'function FUCK' in shell.app_alias('FUCK')
         assert 'thefuck' in shell.app_alias('fuck')
         assert 'TF_ALIAS' in shell.app_alias('fuck')
+        assert 'PYTHONIOENCODING=utf-8' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines(['- cmd: ls', '  when: 1432613911',
@@ -250,6 +253,7 @@ class TestZsh(object):
         assert 'alias FUCK' in shell.app_alias('FUCK')
         assert 'thefuck' in shell.app_alias('fuck')
         assert 'TF_ALIAS' in shell.app_alias('fuck')
+        assert 'PYTHONIOENCODING=utf-8' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines([': 1432613911:0;ls', ': 1432613916:0;rm'])
