@@ -90,6 +90,9 @@ class Generic(object):
 
         return quote(s)
 
+    def _script_from_history(self, line):
+        return line
+
 
 class Bash(Generic):
     def app_alias(self, fuck):
@@ -118,9 +121,6 @@ class Bash(Generic):
 
     def _get_history_line(self, command_script):
         return u'{}\n'.format(command_script)
-
-    def _script_from_history(self, line):
-        return line
 
     def how_to_configure(self):
         if os.path.join(os.path.expanduser('~'), '.bashrc'):
