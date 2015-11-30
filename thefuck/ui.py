@@ -6,7 +6,19 @@ from .exceptions import NoRuleMatched
 from . import logs
 
 try:
-    from msvcrt import getch
+    import msvcrt
+    def getch():
+        ch = msvcrt.getch()
+        if ch in (b'\x00', b'\xe0'):  # arrow or function key prefix?
+            ch = msvcrt.getch()  # second call returns the actual key code
+
+        if ch == b'\x03':
+            raise KeyboardInterrupt
+        if ch == b'H':
+            return 'k'
+        if ch == b'P':
+            return 'j'
+        return ch.decode(sys.stdout.encoding)
 except ImportError:
     def getch():
         import tty
