@@ -7,6 +7,7 @@ from . import logs
 
 try:
     import msvcrt
+
     def getch():
         ch = msvcrt.getch()
         if ch in (b'\x00', b'\xe0'):  # arrow or function key prefix?
