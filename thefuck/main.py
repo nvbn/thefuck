@@ -2,6 +2,8 @@ from argparse import ArgumentParser
 from warnings import warn
 from pprint import pformat
 import sys
+import win_unicode_console
+win_unicode_console.enable() #https://github.com/tartley/colorama/issues/32
 import colorama
 from . import logs, types, shells
 from .conf import settings

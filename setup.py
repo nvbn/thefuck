@@ -22,7 +22,7 @@ elif (3, 0) < version < (3, 3):
 
 VERSION = '3.2'
 
-install_requires = ['psutil', 'colorama', 'six', 'decorator']
+install_requires = ['psutil', 'colorama', 'six', 'decorator', 'win_unicode_console']
 extras_require = {':python_version<"3.4"': ['pathlib']}
 
 setup(name='thefuck',
