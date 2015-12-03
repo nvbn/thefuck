@@ -2,27 +2,18 @@ from argparse import ArgumentParser
 from warnings import warn
 from pprint import pformat
 import sys
-import colorama
 from . import logs, types, shells
 from .conf import settings
 from .corrector import get_corrected_commands
 from .exceptions import EmptyCommand
 from .utils import get_installation_info
 from .ui import select_command
-
-
-def init_colorama():
-    if sys.platform == 'win32':
-        #  https://github.com/tartley/colorama/issues/32
-        import win_unicode_console
-
-        win_unicode_console.enable()
-    colorama.init()
+from .system import init_output
 
 
 def fix_command():
     """Fixes previous command. Used when `thefuck` called without arguments."""
-    init_colorama()
+    init_output()
     settings.init()
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))
@@ -60,7 +51,7 @@ def how_to_configure_alias():
     It'll be only visible when user type fuck and when alias isn't configured.
 
     """
-    init_colorama()
+    init_output()
     settings.init()
     logs.how_to_configure_alias(shells.how_to_configure())
 
