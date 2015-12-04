@@ -1,11 +1,11 @@
 import sys
 import msvcrt
-import colorama
 import win_unicode_console
 from .. import const
 
 
 def init_output():
+    import colorama
     win_unicode_console.enable()
     colorama.init()
 
