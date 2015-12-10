@@ -21,6 +21,9 @@ patterns = ['permission denied',
 
 
 def match(command):
+    if command.script_parts and command.script_parts[0] == 'sudo':
+        return False
+
     for pattern in patterns:
         if pattern.lower() in command.stderr.lower()\
                 or pattern.lower() in command.stdout.lower():

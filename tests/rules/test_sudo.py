@@ -19,6 +19,7 @@ def test_match(stderr, stdout):
 
 def test_not_match():
     assert not match(Command())
+    assert not match(Command(script='sudo ls', stderr='Permission denied'))
 
 
 @pytest.mark.parametrize('before, after', [
