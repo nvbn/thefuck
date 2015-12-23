@@ -25,6 +25,7 @@ def test_not_match():
 @pytest.mark.parametrize('before, after', [
     ('ls', 'sudo ls'),
     ('echo a > b', 'sudo sh -c "echo a > b"'),
-    ('echo "a" >> b', 'sudo sh -c "echo \\"a\\" >> b"')])
+    ('echo "a" >> b', 'sudo sh -c "echo \\"a\\" >> b"'),
+    ('mkdir && touch a', 'sudo sh -c "mkdir && touch a"')])
 def test_get_new_command(before, after):
     assert get_new_command(Command(before)) == after
