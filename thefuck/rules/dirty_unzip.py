@@ -5,8 +5,11 @@ from thefuck.shells import quote
 
 
 def _is_bad_zip(file):
-    with zipfile.ZipFile(file, 'r') as archive:
-        return len(archive.namelist()) > 1
+    try:
+        with zipfile.ZipFile(file, 'r') as archive:
+            return len(archive.namelist()) > 1
+    except:
+        return False
 
 
 def _zip_file(command):
