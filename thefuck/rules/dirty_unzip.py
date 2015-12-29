@@ -24,8 +24,14 @@ def _zip_file(command):
 
 @for_app('unzip')
 def match(command):
-    return ('-d' not in command.script
-            and _is_bad_zip(_zip_file(command)))
+    if '-d' in command.script:
+        return False
+
+    zip_file = _zip_file(command)
+    if zip_file:
+        return _is_bad_zip(zip_file)
+    else:
+        return False
 
 
 def get_new_command(command):
