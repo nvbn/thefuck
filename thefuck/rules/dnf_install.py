@@ -1,5 +1,3 @@
-from thefuck import shells
-from thefuck.utils import memoize
 
 
 def get_packages(command):
@@ -16,7 +14,7 @@ def match(command):
 
     found_pattern = any(pattern in stderr for pattern in patterns)
     found_typo = any(typo in command.script for typo in typos)
-    return  found_pattern and found_typo
+    return found_pattern and found_typo
 
 
 def get_new_command(command):

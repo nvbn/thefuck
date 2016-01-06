@@ -1,5 +1,4 @@
 import pytest
-from mock import Mock, patch
 from thefuck.rules import dnf_install
 from tests.utils import Command
 
