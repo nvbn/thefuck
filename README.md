@@ -216,6 +216,7 @@ Enabled by default only on specific platforms:
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available);
 * `pacman_not_found` &ndash; fixes package name with `pacman` or `yaourt`.
+* `dnf_install` &ndash; fixes `dnf install` command
 
 Bundled, but not enabled by default:
 
