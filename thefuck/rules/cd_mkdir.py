@@ -8,7 +8,8 @@ from thefuck.specific.sudo import sudo_support
 @for_app('cd')
 def match(command):
     return (('no such file or directory' in command.stderr.lower()
-             or 'cd: can\'t cd to' in command.stderr.lower()))
+             or 'cd: can\'t cd to' in command.stderr.lower()
+             or 'the system cannot find the path specified.' in command.stderr.lower()))
 
 
 @sudo_support
