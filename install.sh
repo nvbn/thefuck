@@ -9,9 +9,9 @@ installed () {
 }
 
 install_thefuck () {
-    # Install os dependencies:
+    # Install OS dependencies:
     if installed apt-get; then
-        # Debian/ubuntu:
+        # Debian/Ubuntu:
         sudo apt-get update -yy
         sudo apt-get install -yy python-pip python-dev command-not-found python-gdbm
 
@@ -25,7 +25,7 @@ install_thefuck () {
             brew update
             brew install python
         else
-            # Genreic way:
+            # Generic way:
             wget https://bootstrap.pypa.io/get-pip.py
             sudo python get-pip.py
             rm get-pip.py
