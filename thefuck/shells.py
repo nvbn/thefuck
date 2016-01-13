@@ -10,13 +10,14 @@ from time import time
 import io
 import os
 import shlex
+import sys
 import six
 from .utils import DEVNULL, memoize, cache
 from .conf import settings
+from . import logs
 
 
 class Generic(object):
-
     def get_aliases(self):
         return {}
 
@@ -69,8 +70,8 @@ class Generic(object):
                     lines = lines[-settings.history_limit:]
 
                 for line in lines:
-                    prepared = self._script_from_history(line)\
-                                   .strip()
+                    prepared = self._script_from_history(line) \
+                        .strip()
                     if prepared:
                         yield prepared
 
@@ -117,9 +118,9 @@ class Bash(Generic):
     def get_aliases(self):
         proc = Popen(['bash', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(
-            self._parse_alias(alias)
-            for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias and '=' in alias)
+                self._parse_alias(alias)
+                for alias in proc.stdout.read().decode('utf-8').split('\n')
+                if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -139,7 +140,6 @@ class Bash(Generic):
 
 
 class Fish(Generic):
-
     def _get_overridden_aliases(self):
         overridden_aliases = os.environ.get('TF_OVERRIDDEN_ALIASES', '').strip()
         if overridden_aliases:
@@ -219,9 +219,9 @@ class Zsh(Generic):
     def get_aliases(self):
         proc = Popen(['zsh', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(
-            self._parse_alias(alias)
-            for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias and '=' in alias)
+                self._parse_alias(alias)
+                for alias in proc.stdout.read().decode('utf-8').split('\n')
+                if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -254,9 +254,9 @@ class Tcsh(Generic):
     def get_aliases(self):
         proc = Popen(['tcsh', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
         return dict(
-            self._parse_alias(alias)
-            for alias in proc.stdout.read().decode('utf-8').split('\n')
-            if alias and '\t' in alias)
+                self._parse_alias(alias)
+                for alias in proc.stdout.read().decode('utf-8').split('\n')
+                if alias and '\t' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
@@ -303,7 +303,10 @@ def thefuck_alias():
 
 
 def put_to_history(command):
-    return _get_shell().put_to_history(command)
+    try:
+        return _get_shell().put_to_history(command)
+    except IOError:
+        logs.exception("Can't update history", sys.exc_info())
 
 
 def and_(*commands):
