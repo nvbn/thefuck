@@ -17,6 +17,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'debug': False,
                     'priority': {},
                     'history_limit': None,
+                    'alter_history': True,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
@@ -24,9 +25,10 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_WAIT_COMMAND': 'wait_command',
                'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
                'THEFUCK_NO_COLORS': 'no_colors',
-               'THEFUCK_PRIORITY': 'priority',
                'THEFUCK_DEBUG': 'debug',
-               'THEFUCK_HISTORY_LIMIT': 'history_limit'}
+               'THEFUCK_PRIORITY': 'priority',
+               'THEFUCK_HISTORY_LIMIT': 'history_limit',
+               'THEFUCK_ALTER_HISTORY': 'alter_history'}
 
 SETTINGS_HEADER = u"""# The Fuck settings file
 #
@@ -126,7 +128,8 @@ class Settings(dict):
             return dict(self._priority_from_env(val))
         elif attr == 'wait_command':
             return int(val)
-        elif attr in ('require_confirmation', 'no_colors', 'debug'):
+        elif attr in ('require_confirmation', 'no_colors', 'debug',
+                      'alter_history'):
             return val.lower() == 'true'
         elif attr == 'history_limit':
             return int(val)

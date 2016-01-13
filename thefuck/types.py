@@ -32,20 +32,20 @@ class Command(object):
                 self._script_parts = shells.split_command(self.script)
             except Exception:
                 logs.debug(u"Can't split command script {} because:\n {}".format(
-                    self, sys.exc_info()))
+                        self, sys.exc_info()))
                 self._script_parts = None
         return self._script_parts
 
     def __eq__(self, other):
         if isinstance(other, Command):
             return (self.script, self.stdout, self.stderr) \
-                == (other.script, other.stdout, other.stderr)
+                   == (other.script, other.stdout, other.stderr)
         else:
             return False
 
     def __repr__(self):
         return u'Command(script={}, stdout={}, stderr={})'.format(
-            self.script, self.stdout, self.stderr)
+                self.script, self.stdout, self.stderr)
 
     def update(self, **kwargs):
         """Returns new command with replaced fields.
@@ -166,9 +166,9 @@ class Rule(object):
         return 'Rule(name={}, match={}, get_new_command={}, ' \
                'enabled_by_default={}, side_effect={}, ' \
                'priority={}, requires_output)'.format(
-                    self.name, self.match, self.get_new_command,
-                    self.enabled_by_default, self.side_effect,
-                    self.priority, self.requires_output)
+                self.name, self.match, self.get_new_command,
+                self.enabled_by_default, self.side_effect,
+                self.priority, self.requires_output)
 
     @classmethod
     def from_path(cls, path):
@@ -268,7 +268,7 @@ class CorrectedCommand(object):
 
     def __repr__(self):
         return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
-            self.script, self.side_effect, self.priority)
+                self.script, self.side_effect, self.priority)
 
     def run(self, old_cmd):
         """Runs command from rule for passed command.
@@ -278,6 +278,7 @@ class CorrectedCommand(object):
         """
         if self.side_effect:
             compatibility_call(self.side_effect, old_cmd, self.script)
-        shells.put_to_history(self.script)
+        if settings.alter_history:
+            shells.put_to_history(self.script)
         # This depends on correct setting of PYTHONIOENCODING by the alias:
         print(self.script)
