@@ -86,7 +86,7 @@ def test_match(script, stderr):
 
 
 @pytest.mark.parametrize('script, stderr', [
-    ('vim', invalid_operation),
+    ('vim', invalid_operation('vim')),
     ('apt-get', "")])
 def test_not_match(script, stderr):
     assert not match(Command(script, stderr=stderr))
