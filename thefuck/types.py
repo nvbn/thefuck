@@ -281,4 +281,6 @@ class CorrectedCommand(object):
         if settings.alter_history:
             shells.put_to_history(self.script)
         # This depends on correct setting of PYTHONIOENCODING by the alias:
+        logs.debug(u'PYTHONIOENCODING: {}'.format(
+            os.environ.get('PYTHONIOENCODING', '>-not-set-<')))
         print(self.script)

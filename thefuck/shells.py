@@ -38,8 +38,8 @@ class Generic(object):
         return command_script
 
     def app_alias(self, fuck):
-        return "alias {0}='TF_ALIAS={0} PYTHONIOENCODING=utf-8 " \
-               "eval $(thefuck $(fc -ln -1))'".format(fuck)
+        return "alias {0}='eval $(TF_ALIAS={0} PYTHONIOENCODING=utf-8 " \
+               "thefuck $(fc -ln -1))'".format(fuck)
 
     def _get_history_file_name(self):
         return ''
@@ -103,8 +103,8 @@ class Generic(object):
 
 class Bash(Generic):
     def app_alias(self, fuck):
-        return "TF_ALIAS={0} alias {0}='PYTHONIOENCODING=utf-8 " \
-               "eval $(thefuck $(fc -ln -1));" \
+        return "alias {0}='eval " \
+               "$(TF_ALIAS={0} PYTHONIOENCODING=utf-8 thefuck $(fc -ln -1));" \
                " history -r'".format(fuck)
 
     def _parse_alias(self, alias):
@@ -152,7 +152,7 @@ class Fish(Generic):
                 '  set -l exit_code $status\n'
                 '  set -l fucked_up_command $history[1]\n'
                 '  env TF_ALIAS={0} PYTHONIOENCODING=utf-8'
-                '    thefuck $fucked_up_command | read -l unfucked_command\n'
+                ' thefuck $fucked_up_command | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n'
                 '    if test $exit_code -ne 0\n'
@@ -203,9 +203,8 @@ class Fish(Generic):
 
 class Zsh(Generic):
     def app_alias(self, fuck):
-        return "TF_ALIAS={0}" \
-               " alias {0}='PYTHONIOENCODING=utf-8 " \
-               "eval $(thefuck $(fc -ln -1 | tail -n 1));" \
+        return "alias {0}='eval $(TF_ALIAS={0} PYTHONIOENCODING=utf-8" \
+               " thefuck $(fc -ln -1 | tail -n 1));" \
                " fc -R'".format(fuck)
 
     def _parse_alias(self, alias):
