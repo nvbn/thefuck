@@ -164,6 +164,7 @@ class Fish(Generic):
                 'end').format(fuck)
 
     @memoize
+    @cache('.config/fish/config.fish', '.config/fish/functions')
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
         proc = Popen(['fish', '-ic', 'functions'], stdout=PIPE, stderr=DEVNULL)
