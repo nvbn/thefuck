@@ -162,10 +162,10 @@ class TestCache(object):
 
     @pytest.fixture
     def key(self):
-        if six.PY3:
-            return 'tests.test_utils.<function TestCache.fn.<locals>.fn '
-        else:
+        if six.PY2:
             return 'tests.test_utils.<function fn '
+        else:
+            return 'tests.test_utils.<function TestCache.fn.<locals>.fn '
 
     def test_with_blank_cache(self, shelve, fn, key):
         assert shelve == {}
