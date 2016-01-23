@@ -15,7 +15,7 @@ install_thefuck () {
         sudo apt-get update -yy
         sudo apt-get install -yy python-pip python-dev command-not-found python-gdbm
 
-        if [[ -n $(apt-cache search python-commandnotfound) ]]; then
+        if [ -n "$(apt-cache search python-commandnotfound)" ]; then
             # In case of different python versions:
             sudo apt-get install -yy python-commandnotfound
         fi
