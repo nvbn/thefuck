@@ -1,7 +1,10 @@
-from collections import defaultdict
-from psutil import Process
+"""Package with shell specific actions, each shell class should
+implement `from_shell`, `to_shell`, `app_alias`, `put_to_history` and
+`get_aliases` methods.
+"""
 import os
 import sys
+from psutil import Process
 from ..utils import memoize
 from .. import logs
 from .bash import Bash
@@ -10,12 +13,11 @@ from .generic import Generic
 from .tcsh import Tcsh
 from .zsh import Zsh
 
-shells = defaultdict(Generic,
-                     bash=Bash(),
-                     fish=Fish(),
-                     zsh=Zsh(),
-                     csh=Tcsh(),
-                     tcsh=Tcsh())
+shells = {'bash': Bash,
+          'fish': Fish,
+          'zsh': Zsh,
+          'csh': Tcsh,
+          'tcsh': Tcsh}
 
 
 @memoize
@@ -24,9 +26,10 @@ def _get_shell():
         shell = Process(os.getpid()).parent().name()
     except TypeError:
         shell = Process(os.getpid()).parent.name
-    return shells[shell]
+    return shells.get(shell, Generic)()
 
 
+# Public interface of current shell:
 def from_shell(command):
     return _get_shell().from_shell(command)
 
