@@ -1,4 +1,4 @@
-import dbm
+import anydbm
 import os
 import pickle
 import pkg_resources
@@ -16,10 +16,10 @@ from warnings import warn
 
 DEVNULL = open(os.devnull, 'w')
 
-shelve_open_errors = (dbm.error, )
-if six.PY2:
-    import gdbm
-    shelve_open_errors += (gdbm.error, )
+shelve_open_errors = (anydbm.error, )
+#if six.PY2:
+#    import gdbm
+#    shelve_open_errors += (gdbm.error, )
 
 
 def memoize(fn):
