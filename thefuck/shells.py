@@ -199,7 +199,8 @@ class Fish(Generic):
         return u'; and '.join(commands)
 
     def how_to_configure(self):
-        return 'eval thefuck --alias', '~/.config/fish/config.fish'
+        return (r"eval (thefuck --alias | tr '\n' ';')",
+                '~/.config/fish/config.fish')
 
 
 class Zsh(Generic):
