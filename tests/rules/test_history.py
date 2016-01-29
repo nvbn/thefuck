@@ -12,7 +12,7 @@ def history(mocker):
 
 @pytest.fixture
 def alias(mocker):
-    return mocker.patch('thefuck.rules.history.thefuck_alias',
+    return mocker.patch('thefuck.rules.history.get_alias',
                         return_value='fuck')
 
 

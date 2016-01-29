@@ -42,10 +42,6 @@ def app_alias(alias):
     return _get_shell().app_alias(alias)
 
 
-def thefuck_alias():
-    return os.environ.get('TF_ALIAS', 'fuck')
-
-
 def put_to_history(command):
     try:
         return _get_shell().put_to_history(command)

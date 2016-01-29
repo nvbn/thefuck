@@ -11,7 +11,7 @@ from . import logs, types, shells
 from .conf import settings
 from .corrector import get_corrected_commands
 from .exceptions import EmptyCommand
-from .utils import get_installation_info
+from .utils import get_installation_info, get_alias
 from .ui import select_command
 
 
@@ -42,7 +42,7 @@ def print_alias(entry_point=True):
     else:
         position = 2
 
-    alias = shells.thefuck_alias()
+    alias = get_alias()
     if len(sys.argv) > position:
         alias = sys.argv[position]
     print(shells.app_alias(alias))
