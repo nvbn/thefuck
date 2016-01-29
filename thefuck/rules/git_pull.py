@@ -1,4 +1,4 @@
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.specific.git import git_support
 
 
@@ -14,4 +14,4 @@ def get_new_command(command):
     branch = line.split(' ')[-1]
     set_upstream = line.replace('<remote>', 'origin')\
                        .replace('<branch>', branch)
-    return shells.and_(set_upstream, command.script)
+    return shell.and_(set_upstream, command.script)

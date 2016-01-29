@@ -103,11 +103,6 @@ class TestCommand(object):
         monkeypatch.setattr('thefuck.types.Command._wait_output',
                             staticmethod(lambda *_: True))
 
-    @pytest.fixture(autouse=True)
-    def generic_shell(self, monkeypatch):
-        monkeypatch.setattr('thefuck.shells.from_shell', lambda x: x)
-        monkeypatch.setattr('thefuck.shells.to_shell', lambda x: x)
-
     def test_from_script_calls(self, Popen, settings):
         settings.env = {}
         assert Command.from_raw_script(

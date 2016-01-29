@@ -1,4 +1,4 @@
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.specific.git import git_support
 
 
@@ -11,5 +11,5 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    formatme = shells.and_('git stash', '{}')
+    formatme = shell.and_('git stash', '{}')
     return formatme.format(command.script)

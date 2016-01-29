@@ -4,7 +4,7 @@ import pytest
 from thefuck.shells import Fish
 
 
-@pytest.mark.usefixtures('isfile')
+@pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
 class TestFish(object):
     @pytest.fixture
     def shell(self):

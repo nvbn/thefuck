@@ -18,4 +18,5 @@ def history_lines(mocker):
         mock = mocker.patch('io.open')
         mock.return_value.__enter__ \
             .return_value.readlines.return_value = lines
+
     return aux

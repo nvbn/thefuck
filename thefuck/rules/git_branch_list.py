@@ -1,4 +1,4 @@
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.specific.git import git_support
 
 
@@ -11,4 +11,4 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return shells.and_('git branch --delete list', 'git branch')
+    return shell.and_('git branch --delete list', 'git branch')

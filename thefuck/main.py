@@ -7,7 +7,8 @@ from argparse import ArgumentParser
 from warnings import warn
 from pprint import pformat
 import sys
-from . import logs, types, shells
+from . import logs, types
+from .shells import shell
 from .conf import settings
 from .corrector import get_corrected_commands
 from .exceptions import EmptyCommand
@@ -45,7 +46,7 @@ def print_alias(entry_point=True):
     alias = get_alias()
     if len(sys.argv) > position:
         alias = sys.argv[position]
-    print(shells.app_alias(alias))
+    print(shell.app_alias(alias))
 
 
 def how_to_configure_alias():
@@ -55,17 +56,17 @@ def how_to_configure_alias():
 
     """
     settings.init()
-    logs.how_to_configure_alias(shells.how_to_configure())
+    logs.how_to_configure_alias(shell.how_to_configure())
 
 
 def main():
     parser = ArgumentParser(prog='thefuck')
     version = get_installation_info().version
     parser.add_argument(
-        '-v', '--version',
-        action='version',
-        version='The Fuck {} using Python {}'.format(
-            version, sys.version.split()[0]))
+            '-v', '--version',
+            action='version',
+            version='The Fuck {} using Python {}'.format(
+                    version, sys.version.split()[0]))
     parser.add_argument('-a', '--alias',
                         action='store_true',
                         help='[custom-alias-name] prints alias for current shell')

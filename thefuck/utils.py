@@ -93,7 +93,7 @@ def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
 
 @memoize
 def get_all_executables():
-    from thefuck.shells import get_aliases
+    from thefuck.shells import shell
 
     def _safe(fn, fallback):
         try:
@@ -110,7 +110,7 @@ def get_all_executables():
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]
-    aliases = [alias for alias in get_aliases() if alias != tf_alias]
+    aliases = [alias for alias in shell.get_aliases() if alias != tf_alias]
     return bins + aliases
 
 

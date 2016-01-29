@@ -1,7 +1,7 @@
 import tarfile
 import os
-from thefuck import shells
 from thefuck.utils import for_app
+from thefuck.shells import shell
 
 
 tar_extensions = ('.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',
@@ -33,8 +33,8 @@ def match(command):
 
 
 def get_new_command(command):
-    dir = shells.quote(_tar_file(command.script_parts)[1])
-    return shells.and_('mkdir -p {dir}', '{cmd} -C {dir}') \
+    dir = shell.quote(_tar_file(command.script_parts)[1])
+    return shell.and_('mkdir -p {dir}', '{cmd} -C {dir}') \
         .format(dir=dir, cmd=command.script)
 
 

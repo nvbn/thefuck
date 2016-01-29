@@ -4,7 +4,7 @@ import pytest
 from thefuck.shells import Bash
 
 
-@pytest.mark.usefixtures('isfile')
+@pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
 class TestBash(object):
     @pytest.fixture
     def shell(self):

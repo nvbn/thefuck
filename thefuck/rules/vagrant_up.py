@@ -1,4 +1,4 @@
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.utils import for_app
 
 
@@ -13,8 +13,8 @@ def get_new_command(command):
     if len(cmds) >= 3:
         machine = cmds[2]
 
-    startAllInstances = shells.and_("vagrant up", command.script)
+    startAllInstances = shell.and_("vagrant up", command.script)
     if machine is None:
         return startAllInstances
     else:
-        return [shells.and_("vagrant up " + machine, command.script), startAllInstances]
+        return [shell.and_("vagrant up " + machine, command.script), startAllInstances]

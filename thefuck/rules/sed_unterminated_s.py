@@ -1,5 +1,5 @@
 import shlex
-from thefuck.shells import quote
+from thefuck.shells import shell
 from thefuck.utils import for_app
 
 
@@ -15,4 +15,4 @@ def get_new_command(command):
         if e.startswith(('s/', '-es/')) and e[-1] != '/':
             script[i] += '/'
 
-    return ' '.join(map(quote, script))
+    return ' '.join(map(shell.quote, script))

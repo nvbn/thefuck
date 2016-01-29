@@ -4,7 +4,7 @@ import pytest
 from thefuck.shells.tcsh import Tcsh
 
 
-@pytest.mark.usefixtures('isfile')
+@pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
 class TestTcsh(object):
     @pytest.fixture
     def shell(self):

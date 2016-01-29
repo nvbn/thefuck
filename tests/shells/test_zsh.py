@@ -4,7 +4,7 @@ import pytest
 from thefuck.shells.zsh import Zsh
 
 
-@pytest.mark.usefixtures('isfile')
+@pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
 class TestZsh(object):
     @pytest.fixture
     def shell(self):

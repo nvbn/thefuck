@@ -1,4 +1,4 @@
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.utils import replace_argument
 from thefuck.specific.git import git_support
 
@@ -13,5 +13,5 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return shells.and_(replace_argument(command.script, 'push', 'pull'),
-                       command.script)
+    return shell.and_(replace_argument(command.script, 'push', 'pull'),
+                      command.script)

@@ -1,6 +1,9 @@
 from pathlib import Path
 import pytest
+from thefuck import shells
 from thefuck import conf
+
+shells.shell = shells.Generic()
 
 
 def pytest_addoption(parser):
@@ -46,3 +49,14 @@ def functional(request):
 @pytest.fixture
 def source_root():
     return Path(__file__).parent.parent.resolve()
+
+
+@pytest.fixture
+def set_shell(monkeypatch, request):
+    def _set(cls):
+        shell = cls()
+        monkeypatch.setattr('thefuck.shells.shell', shell)
+        request.addfinalizer()
+        return shell
+
+    return _set

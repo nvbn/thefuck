@@ -1,7 +1,7 @@
 import re
-from thefuck import shells
 from thefuck.utils import for_app
 from thefuck.specific.sudo import sudo_support
+from thefuck.shells import shell
 
 
 @sudo_support
@@ -14,5 +14,5 @@ def match(command):
 
 @sudo_support
 def get_new_command(command):
-    repl = shells.and_('mkdir -p \\1', 'cd \\1')
+    repl = shell.and_('mkdir -p \\1', 'cd \\1')
     return re.sub(r'^cd (.*)', repl, command.script)
