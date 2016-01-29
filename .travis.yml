@@ -17,8 +17,9 @@ addons:
       - pandoc
       - git
 install:
-  - pip install coveralls
-  - pip install -r requirements.txt
+  - pip install -U pip
+  - pip install -U coveralls
+  - pip install -Ur requirements.txt
   - python setup.py develop
   - rm -rf build
 script:
