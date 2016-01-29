@@ -43,10 +43,7 @@ def app_alias(alias):
 
 
 def put_to_history(command):
-    try:
-        return _get_shell().put_to_history(command)
-    except IOError:
-        logs.exception("Can't update history", sys.exc_info())
+    return _get_shell().put_to_history(command)
 
 
 def and_(*commands):
@@ -54,7 +51,7 @@ def and_(*commands):
 
 
 def get_aliases():
-    return list(_get_shell().get_aliases().keys())
+    return _get_shell().get_aliases()
 
 
 def split_command(command):
@@ -65,9 +62,8 @@ def quote(s):
     return _get_shell().quote(s)
 
 
-@memoize
 def get_history():
-    return list(_get_shell().get_history())
+    return _get_shell().get_history()
 
 
 def how_to_configure():
