@@ -1,7 +1,7 @@
 import re
 from decorator import decorator
 from ..utils import is_app
-from ..shells import quote, split_command
+from ..shells import shell
 
 
 @decorator
@@ -23,7 +23,8 @@ def git_support(fn, command):
         #     'commit' '--amend'
         # which is surprising and does not allow to easily test for
         # eg. 'git commit'
-        expansion = ' '.join(map(quote, split_command(search.group(2))))
+        expansion = ' '.join(shell.quote(part)
+                             for part in shell.split_command(search.group(2)))
         new_script = command.script.replace(alias, expansion)
 
         command = command.update(script=new_script)

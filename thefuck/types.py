@@ -4,7 +4,8 @@ import os
 import sys
 import six
 from psutil import Process, TimeoutExpired
-from . import logs, shells
+from . import logs
+from .shells import shell
 from .conf import settings, DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
 from .utils import compatibility_call
@@ -29,7 +30,7 @@ class Command(object):
     def script_parts(self):
         if not hasattr(self, '_script_parts'):
             try:
-                self._script_parts = shells.split_command(self.script)
+                self._script_parts = shell.split_command(self.script)
             except Exception:
                 logs.debug(u"Can't split command script {} because:\n {}".format(
                         self, sys.exc_info()))
@@ -93,7 +94,7 @@ class Command(object):
             script = ' '.join(raw_script)
 
         script = script.strip()
-        return shells.from_shell(script)
+        return shell.from_shell(script)
 
     @classmethod
     def from_raw_script(cls, raw_script):
@@ -279,7 +280,7 @@ class CorrectedCommand(object):
         if self.side_effect:
             compatibility_call(self.side_effect, old_cmd, self.script)
         if settings.alter_history:
-            shells.put_to_history(self.script)
+            shell.put_to_history(self.script)
         # This depends on correct setting of PYTHONIOENCODING by the alias:
         logs.debug(u'PYTHONIOENCODING: {}'.format(
             os.environ.get('PYTHONIOENCODING', '>-not-set-<')))

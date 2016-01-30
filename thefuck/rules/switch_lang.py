@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
-from thefuck.shells import thefuck_alias
-from thefuck.utils import memoize
+from thefuck.utils import memoize, get_alias
 
 target_layout = '''qwertyuiop[]asdfghjkl;'zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?'''
 
@@ -35,7 +34,7 @@ def match(command):
         return False
     matched_layout = _get_matched_layout(command)
     return matched_layout and \
-           _switch_command(command, matched_layout) != thefuck_alias()
+           _switch_command(command, matched_layout) != get_alias()
 
 
 def get_new_command(command):

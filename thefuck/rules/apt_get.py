@@ -1,5 +1,5 @@
-from thefuck import shells
 from thefuck.utils import memoize
+from thefuck.shells import shell
 
 try:
     import CommandNotFound
@@ -26,5 +26,5 @@ def match(command):
 
 def get_new_command(command):
     name = get_package(command.script)
-    formatme = shells.and_('sudo apt-get install {}', '{}')
+    formatme = shell.and_('sudo apt-get install {}', '{}')
     return formatme.format(name, command.script)

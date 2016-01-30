@@ -1,5 +1,5 @@
 from thefuck.specific.archlinux import get_pkgfile, archlinux_env
-from thefuck import shells
+from thefuck.shells import shell
 
 
 def match(command):
@@ -9,7 +9,7 @@ def match(command):
 def get_new_command(command):
     packages = get_pkgfile(command.script)
 
-    formatme = shells.and_('{} -S {}', '{}')
+    formatme = shell.and_('{} -S {}', '{}')
     return [formatme.format(pacman, package, command.script)
             for package in packages]
 

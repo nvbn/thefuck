@@ -1,4 +1,4 @@
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.utils import for_app
 
 
@@ -9,4 +9,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return shells.and_('tsuru login', command.script)
+    return shell.and_('tsuru login', command.script)

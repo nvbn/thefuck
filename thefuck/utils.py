@@ -93,7 +93,7 @@ def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
 
 @memoize
 def get_all_executables():
-    from thefuck.shells import thefuck_alias, get_aliases
+    from thefuck.shells import shell
 
     def _safe(fn, fallback):
         try:
@@ -101,7 +101,7 @@ def get_all_executables():
         except OSError:
             return fallback
 
-    tf_alias = thefuck_alias()
+    tf_alias = get_alias()
     tf_entry_points = get_installation_info().get_entry_map()\
                                              .get('console_scripts', {})\
                                              .keys()
@@ -110,7 +110,7 @@ def get_all_executables():
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]
-    aliases = [alias for alias in get_aliases() if alias != tf_alias]
+    aliases = [alias for alias in shell.get_aliases() if alias != tf_alias]
     return bins + aliases
 
 
@@ -260,3 +260,7 @@ def compatibility_call(fn, *args):
 
 def get_installation_info():
     return pkg_resources.require('thefuck')[0]
+
+
+def get_alias():
+    return os.environ.get('TF_ALIAS', 'fuck')

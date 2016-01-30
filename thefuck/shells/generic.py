@@ -1,0 +1,103 @@
+import io
+import os
+import shlex
+import six
+import sys
+
+from ..utils import memoize
+from ..conf import settings
+from .. import logs
+
+
+class Generic(object):
+    def get_aliases(self):
+        return {}
+
+    def _expand_aliases(self, command_script):
+        aliases = self.get_aliases()
+        binary = command_script.split(' ')[0]
+        if binary in aliases:
+            return command_script.replace(binary, aliases[binary], 1)
+        else:
+            return command_script
+
+    def from_shell(self, command_script):
+        """Prepares command before running in app."""
+        return self._expand_aliases(command_script)
+
+    def to_shell(self, command_script):
+        """Prepares command for running in shell."""
+        return command_script
+
+    def app_alias(self, fuck):
+        return "alias {0}='eval $(TF_ALIAS={0} PYTHONIOENCODING=utf-8 " \
+               "thefuck $(fc -ln -1))'".format(fuck)
+
+    def _get_history_file_name(self):
+        return ''
+
+    def _get_history_line(self, command_script):
+        return ''
+
+    def put_to_history(self, command):
+        try:
+            return self._put_to_history(command)
+        except IOError:
+            logs.exception("Can't update history", sys.exc_info())
+
+    def _put_to_history(self, command_script):
+        """Puts command script to shell history."""
+        history_file_name = self._get_history_file_name()
+        if os.path.isfile(history_file_name):
+            with open(history_file_name, 'a') as history:
+                entry = self._get_history_line(command_script)
+                if six.PY2:
+                    history.write(entry.encode('utf-8'))
+                else:
+                    history.write(entry)
+
+    @memoize
+    def get_history(self):
+        return list(self._get_history_lines())
+
+    def _get_history_lines(self):
+        """Returns list of history entries."""
+        history_file_name = self._get_history_file_name()
+        if os.path.isfile(history_file_name):
+            with io.open(history_file_name, 'r',
+                         encoding='utf-8', errors='ignore') as history_file:
+
+                lines = history_file.readlines()
+                if settings.history_limit:
+                    lines = lines[-settings.history_limit:]
+
+                for line in lines:
+                    prepared = self._script_from_history(line) \
+                        .strip()
+                    if prepared:
+                        yield prepared
+
+    def and_(self, *commands):
+        return u' && '.join(commands)
+
+    def how_to_configure(self):
+        return
+
+    def split_command(self, command):
+        """Split the command using shell-like syntax."""
+        if six.PY2:
+            return [s.decode('utf8') for s in shlex.split(command.encode('utf8'))]
+        return shlex.split(command)
+
+    def quote(self, s):
+        """Return a shell-escaped version of the string s."""
+
+        if six.PY2:
+            from pipes import quote
+        else:
+            from shlex import quote
+
+        return quote(s)
+
+    def _script_from_history(self, line):
+        return line

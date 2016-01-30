@@ -1,7 +1,7 @@
 import os
 import zipfile
 from thefuck.utils import for_app
-from thefuck.shells import quote
+from thefuck.shells import shell
 
 
 def _is_bad_zip(file):
@@ -38,7 +38,8 @@ def match(command):
 
 
 def get_new_command(command):
-    return u'{} -d {}'.format(command.script, quote(_zip_file(command)[:-4]))
+    return u'{} -d {}'.format(
+            command.script, shell.quote(_zip_file(command)[:-4]))
 
 
 def side_effect(old_cmd, command):

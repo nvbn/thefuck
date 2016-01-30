@@ -1,5 +1,5 @@
 import re
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.specific.git import git_support
 
 
@@ -15,5 +15,5 @@ def get_new_command(command):
             r"error: pathspec '([^']*)' "
             r"did not match any file\(s\) known to git.", command.stderr)[0]
 
-    formatme = shells.and_('git add -- {}', '{}')
+    formatme = shell.and_('git add -- {}', '{}')
     return formatme.format(missing_file, command.script)

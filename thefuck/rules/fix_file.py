@@ -2,7 +2,7 @@ import re
 import os
 from thefuck.utils import memoize, default_settings
 from thefuck.conf import settings
-from thefuck import shells
+from thefuck.shells import shell
 
 
 # order is important: only the first match is considered
@@ -75,4 +75,4 @@ def get_new_command(command):
                                                  file=m.group('file'),
                                                  line=m.group('line'))
 
-    return shells.and_(editor_call, command.script)
+    return shell.and_(editor_call, command.script)

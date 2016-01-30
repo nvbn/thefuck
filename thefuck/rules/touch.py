@@ -1,5 +1,5 @@
 import re
-from thefuck import shells
+from thefuck.shells import shell
 from thefuck.utils import for_app
 
 
@@ -10,4 +10,4 @@ def match(command):
 
 def get_new_command(command):
     path = re.findall(r"touch: cannot touch '(.+)/.+':", command.stderr)[0]
-    return shells.and_(u'mkdir -p {}'.format(path), command.script)
+    return shell.and_(u'mkdir -p {}'.format(path), command.script)

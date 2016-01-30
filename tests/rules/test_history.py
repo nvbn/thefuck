@@ -5,14 +5,14 @@ from tests.utils import Command
 
 @pytest.fixture
 def history(mocker):
-    return mocker.patch('thefuck.rules.history.get_history',
+    return mocker.patch('thefuck.shells.shell.get_history',
                         return_value=['le cat', 'fuck', 'ls cat',
                                       'diff x', 'nocommand x'])
 
 
 @pytest.fixture
 def alias(mocker):
-    return mocker.patch('thefuck.rules.history.thefuck_alias',
+    return mocker.patch('thefuck.rules.history.get_alias',
                         return_value='fuck')
 
 
