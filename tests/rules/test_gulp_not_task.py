@@ -1,4 +1,5 @@
 import pytest
+from io import BytesIO
 from tests.utils import Command
 from thefuck.rules.gulp_not_task import match, get_new_command
 
@@ -22,7 +23,7 @@ def test_not_march(script, stdout):
 
 
 def test_get_new_command(mocker):
-    mocker.patch('thefuck.rules.gulp_not_task.get_gulp_tasks', return_value=[
-        'serve', 'build', 'default'])
+    mock = mocker.patch('subprocess.Popen')
+    mock.return_value.stdout = BytesIO(b'serve \nbuild \ndefault \n')
     command = Command('gulp srve', stdout('srve'))
     assert get_new_command(command) == ['gulp serve', 'gulp default']
