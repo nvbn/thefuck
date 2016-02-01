@@ -29,9 +29,24 @@ def test_match_mocked(cmdnf_mock, command, return_value):
     assert get_packages.called
 
 
+# python-commandnotfound is available in ubuntu 14.04+
+@pytest.mark.skipif(not getattr(apt_get, 'enabled_by_default', True),
+                    reason='Skip if python-commandnotfound is not available')
 @pytest.mark.parametrize('command', [
+    Command(script='a_bad_cmd', stderr='a_bad_cmd: command not found'),
     Command(script='vim', stderr=''), Command()])
 def test_not_match(command):
+    assert not match(command)
+
+
+@pytest.mark.parametrize('command, return_value', [
+    (Command(script='a_bad_cmd', stderr='a_bad_cmd: command not found'), []),
+    (Command(script='vim', stderr=''), []), (Command(), [])])
+@patch('thefuck.rules.apt_get.CommandNotFound', create=True)
+@patch.multiple(apt_get, create=True, apt_get='apt_get')
+def test_not_match_mocked(cmdnf_mock, command, return_value):
+    get_packages = Mock(return_value=return_value)
+    cmdnf_mock.CommandNotFound.return_value = Mock(getPackages=get_packages)
     assert not match(command)
 
 
