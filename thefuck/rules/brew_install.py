@@ -1,10 +1,9 @@
 import os
 import re
-from thefuck.utils import get_closest, replace_argument, which
-from thefuck.specific.brew import get_brew_path_prefix
+from thefuck.utils import get_closest, replace_argument
+from thefuck.specific.brew import get_brew_path_prefix, brew_available
 
-
-enabled_by_default = bool(which('brew'))
+enabled_by_default = brew_available
 
 
 def _get_formulas():

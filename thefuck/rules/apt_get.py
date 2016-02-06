@@ -1,8 +1,10 @@
+from thefuck.specific.apt import apt_available
 from thefuck.utils import memoize
 from thefuck.shells import shell
 
 try:
     import CommandNotFound
+    enabled_by_default = apt_available
 except ImportError:
     enabled_by_default = False
 

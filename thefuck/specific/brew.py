@@ -2,7 +2,7 @@ import subprocess
 from ..utils import memoize, which
 
 
-enabled_by_default = bool(which('brew'))
+brew_available = bool(which('brew'))
 
 
 @memoize

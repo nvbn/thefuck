@@ -1,11 +1,13 @@
 import os
 import re
 from thefuck.utils import get_closest, replace_command
-from thefuck.specific.brew import get_brew_path_prefix
+from thefuck.specific.brew import get_brew_path_prefix, brew_available
 
 BREW_CMD_PATH = '/Library/Homebrew/cmd'
 TAP_PATH = '/Library/Taps'
 TAP_CMD_PATH = '/%s/%s/cmd'
+
+enabled_by_default = brew_available
 
 
 def _get_brew_commands(brew_path_prefix):
@@ -53,7 +55,7 @@ def _brew_commands():
     if brew_path_prefix:
         try:
             return _get_brew_commands(brew_path_prefix) \
-                 + _get_brew_tap_specific_commands(brew_path_prefix)
+                   + _get_brew_tap_specific_commands(brew_path_prefix)
         except OSError:
             pass
 
