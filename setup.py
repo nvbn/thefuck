@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
+import pip
 import sys
 import os
+
+if int(pip.__version__.split('.')[0]) < 6:
+    print('pip older than 6.0 not supported, please upgrade pip with:\n\n'
+          '    pip install -U pip')
+    sys.exit(-1)
 
 if os.environ.get('CONVERT_README'):
     import pypandoc
