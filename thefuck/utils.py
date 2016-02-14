@@ -1,4 +1,3 @@
-import dbm
 import os
 import pickle
 import pkg_resources
@@ -16,10 +15,12 @@ from warnings import warn
 
 DEVNULL = open(os.devnull, 'w')
 
-shelve_open_errors = (dbm.error, )
 if six.PY2:
-    import gdbm
-    shelve_open_errors += (gdbm.error, )
+    import anydbm
+    shelve_open_error = anydbm.error
+else:
+    import dbm
+    shelve_open_error = dbm.error
 
 
 def memoize(fn):
@@ -227,7 +228,7 @@ def cache(*depends_on):
                     value = fn(*args, **kwargs)
                     db[key] = {'etag': etag, 'value': value}
                     return value
-        except shelve_open_errors:
+        except shelve_open_error:
             # Caused when going from Python 2 to Python 3 and vice-versa
             warn("Removing possibly out-dated cache")
             os.remove(cache_path)
