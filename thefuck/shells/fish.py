@@ -15,17 +15,13 @@ class Fish(Generic):
 
     def app_alias(self, fuck):
         return ('function {0} -d "Correct your previous console command"\n'
-                '  set -l exit_code $status\n'
                 '  set -l fucked_up_command $history[1]\n'
                 '  env TF_ALIAS={0} PYTHONIOENCODING=utf-8'
                 ' thefuck $fucked_up_command | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n'
-                '    if test $exit_code -ne 0\n'
-                '      history --delete $fucked_up_command\n'
-                '      history --merge ^ /dev/null\n'
-                '      return 0\n'
-                '    end\n'
+                '    history --delete $fucked_up_command\n'
+                '    history --merge ^ /dev/null\n'
                 '  end\n'
                 'end').format(fuck)
 
