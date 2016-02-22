@@ -49,7 +49,7 @@ def test_select_command_with_arrows(proc, TIMEOUT):
 
 
 @pytest.mark.functional
-@pytest.mark.once_without_docker
+@pytest.mark.skip_without_docker
 def test_refuse_with_confirmation(proc, TIMEOUT):
     refuse_with_confirmation(proc, TIMEOUT)
     history_not_changed(proc, TIMEOUT)
