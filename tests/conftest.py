@@ -1,7 +1,7 @@
 from pathlib import Path
 import pytest
 from thefuck import shells
-from thefuck import conf
+from thefuck import conf, const
 
 shells.shell = shells.Generic()
 
@@ -22,7 +22,7 @@ def no_memoize(monkeypatch):
 def settings(request):
     def _reset_settings():
         conf.settings.clear()
-        conf.settings.update(conf.DEFAULT_SETTINGS)
+        conf.settings.update(const.DEFAULT_SETTINGS)
 
     request.addfinalizer(_reset_settings)
     conf.settings.user_dir = Path('~/.thefuck')

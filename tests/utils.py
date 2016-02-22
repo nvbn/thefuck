@@ -1,5 +1,5 @@
 from thefuck import types
-from thefuck.conf import DEFAULT_PRIORITY
+from thefuck.const import DEFAULT_PRIORITY
 
 
 class Command(types.Command):

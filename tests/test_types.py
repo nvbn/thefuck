@@ -5,7 +5,7 @@ from mock import Mock
 from pathlib import Path
 import pytest
 from tests.utils import CorrectedCommand, Rule, Command
-from thefuck import conf
+from thefuck import const
 from thefuck.exceptions import EmptyCommand
 
 
@@ -44,14 +44,14 @@ class TestRule(object):
         load_source.assert_called_once_with('bash', '/rules/bash.py')
 
     @pytest.mark.parametrize('rules, exclude_rules, rule, is_enabled', [
-        (conf.DEFAULT_RULES, [], Rule('git', enabled_by_default=True), True),
-        (conf.DEFAULT_RULES, [], Rule('git', enabled_by_default=False), False),
+        (const.DEFAULT_RULES, [], Rule('git', enabled_by_default=True), True),
+        (const.DEFAULT_RULES, [], Rule('git', enabled_by_default=False), False),
         ([], [], Rule('git', enabled_by_default=False), False),
         ([], [], Rule('git', enabled_by_default=True), False),
-        (conf.DEFAULT_RULES + ['git'], [], Rule('git', enabled_by_default=False), True),
+        (const.DEFAULT_RULES + ['git'], [], Rule('git', enabled_by_default=False), True),
         (['git'], [], Rule('git', enabled_by_default=False), True),
-        (conf.DEFAULT_RULES, ['git'], Rule('git', enabled_by_default=True), False),
-        (conf.DEFAULT_RULES, ['git'], Rule('git', enabled_by_default=False), False),
+        (const.DEFAULT_RULES, ['git'], Rule('git', enabled_by_default=True), False),
+        (const.DEFAULT_RULES, ['git'], Rule('git', enabled_by_default=False), False),
         ([], ['git'], Rule('git', enabled_by_default=True), False),
         ([], ['git'], Rule('git', enabled_by_default=False), False)])
     def test_is_enabled(self, settings, rules, exclude_rules, rule, is_enabled):

@@ -6,11 +6,6 @@ from .exceptions import NoRuleMatched
 from .system import get_key
 from . import logs, const
 
-SELECT = 0
-ABORT = 1
-PREVIOUS = 2
-NEXT = 3
-
 
 def read_actions():
     """Yields actions for pressed keys."""
@@ -18,13 +13,13 @@ def read_actions():
         key = get_key()
 
         if key in (const.KEY_UP, 'k'):
-            yield PREVIOUS
+            yield const.ACTION_PREVIOUS
         elif key in (const.KEY_DOWN, 'j'):
-            yield NEXT
+            yield const.ACTION_NEXT
         elif key == const.KEY_CTRL_C:
-            yield ABORT
+            yield const.ACTION_ABORT
         elif key in ('\n', '\r'):
-            yield SELECT
+            yield const.ACTION_SELECT
 
 
 class CommandSelector(object):
@@ -83,15 +78,15 @@ def select_command(corrected_commands):
     logs.confirm_text(selector.value)
 
     for action in read_actions():
-        if action == SELECT:
+        if action == const.ACTION_SELECT:
             sys.stderr.write('\n')
             return selector.value
-        elif action == ABORT:
+        elif action == const.ACTION_ABORT:
             logs.failed('\nAborted')
             return
-        elif action == PREVIOUS:
+        elif action == const.ACTION_PREVIOUS:
             selector.previous()
             logs.confirm_text(selector.value)
-        elif action == NEXT:
+        elif action == const.ACTION_NEXT:
             selector.next()
             logs.confirm_text(selector.value)
