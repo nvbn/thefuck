@@ -48,16 +48,6 @@ class TestFish(object):
     def test_to_shell(self, shell):
         assert shell.to_shell('pwd') == 'pwd'
 
-    @pytest.mark.parametrize('entry, entry_utf8', [
-        ('ls', '- cmd: ls\n   when: 1430707243\n'),
-        (u'echo café', '- cmd: echo café\n   when: 1430707243\n')])
-    def test_put_to_history(self, entry, entry_utf8, builtins_open, mocker, shell):
-        mocker.patch('thefuck.shells.fish.time',
-                     return_value=1430707243.3517463)
-        shell.put_to_history(entry)
-        builtins_open.return_value.__enter__.return_value. \
-            write.assert_called_once_with(entry_utf8)
-
     def test_and_(self, shell):
         assert shell.and_('foo', 'bar') == 'foo; and bar'
 

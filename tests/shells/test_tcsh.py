@@ -31,16 +31,6 @@ class TestTcsh(object):
     def test_to_shell(self, shell):
         assert shell.to_shell('pwd') == 'pwd'
 
-    @pytest.mark.parametrize('entry, entry_utf8', [
-        ('ls', '#+1430707243\nls\n'),
-        (u'echo café', '#+1430707243\necho café\n')])
-    def test_put_to_history(self, entry, entry_utf8, builtins_open, shell, mocker):
-        mocker.patch('thefuck.shells.tcsh.time',
-                     return_value=1430707243.3517463)
-        shell.put_to_history(entry)
-        builtins_open.return_value.__enter__.return_value. \
-            write.assert_called_once_with(entry_utf8)
-
     def test_and_(self, shell):
         assert shell.and_('ls', 'cd') == 'ls && cd'
 

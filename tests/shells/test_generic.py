@@ -15,11 +15,6 @@ class TestGeneric(object):
     def test_to_shell(self, shell):
         assert shell.to_shell('pwd') == 'pwd'
 
-    def test_put_to_history(self, builtins_open, shell):
-        assert shell.put_to_history('ls') is None
-        assert shell.put_to_history(u'echo café') is None
-        assert builtins_open.call_count == 0
-
     def test_and_(self, shell):
         assert shell.and_('ls', 'cd') == 'ls && cd'
 

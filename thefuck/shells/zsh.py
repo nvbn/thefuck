@@ -1,15 +1,21 @@
 from subprocess import Popen, PIPE
 from time import time
 import os
+from ..conf import settings
 from ..utils import DEVNULL, memoize, cache
 from .generic import Generic
 
 
 class Zsh(Generic):
     def app_alias(self, fuck):
-        return "alias {0}='eval $(TF_ALIAS={0} PYTHONIOENCODING=utf-8" \
-               " thefuck $(fc -ln -1 | tail -n 1));" \
-               " fc -R'".format(fuck)
+        alias = "alias {0}='TF_ALIAS={0} PYTHONIOENCODING=utf-8" \
+                " TF_CMD=$(thefuck $(fc -ln -1 | tail -n 1)) &&" \
+                " eval $TF_CMD".format(fuck)
+
+        if settings.alter_history:
+            return alias + " && print -s $TF_CMD'"
+        else:
+            return alias + "'"
 
     def _parse_alias(self, alias):
         name, value = alias.split('=', 1)
