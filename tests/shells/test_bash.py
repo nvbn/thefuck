@@ -31,14 +31,6 @@ class TestBash(object):
     def test_to_shell(self, shell):
         assert shell.to_shell('pwd') == 'pwd'
 
-    @pytest.mark.parametrize('entry, entry_utf8', [
-        ('ls', 'ls\n'),
-        (u'echo café', 'echo café\n')])
-    def test_put_to_history(self, entry, entry_utf8, builtins_open, shell):
-        shell.put_to_history(entry)
-        builtins_open.return_value.__enter__.return_value. \
-            write.assert_called_once_with(entry_utf8)
-
     def test_and_(self, shell):
         assert shell.and_('ls', 'cd') == 'ls && cd'
 
@@ -52,8 +44,8 @@ class TestBash(object):
         assert 'alias fuck' in shell.app_alias('fuck')
         assert 'alias FUCK' in shell.app_alias('FUCK')
         assert 'thefuck' in shell.app_alias('fuck')
-        assert 'TF_ALIAS=fuck PYTHONIOENCODING' in shell.app_alias('fuck')
-        assert 'PYTHONIOENCODING=utf-8 thefuck' in shell.app_alias('fuck')
+        assert 'TF_ALIAS=fuck' in shell.app_alias('fuck')
+        assert 'PYTHONIOENCODING=utf-8' in shell.app_alias('fuck')
 
     def test_get_history(self, history_lines, shell):
         history_lines(['ls', 'rm'])
