@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import pytest
 from thefuck.shells import Bash
 
@@ -11,14 +12,12 @@ class TestBash(object):
         return Bash()
 
     @pytest.fixture(autouse=True)
-    def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.bash.Popen')
-        mock.return_value.stdout.read.return_value = (
-            b'alias fuck=\'eval $(thefuck $(fc -ln -1))\'\n'
-            b'alias l=\'ls -CF\'\n'
-            b'alias la=\'ls -A\'\n'
-            b'alias ll=\'ls -alF\'')
-        return mock
+    def shell_aliases(self):
+        os.environ['TF_SHELL_ALIASES'] = (
+            'alias fuck=\'eval $(thefuck $(fc -ln -1))\'\n'
+            'alias l=\'ls -CF\'\n'
+            'alias la=\'ls -A\'\n'
+            'alias ll=\'ls -alF\'')
 
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),

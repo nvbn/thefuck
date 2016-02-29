@@ -1,7 +1,6 @@
-from subprocess import Popen, PIPE
 import os
 from ..conf import settings
-from ..utils import DEVNULL, memoize, cache
+from ..utils import memoize
 from .generic import Generic
 
 
@@ -9,7 +8,7 @@ class Bash(Generic):
     def app_alias(self, fuck):
         alias = "TF_ALIAS={0}" \
                 " alias {0}='PYTHONIOENCODING=utf-8" \
-                " TF_CMD=$(thefuck $(fc -ln -1)) && " \
+                " TF_CMD=$(TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && " \
                 " eval $TF_CMD".format(fuck)
 
         if settings.alter_history:
@@ -24,13 +23,10 @@ class Bash(Generic):
         return name, value
 
     @memoize
-    @cache('.bashrc', '.bash_profile')
     def get_aliases(self):
-        proc = Popen(['bash', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
-        return dict(
-                self._parse_alias(alias)
-                for alias in proc.stdout.read().decode('utf-8').split('\n')
-                if alias and '=' in alias)
+        raw_aliases = os.environ.get('TF_SHELL_ALIASES', '').split('\n')
+        return dict(self._parse_alias(alias)
+                    for alias in raw_aliases if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
