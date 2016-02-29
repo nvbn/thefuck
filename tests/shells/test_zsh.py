@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import pytest
 from thefuck.shells.zsh import Zsh
 
@@ -11,14 +12,12 @@ class TestZsh(object):
         return Zsh()
 
     @pytest.fixture(autouse=True)
-    def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.zsh.Popen')
-        mock.return_value.stdout.read.return_value = (
-            b'fuck=\'eval $(thefuck $(fc -ln -1 | tail -n 1))\'\n'
-            b'l=\'ls -CF\'\n'
-            b'la=\'ls -A\'\n'
-            b'll=\'ls -alF\'')
-        return mock
+    def shell_aliases(self):
+        os.environ['TF_SHELL_ALIASES'] = (
+            'fuck=\'eval $(thefuck $(fc -ln -1 | tail -n 1))\'\n'
+            'l=\'ls -CF\'\n'
+            'la=\'ls -A\'\n'
+            'll=\'ls -alF\'')
 
     @pytest.mark.parametrize('before, after', [
         ('fuck', 'eval $(thefuck $(fc -ln -1 | tail -n 1))'),

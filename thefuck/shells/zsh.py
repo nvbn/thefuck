@@ -1,16 +1,17 @@
-from subprocess import Popen, PIPE
 from time import time
 import os
 from ..conf import settings
-from ..utils import DEVNULL, memoize, cache
+from ..utils import memoize
 from .generic import Generic
 
 
 class Zsh(Generic):
-    def app_alias(self, fuck):
-        alias = "alias {0}='TF_ALIAS={0} PYTHONIOENCODING=utf-8" \
+    def app_alias(self, alias_name):
+        alias = "alias {0}='TF_ALIAS={0}" \
+                " PYTHONIOENCODING=utf-8" \
+                ' TF_SHELL_ALIASES=$(alias)' \
                 " TF_CMD=$(thefuck $(fc -ln -1 | tail -n 1)) &&" \
-                " eval $TF_CMD".format(fuck)
+                " eval $TF_CMD".format(alias_name)
 
         if settings.alter_history:
             return alias + " && print -s $TF_CMD'"
@@ -24,13 +25,10 @@ class Zsh(Generic):
         return name, value
 
     @memoize
-    @cache('.zshrc')
     def get_aliases(self):
-        proc = Popen(['zsh', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
-        return dict(
-                self._parse_alias(alias)
-                for alias in proc.stdout.read().decode('utf-8').split('\n')
-                if alias and '=' in alias)
+        raw_aliases = os.environ['TF_SHELL_ALIASES'].split('\n')
+        return dict(self._parse_alias(alias)
+                    for alias in raw_aliases if alias and '=' in alias)
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
