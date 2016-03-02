@@ -8,12 +8,10 @@ ln: ‘barDir’: hard link not allowed for directory
 """
 
 import re
-from thefuck.utils import for_app
 from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support
-@for_app('ln')
 def match(command):
     return (command.stderr.endswith("hard link not allowed for directory") and
             command.script.startswith("ln "))

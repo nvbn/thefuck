@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from thefuck.rules.ln_no_hard_link import match, get_new_command
 from tests.utils import Command
 
