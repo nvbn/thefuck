@@ -178,6 +178,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
+* `ln_no_hard_link` &ndash; catches hard link creation on directories, suggest symbolic link;
 * `ls_lah` &ndash; adds `-lah` to `ls`;
 * `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
