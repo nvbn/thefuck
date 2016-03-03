@@ -1,47 +1,37 @@
 # -*- coding: utf-8 -*-
-
+import pytest
 from thefuck.rules.ln_no_hard_link import match, get_new_command
 from tests.utils import Command
 
-
-def test_match():
-    err = "hard link not allowed for directory"
-    assert not match(Command())
-
-    cmd1 = Command("ln barDir barLink", stderr="ln: ‘barDir’: {}".format(err))
-    assert match(cmd1)
-
-    cmd2 = Command("sudo ln a b", stderr="ln: ‘a’: {}".format(err))
-    assert match(cmd2)
-
-    cmd3 = Command("ln a b", stderr="... hard link")
-    assert not match(cmd3)
-
-    cmd4 = Command("sudo ln a b", stderr="... hard link")
-    assert not match(cmd4)
-
-    cmd5 = Command("a b", stderr=err)
-    assert not match(cmd5)
-
-    cmd6 = Command("sudo ln -nbi a b", stderr="ln: ‘a’: {}".format(err))
-    assert match(cmd6)
+error = "hard link not allowed for directory"
 
 
-def test_get_new_command():
-    cmd1 = Command("ln barDir barLink")
-    assert get_new_command(cmd1) == "ln -s barDir barLink"
+@pytest.mark.parametrize('script, stderr', [
+    ("ln barDir barLink", "ln: ‘barDir’: {}"),
+    ("sudo ln a b", "ln: ‘a’: {}"),
+    ("sudo ln -nbi a b", "ln: ‘a’: {}")])
+def test_match(script, stderr):
+    command = Command(script, stderr=stderr.format(error))
+    assert match(command)
 
-    cmd2 = Command("sudo ln barDir barLink")
-    assert get_new_command(cmd2) == "sudo ln -s barDir barLink"
 
-    cmd3 = Command("sudo ln -nbi a b")
-    assert get_new_command(cmd3) == "sudo ln -s -nbi a b"
+@pytest.mark.parametrize('script, stderr', [
+    ('', ''),
+    ("ln a b", "... hard link"),
+    ("sudo ln a b", "... hard link"),
+    ("a b", error)])
+def test_assert_not_match(script, stderr):
+    command = Command(script, stderr=stderr)
+    assert not match(command)
 
-    cmd4 = Command("ln -nbi a b && ls")
-    assert get_new_command(cmd4) == "ln -s -nbi a b && ls"
 
-    cmd5 = Command("ln a ln")
-    assert get_new_command(cmd5) == "ln -s a ln"
-
-    cmd6 = Command("sudo ln a ln")
-    assert get_new_command(cmd6) == "sudo ln -s a ln"
+@pytest.mark.parametrize('script, result', [
+    ("ln barDir barLink", "ln -s barDir barLink"),
+    ("sudo ln barDir barLink", "sudo ln -s barDir barLink"),
+    ("sudo ln -nbi a b", "sudo ln -s -nbi a b"),
+    ("ln -nbi a b && ls", "ln -s -nbi a b && ls"),
+    ("ln a ln", "ln -s a ln"),
+    ("sudo ln a ln", "sudo ln -s a ln")])
+def test_get_new_command(script, result):
+    command = Command(script)
+    assert get_new_command(command) == result
