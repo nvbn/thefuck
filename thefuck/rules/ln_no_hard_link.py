@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Suggest creating symbolic link if hard link is not allowed.
 
 Example:
