@@ -228,8 +228,8 @@ def cache(*depends_on):
                     value = fn(*args, **kwargs)
                     db[key] = {'etag': etag, 'value': value}
                     return value
-        except shelve_open_error:
-            # Caused when going from Python 2 to Python 3 and vice-versa
+        except (shelve_open_error, ImportError):
+            # Caused when switching between Python versions
             warn("Removing possibly out-dated cache")
             os.remove(cache_path)
 
