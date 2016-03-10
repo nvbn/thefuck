@@ -7,10 +7,11 @@ from .generic import Generic
 
 class Zsh(Generic):
     def app_alias(self, alias_name):
-        alias = "alias {0}='TF_ALIAS={0}" \
+        # It is VERY important to have the variables declared WITHIN the alias
+        alias = "alias {0}='TF_CMD=$(TF_ALIAS={0}" \
                 " PYTHONIOENCODING=utf-8" \
-                ' TF_SHELL_ALIASES=$(alias)' \
-                " TF_CMD=$(thefuck $(fc -ln -1 | tail -n 1)) &&" \
+                " TF_SHELL_ALIASES=$(alias)" \
+                " thefuck $(fc -ln -1 | tail -n 1)) &&" \
                 " eval $TF_CMD".format(alias_name)
 
         if settings.alter_history:

@@ -282,5 +282,5 @@ class CorrectedCommand(object):
             compatibility_call(self.side_effect, old_cmd, self.script)
         # This depends on correct setting of PYTHONIOENCODING by the alias:
         logs.debug(u'PYTHONIOENCODING: {}'.format(
-            os.environ.get('PYTHONIOENCODING', '>-not-set-<')))
+            os.environ.get('PYTHONIOENCODING', '!!not-set!!')))
         print(self.script)

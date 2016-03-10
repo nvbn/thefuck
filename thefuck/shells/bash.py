@@ -6,9 +6,11 @@ from .generic import Generic
 
 class Bash(Generic):
     def app_alias(self, fuck):
-        alias = "TF_ALIAS={0}" \
-                " alias {0}='PYTHONIOENCODING=utf-8" \
-                " TF_CMD=$(TF_SHELL_ALIASES=$(alias) thefuck $(fc -ln -1)) && " \
+        # It is VERY important to have the variables declared WITHIN the alias
+        alias = "alias {0}='TF_CMD=$(TF_ALIAS={0}" \
+                " PYTHONIOENCODING=utf-8" \
+                " TF_SHELL_ALIASES=$(alias)" \
+                " thefuck $(fc -ln -1)) &&" \
                 " eval $TF_CMD".format(fuck)
 
         if settings.alter_history:
