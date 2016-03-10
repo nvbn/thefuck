@@ -45,6 +45,13 @@ class TestZsh(object):
         assert 'thefuck' in shell.app_alias('fuck')
         assert 'PYTHONIOENCODING' in shell.app_alias('fuck')
 
+    def test_app_alias_variables_correctly_set(self, shell):
+        alias = shell.app_alias('fuck')
+        assert "alias fuck='TF_CMD=$(TF_ALIAS" in alias
+        assert '$(TF_ALIAS=fuck PYTHONIOENCODING' in alias
+        assert 'PYTHONIOENCODING=utf-8 TF_SHELL_ALIASES' in alias
+        assert 'ALIASES=$(alias) thefuck' in alias
+
     def test_get_history(self, history_lines, shell):
         history_lines([': 1432613911:0;ls', ': 1432613916:0;rm'])
         assert list(shell.get_history()) == ['ls', 'rm']

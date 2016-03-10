@@ -14,6 +14,7 @@ class Fish(Generic):
             return ['cd', 'grep', 'ls', 'man', 'open']
 
     def app_alias(self, fuck):
+        # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
                 '  set -l fucked_up_command $history[1]\n'
                 '  env TF_ALIAS={0} PYTHONIOENCODING=utf-8'
