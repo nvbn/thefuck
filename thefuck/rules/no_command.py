@@ -1,5 +1,6 @@
 from difflib import get_close_matches
-from thefuck.utils import get_all_executables
+from thefuck.utils import get_all_executables, \
+    get_valid_history_without_current, get_closest
 from thefuck.specific.sudo import sudo_support
 
 
@@ -11,10 +12,29 @@ def match(command):
                                        get_all_executables())))
 
 
+def _get_used_executables(command):
+    for script in get_valid_history_without_current(command):
+        yield script.split(' ')[0]
+
+
 @sudo_support
 def get_new_command(command):
     old_command = command.script_parts[0]
-    new_cmds = get_close_matches(old_command, get_all_executables(), cutoff=0.1)
+
+    # One from history:
+    already_used = get_closest(
+        old_command, _get_used_executables(command),
+        fallback_to_first=False)
+    if already_used:
+        new_cmds = [already_used]
+    else:
+        new_cmds = []
+
+    # Other from all executables:
+    new_cmds += [cmd for cmd in get_close_matches(old_command,
+                                                  get_all_executables())
+                 if cmd not in new_cmds]
+
     return [' '.join([new_command] + command.script_parts[1:])
             for new_command in new_cmds]
 

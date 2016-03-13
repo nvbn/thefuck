@@ -3,7 +3,8 @@ from mock import Mock
 import six
 from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
-    get_all_matched_commands, is_app, for_app, cache, compatibility_call
+    get_all_matched_commands, is_app, for_app, cache, compatibility_call, \
+    get_valid_history_without_current
 from tests.utils import Command
 
 
@@ -229,3 +230,29 @@ class TestCompatibilityCall(object):
             return True
 
         assert compatibility_call(side_effect, Command(), Command())
+
+
+class TestGetValidHistoryWithoutCurrent(object):
+    @pytest.fixture(autouse=True)
+    def history(self, mocker):
+        return mocker.patch('thefuck.shells.shell.get_history',
+                            return_value=['le cat', 'fuck', 'ls cat',
+                                          'diff x', 'nocommand x'])
+
+    @pytest.fixture(autouse=True)
+    def alias(self, mocker):
+        return mocker.patch('thefuck.utils.get_alias',
+                            return_value='fuck')
+
+    @pytest.fixture(autouse=True)
+    def callables(self, mocker):
+        return mocker.patch('thefuck.utils.get_all_executables',
+                            return_value=['diff', 'ls'])
+
+    @pytest.mark.parametrize('script, result', [
+        ('le cat', ['ls cat', 'diff x']),
+        ('diff x', ['ls cat']),
+        ('fuck', ['ls cat', 'diff x'])])
+    def test_get_valid_history_without_current(self, script, result):
+        command = Command(script=script)
+        assert get_valid_history_without_current(command) == result
