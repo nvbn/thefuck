@@ -9,12 +9,14 @@ from .fish import Fish
 from .generic import Generic
 from .tcsh import Tcsh
 from .zsh import Zsh
+from .powershell import Powershell
 
 shells = {'bash': Bash,
           'fish': Fish,
           'zsh': Zsh,
           'csh': Tcsh,
-          'tcsh': Tcsh}
+          'tcsh': Tcsh,
+          'powershell': Powershell}
 
 
 def _get_shell():
