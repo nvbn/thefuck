@@ -16,7 +16,7 @@ def get_key():
         ch = msvcrt.getch()  # second call returns the actual key code
 
     if ch == b'\x03':
-        raise const.KEY_CTRL_C
+        return const.KEY_CTRL_C
     if ch == b'H':
         return const.KEY_UP
     if ch == b'P':
