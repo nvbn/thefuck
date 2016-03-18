@@ -155,7 +155,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `dry` &ndash; fixes repetitions like `git git push`;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `fix_file` &ndash; opens a file with an error in your `$EDITOR`;
-* `git_add` &ndash; fixes *"Did you forget to 'git add'?"*;
+* `git_add` &ndash; fixes *"pathspec 'foo' did not match any file(s) known to git."*;
 * `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
