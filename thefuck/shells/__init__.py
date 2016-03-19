@@ -9,20 +9,37 @@ from .fish import Fish
 from .generic import Generic
 from .tcsh import Tcsh
 from .zsh import Zsh
+from .powershell import Powershell
 
 shells = {'bash': Bash,
           'fish': Fish,
           'zsh': Zsh,
           'csh': Tcsh,
-          'tcsh': Tcsh}
+          'tcsh': Tcsh,
+          'powershell': Powershell}
 
 
 def _get_shell():
-    try:
-        shell_name = Process(os.getpid()).parent().name()
-    except TypeError:
-        shell_name = Process(os.getpid()).parent.name
-    return shells.get(shell_name, Generic)()
+    proc = Process(os.getpid())
+
+    while (proc is not None):
+        name = None
+        try:
+            name = proc.name()
+        except TypeError:
+            name = proc.name
+
+        name = os.path.splitext(name)[0]
+
+        if name in shells:
+            return shells[name]()
+
+        try:
+            proc = proc.parent()
+        except TypeError:
+            proc = proc.parent
+
+    return Generic()
 
 
 shell = _get_shell()
