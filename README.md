@@ -107,7 +107,7 @@ wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh 
 Install `The Fuck` with `pip`:
 
 ```bash
-sudo pip install thefuck
+sudo -H pip install thefuck
 ```
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
