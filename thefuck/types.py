@@ -114,7 +114,7 @@ class Command(object):
         env.update(settings.env)
 
         with logs.debug_time(u'Call: {}; with env: {};'.format(script, env)):
-            result = Popen(script, shell=True, stdout=PIPE, stderr=PIPE, env=env)
+            result = Popen(script, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, env=env)
             if cls._wait_output(result):
                 stdout = result.stdout.read().decode('utf-8')
                 stderr = result.stderr.read().decode('utf-8')

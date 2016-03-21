@@ -110,6 +110,7 @@ class TestCommand(object):
             'apt-get search vim', 'stdout', 'stderr')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,
+                                      stdin=PIPE,
                                       stdout=PIPE,
                                       stderr=PIPE,
                                       env={})
