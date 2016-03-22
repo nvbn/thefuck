@@ -1,3 +1,4 @@
+import os
 import sys
 import msvcrt
 import win_unicode_console
@@ -22,4 +23,5 @@ def get_key():
     if ch == b'P':
         return const.KEY_DOWN
 
-    return ch.decode(sys.stdout.encoding)
+    encoding = sys.stdout.encoding or os.environ.get('PYTHONIOENCODING', 'utf-8')
+    return ch.decode(encoding)
