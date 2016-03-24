@@ -53,7 +53,7 @@ Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 git: 'brnch' is not a git command. See 'git --help'.
 
 Did you mean this?
-	branch
+    branch
 
 ➜ fuck
 git branch [enter/↑/↓/ctrl+c]
@@ -98,7 +98,7 @@ Reading package lists... Done
 ## Installation [*experimental*]
 
 On Ubuntu and OS X you can install `The Fuck` with installation script:
- 
+
 ```bash
 wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh - && $0
 ```
@@ -307,7 +307,7 @@ debug = False
 Or via environment variables:
 
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
-* `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`; 
+* `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`;
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
