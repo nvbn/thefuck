@@ -1,0 +1,22 @@
+build: false
+
+environment:
+  matrix:
+    - PYTHON: "C:/Python27"
+    - PYTHON: "C:/Python33"
+    - PYTHON: "C:/Python34"
+    - PYTHON: "C:/Python35"
+
+init:
+  - "ECHO %PYTHON%"
+  - ps: "ls C:/Python*"
+
+install:
+  - ps: (new-object net.webclient).DownloadFile('https://bootstrap.pypa.io/get-pip.py', 'C:/get-pip.py')
+  - "%PYTHON%/python.exe C:/get-pip.py"
+  - "%PYTHON%/Scripts/pip.exe install -U setuptools"
+  - "%PYTHON%/python.exe setup.py develop"
+  - "%PYTHON%/Scripts/pip.exe install -U -r requirements.txt"
+
+test_script:
+  - "%PYTHON%/Scripts/py.test.exe -sv"
