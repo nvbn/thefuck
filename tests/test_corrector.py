@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from pathlib import PosixPath
+from pathlib import Path
 from thefuck import corrector, const
 from tests.utils import Rule, Command, CorrectedCommand
 from thefuck.corrector import get_corrected_commands, organize_commands
@@ -30,7 +30,7 @@ class TestGetRules(object):
         (['git.py', 'bash.py'], ['git'], ['git'], [])])
     def test_get_rules(self, glob, settings, paths, conf_rules, exclude_rules,
                        loaded_rules):
-        glob([PosixPath(path) for path in paths])
+        glob([Path(path) for path in paths])
         settings.update(rules=conf_rules,
                         priority={},
                         exclude_rules=exclude_rules)
