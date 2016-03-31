@@ -52,6 +52,7 @@ def test_match(ssh_error):
     assert not match(Command('ssh'))
 
 
+@pytest.mark.skipif(os.name == 'nt', reason='Skip if testing on Windows')
 def test_side_effect(ssh_error):
     errormsg, path, reset, known_hosts = ssh_error
     command = Command('ssh user@host', stderr=errormsg)

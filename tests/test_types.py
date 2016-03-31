@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from subprocess import PIPE
 from mock import Mock
 from pathlib import Path
@@ -39,9 +40,10 @@ class TestRule(object):
                               enabled_by_default=True,
                               priority=900,
                               requires_output=True))
-        assert Rule.from_path(Path('/rules/bash.py')) \
+        rule_path = os.path.join(os.sep, 'rules', 'bash.py')
+        assert Rule.from_path(Path(rule_path)) \
                == Rule('bash', match, get_new_command, priority=900)
-        load_source.assert_called_once_with('bash', '/rules/bash.py')
+        load_source.assert_called_once_with('bash', rule_path)
 
     @pytest.mark.parametrize('rules, exclude_rules, rule, is_enabled', [
         (const.DEFAULT_RULES, [], Rule('git', enabled_by_default=True), True),
