@@ -1,4 +1,4 @@
-# The Fuck [![Build Status][travis-badge]][travis-link] [![Windows Build Status][appveyor-badge]][appveyor-link]
+# The Fuck [![Version][version-badge]][version-link] [![Build Status][travis-badge]][travis-link] [![Windows Build Status][appveyor-badge]][appveyor-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
 
 Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
@@ -360,8 +360,13 @@ sudo apt-get install pandoc
 Project License can be found [here](LICENSE.md).
 
 
+[version-badge]:   https://img.shields.io/pypi/v/thefuck.svg?label=version
+[version-link]:    https://pypi.python.org/pypi/thefuck/
 [travis-badge]:    https://img.shields.io/travis/nvbn/thefuck.svg
 [travis-link]:     https://travis-ci.org/nvbn/thefuck
 [appveyor-badge]:  https://img.shields.io/appveyor/ci/nvbn/thefuck.svg?label=windows%20build
 [appveyor-link]:   https://ci.appveyor.com/project/nvbn/thefuck
+[coverage-badge]:  https://img.shields.io/coveralls/nvbn/thefuck.svg
+[coverage-link]:   https://coveralls.io/github/nvbn/thefuck
+[license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
