@@ -1,11 +1,10 @@
-# The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg?branch=master)](https://travis-ci.org/nvbn/thefuck) [![Build status](https://ci.appveyor.com/api/projects/status/1sskj4imj02um0gu?svg=true)](https://ci.appveyor.com/project/nvbn/thefuck)
-
+# The Fuck [![Version][version-badge]][version-link] [![Build Status][travis-badge]][travis-link] [![Windows Build Status][appveyor-badge]][appveyor-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
 
 Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
-[![gif with examples](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)
+[![gif with examples][examples-link]][examples-link]
 
 Few more examples:
 
@@ -53,7 +52,7 @@ Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 git: 'brnch' is not a git command. See 'git --help'.
 
 Did you mean this?
-	branch
+    branch
 
 ➜ fuck
 git branch [enter/↑/↓/ctrl+c]
@@ -98,7 +97,7 @@ Reading package lists... Done
 ## Installation [*experimental*]
 
 On Ubuntu and OS X you can install `The Fuck` with installation script:
- 
+
 ```bash
 wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh - && $0
 ```
@@ -307,7 +306,7 @@ debug = False
 Or via environment variables:
 
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
-* `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`; 
+* `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`;
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
@@ -359,3 +358,15 @@ sudo apt-get install pandoc
 
 ## License MIT
 Project License can be found [here](LICENSE.md).
+
+
+[version-badge]:   https://img.shields.io/pypi/v/thefuck.svg?label=version
+[version-link]:    https://pypi.python.org/pypi/thefuck/
+[travis-badge]:    https://img.shields.io/travis/nvbn/thefuck.svg
+[travis-link]:     https://travis-ci.org/nvbn/thefuck
+[appveyor-badge]:  https://img.shields.io/appveyor/ci/nvbn/thefuck.svg?label=windows%20build
+[appveyor-link]:   https://ci.appveyor.com/project/nvbn/thefuck
+[coverage-badge]:  https://img.shields.io/coveralls/nvbn/thefuck.svg
+[coverage-link]:   https://coveralls.io/github/nvbn/thefuck
+[license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
+[examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
