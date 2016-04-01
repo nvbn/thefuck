@@ -1,11 +1,10 @@
-# The Fuck [![Build Status](https://travis-ci.org/nvbn/thefuck.svg?branch=master)](https://travis-ci.org/nvbn/thefuck) [![Build status](https://ci.appveyor.com/api/projects/status/1sskj4imj02um0gu?svg=true)](https://ci.appveyor.com/project/nvbn/thefuck)
-
+# The Fuck [![Build Status][travis-badge]][travis-link] [![Windows Build Status][appveyor-badge]][appveyor-link]
 
 Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
-[![gif with examples](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)](https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif)
+[![gif with examples][examples-link]][examples-link]
 
 Few more examples:
 
@@ -359,3 +358,10 @@ sudo apt-get install pandoc
 
 ## License MIT
 Project License can be found [here](LICENSE.md).
+
+
+[travis-badge]:    https://img.shields.io/travis/nvbn/thefuck.svg
+[travis-link]:     https://travis-ci.org/nvbn/thefuck
+[appveyor-badge]:  https://img.shields.io/appveyor/ci/nvbn/thefuck.svg?label=windows%20build
+[appveyor-link]:   https://ci.appveyor.com/project/nvbn/thefuck
+[examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
