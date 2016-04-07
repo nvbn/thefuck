@@ -19,15 +19,16 @@ class TestFish(object):
         return mock
 
     @pytest.fixture
-    def tf_overridden(self, monkeypatch, aliases):
-        monkeypatch.setattr('os.environ', {'TF_OVERRIDDEN_ALIASES': aliases})
+    def os_environ(self, monkeypatch, key, value):
+        monkeypatch.setattr('os.environ', {key: value})
 
-    @pytest.mark.parametrize('aliases', [
-        'cut,git,sed',
-        'cut, git, sed',
-        ' cut,\tgit,sed\n',
-        '\ncut,\n\ngit,\tsed\r'])
-    def test_get_overridden_aliases(self, shell, tf_overridden):
+    @pytest.mark.parametrize('key, value', [
+        ('TF_OVERRIDDEN_ALIASES', 'cut,git,sed'),  # legacy
+        ('THEFUCK_OVERRIDDEN_ALIASES', 'cut,git,sed'),
+        ('THEFUCK_OVERRIDDEN_ALIASES', 'cut, git, sed'),
+        ('THEFUCK_OVERRIDDEN_ALIASES', ' cut,\tgit,sed\n'),
+        ('THEFUCK_OVERRIDDEN_ALIASES', '\ncut,\n\ngit,\tsed\r')])
+    def test_get_overridden_aliases(self, shell, os_environ):
         assert shell._get_overridden_aliases() == {'cd', 'cut', 'git', 'grep',
                                                    'ls', 'man', 'open', 'sed'}
 
