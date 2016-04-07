@@ -7,11 +7,12 @@ from .generic import Generic
 
 class Fish(Generic):
     def _get_overridden_aliases(self):
-        overridden_aliases = os.environ.get('TF_OVERRIDDEN_ALIASES', '').strip()
-        if overridden_aliases:
-            return [alias.strip() for alias in overridden_aliases.split(',')]
-        else:
-            return ['cd', 'grep', 'ls', 'man', 'open']
+        overridden = os.environ.get('THEFUCK_OVERRIDDEN_ALIASES',
+                                    os.environ.get('TF_OVERRIDDEN_ALIASES', ''))
+        default = {'cd', 'grep', 'ls', 'man', 'open'}
+        for alias in overridden.split(','):
+            default.add(alias.strip())
+        return default
 
     def app_alias(self, fuck):
         # It is VERY important to have the variables declared WITHIN the alias
