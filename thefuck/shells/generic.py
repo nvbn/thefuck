@@ -81,3 +81,6 @@ class Generic(object):
 
     def _script_from_history(self, line):
         return line
+
+    def put_to_history(self, command):
+        pass
