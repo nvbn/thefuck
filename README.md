@@ -222,6 +222,7 @@ Enabled by default only on specific platforms:
 * `apt_invalid_operation` &ndash; fixes invalid `apt` and `apt-get` calls, like `apt-get isntall vim`;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
+* `brew_update_formula` &ndash; turns `brew update <formula>` into `brew upgrade <formula>`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available);
 * `pacman_not_found` &ndash; fixes package name with `pacman` or `yaourt`.
