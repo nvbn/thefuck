@@ -1,6 +1,9 @@
 from subprocess import Popen, PIPE
 from time import time
 import os
+import sys
+import six
+from .. import logs
 from ..utils import DEVNULL, memoize, cache
 from .generic import Generic
 
@@ -65,3 +68,20 @@ class Fish(Generic):
     def how_to_configure(self):
         return (r"eval (thefuck --alias | tr '\n' ';')",
                 '~/.config/fish/config.fish')
+
+    def put_to_history(self, command):
+        try:
+            return self._put_to_history(command)
+        except IOError:
+            logs.exception("Can't update history", sys.exc_info())
+
+    def _put_to_history(self, command_script):
+        """Puts command script to shell history."""
+        history_file_name = self._get_history_file_name()
+        if os.path.isfile(history_file_name):
+            with open(history_file_name, 'a') as history:
+                entry = self._get_history_line(command_script)
+                if six.PY2:
+                    history.write(entry.encode('utf-8'))
+                else:
+                    history.write(entry)
