@@ -20,19 +20,19 @@ class Fish(Generic):
 
     def app_alias(self, fuck):
         if settings.alter_history:
-            hist_merge = '    history --merge ^ /dev/null\n'
+            alter_history = ('    history --delete $fucked_up_command\n'
+                             '    history --merge ^ /dev/null\n')
         else:
-            hist_merge = ''
+            alter_history = ''
         # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
                 '  set -l fucked_up_command $history[1]\n'
                 '  env TF_ALIAS={0} PYTHONIOENCODING=utf-8'
                 ' thefuck $fucked_up_command | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
-                '    eval $unfucked_command\n'
-                '    history --delete $fucked_up_command\n{1}'
+                '    eval $unfucked_command\n{1}'
                 '  end\n'
-                'end').format(fuck, hist_merge)
+                'end').format(fuck, alter_history)
 
     @memoize
     @cache('.config/fish/config.fish', '.config/fish/functions')
