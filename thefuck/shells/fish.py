@@ -4,6 +4,7 @@ import os
 import sys
 import six
 from .. import logs
+from ..conf import settings
 from ..utils import DEVNULL, memoize, cache
 from .generic import Generic
 
@@ -18,6 +19,10 @@ class Fish(Generic):
         return default
 
     def app_alias(self, fuck):
+        if settings.alter_history:
+            hist_merge = '    history --merge ^ /dev/null\n'
+        else:
+            hist_merge = ''
         # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
                 '  set -l fucked_up_command $history[1]\n'
@@ -25,10 +30,9 @@ class Fish(Generic):
                 ' thefuck $fucked_up_command | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n'
-                '    history --delete $fucked_up_command\n'
-                '    history --merge ^ /dev/null\n'
+                '    history --delete $fucked_up_command\n{1}'
                 '  end\n'
-                'end').format(fuck)
+                'end').format(fuck, hist_merge)
 
     @memoize
     @cache('.config/fish/config.fish', '.config/fish/functions')

@@ -74,6 +74,12 @@ class TestFish(object):
         assert 'TF_ALIAS=fuck PYTHONIOENCODING' in shell.app_alias('fuck')
         assert 'PYTHONIOENCODING=utf-8 thefuck' in shell.app_alias('fuck')
 
+    def test_app_alias_history_merge(self, settings, shell):
+        settings.alter_history = True
+        assert 'history --merge' in shell.app_alias('FUCK')
+        settings.alter_history = False
+        assert 'history --merge' not in shell.app_alias('FUCK')
+
     def test_get_history(self, history_lines, shell):
         history_lines(['- cmd: ls', '  when: 1432613911',
                        '- cmd: rm', '  when: 1432613916'])
