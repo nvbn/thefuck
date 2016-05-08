@@ -245,9 +245,16 @@ class TestGetValidHistoryWithoutCurrent(object):
                             return_value='fuck')
 
     @pytest.fixture(autouse=True)
-    def callables(self, mocker):
-        return mocker.patch('thefuck.utils.get_all_executables',
-                            return_value=['diff', 'ls'])
+    def bins(self, mocker, monkeypatch):
+        monkeypatch.setattr('thefuck.conf.os.environ', {'PATH': 'path'})
+        callables = list()
+        for name in ['diff', 'ls', 'café']:
+            bin_mock = mocker.Mock(name=name)
+            bin_mock.configure_mock(name=name, is_dir=lambda: False)
+            callables.append(bin_mock)
+        path_mock = mocker.Mock(iterdir=mocker.Mock(return_value=callables))
+        return mocker.patch('thefuck.utils.Path', return_value=path_mock)
+
 
     @pytest.mark.parametrize('script, result', [
         ('le cat', ['ls cat', 'diff x']),
