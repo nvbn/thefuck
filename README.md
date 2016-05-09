@@ -94,12 +94,18 @@ Reading package lists... Done
 - pip
 - python-dev
 
-## Installation [*experimental*]
+## Installation
 
-On Ubuntu and OS X you can install `The Fuck` with installation script:
+On Ubuntu you can install `The Fuck` with installation script [*experimental*]:
 
 ```bash
 wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh - && $0
+```
+
+On OS X you can install `The Fuck` with [Homebrew][homebrew]:
+
+```bash
+brew install thefuck
 ```
 
 ## Manual installation
@@ -373,3 +379,4 @@ Project License can be found [here](LICENSE.md).
 [coverage-link]:   https://coveralls.io/github/nvbn/thefuck
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
+[homebrew]:        http://brew.sh/
