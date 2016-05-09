@@ -96,21 +96,21 @@ Reading package lists... Done
 
 ## Installation
 
-On Ubuntu you can install `The Fuck` with installation script [*experimental*]:
-
-```bash
-wget -O - https://raw.githubusercontent.com/nvbn/thefuck/master/install.sh | sh - && $0
-```
-
 On OS X you can install `The Fuck` with [Homebrew][homebrew]:
 
 ```bash
 brew install thefuck
 ```
 
-## Manual installation
+On Ubuntu you can install `The Fuck` with:
+ 
+```bash
+sudo apt update
+sudo apt install python3-dev python3-pip
+sudo -H pip3 install thefuck
+```
 
-Install `The Fuck` with `pip`:
+On other systems you can install `The Fuck` with `pip`:
 
 ```bash
 sudo -H pip install thefuck
