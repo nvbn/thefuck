@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from pathlib import Path
+try:
+    from pathlib import Path
+    pathlib_name = 'pathlib'
+except ImportError:
+    from pathlib2 import Path
+    pathlib_name = 'pathlib2'
 from thefuck import corrector, const
 from tests.utils import Rule, Command, CorrectedCommand
 from thefuck.corrector import get_corrected_commands, organize_commands
@@ -11,7 +16,7 @@ class TestGetRules(object):
     @pytest.fixture
     def glob(self, mocker):
         results = {}
-        mocker.patch('pathlib.Path.glob',
+        mocker.patch(pathlib_name + '.Path.glob',
                      new_callable=lambda: lambda *_: results.pop('value', []))
         return lambda value: results.update({'value': value})
 

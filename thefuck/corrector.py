@@ -1,4 +1,7 @@
-from pathlib import Path
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 from .conf import settings
 from .types import Rule
 from . import logs

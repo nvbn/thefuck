@@ -1,4 +1,7 @@
-from pathlib import Path
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 import pytest
 from thefuck import shells
 from thefuck import conf, const

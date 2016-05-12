@@ -1,7 +1,10 @@
 from imp import load_source
 import os
 import sys
-from pathlib import Path
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 from six import text_type
 from . import const
 

@@ -10,7 +10,10 @@ from decorator import decorator
 from difflib import get_close_matches
 from functools import wraps
 from inspect import getargspec
-from pathlib import Path
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 from warnings import warn
 
 DEVNULL = open(os.devnull, 'w')
