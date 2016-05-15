@@ -202,7 +202,8 @@ class TestCompatibilityCall(object):
             assert settings == _settings
             return True
 
-        assert compatibility_call(match, Command())
+        with pytest.warns(UserWarning):
+            assert compatibility_call(match, Command())
 
     def test_get_new_command(self):
         def get_new_command(command):
@@ -217,7 +218,8 @@ class TestCompatibilityCall(object):
             assert settings == _settings
             return True
 
-        assert compatibility_call(get_new_command, Command())
+        with pytest.warns(UserWarning):
+            assert compatibility_call(get_new_command, Command())
 
     def test_side_effect(self):
         def side_effect(command, new_command):
@@ -232,7 +234,8 @@ class TestCompatibilityCall(object):
             assert settings == _settings
             return True
 
-        assert compatibility_call(side_effect, Command(), Command())
+        with pytest.warns(UserWarning):
+            assert compatibility_call(side_effect, Command(), Command())
 
 
 class TestGetValidHistoryWithoutCurrent(object):
