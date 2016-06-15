@@ -1,9 +1,9 @@
 from thefuck.specific.git import git_support
 
 
-#@git_support
+@git_support
 def match(command):
-    return (command.script == 'git rebase --continue' and
+    return ({'rebase', '--continue'}.issubset(command.script_parts) and
             'No changes - did you forget to use \'git add\'?' in command.stdout)
 
 
