@@ -16,7 +16,7 @@ def read_actions():
             yield const.ACTION_PREVIOUS
         elif key in (const.KEY_DOWN, 'j'):
             yield const.ACTION_NEXT
-        elif key == const.KEY_CTRL_C:
+        elif key in (const.KEY_CTRL_C, 'q'):
             yield const.ACTION_ABORT
         elif key in ('\n', '\r'):
             yield const.ACTION_SELECT
