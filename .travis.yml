@@ -24,5 +24,5 @@ install:
   - rm -rf build
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
-  - coverage run --source=thefuck,tests -m py.test -v --capture=sys --run-without-docker --enable-functional
+  - coverage run --source=thefuck,tests -m py.test -v --capture=sys
 after_success: coveralls
