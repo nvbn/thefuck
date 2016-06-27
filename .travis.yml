@@ -7,6 +7,11 @@ python:
   - "2.7"
 services:
   - docker
+addons:
+  apt:
+    packages:
+      - python-commandnotfound
+      - python3-commandnotfound
 install:
   - pip install -U pip
   - pip install -U coveralls
