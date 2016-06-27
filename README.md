@@ -175,7 +175,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
-* `git_rebase_no_changes` &ndash runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
+* `git_rebase_no_changes` &ndash; runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
 * `git_rm_recursive` &ndash; adds `-r` when you try to `rm` a directory;
 * `git_remote_seturl_add` &ndash; runs `git remote add` when `git remote set_url` on nonexistant remote;
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
