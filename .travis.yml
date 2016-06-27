@@ -16,6 +16,8 @@ addons:
       - tcsh
       - pandoc
       - git
+services:
+  - docker
 install:
   - pip install -U pip
   - pip install -U coveralls
@@ -24,5 +26,5 @@ install:
   - rm -rf build
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
-  - coverage run --source=thefuck,tests -m py.test -v --capture=sys
+  - coverage run --source=thefuck,tests -m py.test -v --capture=sys --enable-functional
 after_success: coveralls
