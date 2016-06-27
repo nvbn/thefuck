@@ -5,17 +5,6 @@ python:
   - "3.4"
   - "3.3"
   - "2.7"
-addons:
-  apt:
-    sources:
-      - fish-shell/release-2
-    packages:
-      - bash
-      - zsh
-      - fish
-      - tcsh
-      - pandoc
-      - git
 services:
   - docker
 install:
@@ -27,4 +16,5 @@ install:
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
   - coverage run --source=thefuck,tests -m py.test -v --capture=sys --enable-functional
-after_success: coveralls
+after_success:
+  - coveralls
