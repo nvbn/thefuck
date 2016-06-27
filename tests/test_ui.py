@@ -25,15 +25,16 @@ def test_read_actions(patch_get_key):
         # Ignored:
         'x', 'y',
         # Up:
-        const.KEY_UP,
+        const.KEY_UP, 'k',
         # Down:
-        const.KEY_DOWN,
+        const.KEY_DOWN, 'j',
         # Ctrl+C:
-        const.KEY_CTRL_C])
-    assert list(islice(ui.read_actions(), 5)) \
+        const.KEY_CTRL_C, 'q'])
+    assert list(islice(ui.read_actions(), 8)) \
            == [const.ACTION_SELECT, const.ACTION_SELECT,
-               const.ACTION_PREVIOUS, const.ACTION_NEXT,
-               const.ACTION_ABORT]
+               const.ACTION_PREVIOUS, const.ACTION_PREVIOUS,
+               const.ACTION_NEXT, const.ACTION_NEXT,
+               const.ACTION_ABORT, const.ACTION_ABORT]
 
 
 def test_command_selector():
