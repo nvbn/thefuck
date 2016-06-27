@@ -34,15 +34,10 @@ def proc(request, spawnu, run_without_docker):
     return proc
 
 
-def wait_prompt(proc, TIMEOUT):
-    assert proc.expect([TIMEOUT, u'#'])
-
-
 @pytest.mark.functional
 @pytest.mark.once_without_docker
 def test_with_confirmation(proc, TIMEOUT):
     with_confirmation(proc, TIMEOUT)
-    wait_prompt(proc, TIMEOUT)
     history_changed(proc, TIMEOUT, u'echo test')
 
 
@@ -50,7 +45,6 @@ def test_with_confirmation(proc, TIMEOUT):
 @pytest.mark.once_without_docker
 def test_select_command_with_arrows(proc, TIMEOUT):
     select_command_with_arrows(proc, TIMEOUT)
-    wait_prompt(proc, TIMEOUT)
     history_changed(proc, TIMEOUT, u'git help')
 
 
@@ -58,7 +52,6 @@ def test_select_command_with_arrows(proc, TIMEOUT):
 @pytest.mark.once_without_docker
 def test_refuse_with_confirmation(proc, TIMEOUT):
     refuse_with_confirmation(proc, TIMEOUT)
-    wait_prompt(proc, TIMEOUT)
     history_not_changed(proc, TIMEOUT)
 
 
@@ -66,7 +59,6 @@ def test_refuse_with_confirmation(proc, TIMEOUT):
 @pytest.mark.once_without_docker
 def test_without_confirmation(proc, TIMEOUT):
     without_confirmation(proc, TIMEOUT)
-    wait_prompt(proc, TIMEOUT)
     history_changed(proc, TIMEOUT, u'echo test')
 
 
