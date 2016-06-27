@@ -25,6 +25,7 @@ def proc(request, spawnu, run_without_docker):
     if not run_without_docker:
         proc.sendline(u'pip install /src')
     proc.sendline(u'tcsh')
+    proc.sendline(u'setenv PYTHONIOENCODING utf8')
     proc.sendline(u'eval `thefuck --alias`')
     return proc
 

@@ -33,6 +33,8 @@ def fix_command():
 
         if selected_command:
             selected_command.run(command)
+        else:
+            sys.exit(1)
 
 
 def print_alias(entry_point=True):
