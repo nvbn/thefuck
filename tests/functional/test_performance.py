@@ -40,7 +40,7 @@ def plot(proc, TIMEOUT):
 
 
 @pytest.mark.functional
-@pytest.mark.skip_without_docker
+@pytest.mark.once_without_docker
 @pytest.mark.benchmark(min_rounds=10)
 def test_performance(spawnu, TIMEOUT, benchmark):
     proc = spawnu(u'thefuck/ubuntu-python3-bash-performance',
