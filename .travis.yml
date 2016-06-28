@@ -20,6 +20,8 @@ install:
   - rm -rf build
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
-  - coverage run --source=thefuck,tests -m py.test -v --capture=sys --enable-functional
+  - export RUN_TESTS="coverage run --source=thefuck,tests -m py.test -v --capture=sys"
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then $RUN_TESTS --enable-functional; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 ]]; then $RUN_TESTS; fi
 after_success:
   - coveralls
