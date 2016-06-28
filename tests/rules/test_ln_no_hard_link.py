@@ -20,7 +20,7 @@ def test_match(script, stderr):
     ("ln a b", "... hard link"),
     ("sudo ln a b", "... hard link"),
     ("a b", error)])
-def test_assert_not_match(script, stderr):
+def test_not_match(script, stderr):
     command = Command(script, stderr=stderr)
     assert not match(command)
 
