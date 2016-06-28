@@ -4,7 +4,7 @@ from thefuck.utils import replace_argument, for_app
 
 @for_app('cargo', at_least=1)
 def match(command):
-    return ('No such subcommand' in command.stderr
+    return ('no such subcommand' in command.stderr.lower()
             and 'Did you mean' in command.stderr)
 
 
