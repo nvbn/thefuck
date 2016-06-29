@@ -15,7 +15,7 @@ def _get_brew_commands(brew_path_prefix):
     brew_cmd_path = brew_path_prefix + BREW_CMD_PATH
 
     return [name[:-3] for name in os.listdir(brew_cmd_path)
-            if name.endswith('.rb')]
+            if name.endswith(('.rb', '.sh'))]
 
 
 def _get_brew_tap_specific_commands(brew_path_prefix):
