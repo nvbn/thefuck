@@ -72,6 +72,11 @@ def main():
     parser.add_argument('-a', '--alias',
                         action='store_true',
                         help='[custom-alias-name] prints alias for current shell')
+    parser.add_argument('-y',
+                        # somehow put settings.require_confirmation: False
+                        # Then execute command
+                        action='command',
+                        help='executes the fixed command without confirmation')
     parser.add_argument('command',
                         nargs='*',
                         help='command that should be fixed')
