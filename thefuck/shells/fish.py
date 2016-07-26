@@ -27,6 +27,7 @@ class Fish(Generic):
         # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
                 '  if contains -- -y $argv\n'
+                '    set previous_confirmation_value THEFUCK_REQUIRE_CONFIRMATION\n'
                 '    set THEFUCK_REQUIRE_CONFIRMATION 0\n'
                 '  end\n'
                 '  set -l fucked_up_command $history[1]\n'
@@ -34,6 +35,9 @@ class Fish(Generic):
                 ' thefuck $fucked_up_command | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n{1}'
+                '  end\n'
+                '  if contains -- -y $argv\n'
+                '    set THEFUCK_REQUIRE_CONFIRMATION previous_confirmation_value\n'
                 '  end\n'
                 'end').format(fuck, alter_history)
 
