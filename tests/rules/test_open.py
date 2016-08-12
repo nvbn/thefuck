@@ -1,5 +1,5 @@
 import pytest
-from thefuck.rules.open import match, get_new_command
+from thefuck.rules.open import is_arg_url, match, get_new_command
 from tests.utils import Command
 
 
@@ -10,11 +10,26 @@ def stderr(script):
 
 @pytest.mark.parametrize('script', [
     'open foo.com',
-    'open foo.ly',
-    'open foo.org',
-    'open foo.net',
-    'open foo.se',
+    'open foo.edu',
+    'open foo.info',
     'open foo.io',
+    'open foo.ly',
+    'open foo.me',
+    'open foo.net',
+    'open foo.org',
+    'open foo.se',
+    'open www.foo.ru'])
+def test_is_arg_url(script):
+    assert is_arg_url(Command(script))
+
+
+@pytest.mark.parametrize('script', ['open foo', 'open bar.txt', 'open egg.doc'])
+def test_not_is_arg_url(script):
+    assert not is_arg_url(Command(script))
+
+
+@pytest.mark.parametrize('script', [
+    'open foo.com',
     'xdg-open foo.com',
     'gnome-open foo.com',
     'kde-open foo.com'])
@@ -23,11 +38,6 @@ def test_match(script, stderr):
 
 
 @pytest.mark.parametrize('script, new_command', [
-    ('open foo.com', 'open http://foo.com'),
-    ('open foo.ly', 'open http://foo.ly'),
-    ('open foo.org', 'open http://foo.org'),
-    ('open foo.net', 'open http://foo.net'),
-    ('open foo.se', 'open http://foo.se'),
     ('open foo.io', 'open http://foo.io'),
     ('xdg-open foo.io', 'xdg-open http://foo.io'),
     ('gnome-open foo.io', 'gnome-open http://foo.io'),
