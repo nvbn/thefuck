@@ -24,8 +24,17 @@ def is_arg_url(command):
 
 @for_app('open', 'xdg-open', 'gnome-open', 'kde-open')
 def match(command):
-    return is_arg_url(command)
+    return (is_arg_url(command) or
+            command.stderr.strip().startswith('The file ') and
+            command.stderr.strip().endswith(' does not exist.'))
 
 
+@eager
 def get_new_command(command):
-    return command.script.replace('open ', 'open http://')
+    stderr = command.stderr.strip()
+    if is_arg_url(command):
+        yield command.script.replace('open ', 'open http://')
+    elif stderr.startswith('The file ') and stderr.endswith(' does not exist.'):
+        arg = command.script.split(' ', 1)[1]
+        for option in ['touch', 'mkdir']:
+            yield shell.and_(u'{} {}'.format(option, arg), command.script)

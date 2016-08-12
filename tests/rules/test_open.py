@@ -32,15 +32,18 @@ def test_not_is_arg_url(script):
     'open foo.com',
     'xdg-open foo.com',
     'gnome-open foo.com',
-    'kde-open foo.com'])
+    'kde-open foo.com',
+    'open nonest'])
 def test_match(script, stderr):
     assert match(Command(script, stderr=stderr))
 
 
 @pytest.mark.parametrize('script, new_command', [
-    ('open foo.io', 'open http://foo.io'),
-    ('xdg-open foo.io', 'xdg-open http://foo.io'),
-    ('gnome-open foo.io', 'gnome-open http://foo.io'),
-    ('kde-open foo.io', 'kde-open http://foo.io')])
+    ('open foo.io', ['open http://foo.io']),
+    ('xdg-open foo.io', ['xdg-open http://foo.io']),
+    ('gnome-open foo.io', ['gnome-open http://foo.io']),
+    ('kde-open foo.io', ['kde-open http://foo.io']),
+    ('open nonest', ['touch nonest && open nonest',
+                     'mkdir nonest && open nonest'])])
 def test_get_new_command(script, new_command, stderr):
     assert get_new_command(Command(script, stderr=stderr)) == new_command
