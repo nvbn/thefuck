@@ -227,7 +227,8 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `tmux` &ndash; fixes `tmux` commands;
 * `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command", for example adds missing '-' to the command on `hdfs dfs ls`;
 * `vagrant_up` &ndash; starts up the vagrant instance;
-* `whois` &ndash; fixes `whois` command.
+* `whois` &ndash; fixes `whois` command;
+* `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
 
 Enabled by default only on specific platforms:
 
