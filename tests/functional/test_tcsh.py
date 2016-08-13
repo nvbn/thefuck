@@ -20,9 +20,10 @@ containers = (('thefuck/ubuntu-python3-tcsh',
 
 
 @pytest.fixture(params=containers)
-def proc(request, spawnu):
+def proc(request, spawnu, TIMEOUT):
     proc = spawnu(*request.param)
     proc.sendline(u'pip install /src')
+    assert proc.expect([TIMEOUT, u'Successfully installed'])
     proc.sendline(u'tcsh')
     proc.sendline(u'setenv PYTHONIOENCODING utf8')
     proc.sendline(u'eval `thefuck --alias`')

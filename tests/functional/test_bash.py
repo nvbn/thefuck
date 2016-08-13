@@ -19,9 +19,10 @@ containers = ((u'thefuck/ubuntu-python3-bash',
 
 
 @pytest.fixture(params=containers)
-def proc(request, spawnu):
+def proc(request, spawnu, TIMEOUT):
     proc = spawnu(*request.param)
     proc.sendline(u"pip install /src")
+    assert proc.expect([TIMEOUT, u'Successfully installed'])
     proc.sendline(u"export PS1='$ '")
     proc.sendline(u'eval $(thefuck --alias)')
     proc.sendline(u'echo > $HISTFILE')
