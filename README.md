@@ -186,6 +186,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `gradle_wrapper` &ndash; replaces `gradle` with `./gradlew`;
 * `grep_arguments_order` &ndash; fixes grep arguments order for situations like `grep -lir . test`;
 * `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
+* `grunt_task_not_found` &ndash; fixes misspelled `grunt` commands;
 * `gulp_not_task` &ndash; fixes misspelled `gulp` tasks;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `heroku_not_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
