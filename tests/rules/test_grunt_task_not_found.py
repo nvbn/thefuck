@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 from io import BytesIO
 import pytest
 from tests.utils import Command
