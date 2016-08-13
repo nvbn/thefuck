@@ -182,6 +182,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `git_two_dashes` &ndash; adds a missing dash to commands like `git commit -amend` or `git rebase -continue`;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs;
+* `gradle_wrapper` &ndash; replaces `gradle` with `./gradlew`;
 * `grep_arguments_order` &ndash; fixes grep arguments order for situations like `grep -lir . test`;
 * `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
 * `gulp_not_task` &ndash; fixes misspelled `gulp` tasks;
