@@ -200,6 +200,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `mvn_no_command` &ndash; adds `clean package` to `mvn`;
 * `mvn_unknown_lifecycle_phase` &ndash; fixes misspelled lifecycle phases with `mvn`;
+* `npm_run_script` &ndash; adds missing `run-script` for custom `npm` scripts;
 * `npm_wrong_command` &ndash; fixes wrong npm commands like `npm urgrade`;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
