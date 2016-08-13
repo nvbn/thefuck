@@ -20,10 +20,9 @@ containers = (('thefuck/ubuntu-python3-tcsh',
 
 
 @pytest.fixture(params=containers)
-def proc(request, spawnu, run_without_docker):
+def proc(request, spawnu):
     proc = spawnu(*request.param)
-    if not run_without_docker:
-        proc.sendline(u'pip install /src')
+    proc.sendline(u'pip install /src')
     proc.sendline(u'tcsh')
     proc.sendline(u'setenv PYTHONIOENCODING utf8')
     proc.sendline(u'eval `thefuck --alias`')
@@ -31,25 +30,21 @@ def proc(request, spawnu, run_without_docker):
 
 
 @pytest.mark.functional
-@pytest.mark.once_without_docker
 def test_with_confirmation(proc, TIMEOUT):
     with_confirmation(proc, TIMEOUT)
 
 
 @pytest.mark.functional
-@pytest.mark.once_without_docker
 def test_select_command_with_arrows(proc, TIMEOUT):
     select_command_with_arrows(proc, TIMEOUT)
 
 
 @pytest.mark.functional
-@pytest.mark.once_without_docker
 def test_refuse_with_confirmation(proc, TIMEOUT):
     refuse_with_confirmation(proc, TIMEOUT)
 
 
 @pytest.mark.functional
-@pytest.mark.once_without_docker
 def test_without_confirmation(proc, TIMEOUT):
     without_confirmation(proc, TIMEOUT)
 
