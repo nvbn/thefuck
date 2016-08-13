@@ -1,9 +1,9 @@
-from thefuck.utils import eager, get_closest
+from thefuck.utils import eager, get_closest, for_app
 
 
+@for_app('fab')
 def match(command):
-    return (command.script_parts[0] == 'fab'
-            and 'Warning: Command(s) not found:' in command.stderr)
+    return 'Warning: Command(s) not found:' in command.stderr
 
 
 # We need different behavior then in get_all_matched_commands.
