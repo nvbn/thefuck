@@ -21,15 +21,20 @@ def history_without_current(mocker):
     ('vom file.py', 'vom: not found'),
     ('fucck', 'fucck: not found'),
     ('got commit', 'got: command not found')])
-def test_match(script, stderr):
+def test_match(mocker, script, stderr):
+    mocker.patch('thefuck.rules.no_command.which', return_value=None)
+
     assert match(Command(script, stderr=stderr))
 
 
 @pytest.mark.usefixtures('no_memoize')
-@pytest.mark.parametrize('script, stderr', [
-    ('qweqwe', 'qweqwe: not found'),
-    ('vom file.py', 'some text')])
-def test_not_match(script, stderr):
+@pytest.mark.parametrize('script, stderr, which', [
+    ('qweqwe', 'qweqwe: not found', None),
+    ('vom file.py', 'some text', None),
+    ('vim file.py', 'vim: not found', 'vim')])
+def test_not_match(mocker, script, stderr, which):
+    mocker.patch('thefuck.rules.no_command.which', return_value=which)
+
     assert not match(Command(script, stderr=stderr))
 
 
