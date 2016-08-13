@@ -31,6 +31,8 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'priority': {},
                     'history_limit': None,
                     'alter_history': True,
+                    'wait_slow_command': 15,
+                    'slow_commands': ['lein'],
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
@@ -41,7 +43,9 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_DEBUG': 'debug',
                'THEFUCK_PRIORITY': 'priority',
                'THEFUCK_HISTORY_LIMIT': 'history_limit',
-               'THEFUCK_ALTER_HISTORY': 'alter_history'}
+               'THEFUCK_ALTER_HISTORY': 'alter_history',
+               'THEFUCK_WAIT_SLOW_COMMAND': 'wait_slow_command',
+               'THEFUCK_SLOW_COMMANDS': 'slow_commands'}
 
 SETTINGS_HEADER = u"""# The Fuck settings file
 #

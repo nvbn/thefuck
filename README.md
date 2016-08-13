@@ -303,7 +303,9 @@ The Fuck has a few settings parameters which can be changed in `$XDG_CONFIG_HOME
 * `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first;
 * `debug` &ndash; enables debug output, by default `False`;
 * `history_limit` &ndash; numeric value of how many history commands will be scanned, like `2000`;
-* `alter_history` &ndash; push fixed command to history, by default `True`.
+* `alter_history` &ndash; push fixed command to history, by default `True`;
+* `wait_slow_command` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
+* `slow_commands` &ndash; list of slow commands.
 
 Example of `settings.py`:
 
@@ -315,6 +317,9 @@ wait_command = 10
 no_colors = False
 priority = {'sudo': 100, 'no_command': 9999}
 debug = False
+history_limit = 9999
+wait_slow_command = 20
+slow_commands = ['react-native', 'gradle']
 ```
 
 Or via environment variables:
@@ -328,7 +333,9 @@ Or via environment variables:
 rule with lower `priority` will be matched first;
 * `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`;
 * `THEFUCK_HISTORY_LIMIT` &ndash; how many history commands will be scanned, like `2000`;
-* `THEFUCK_ALTER_HISTORY` &ndash; push fixed command to history `true/false`.
+* `THEFUCK_ALTER_HISTORY` &ndash; push fixed command to history `true/false`;
+* `THEFUCK_WAIT_SLOW_COMMAND` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
+* `THEFUCK_SLOW_COMMANDS` &ndash; list of slow commands, like `lein:gradle`.
 
 For example:
 

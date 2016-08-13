@@ -34,7 +34,7 @@ class Command(object):
                 self._script_parts = shell.split_command(self.script)
             except Exception:
                 logs.debug(u"Can't split command script {} because:\n {}".format(
-                        self, sys.exc_info()))
+                    self, sys.exc_info()))
                 self._script_parts = None
         return self._script_parts
 
@@ -47,7 +47,7 @@ class Command(object):
 
     def __repr__(self):
         return u'Command(script={}, stdout={}, stderr={})'.format(
-                self.script, self.stdout, self.stderr)
+            self.script, self.stdout, self.stderr)
 
     def update(self, **kwargs):
         """Returns new command with replaced fields.
@@ -61,7 +61,7 @@ class Command(object):
         return Command(**kwargs)
 
     @staticmethod
-    def _wait_output(popen):
+    def _wait_output(popen, is_slow):
         """Returns `True` if we can get output of the command in the
         `settings.wait_command` time.
 
@@ -73,7 +73,8 @@ class Command(object):
         """
         proc = Process(popen.pid)
         try:
-            proc.wait(settings.wait_command)
+            proc.wait(settings.wait_slow_command if is_slow
+                      else settings.wait_command)
             return True
         except TimeoutExpired:
             for child in proc.children(recursive=True):
@@ -113,9 +114,12 @@ class Command(object):
         env = dict(os.environ)
         env.update(settings.env)
 
-        with logs.debug_time(u'Call: {}; with env: {};'.format(script, env)):
-            result = Popen(script, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE, env=env)
-            if cls._wait_output(result):
+        is_slow = script.split(' ')[0] in settings.slow_commands
+        with logs.debug_time(u'Call: {}; with env: {}; is slow: '.format(
+                script, env, is_slow)):
+            result = Popen(script, shell=True, stdin=PIPE,
+                           stdout=PIPE, stderr=PIPE, env=env)
+            if cls._wait_output(result, is_slow):
                 stdout = result.stdout.read().decode('utf-8')
                 stderr = result.stderr.read().decode('utf-8')
 
@@ -168,9 +172,9 @@ class Rule(object):
         return 'Rule(name={}, match={}, get_new_command={}, ' \
                'enabled_by_default={}, side_effect={}, ' \
                'priority={}, requires_output)'.format(
-                self.name, self.match, self.get_new_command,
-                self.enabled_by_default, self.side_effect,
-                self.priority, self.requires_output)
+            self.name, self.match, self.get_new_command,
+            self.enabled_by_default, self.side_effect,
+            self.priority, self.requires_output)
 
     @classmethod
     def from_path(cls, path):
@@ -270,7 +274,7 @@ class CorrectedCommand(object):
 
     def __repr__(self):
         return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
-                self.script, self.side_effect, self.priority)
+            self.script, self.side_effect, self.priority)
 
     def run(self, old_cmd):
         """Runs command from rule for passed command.
