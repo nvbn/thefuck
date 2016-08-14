@@ -1,6 +1,7 @@
 from imp import load_source
 import os
 import sys
+from warnings import warn
 from six import text_type
 from . import const
 from .system import Path
@@ -43,6 +44,8 @@ class Settings(dict):
         legacy_user_dir = Path('~/.thefuck').expanduser()
 
         if legacy_user_dir.is_dir():
+            warn('~/.thefuck is deprecated, please move '
+                 'config to ~/.config/thefuck')
             return legacy_user_dir
         else:
             xdg_config_dir = os.getenv("XDG_CONFIG_HOME", "~/.config")
