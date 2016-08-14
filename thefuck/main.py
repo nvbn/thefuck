@@ -4,7 +4,6 @@ from .system import init_output
 init_output()
 
 from argparse import ArgumentParser
-from warnings import warn
 from pprint import pformat
 import sys
 from . import logs, types
@@ -37,17 +36,13 @@ def fix_command():
             sys.exit(1)
 
 
-def print_alias(entry_point=True):
+def print_alias():
     """Prints alias for current shell."""
-    if entry_point:
-        warn('`thefuck-alias` is deprecated, use `thefuck --alias` instead.')
-        position = 1
-    else:
-        position = 2
+    try:
+        alias = sys.argv[2]
+    except IndexError:
+        alias = get_alias()
 
-    alias = get_alias()
-    if len(sys.argv) > position:
-        alias = sys.argv[position]
     print(shell.app_alias(alias))
 
 
@@ -76,8 +71,9 @@ def main():
                         nargs='*',
                         help='command that should be fixed')
     known_args = parser.parse_args(sys.argv[1:2])
+
     if known_args.alias:
-        print_alias(False)
+        print_alias()
     elif known_args.command:
         fix_command()
     else:

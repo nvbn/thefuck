@@ -51,5 +51,4 @@ setup(name='thefuck',
       extras_require=extras_require,
       entry_points={'console_scripts': [
           'thefuck = thefuck.main:main',
-          'thefuck-alias = thefuck.main:print_alias',
           'fuck = thefuck.main:how_to_configure_alias']})
