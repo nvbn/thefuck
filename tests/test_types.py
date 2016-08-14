@@ -7,7 +7,7 @@ import pytest
 from tests.utils import CorrectedCommand, Rule, Command
 from thefuck import const
 from thefuck.exceptions import EmptyCommand
-from thefuck.utils import Path
+from thefuck.system import Path
 
 
 class TestCorrectedCommand(object):

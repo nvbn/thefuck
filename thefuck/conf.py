@@ -3,7 +3,7 @@ import os
 import sys
 from six import text_type
 from . import const
-from .utils import Path
+from .system import Path
 
 
 class Settings(dict):

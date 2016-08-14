@@ -2,7 +2,7 @@
 
 import pytest
 from thefuck import corrector, const
-from thefuck.utils import Path
+from thefuck.system import Path
 from tests.utils import Rule, Command, CorrectedCommand
 from thefuck.corrector import get_corrected_commands, organize_commands
 
@@ -11,7 +11,7 @@ class TestGetRules(object):
     @pytest.fixture
     def glob(self, mocker):
         results = {}
-        mocker.patch('thefuck.utils.Path.glob',
+        mocker.patch('thefuck.system.Path.glob',
                      new_callable=lambda: lambda *_: results.pop('value', []))
         return lambda value: results.update({'value': value})
 

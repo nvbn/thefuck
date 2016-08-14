@@ -1,6 +1,6 @@
 from .conf import settings
 from .types import Rule
-from .utils import Path
+from .system import Path
 from . import logs
 
 

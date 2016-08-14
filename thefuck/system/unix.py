@@ -33,3 +33,8 @@ def get_key():
                 return const.KEY_DOWN
 
     return ch
+
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path

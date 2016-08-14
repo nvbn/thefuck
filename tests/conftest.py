@@ -1,7 +1,7 @@
 import pytest
 from thefuck import shells
 from thefuck import conf, const
-from thefuck.utils import Path
+from thefuck.system import Path
 
 shells.shell = shells.Generic()
 

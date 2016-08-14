@@ -1,4 +1,5 @@
-from thefuck.utils import for_app, replace_command, eager, memoize, Path
+from thefuck.utils import for_app, replace_command, eager, memoize
+from thefuck.system import Path
 
 
 @memoize
