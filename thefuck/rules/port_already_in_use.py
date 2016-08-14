@@ -1,7 +1,9 @@
 import re
 from subprocess import Popen, PIPE
-from thefuck.utils import memoize
+from thefuck.utils import memoize, which
 from thefuck.shells import shell
+
+enabled_by_default = bool(which('lsof'))
 
 patterns = [r"bind on address \('.*', (?P<port>\d+)\)",
             r'Unable to bind [^ ]*:(?P<port>\d+)',
