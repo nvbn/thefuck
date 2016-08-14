@@ -1,10 +1,25 @@
 language: python
 sudo: false
-python:
-  - "3.5"
-  - "3.4"
-  - "3.3"
-  - "2.7"
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      python: "3.5"
+    - os: linux
+      dist: trusty
+      python: "3.4"
+    - os: linux
+      dist: trusty
+      python: "3.3"
+    - os: linux
+      dist: trusty
+      python: "2.7"
+    - os: osx
+      env: FORMULA="python"
+      language: generic
+    - os: osx
+      env: FORMULA="python3"
+      language: generic
 services:
   - docker
 addons:
@@ -12,16 +27,21 @@ addons:
     packages:
       - python-commandnotfound
       - python3-commandnotfound
-install:
+before_install:
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update ; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew install $FORMULA; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then virtualenv venv -p $FORMULA; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then source venv/bin/activate; fi
   - pip install -U pip
   - pip install -U coveralls
+install:
   - pip install -Ur requirements.txt
   - python setup.py develop
   - rm -rf build
 script:
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
-  - export RUN_TESTS="coverage run --source=thefuck,tests -m py.test -v --capture=sys"
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then $RUN_TESTS --enable-functional; fi
-  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 ]]; then $RUN_TESTS; fi
+  - export RUN_TESTS="coverage run --source=thefuck,tests -m py.test -v --capture=sys tests"
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.5 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 || $TRAVIS_OS_NAME == "osx" ]]; then $RUN_TESTS; fi
 after_success:
   - coveralls
