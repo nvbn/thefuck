@@ -4,7 +4,7 @@ from thefuck.specific.sudo import sudo_support
 
 
 @sudo_support
-@for_app('pip')
+@for_app('pip', 'pip2', 'pip3')
 def match(command):
     return ('pip' in command.script and
             'unknown command' in command.stderr and
