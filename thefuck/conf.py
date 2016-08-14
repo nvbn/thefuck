@@ -1,12 +1,9 @@
 from imp import load_source
 import os
 import sys
-try:
-    from pathlib import Path
-except ImportError:
-    from pathlib2 import Path
 from six import text_type
 from . import const
+from .utils import Path
 
 
 class Settings(dict):
@@ -43,14 +40,13 @@ class Settings(dict):
 
     def _get_user_dir_path(self):
         # for backward compatibility, use `~/.thefuck` if it exists
-        legacy_user_dir = Path(os.path.expanduser('~/.thefuck'))
+        legacy_user_dir = Path('~/.thefuck').expanduser()
 
         if legacy_user_dir.is_dir():
             return legacy_user_dir
         else:
-            default_xdg_config_dir = os.path.expanduser("~/.config")
-            xdg_config_dir = os.getenv("XDG_CONFIG_HOME", default_xdg_config_dir)
-            return Path(os.path.join(xdg_config_dir, 'thefuck'))
+            xdg_config_dir = os.getenv("XDG_CONFIG_HOME", "~/.config")
+            return Path(xdg_config_dir).joinpath('thefuck')
 
     def _setup_user_dir(self):
         """Returns user config dir, create it when it doesn't exist."""

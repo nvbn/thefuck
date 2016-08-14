@@ -4,16 +4,16 @@ import pkg_resources
 import re
 import shelve
 import six
-from .conf import settings
 from contextlib import closing
 from decorator import decorator
 from difflib import get_close_matches
 from functools import wraps
+from warnings import warn
+
 try:
     from pathlib import Path
 except ImportError:
     from pathlib2 import Path
-from warnings import warn
 
 DEVNULL = open(os.devnull, 'w')
 
@@ -81,6 +81,8 @@ def default_settings(params):
             print(settings.apt)
 
     """
+    from .conf import settings
+
     def _default_settings(fn, command):
         for k, w in params.items():
             settings.setdefault(k, w)

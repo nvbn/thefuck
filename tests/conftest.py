@@ -1,10 +1,7 @@
-try:
-    from pathlib import Path
-except ImportError:
-    from pathlib2 import Path
 import pytest
 from thefuck import shells
 from thefuck import conf, const
+from thefuck.utils import Path
 
 shells.shell = shells.Generic()
 

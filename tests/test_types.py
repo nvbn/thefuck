@@ -3,14 +3,11 @@
 import os
 from subprocess import PIPE
 from mock import Mock
-try:
-    from pathlib import Path
-except ImportError:
-    from pathlib2 import Path
 import pytest
 from tests.utils import CorrectedCommand, Rule, Command
 from thefuck import const
 from thefuck.exceptions import EmptyCommand
+from thefuck.utils import Path
 
 
 class TestCorrectedCommand(object):

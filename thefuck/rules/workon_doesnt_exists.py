@@ -1,9 +1,4 @@
-try:
-    from pathlib import Path
-except ImportError:
-    from pathlib2 import Path
-
-from thefuck.utils import for_app, replace_command, eager, memoize
+from thefuck.utils import for_app, replace_command, eager, memoize, Path
 
 
 @memoize
