@@ -6,7 +6,7 @@ from mock import Mock
 import six
 from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
-    get_all_matched_commands, is_app, for_app, cache, compatibility_call, \
+    get_all_matched_commands, is_app, for_app, cache, \
     get_valid_history_without_current
 from tests.utils import Command
 
@@ -186,56 +186,6 @@ class TestCache(object):
         shelve.update({key: {'etag': '-1', 'value': 'old-value'}})
         assert fn() == 'test'
         assert shelve == {key: {'etag': '0', 'value': 'test'}}
-
-
-class TestCompatibilityCall(object):
-    def test_match(self):
-        def match(command):
-            assert command == Command()
-            return True
-
-        assert compatibility_call(match, Command())
-
-    def test_old_match(self, settings):
-        def match(command, _settings):
-            assert command == Command()
-            assert settings == _settings
-            return True
-
-        with pytest.warns(UserWarning):
-            assert compatibility_call(match, Command())
-
-    def test_get_new_command(self):
-        def get_new_command(command):
-            assert command == Command()
-            return True
-
-        assert compatibility_call(get_new_command, Command())
-
-    def test_old_get_new_command(self, settings):
-        def get_new_command(command, _settings):
-            assert command == Command()
-            assert settings == _settings
-            return True
-
-        with pytest.warns(UserWarning):
-            assert compatibility_call(get_new_command, Command())
-
-    def test_side_effect(self):
-        def side_effect(command, new_command):
-            assert command == Command() == new_command
-            return True
-
-        assert compatibility_call(side_effect, Command(), Command())
-
-    def test_old_side_effect(self, settings):
-        def side_effect(command, new_command, _settings):
-            assert command == Command() == new_command
-            assert settings == _settings
-            return True
-
-        with pytest.warns(UserWarning):
-            assert compatibility_call(side_effect, Command(), Command())
 
 
 class TestGetValidHistoryWithoutCurrent(object):

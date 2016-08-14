@@ -9,7 +9,6 @@ from .shells import shell
 from .conf import settings
 from .const import DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
-from .utils import compatibility_call
 
 
 class Command(object):
@@ -225,7 +224,7 @@ class Rule(object):
 
         try:
             with logs.debug_time(u'Trying rule: {};'.format(self.name)):
-                if compatibility_call(self.match, command):
+                if self.match(command):
                     return True
         except Exception:
             logs.rule_failed(self, sys.exc_info())
@@ -237,7 +236,7 @@ class Rule(object):
         :rtype: Iterable[CorrectedCommand]
 
         """
-        new_commands = compatibility_call(self.get_new_command, command)
+        new_commands = self.get_new_command(command)
         if not isinstance(new_commands, list):
             new_commands = (new_commands,)
         for n, new_command in enumerate(new_commands):
@@ -283,7 +282,7 @@ class CorrectedCommand(object):
 
         """
         if self.side_effect:
-            compatibility_call(self.side_effect, old_cmd, self.script)
+            self.side_effect(old_cmd, self.script)
         if settings.alter_history:
             shell.put_to_history(self.script)
         # This depends on correct setting of PYTHONIOENCODING by the alias:

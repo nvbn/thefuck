@@ -9,7 +9,6 @@ from contextlib import closing
 from decorator import decorator
 from difflib import get_close_matches
 from functools import wraps
-from inspect import getargspec
 try:
     from pathlib import Path
 except ImportError:
@@ -243,27 +242,6 @@ def cache(*depends_on):
 
     return _cache
 cache.disabled = False
-
-
-def compatibility_call(fn, *args):
-    """Special call for compatibility with user-defined old-style rules
-    with `settings` param.
-
-    """
-    fn_args_count = len(getargspec(fn).args)
-    if fn.__name__ in ('match', 'get_new_command') and fn_args_count == 2:
-        warn("Two arguments `{}` from rule `{}` is deprecated, please "
-             "remove `settings` argument and use "
-             "`from thefuck.conf import settings` instead."
-             .format(fn.__name__, fn.__module__))
-        args += (settings,)
-    if fn.__name__ == 'side_effect' and fn_args_count == 3:
-        warn("Three arguments `side_effect` from rule `{}` is deprecated, "
-             "please remove `settings` argument and use `from thefuck.conf "
-             "import settings` instead."
-             .format(fn.__name__, fn.__module__))
-        args += (settings,)
-    return fn(*args)
 
 
 def get_installation_info():
