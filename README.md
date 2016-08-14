@@ -210,6 +210,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `open` &ndash; either prepends `http://` to address passed to `open` or create a new file or directory and passes it to `open`;
 * `pip_unknown_command` &ndash; fixes wrong `pip` commands, for example `pip instatl/pip install`;
+* `port_already_in_use` &ndash; kills process that bound port;
 * `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
