@@ -1,3 +1,4 @@
+import os
 import sys
 import tty
 import termios
@@ -38,3 +39,10 @@ try:
     from pathlib import Path
 except ImportError:
     from pathlib2 import Path
+
+
+def _expanduser(self):
+    return self.__class__(os.path.expanduser(str(self)))
+
+if not hasattr(Path, 'expanduser'):
+    Path.expanduser = _expanduser
