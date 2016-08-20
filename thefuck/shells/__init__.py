@@ -22,7 +22,7 @@ shells = {'bash': Bash,
 def _get_shell():
     proc = Process(os.getpid())
 
-    while proc is not None:
+    while proc is not None and proc.pid > 0:
         try:
             name = proc.name()
         except TypeError:
