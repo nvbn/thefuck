@@ -40,16 +40,21 @@ class Settings(dict):
                     settings_file.write(u'# {} = {}\n'.format(*setting))
 
     def _get_user_dir_path(self):
-        # for backward compatibility, use `~/.thefuck` if it exists
-        legacy_user_dir = Path('~/.thefuck').expanduser()
+        """returns Path object representing the user config resource"""
+        xdg_config_home = os.getenv("XDG_CONFIG_HOME", "~/.config")
+        user_dir_modern = Path(xdg_config_home, 'thefuck').expanduser()
+        user_dir_legacy = Path('~', '.thefuck').expanduser()
 
-        if legacy_user_dir.is_dir():
-            warn('~/.thefuck is deprecated, please move '
-                 'config to ~/.config/thefuck')
-            return legacy_user_dir
-        else:
-            xdg_config_dir = os.getenv("XDG_CONFIG_HOME", "~/.config")
-            return Path(xdg_config_dir).joinpath('thefuck')
+        # default to standards-based location
+        user_dir = user_dir_modern
+
+        # for backward compatibility use legacy '~/.thefuck' if it exists
+        if user_dir_legacy.is_dir():
+            user_dir = user_dir_legacy
+            message = 'config path {} is deprecated. please move to {}'
+            warn(message.format(user_dir_legacy, user_dir_modern))
+
+        return user_dir
 
     def _setup_user_dir(self):
         """Returns user config dir, create it when it doesn't exist."""
