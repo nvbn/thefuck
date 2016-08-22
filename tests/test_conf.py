@@ -1,5 +1,6 @@
 import pytest
 import six
+import os
 from mock import Mock
 from thefuck import const
 
@@ -101,3 +102,22 @@ class TestInitializeSettingsFile(object):
         for setting in const.DEFAULT_SETTINGS.items():
             assert '# {} = {}\n'.format(*setting) in settings_file_contents
         settings_file.close()
+
+
+@pytest.mark.parametrize('legacy_dir_exists, xdg_config_home, result', [
+    (False, '~/.config', '~/.config/thefuck'),
+    (False, '/user/test/config/', '/user/test/config/thefuck'),
+    (True, '~/.config', '~/.thefuck'),
+    (True, '/user/test/config/', '~/.thefuck')])
+def test_get_user_dir_path(mocker, environ, settings, legacy_dir_exists,
+                           xdg_config_home, result):
+    mocker.patch('thefuck.conf.Path.is_dir',
+                 return_value=legacy_dir_exists)
+
+    if xdg_config_home is not None:
+        environ['XDG_CONFIG_HOME'] = xdg_config_home
+    else:
+        environ.pop('XDG_CONFIG_HOME', None)
+
+    path = settings._get_user_dir_path().as_posix()
+    assert path == os.path.expanduser(result)
