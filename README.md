@@ -135,7 +135,7 @@ To make them available immediately, run `source ~/.bashrc` (or your shell config
 ## Update
 
 ```bash
-sudo pip install thefuck --upgrade
+sudo -H pip install thefuck --upgrade
 ```
 
 **Aliases changed in 1.34.**
