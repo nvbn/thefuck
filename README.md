@@ -103,7 +103,6 @@ brew install thefuck
 ```
 
 On Ubuntu you can install `The Fuck` with:
-
 ```bash
 sudo apt update
 sudo apt install python3-dev python3-pip
