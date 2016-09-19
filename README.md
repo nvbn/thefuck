@@ -103,7 +103,6 @@ brew install thefuck
 ```
 
 On Ubuntu you can install `The Fuck` with:
- 
 ```bash
 sudo apt update
 sudo apt install python3-dev python3-pip
@@ -135,7 +134,7 @@ To make them available immediately, run `source ~/.bashrc` (or your shell config
 ## Update
 
 ```bash
-sudo pip install thefuck --upgrade
+sudo -H pip install thefuck --upgrade
 ```
 
 **Aliases changed in 1.34.**
@@ -174,6 +173,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
+* `git_pull_uncommitted_changes` &ndash; stashes changes before pulling and pops them afterwards;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
 * `git_rebase_no_changes` &ndash; runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
