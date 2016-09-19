@@ -11,4 +11,4 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return 'git stash && git pull && git stash pop'
+    return shell.and_('git stash', 'git pull', 'git stash pop')
