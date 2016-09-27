@@ -163,6 +163,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `fix_file` &ndash; opens a file with an error in your `$EDITOR`;
 * `git_add` &ndash; fixes *"pathspec 'foo' did not match any file(s) known to git."*;
+* `git_bisect_usage` &ndash; fixes `git bisect strt`, `git bisect goood`, `git bisect rset`, etc. when bisecting;
 * `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
 * `git_branch_exists` &ndash; offers `git branch -d foo`, `git branch -D foo` or `git checkout foo` when creating a branch that already exists;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
