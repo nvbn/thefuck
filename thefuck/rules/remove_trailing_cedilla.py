@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 def match(command):
     return command.script.endswith('ç')
 

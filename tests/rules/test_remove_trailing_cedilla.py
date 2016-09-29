@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 from thefuck.rules.remove_trailing_cedilla import match, get_new_command
 from tests.utils import Command
