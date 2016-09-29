@@ -231,6 +231,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
+* `remove_trailing_cedilla` &ndash; remove trailling cedillas `ç`, a common typo for european keyboard layouts;
 
 Enabled by default only on specific platforms:
 
