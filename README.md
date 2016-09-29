@@ -238,6 +238,7 @@ Enabled by default only on specific platforms:
 * `apt_get_search` &ndash; changes trying to search using `apt-get` with searching using `apt-cache`;
 * `apt_invalid_operation` &ndash; fixes invalid `apt` and `apt-get` calls, like `apt-get isntall vim`;
 * `brew_install` &ndash; fixes formula name for `brew install`;
+* `brew_uninstall` &ndash; adds `--force` to `brew uninstall` if multiple versions were installed;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_update_formula` &ndash; turns `brew update <formula>` into `brew upgrade <formula>`;
 * `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
