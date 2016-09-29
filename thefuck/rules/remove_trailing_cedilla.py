@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
+# encoding=utf8
+
+CEDILLA = u"ç"
 
 def match(command):
-    return command.script.endswith('ç')
+    return command.script.endswith(CEDILLA)
 
 def get_new_command(command):
     return command.script[:-1]
-
