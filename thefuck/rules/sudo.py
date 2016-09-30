@@ -19,7 +19,8 @@ patterns = ['permission denied',
             'you don\'t have access to the history db.',
             'authentication is required',
             'edspermissionerror',
-            'you don\'t have write permissions']
+            'you don\'t have write permissions',
+            'use `sudo`']
 
 
 def match(command):
