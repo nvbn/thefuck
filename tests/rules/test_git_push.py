@@ -23,5 +23,9 @@ def test_match(stderr):
 def test_get_new_command(stderr):
     assert get_new_command(Command('git push', stderr=stderr))\
         == "git push --set-upstream origin master"
+    assert get_new_command(Command('git push -u origin', stderr=stderr))\
+        == "git push --set-upstream origin master"
+    assert get_new_command(Command('git push --set-upstream origin', stderr=stderr))\
+        == "git push --set-upstream origin master"
     assert get_new_command(Command('git push --quiet', stderr=stderr))\
         == "git push --set-upstream origin master --quiet"
