@@ -18,4 +18,10 @@ def get_new_command(command):
     split_cmd2.insert(1, ' 2 ')
     split_cmd3.insert(1, ' 3 ')
 
-    return ["".join(split_cmd3), "".join(split_cmd2)]
+    last_arg = command.script_parts[-1]
+
+    return [
+        "".join(split_cmd3),
+        "".join(split_cmd2),
+        last_arg + ' --help',
+    ]
