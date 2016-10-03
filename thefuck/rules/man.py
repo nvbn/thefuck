@@ -21,7 +21,7 @@ def get_new_command(command):
     last_arg = command.script_parts[-1]
 
     return [
+        last_arg + ' --help',
         "".join(split_cmd3),
         "".join(split_cmd2),
-        last_arg + ' --help',
     ]
