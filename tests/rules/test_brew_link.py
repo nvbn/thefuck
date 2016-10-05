@@ -29,7 +29,7 @@ def test_match(stderr, script):
 
 @pytest.mark.parametrize('script', ['brew link coreutils'])
 def test_not_match(script):
-    stderr=''
+    stderr = ''
     assert not match(Command(script=script, stderr=stderr))
 
 
