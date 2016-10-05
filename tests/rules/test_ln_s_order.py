@@ -11,16 +11,6 @@ def file_exists(mocker):
 get_stderr = "ln: failed to create symbolic link '{}': File exists".format
 
 
-@pytest.mark.usefixtures('file_exists')
-@pytest.mark.parametrize('script', [
-    'ln -s dest source',
-    'ln dest -s source',
-    'ln dest source -s'])
-def test_match(script):
-    stderr = get_stderr('source')
-    assert match(Command(script, stderr=stderr))
-
-
 @pytest.mark.parametrize('script, stderr, exists', [
     ('ln dest source', get_stderr('source'), True),
     ('ls -s dest source', get_stderr('source'), True),
@@ -38,4 +28,5 @@ def test_not_match(file_exists, script, stderr, exists):
     ('ln dest source -s', 'ln source -s dest')])
 def test_match(script, result):
     stderr = get_stderr('source')
+    assert match(Command(script, stderr=stderr))
     assert get_new_command(Command(script, stderr=stderr)) == result
