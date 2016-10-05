@@ -1,26 +1,25 @@
 import pytest
-from thefuck.rules.ag_literal import match, get_new_command
+from thefuck.rules.ag_literal import get_new_command, match
 from tests.utils import Command
 
-stderr = ('ERR: Bad regex! pcre_compile() failed at position 1: missing )\n'
-          'If you meant to search for a literal string, run ag with -Q\n')
 
-matching_command = Command(script='ag \\(', stderr=stderr)
-
-
-@pytest.mark.parametrize('command', [
-    matching_command])
-def test_match(command):
-    assert match(matching_command)
+@pytest.fixture
+def stderr():
+    return ('ERR: Bad regex! pcre_compile() failed at position 1: missing )\n'
+            'If you meant to search for a literal string, run ag with -Q\n')
 
 
-@pytest.mark.parametrize('command', [
-    Command(script='ag foo', stderr='')])
-def test_not_match(command):
-    assert not match(command)
+@pytest.mark.parametrize('script', ['ag \('])
+def test_match(script, stderr):
+    assert match(Command(script=script, stderr=stderr))
 
 
-@pytest.mark.parametrize('command, new_command', [
-    (matching_command, 'ag -Q \\(')])
-def test_get_new_command(command, new_command):
-    assert get_new_command(command) == new_command
+@pytest.mark.parametrize('script', ['ag foo'])
+def test_not_match(script):
+    assert not match(Command(script=script))
+
+
+@pytest.mark.parametrize('script, new_cmd', [
+    ('ag \(', 'ag -Q \(')])
+def test_get_new_command(script, new_cmd, stderr):
+    assert get_new_command((Command(script=script, stderr=stderr))) == new_cmd
