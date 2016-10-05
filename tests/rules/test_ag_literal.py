@@ -7,6 +7,7 @@ stderr = ('ERR: Bad regex! pcre_compile() failed at position 1: missing )\n'
 
 matching_command = Command(script='ag \\(', stderr=stderr)
 
+
 @pytest.mark.parametrize('command', [
     matching_command])
 def test_match(command):
