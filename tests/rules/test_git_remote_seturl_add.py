@@ -18,6 +18,7 @@ def test_match(command):
 def test_not_match(command):
     assert not match(command)
 
+
 @pytest.mark.parametrize('command, new_command', [
     (Command('git remote set-url origin git@github.com:nvbn/thefuck.git'),
      'git remote add origin git@github.com:nvbn/thefuck.git')])
