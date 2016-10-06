@@ -37,7 +37,7 @@ south.exceptions.GhostMigrations:
  ! I'm not trusting myself; either fix this yourself by fiddling
  ! with the south_migrationhistory table, or pass --delete-ghost-migrations
  ! to South to have it delete ALL of these records (this may not be good).
-'''
+'''  # noqa
 
 
 def test_match(stderr):
