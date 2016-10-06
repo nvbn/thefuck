@@ -51,6 +51,6 @@ def test_get_new_command(composer_not_command, composer_not_command_one_of_this)
     assert (get_new_command(Command('composer udpate',
                                     stderr=composer_not_command))
             == 'composer update')
-    assert get_new_command(
-        Command('composer pdate', stderr=composer_not_command_one_of_this)) \
-           == 'composer selfupdate'
+    assert (get_new_command(Command('composer pdate',
+                                    stderr=composer_not_command_one_of_this))
+            == 'composer selfupdate')

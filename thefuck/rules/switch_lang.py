@@ -33,8 +33,8 @@ def match(command):
     if 'not found' not in command.stderr:
         return False
     matched_layout = _get_matched_layout(command)
-    return matched_layout and \
-           _switch_command(command, matched_layout) != get_alias()
+    return (matched_layout and
+            _switch_command(command, matched_layout) != get_alias())
 
 
 def get_new_command(command):
