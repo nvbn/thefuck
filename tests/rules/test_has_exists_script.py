@@ -7,7 +7,7 @@ def test_match():
     with patch('os.path.exists', return_value=True):
         assert match(Command(script='main', stderr='main: command not found'))
         assert match(Command(script='main --help',
-                          stderr='main: command not found'))
+                             stderr='main: command not found'))
         assert not match(Command(script='main', stderr=''))
 
     with patch('os.path.exists', return_value=False):
