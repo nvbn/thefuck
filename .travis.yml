@@ -34,7 +34,6 @@ before_install:
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then source venv/bin/activate; fi
   - pip install -U pip
   - pip install -U coveralls
-  - pip install -U flake8
 install:
   - pip install -Ur requirements.txt
   - python setup.py develop
