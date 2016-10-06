@@ -3,18 +3,11 @@ from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation, history_changed, history_not_changed, \
     select_command_with_arrows, how_to_configure
 
-containers = ((u'thefuck/ubuntu-python3-bash',
-               u'''FROM ubuntu:latest
-                   RUN apt-get update
-                   RUN apt-get install -yy python3 python3-pip python3-dev git
-                   RUN pip3 install -U setuptools
-                   RUN ln -s /usr/bin/pip3 /usr/bin/pip''',
+containers = ((u'thefuck/python3-bash',
+               u'FROM python:3',
                u'bash'),
-              (u'thefuck/ubuntu-python2-bash',
-               u'''FROM ubuntu:latest
-                   RUN apt-get update
-                   RUN apt-get install -yy python python-pip python-dev git
-                   RUN pip2 install -U pip setuptools''',
+              (u'thefuck/python2-bash',
+               u'FROM python:2',
                u'bash'))
 
 
