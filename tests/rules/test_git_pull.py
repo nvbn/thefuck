@@ -25,5 +25,5 @@ def test_match(stderr):
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command('git pull', stderr=stderr)) \
-           == "git branch --set-upstream-to=origin/master master && git pull"
+    assert (get_new_command(Command('git pull', stderr=stderr))
+            == "git branch --set-upstream-to=origin/master master && git pull")

@@ -4,14 +4,14 @@ from tests.utils import Command
 
 
 cherry_pick_error = (
-        'error: Your local changes would be overwritten by cherry-pick.\n'
-        'hint: Commit your changes or stash them to proceed.\n'
-        'fatal: cherry-pick failed')
+    'error: Your local changes would be overwritten by cherry-pick.\n'
+    'hint: Commit your changes or stash them to proceed.\n'
+    'fatal: cherry-pick failed')
 
 
 rebase_error = (
-        'Cannot rebase: Your index contains uncommitted changes.\n'
-        'Please commit or stash them.')
+    'Cannot rebase: Your index contains uncommitted changes.\n'
+    'Please commit or stash them.')
 
 
 @pytest.mark.parametrize('command', [

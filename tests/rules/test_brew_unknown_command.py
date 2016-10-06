@@ -21,8 +21,8 @@ def test_match(brew_unknown_cmd):
 
 
 def test_get_new_command(brew_unknown_cmd, brew_unknown_cmd2):
-    assert get_new_command(Command('brew inst', stderr=brew_unknown_cmd)) \
-           == ['brew list', 'brew install', 'brew uninstall']
+    assert (get_new_command(Command('brew inst', stderr=brew_unknown_cmd))
+            == ['brew list', 'brew install', 'brew uninstall'])
 
     cmds = get_new_command(Command('brew instaa', stderr=brew_unknown_cmd2))
     assert 'brew install' in cmds

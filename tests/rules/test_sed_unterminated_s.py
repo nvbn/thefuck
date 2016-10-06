@@ -18,11 +18,11 @@ def test_match(sed_unterminated_s):
 
 
 def test_get_new_command(sed_unterminated_s):
-    assert get_new_command(Command('sed -e s/foo/bar', stderr=sed_unterminated_s)) \
-            == 'sed -e s/foo/bar/'
-    assert get_new_command(Command('sed -es/foo/bar', stderr=sed_unterminated_s)) \
-            == 'sed -es/foo/bar/'
-    assert get_new_command(Command(r"sed -e 's/\/foo/bar'", stderr=sed_unterminated_s)) \
-            == r"sed -e 's/\/foo/bar/'"
-    assert get_new_command(Command(r"sed -e s/foo/bar -es/baz/quz", stderr=sed_unterminated_s)) \
-            == r"sed -e s/foo/bar/ -es/baz/quz/"
+    assert (get_new_command(Command('sed -e s/foo/bar', stderr=sed_unterminated_s))
+            == 'sed -e s/foo/bar/')
+    assert (get_new_command(Command('sed -es/foo/bar', stderr=sed_unterminated_s))
+            == 'sed -es/foo/bar/')
+    assert (get_new_command(Command(r"sed -e 's/\/foo/bar'", stderr=sed_unterminated_s))
+            == r"sed -e 's/\/foo/bar/'")
+    assert (get_new_command(Command(r"sed -e s/foo/bar -es/baz/quz", stderr=sed_unterminated_s))
+            == r"sed -e s/foo/bar/ -es/baz/quz/")
