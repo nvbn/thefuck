@@ -14,21 +14,23 @@ def get_new_command(command):
     # because the remaining arguments are concatenated onto the command suggested
     # by git, which includes --set-upstream and its argument
     upstream_option_index = -1
+    command_parts = command.script_parts[:]
+
     try:
-        upstream_option_index = command.script_parts.index('--set-upstream')
+        upstream_option_index = command_parts.index('--set-upstream')
     except ValueError:
         pass
     try:
-        upstream_option_index = command.script_parts.index('-u')
+        upstream_option_index = command_parts.index('-u')
     except ValueError:
         pass
     if upstream_option_index is not -1:
-        command.script_parts.pop(upstream_option_index)
+        command_parts.pop(upstream_option_index)
         try:
-            command.script_parts.pop(upstream_option_index)
+            command_parts.pop(upstream_option_index)
         except IndexError:
             # This happens for `git push -u`
             pass
 
     push_upstream = command.stderr.split('\n')[-3].strip().partition('git ')[2]
-    return replace_argument(" ".join(command.script_parts), 'push', push_upstream)
+    return replace_argument(" ".join(command_parts), 'push', push_upstream)

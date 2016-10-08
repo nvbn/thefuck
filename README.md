@@ -273,7 +273,9 @@ side_effect(old_command: Command, fixed_command: str) -> None
 ```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
-`Command` has three attributes: `script`, `stdout` and `stderr`.
+`Command` has three attributes: `script`, `stdout`, `stderr` and `script_parts`.
+Rule shouldn't change `Command`.
+
 
 *Rules api changed in 3.0:* For accessing settings in rule you need to import it with `from thefuck.conf import settings`.
 `settings` is a special object filled with `~/.config/thefuck/settings.py` and values from env ([see more below](#settings)).

@@ -6,9 +6,8 @@ from thefuck.specific.sudo import sudo_support
 
 @sudo_support
 def match(command):
-    toks = command.script_parts
-    return (toks
-            and toks[0].endswith('.py')
+    return (command.script_parts
+            and command.script_parts[0].endswith('.py')
             and ('Permission denied' in command.stderr or
                  'command not found' in command.stderr))
 
