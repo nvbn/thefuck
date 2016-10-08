@@ -159,7 +159,7 @@ def is_app(command, *app_names, **kwargs):
     if kwargs:
         raise TypeError("got an unexpected keyword argument '{}'".format(kwargs.keys()))
 
-    if command.script_parts is not None and len(command.script_parts) > at_least:
+    if len(command.script_parts) > at_least:
         return command.script_parts[0] in app_names
 
     return False

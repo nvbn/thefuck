@@ -10,6 +10,7 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    index = command.script_parts.index('rm') + 1
-    command.script_parts.insert(index, '-r')
-    return u' '.join(command.script_parts)
+    command_parts = command.script_parts[:]
+    index = command_parts.index('rm') + 1
+    command_parts.insert(index, '-r')
+    return u' '.join(command_parts)

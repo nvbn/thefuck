@@ -8,6 +8,7 @@ def match(command):
 
 
 def get_new_command(command):
-    command.script_parts[1] = 'uninstall'
-    command.script_parts.insert(2, '--force')
-    return ' '.join(command.script_parts)
+    command_parts = command.script_parts[:]
+    command_parts[1] = 'uninstall'
+    command_parts.insert(2, '--force')
+    return ' '.join(command_parts)
