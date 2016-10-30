@@ -29,7 +29,7 @@ addons:
       - python3-commandnotfound
 before_install:
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update ; fi
-  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew install $FORMULA; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then if brew ls --versions $FORMULA; then brew upgrade $FORMULA || echo Python is up to date; else brew install $FORMULA; fi; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then virtualenv venv -p $FORMULA; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then source venv/bin/activate; fi
   - pip install -U pip
