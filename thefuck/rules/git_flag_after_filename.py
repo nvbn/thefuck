@@ -3,6 +3,7 @@ from thefuck.specific.git import git_support
 
 error_pattern = "fatal: bad flag '(.*?)' used after filename"
 
+
 @git_support
 def match(command):
     return re.search(error_pattern, command.stderr)
@@ -24,6 +25,6 @@ def get_new_command(command):
 
     # swap them
     command_parts[bad_flag_index], command_parts[filename_index] = \
-    command_parts[filename_index], command_parts[bad_flag_index]
+    command_parts[filename_index], command_parts[bad_flag_index]  # noqa: E122
 
     return u' '.join(command_parts)

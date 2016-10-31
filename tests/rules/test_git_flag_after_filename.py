@@ -1,4 +1,3 @@
-import pytest
 from thefuck.rules.git_flag_after_filename import match, get_new_command
 from tests.utils import Command
 
