@@ -14,7 +14,7 @@ class Bash(Generic):
                 " eval $TF_CMD".format(fuck)
 
         if settings.alter_history:
-            return alias + " && history -s $TF_CMD'"
+            return alias + "; history -s $TF_CMD'"
         else:
             return alias + "'"
 
