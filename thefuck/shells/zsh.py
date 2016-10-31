@@ -15,7 +15,7 @@ class Zsh(Generic):
                 " eval $TF_CMD".format(alias_name)
 
         if settings.alter_history:
-            return alias + " && print -s $TF_CMD'"
+            return alias + " ; print -s $TF_CMD'"
         else:
             return alias + "'"
 
