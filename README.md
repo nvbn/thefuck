@@ -202,6 +202,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `ln_no_hard_link` &ndash; catches hard link creation on directories, suggest symbolic link;
 * `ln_s_order` &ndash; fixes `ln -s` arguments order;
+* `ls_all` &ndash; adds `-A` to `ls` when output is empty;
 * `ls_lah` &ndash; adds `-lah` to `ls`;
 * `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
