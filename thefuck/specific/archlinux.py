@@ -25,7 +25,7 @@ def get_pkgfile(command):
 
         return [package.split()[0] for package in packages]
     except subprocess.CalledProcessError:
-        return None
+        return []
 
 
 def archlinux_env():
