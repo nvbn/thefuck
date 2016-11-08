@@ -1,3 +1,4 @@
+import pytest
 from thefuck.rules.git_flag_after_filename import match, get_new_command
 from tests.utils import Command
 
@@ -9,15 +10,22 @@ command3 = Command('git log -p README.md --name-only',
                    stderr="fatal: bad flag '--name-only' used after filename")
 
 
-def test_match():
-    assert match(command1)
-    assert match(command2)
-    assert match(command3)
-    assert not match(Command('git log README.md'))
-    assert not match(Command('git log -p README.md'))
+@pytest.mark.parametrize('command', [
+    command1, command2, command3])
+def test_match(command):
+    assert match(command)
 
 
-def test_get_new_command():
-    assert get_new_command(command1) == "git log -p README.md"
-    assert get_new_command(command2) == "git log -p README.md CONTRIBUTING.md"
-    assert get_new_command(command3) == "git log -p --name-only README.md"
+@pytest.mark.parametrize('command', [
+    Command('git log README.md'),
+    Command('git log -p README.md')])
+def test_not_match(command):
+    assert not match(command)
+
+
+@pytest.mark.parametrize('command, result', [
+    (command1, "git log -p README.md"),
+    (command2, "git log -p README.md CONTRIBUTING.md"),
+    (command3, "git log -p --name-only README.md")])
+def test_get_new_command(command, result):
+    assert get_new_command(command) == result
