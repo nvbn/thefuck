@@ -56,3 +56,8 @@ class TestBash(object):
     def test_get_history(self, history_lines, shell):
         history_lines(['ls', 'rm'])
         assert list(shell.get_history()) == ['ls', 'rm']
+
+    def test_split_command(self, shell):
+        command = 'git log $(git ls-files thefuck | grep python_command) -p'
+        command_parts = ['git', 'log', '$(git ls-files thefuck | grep python_command)', '-p']
+        assert shell.split_command(command) == command_parts
