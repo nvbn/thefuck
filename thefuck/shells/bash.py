@@ -1,4 +1,5 @@
 import os
+import bashlex
 from ..conf import settings
 from ..utils import memoize
 from .generic import Generic
@@ -45,3 +46,6 @@ class Bash(Generic):
         else:
             config = 'bash config'
         return 'eval $(thefuck --alias)', config
+
+    def split_command(self, command):
+        return list(bashlex.split(command))
