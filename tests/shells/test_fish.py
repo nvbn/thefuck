@@ -76,11 +76,11 @@ class TestFish(object):
 
     def test_app_alias_alter_history(self, settings, shell):
         settings.alter_history = True
-        assert 'history --delete' in shell.app_alias('FUCK')
-        assert 'history --merge' in shell.app_alias('FUCK')
+        assert 'builtin history delete' in shell.app_alias('FUCK')
+        assert 'builtin history merge' in shell.app_alias('FUCK')
         settings.alter_history = False
-        assert 'history --delete' not in shell.app_alias('FUCK')
-        assert 'history --merge' not in shell.app_alias('FUCK')
+        assert 'builtin history delete' not in shell.app_alias('FUCK')
+        assert 'builtin history merge' not in shell.app_alias('FUCK')
 
     def test_get_history(self, history_lines, shell):
         history_lines(['- cmd: ls', '  when: 1432613911',
