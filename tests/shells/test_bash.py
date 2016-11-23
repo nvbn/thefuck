@@ -61,3 +61,8 @@ class TestBash(object):
         command = 'git log $(git ls-files thefuck | grep python_command) -p'
         command_parts = ['git', 'log', '$(git ls-files thefuck | grep python_command)', '-p']
         assert shell.split_command(command) == command_parts
+
+        # bashlex doesn't support parsing arithmetic expressions, so make sure
+        # shlex is used a fallback
+        # See https://github.com/idank/bashlex#limitations
+        assert shell.split_command('$((1 + 2))') == ['$((1', '+', '2))']
