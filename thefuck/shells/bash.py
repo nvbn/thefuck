@@ -1,6 +1,5 @@
 import os
 import bashlex
-import six
 from ..conf import settings
 from ..utils import memoize
 from .generic import Generic
@@ -49,17 +48,11 @@ class Bash(Generic):
         return 'eval $(thefuck --alias)', config
 
     def split_command(self, command):
-        if six.PY2:
-            command = command.encode('utf8')
+        generic = Generic()
 
         # If bashlex fails for some reason, fallback to shlex
         # See https://github.com/idank/bashlex#limitations
         try:
-            command_parts = list(bashlex.split(command))
+            return generic.decode_utf8(list(bashlex.split(generic.encode_utf8(command))))
         except:
-            return Generic().split_command(command)
-
-        if six.PY2:
-            return [s.decode('utf8') for s in command_parts]
-        else:
-            return command_parts
+            return generic.split_command(command)
