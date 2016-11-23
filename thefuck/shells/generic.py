@@ -65,9 +65,17 @@ class Generic(object):
 
     def split_command(self, command):
         """Split the command using shell-like syntax."""
+        return self.decode_utf8(shlex.split(self.encode_utf8(command)))
+
+    def encode_utf8(self, command):
         if six.PY2:
-            return [s.decode('utf8') for s in shlex.split(command.encode('utf8'))]
-        return shlex.split(command)
+            return command.encode('utf8')
+        return command
+
+    def decode_utf8(self, command_parts):
+        if six.PY2:
+            return [s.decode('utf8') for s in command_parts]
+        return command_parts
 
     def quote(self, s):
         """Return a shell-escaped version of the string s."""
