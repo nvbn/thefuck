@@ -1,6 +1,7 @@
 import io
 import os
 import shlex
+import bashlex
 import six
 from ..utils import memoize
 from ..conf import settings
@@ -64,8 +65,19 @@ class Generic(object):
         return
 
     def split_command(self, command):
-        """Split the command using shell-like syntax."""
-        return self.decode_utf8(shlex.split(self.encode_utf8(command)))
+        """Split the command using shell-like syntax.
+
+        If bashlex fails for some reason, fallback to shlex
+        See https://github.com/idank/bashlex#limitations
+        """
+        encoded = self.encode_utf8(command)
+
+        try:
+            splitted = list(bashlex.split(encoded))
+        except Exception:
+            splitted = shlex.split(encoded)
+
+        return self.decode_utf8(splitted)
 
     def encode_utf8(self, command):
         if six.PY2:
