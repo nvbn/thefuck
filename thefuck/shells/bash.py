@@ -44,4 +44,9 @@ class Bash(Generic):
             config = '~/.bashrc'
         else:
             config = 'bash config'
-        return 'eval $(thefuck --alias)', config
+
+        return {
+            'content': 'eval $(thefuck --alias)',
+            'path': config,
+            'reload': u'source {}'.format(config),
+        }

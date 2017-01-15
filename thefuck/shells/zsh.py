@@ -45,4 +45,8 @@ class Zsh(Generic):
             return ''
 
     def how_to_configure(self):
-        return 'eval $(thefuck --alias)', '~/.zshrc'
+        return {
+            'content': 'eval $(thefuck --alias)',
+            'path': '~/.zshrc',
+            'reload': 'source ~/.zshrc',
+        }

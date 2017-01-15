@@ -67,8 +67,11 @@ class Fish(Generic):
         return u'; and '.join(commands)
 
     def how_to_configure(self):
-        return (r"eval (thefuck --alias | tr '\n' ';')",
-                '~/.config/fish/config.fish')
+        return {
+            'content': r"eval (thefuck --alias | tr '\n' ';')",
+            'path': '~/.config/fish/config.fish',
+            'reload': 'fish',
+        }
 
     def put_to_history(self, command):
         try:

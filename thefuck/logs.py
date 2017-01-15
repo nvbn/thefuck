@@ -83,13 +83,14 @@ def how_to_configure_alias(configuration_details):
     print("Seems like {bold}fuck{reset} alias isn't configured!".format(
         bold=color(colorama.Style.BRIGHT),
         reset=color(colorama.Style.RESET_ALL)))
+
     if configuration_details:
-        content, path = configuration_details
         print(
             "Please put {bold}{content}{reset} in your "
-            "{bold}{path}{reset}.".format(
+            "{bold}{path}{reset} and apply "
+            "changes with {bold}{reload}{reset} or restart your shell.".format(
                 bold=color(colorama.Style.BRIGHT),
                 reset=color(colorama.Style.RESET_ALL),
-                path=path,
-                content=content))
+                **configuration_details))
+
     print('More details - https://github.com/nvbn/thefuck#manual-installation')

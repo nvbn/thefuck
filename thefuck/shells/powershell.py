@@ -15,4 +15,8 @@ class Powershell(Generic):
         return u' -and '.join('({0})'.format(c) for c in commands)
 
     def how_to_configure(self):
-        return 'iex "thefuck --alias"', '$profile'
+        return {
+            'content': 'iex "thefuck --alias"',
+            'path': '$profile',
+            'reload': '& $profile',
+        }
