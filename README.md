@@ -227,6 +227,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
 * `remove_trailing_cedilla` &ndash; remove trailling cedillas `ç`, a common typo for european keyboard layouts;
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
+* `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
