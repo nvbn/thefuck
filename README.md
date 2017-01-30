@@ -189,6 +189,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_remote_seturl_add` &ndash; runs `git remote add` when `git remote set_url` on nonexistant remote;
 * `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
 * `git_stash_pop` &ndash; adds your local modifications before popping stash, then resets;
+* `git_tag_force` &ndash; adds `--force` to `git tag <tagname>` when the tag already exists;
 * `git_two_dashes` &ndash; adds a missing dash to commands like `git commit -amend` or `git rebase -continue`;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs;
 * `gradle_no_task` &ndash; fixes not found or ambiguous `gradle` task;
