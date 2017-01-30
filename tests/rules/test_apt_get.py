@@ -7,6 +7,8 @@ from tests.utils import Command
     (Command(script='vim', stderr='vim: command not found'),
      [('vim', 'main'), ('vim-tiny', 'main')]),
     (Command(script='sudo vim', stderr='vim: command not found'),
+     [('vim', 'main'), ('vim-tiny', 'main')]),
+    (Command(script='vim', stderr="The program 'vim' is currently not installed. You can install it by typing: sudo apt install vim"),
      [('vim', 'main'), ('vim-tiny', 'main')])])
 def test_match(mocker, command, packages):
     mocker.patch('thefuck.rules.apt_get.which', return_value=None)
