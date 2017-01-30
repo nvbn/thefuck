@@ -1,7 +1,6 @@
 from thefuck.specific.apt import apt_available
 from thefuck.utils import memoize, which
 from thefuck.shells import shell
-from pprint import pprint
 
 try:
     from CommandNotFound import CommandNotFound
