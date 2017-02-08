@@ -12,9 +12,10 @@ def read_actions():
     while True:
         key = get_key()
 
-        if key in (const.KEY_UP, 'k'):
+        # Handle arrows, j/k (qwerty), and n/e (colemak)
+        if key in (const.KEY_UP, 'k', 'e'):
             yield const.ACTION_PREVIOUS
-        elif key in (const.KEY_DOWN, 'j'):
+        elif key in (const.KEY_DOWN, 'j', 'n'):
             yield const.ACTION_NEXT
         elif key in (const.KEY_CTRL_C, 'q'):
             yield const.ACTION_ABORT
