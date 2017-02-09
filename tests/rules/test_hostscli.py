@@ -1,20 +1,6 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-#
-# vim: fenc=utf-8
-# vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4
-#
-#
-
-"""
-File name: test_hostscli.py
-Author: dhilipsiva <dhilipsiva@gmail.com>
-Date created: 2017-02-05
-"""
-
 import pytest
-from thefuck.rules.hostscli import no_command, need_sudo, no_website, \
-    match, get_new_command
+from thefuck.rules.hostscli import no_command, no_website, get_new_command, \
+    match
 from tests.utils import Command
 
 
@@ -23,14 +9,6 @@ Usage: hostscli [OPTIONS] COMMAND [ARGS]...
 
 %s "invalid".
 ''' % no_command
-
-need_sudo = '''
-%s:
-
-"sudo" permissions are required to run this command.
-
-Please run the last command again with sudo
-''' % need_sudo
 
 
 no_website = '''
@@ -54,9 +32,6 @@ def test_match(command):
 @pytest.mark.parametrize('command, result', [
     (Command(
         'hostscli invalid', stderr=no_command), ['hostscli --help']),
-    (Command(
-        'hostscli block test', stderr=need_sudo),
-        ['sudo hostscli block test']),
     (Command(
         'sudo hostscli block a_website_that_does_not_exist',
         stderr=no_website),
