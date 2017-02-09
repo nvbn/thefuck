@@ -1,17 +1,9 @@
 import pytest
-from thefuck.rules.hostscli import no_command, no_website, get_new_command, \
-    match
+from thefuck.rules.hostscli import no_website, get_new_command, match
 from tests.utils import Command
 
 
-no_command = '''
-Usage: hostscli [OPTIONS] COMMAND [ARGS]...
-
-%s "invalid".
-''' % no_command
-
-
-no_website = '''
+no_website_long = '''
 %s:
 
 No Domain list found for website: a_website_that_does_not_exist
@@ -24,17 +16,16 @@ type `hostscli websites` to see a list of websites that you can block/unblock
 
 
 @pytest.mark.parametrize('command', [
-    Command('hostscli invalid', stderr=no_command)])
+    Command(
+        'sudo hostscli block a_website_that_does_not_exist',
+        stderr=no_website_long)])
 def test_match(command):
     assert match(command)
 
 
-@pytest.mark.parametrize('command, result', [
-    (Command(
-        'hostscli invalid', stderr=no_command), ['hostscli --help']),
-    (Command(
+@pytest.mark.parametrize('command, result', [(
+    Command(
         'sudo hostscli block a_website_that_does_not_exist',
-        stderr=no_website),
-     ['hostscli websites'])])
+        stderr=no_website_long), ['hostscli websites'])])
 def test_get_new_command(command, result):
     assert get_new_command(command) == result

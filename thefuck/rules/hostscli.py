@@ -1,12 +1,11 @@
 import re
 
-from thefuck.utils import for_app, replace_command
+from thefuck.utils import replace_command
 
 no_command = "Error: No such command"
 no_website = "hostscli.errors.WebsiteImportError"
 
 
-@for_app("hostscli")
 def match(command):
     errors = [no_command, no_website]
     for error in errors:
