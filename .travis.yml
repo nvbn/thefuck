@@ -47,4 +47,4 @@ script:
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi
   - if [[ $TRAVIS_PYTHON_VERSION != 3.6 || $TRAVIS_OS_NAME == "osx" ]]; then $RUN_TESTS; fi
 after_success:
-  - coveralls
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 && $TRAVIS_OS_NAME != "osx" ]]; then coveralls; fi
