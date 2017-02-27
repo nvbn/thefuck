@@ -247,6 +247,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
+* `yarn_alias` &ndash; fixes aliased `yarn` commands like `yarn ls`;
 
 Enabled by default only on specific platforms:
 
