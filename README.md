@@ -186,6 +186,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_rebase_no_changes` &ndash; runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
 * `git_rm_local_modifications` &ndash;  adds `-f` or `--cached` when you try to `rm` a locally modified file;
 * `git_rm_recursive` &ndash; adds `-r` when you try to `rm` a directory;
+* `git_rm_staged` &ndash;  adds `-f` or `--cached` when you try to `rm` a file with staged changes
 * `git_rebase_merge_dir` &ndash; offers `git rebase (--continue | --abort | --skip)` or removing the `.git/rebase-merge` dir when a rebase is in progress;
 * `git_remote_seturl_add` &ndash; runs `git remote add` when `git remote set_url` on nonexistant remote;
 * `git_stash` &ndash; stashes your local modifications before rebasing or switching branch;
