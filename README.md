@@ -249,6 +249,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
 * `yarn_alias` &ndash; fixes aliased `yarn` commands like `yarn ls`;
+* `yarn_command_not_found` &ndash; fixes misspelled `yarn` commands;
 
 Enabled by default only on specific platforms:
 
