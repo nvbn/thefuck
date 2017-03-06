@@ -1,6 +1,6 @@
 import re
 from subprocess import Popen, PIPE
-from thefuck.utils import for_app, eager, get_closest
+from thefuck.utils import for_app, eager, replace_command
 
 regex = re.compile(r'error Command "(.*)" not found.')
 
@@ -28,6 +28,4 @@ def _get_all_tasks():
 def get_new_command(command):
     misspelled_task = regex.findall(command.stderr)[0]
     tasks = _get_all_tasks()
-    fixed = get_closest(misspelled_task, tasks)
-    return command.script.replace(' {}'.format(misspelled_task),
-                                  ' {}'.format(fixed))
+    return replace_command(command, misspelled_task, tasks)

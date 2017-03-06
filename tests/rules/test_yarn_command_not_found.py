@@ -108,4 +108,4 @@ def test_not_match(command):
 @pytest.mark.parametrize('command, result', [
     (Command('yarn whyy webpack', stderr=stderr('whyy')), 'yarn why webpack')])
 def test_get_new_command(command, result):
-    assert get_new_command(command) == result
+    assert get_new_command(command)[0] == result
