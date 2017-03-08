@@ -1,6 +1,5 @@
 import subprocess
 from thefuck.utils import for_app, replace_command, eager
-import sys
 
 @for_app('ifconfig')
 def match(command):
