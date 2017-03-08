@@ -29,7 +29,7 @@ def get_package(executable):
 
 
 def match(command):
-    if 'not found' in command.stderr:
+    if 'not found' in command.stderr or 'not installed' in command.stderr:
         executable = _get_executable(command)
         return not which(executable) and get_package(executable)
     else:

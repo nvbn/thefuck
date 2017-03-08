@@ -2,11 +2,7 @@ import pytest
 import time
 
 dockerfile = u'''
-FROM ubuntu:latest
-RUN apt-get update
-RUN apt-get install -yy python3 python3-pip python3-dev git
-RUN pip3 install -U setuptools
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
+FROM python:3
 RUN adduser --disabled-password --gecos '' test
 ENV SEED "{seed}"
 WORKDIR /src
@@ -42,7 +38,7 @@ def plot(proc, TIMEOUT):
 @pytest.mark.functional
 @pytest.mark.benchmark(min_rounds=10)
 def test_performance(spawnu, TIMEOUT, benchmark):
-    proc = spawnu(u'thefuck/ubuntu-python3-bash-performance',
+    proc = spawnu(u'thefuck/python3-bash-performance',
                   dockerfile, u'bash')
     proc.sendline(u'pip install /src')
     proc.sendline(u'su test')

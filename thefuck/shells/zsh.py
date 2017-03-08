@@ -15,7 +15,7 @@ class Zsh(Generic):
                 " eval $TF_CMD".format(alias_name)
 
         if settings.alter_history:
-            return alias + " && print -s $TF_CMD'"
+            return alias + " ; test -n \"$TF_CMD\" && print -s $TF_CMD'"
         else:
             return alias + "'"
 
@@ -45,4 +45,8 @@ class Zsh(Generic):
             return ''
 
     def how_to_configure(self):
-        return 'eval $(thefuck --alias)', '~/.zshrc'
+        return {
+            'content': 'eval $(thefuck --alias)',
+            'path': '~/.zshrc',
+            'reload': 'source ~/.zshrc',
+        }

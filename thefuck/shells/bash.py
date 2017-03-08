@@ -14,7 +14,7 @@ class Bash(Generic):
                 " eval $TF_CMD".format(fuck)
 
         if settings.alter_history:
-            return alias + " && history -s $TF_CMD'"
+            return alias + "; history -s $TF_CMD'"
         else:
             return alias + "'"
 
@@ -44,4 +44,9 @@ class Bash(Generic):
             config = '~/.bashrc'
         else:
             config = 'bash config'
-        return 'eval $(thefuck --alias)', config
+
+        return {
+            'content': 'eval $(thefuck --alias)',
+            'path': config,
+            'reload': u'source {}'.format(config),
+        }

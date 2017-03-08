@@ -4,6 +4,9 @@ matrix:
   include:
     - os: linux
       dist: trusty
+      python: "3.6"
+    - os: linux
+      dist: trusty
       python: "3.5"
     - os: linux
       dist: trusty
@@ -29,7 +32,7 @@ addons:
       - python3-commandnotfound
 before_install:
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update ; fi
-  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew install $FORMULA; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then if brew ls --versions $FORMULA; then brew upgrade $FORMULA || echo Python is up to date; else brew install $FORMULA; fi; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then virtualenv venv -p $FORMULA; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then source venv/bin/activate; fi
   - pip install -U pip
@@ -42,7 +45,7 @@ script:
   - flake8
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
   - export RUN_TESTS="coverage run --source=thefuck,tests -m py.test -v --capture=sys tests"
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.5 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi
-  - if [[ $TRAVIS_PYTHON_VERSION != 3.5 || $TRAVIS_OS_NAME == "osx" ]]; then $RUN_TESTS; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != 3.6 || $TRAVIS_OS_NAME == "osx" ]]; then $RUN_TESTS; fi
 after_success:
-  - coveralls
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 && $TRAVIS_OS_NAME != "osx" ]]; then coveralls; fi

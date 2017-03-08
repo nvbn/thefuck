@@ -144,7 +144,8 @@ sudo -H pip install thefuck --upgrade
 The Fuck tries to match a rule for the previous command, creates a new command
 using the matched rule and runs it. Rules enabled by default are as follows:
 
-* `aws_cli` &ndash; fixes misspelled commands like `aws dynamdb scan`
+* `ag_literal` &ndash; adds `-Q` to `ag` when suggested;
+* `aws_cli` &ndash; fixes misspelled commands like `aws dynamdb scan`;
 * `cargo` &ndash; runs `cargo build` instead of `cargo`;
 * `cargo_no_command` &ndash; fixes wrongs commands like `cargo buid`;
 * `cd_correction` &ndash; spellchecks and correct failed cd commands;
@@ -163,7 +164,9 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `fab_command_not_found` &ndash; fix misspelled fabric commands;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `fix_file` &ndash; opens a file with an error in your `$EDITOR`;
+* `gem_unknown_command` &ndash; fixes wrong `gem` commands;
 * `git_add` &ndash; fixes *"pathspec 'foo' did not match any file(s) known to git."*;
+* `git_add_force` &ndash; adds `--force` to `git add <pathspec>...` when paths are .gitignore'd;
 * `git_bisect_usage` &ndash; fixes `git bisect strt`, `git bisect goood`, `git bisect rset`, etc. when bisecting;
 * `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
 * `git_branch_exists` &ndash; offers `git branch -d foo`, `git branch -D foo` or `git checkout foo` when creating a branch that already exists;
@@ -172,6 +175,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_diff_no_index` &ndash; adds `--no-index` to previous `git diff` on untracked files;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
 * `git_fix_stash` &ndash; fixes `git stash` commands (misspelled subcommand and missing `save`);
+* `git_flag_after_filename` &ndash; fixes `fatal: bad flag '...' after filename`
 * `git_help_aliased` &ndash; fixes `git help <alias>` commands replacing <alias> with the aliased command;
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
@@ -180,9 +184,14 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
 * `git_rebase_no_changes` &ndash; runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
+* `git_rm_local_modifications` &ndash;  adds `-f` or `--cached` when you try to `rm` a locally modified file;
 * `git_rm_recursive` &ndash; adds `-r` when you try to `rm` a directory;
+* `git_rm_staged` &ndash;  adds `-f` or `--cached` when you try to `rm` a file with staged changes
+* `git_rebase_merge_dir` &ndash; offers `git rebase (--continue | --abort | --skip)` or removing the `.git/rebase-merge` dir when a rebase is in progress;
 * `git_remote_seturl_add` &ndash; runs `git remote add` when `git remote set_url` on nonexistant remote;
-* `git_stash` &ndash; stashes you local modifications before rebasing or switching branch;
+* `git_stash` &ndash; stashes your local modifications before rebasing or switching branch;
+* `git_stash_pop` &ndash; adds your local modifications before popping stash, then resets;
+* `git_tag_force` &ndash; adds `--force` to `git tag <tagname>` when the tag already exists;
 * `git_two_dashes` &ndash; adds a missing dash to commands like `git commit -amend` or `git rebase -continue`;
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs;
 * `gradle_no_task` &ndash; fixes not found or ambiguous `gradle` task;
@@ -194,11 +203,13 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `heroku_not_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
+* `ifconfig_device_not_found` &ndash; fixes wrong device names like `wlan0` to `wlp2s0`;
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `ln_no_hard_link` &ndash; catches hard link creation on directories, suggest symbolic link;
 * `ln_s_order` &ndash; fixes `ln -s` arguments order;
+* `ls_all` &ndash; adds `-A` to `ls` when output is empty;
 * `ls_lah` &ndash; adds `-lah` to `ls`;
 * `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
@@ -220,10 +231,12 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
 * `remove_trailing_cedilla` &ndash; remove trailling cedillas `ç`, a common typo for european keyboard layouts;
 * `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
+* `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
 * `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
+* `sudo_command_from_user_path` &ndash; runs commands from users `$PATH` with `sudo`;
 * `switch_lang` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
@@ -235,6 +248,8 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
+* `yarn_alias` &ndash; fixes aliased `yarn` commands like `yarn ls`;
+* `yarn_command_not_found` &ndash; fixes misspelled `yarn` commands;
 
 Enabled by default only on specific platforms:
 
@@ -272,7 +287,9 @@ side_effect(old_command: Command, fixed_command: str) -> None
 ```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
-`Command` has three attributes: `script`, `stdout` and `stderr`.
+`Command` has three attributes: `script`, `stdout`, `stderr` and `script_parts`.
+Rule shouldn't change `Command`.
+
 
 *Rules api changed in 3.0:* For accessing settings in rule you need to import it with `from thefuck.conf import settings`.
 `settings` is a special object filled with `~/.config/thefuck/settings.py` and values from env ([see more below](#settings)).
