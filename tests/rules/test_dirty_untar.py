@@ -33,6 +33,7 @@ def tar_error(tmpdir):
 
     return fixture
 
+
 parametrize_extensions = pytest.mark.parametrize('ext', tar_extensions)
 
 # (filename as typed by the user, unquoted filename, quoted filename as per shells.quote)

@@ -6,4 +6,5 @@ def match(command):
 def get_new_command(command):
     return u'man {}'.format(command.script[3:])
 
+
 priority = 2000
