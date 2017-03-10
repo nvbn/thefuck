@@ -1,6 +1,7 @@
 import pytest
 from thefuck.rules.yarn_help import match, get_new_command
 from tests.utils import Command
+from thefuck.system import open_command
 
 
 stdout_clean = '''
@@ -50,6 +51,6 @@ def test_match(command):
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command('yarn help clean', stdout=stdout_clean), 'open https://yarnpkg.com/en/docs/cli/clean')])
+    (Command('yarn help clean', stdout=stdout_clean), open_command('https://yarnpkg.com/en/docs/cli/clean'))])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command

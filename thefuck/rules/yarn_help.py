@@ -1,5 +1,6 @@
 import re
 from thefuck.utils import for_app
+from thefuck.system import open_command
 
 
 @for_app('yarn', at_least=2)
@@ -8,6 +9,6 @@ def match(command):
 
 
 def get_new_command(command):
-    fix = re.findall(r'Visit ([^ ]*) for documentation about this command.', command.stdout)[0]
+    url = re.findall(r'Visit ([^ ]*) for documentation about this command.', command.stdout)[0]
 
-    return 'open ' + fix
+    return open_command(url)

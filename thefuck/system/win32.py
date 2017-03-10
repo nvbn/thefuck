@@ -26,6 +26,11 @@ def get_key():
     encoding = sys.stdout.encoding or os.environ.get('PYTHONIOENCODING', 'utf-8')
     return ch.decode(encoding)
 
+
+def open_command(arg):
+    return 'cmd /c start ' + arg
+
+
 try:
     from pathlib import Path
 except ImportError:
