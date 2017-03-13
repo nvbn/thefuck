@@ -66,7 +66,12 @@ class Generic(object):
     def split_command(self, command):
         """Split the command using shell-like syntax."""
         encoded = self.encode_utf8(command)
-        splitted = shlex.split(encoded)
+
+        try:
+            splitted = shlex.split(encoded)
+        except ValueError:
+            splitted = encoded.split(' ')
+
         return self.decode_utf8(splitted)
 
     def encode_utf8(self, command):
@@ -99,3 +104,15 @@ class Generic(object):
         all shells support it (Fish).
 
         """
+
+    def get_builtin_commands(self):
+        """Returns shells builtin commands."""
+        return ['alias', 'bg', 'bind', 'break', 'builtin', 'case', 'cd',
+                'command', 'compgen', 'complete', 'continue', 'declare',
+                'dirs', 'disown', 'echo', 'enable', 'eval', 'exec', 'exit',
+                'export', 'fc', 'fg', 'getopts', 'hash', 'help', 'history',
+                'if', 'jobs', 'kill', 'let', 'local', 'logout', 'popd',
+                'printf', 'pushd', 'pwd', 'read', 'readonly', 'return', 'set',
+                'shift', 'shopt', 'source', 'suspend', 'test', 'times', 'trap',
+                'type', 'typeset', 'ulimit', 'umask', 'unalias', 'unset',
+                'until', 'wait', 'while']
