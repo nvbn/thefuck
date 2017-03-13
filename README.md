@@ -106,13 +106,13 @@ On Ubuntu you can install `The Fuck` with:
 ```bash
 sudo apt update
 sudo apt install python3-dev python3-pip
-sudo -H pip3 install thefuck
+pip3 install --user thefuck
 ```
 
 On other systems you can install `The Fuck` with `pip`:
 
 ```bash
-sudo -H pip install thefuck
+pip install --user thefuck
 ```
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
