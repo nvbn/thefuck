@@ -61,3 +61,12 @@ class TestBash(object):
         command = 'git log -p'
         command_parts = ['git', 'log', '-p']
         assert shell.split_command(command) == command_parts
+
+    def test_how_to_configure(self, shell, config_exists):
+        config_exists.return_value = True
+        assert shell.how_to_configure().can_configure_automatically
+
+    def test_how_to_configure_when_config_not_found(self, shell,
+                                                    config_exists):
+        config_exists.return_value = False
+        assert not shell.how_to_configure().can_configure_automatically

@@ -91,6 +91,33 @@ def how_to_configure_alias(configuration_details):
             "changes with {bold}{reload}{reset} or restart your shell.".format(
                 bold=color(colorama.Style.BRIGHT),
                 reset=color(colorama.Style.RESET_ALL),
-                **configuration_details))
+                **configuration_details._asdict()))
+
+        if configuration_details.can_configure_automatically:
+            print(
+                "Or run {bold}fuck{reset} second time for configuring"
+                " it automatically.".format(
+                    bold=color(colorama.Style.BRIGHT),
+                    reset=color(colorama.Style.RESET_ALL)))
 
     print('More details - https://github.com/nvbn/thefuck#manual-installation')
+
+
+def already_configured(configuration_details):
+    print(
+        "Seems like {bold}fuck{reset} alias already configured!\n"
+        "For applying changes run {bold}{reload}{reset}"
+        " or restart your shell.".format(
+            bold=color(colorama.Style.BRIGHT),
+            reset=color(colorama.Style.RESET_ALL),
+            reload=configuration_details.reload))
+
+
+def configured_successfully(configuration_details):
+    print(
+        "{bold}fuck{reset} alias configured successfully!\n"
+        "For applying changes run {bold}{reload}{reset}"
+        " or restart your shell.".format(
+            bold=color(colorama.Style.BRIGHT),
+            reset=color(colorama.Style.RESET_ALL),
+            reload=configuration_details.reload))

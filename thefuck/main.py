@@ -46,16 +46,6 @@ def print_alias():
     print(shell.app_alias(alias))
 
 
-def how_to_configure_alias():
-    """Shows useful information about how-to configure alias.
-
-    It'll be only visible when user type fuck and when alias isn't configured.
-
-    """
-    settings.init()
-    logs.how_to_configure_alias(shell.how_to_configure())
-
-
 def main():
     parser = ArgumentParser(prog='thefuck')
     version = get_installation_info().version

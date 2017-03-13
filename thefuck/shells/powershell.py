@@ -1,4 +1,4 @@
-from .generic import Generic
+from .generic import Generic, ShellConfiguration
 
 
 class Powershell(Generic):
@@ -18,8 +18,8 @@ class Powershell(Generic):
         return u' -and '.join('({0})'.format(c) for c in commands)
 
     def how_to_configure(self):
-        return {
-            'content': 'iex "thefuck --alias"',
-            'path': '$profile',
-            'reload': '& $profile',
-        }
+        return ShellConfiguration(
+            content='iex "thefuck --alias"',
+            path='$profile',
+            reload='& $profile',
+            can_configure_automatically=False)

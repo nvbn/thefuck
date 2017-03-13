@@ -17,3 +17,6 @@ class TestPowershell(object):
         assert 'function fuck' in shell.app_alias('fuck')
         assert 'function FUCK' in shell.app_alias('FUCK')
         assert 'thefuck' in shell.app_alias('fuck')
+
+    def test_how_to_configure(self, shell):
+        assert not shell.how_to_configure().can_configure_automatically

@@ -37,3 +37,6 @@ class TestGeneric(object):
     def test_split_command(self, shell):
         assert shell.split_command('ls') == ['ls']
         assert shell.split_command(u'echo café') == [u'echo', u'café']
+
+    def test_how_to_configure(self, shell):
+        assert shell.how_to_configure() is None

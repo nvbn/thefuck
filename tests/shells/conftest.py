@@ -20,3 +20,11 @@ def history_lines(mocker):
             .return_value.readlines.return_value = lines
 
     return aux
+
+
+@pytest.fixture
+def config_exists(mocker):
+    path_mock = mocker.patch('thefuck.shells.generic.Path')
+    return path_mock.return_value \
+        .expanduser.return_value \
+        .exists

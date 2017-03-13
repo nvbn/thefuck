@@ -2,8 +2,14 @@ import io
 import os
 import shlex
 import six
+from collections import namedtuple
 from ..utils import memoize
 from ..conf import settings
+from ..system import Path
+
+
+ShellConfiguration = namedtuple('ShellConfiguration', (
+    'content', 'path', 'reload', 'can_configure_automatically'))
 
 
 class Generic(object):
@@ -116,3 +122,10 @@ class Generic(object):
                 'shift', 'shopt', 'source', 'suspend', 'test', 'times', 'trap',
                 'type', 'typeset', 'ulimit', 'umask', 'unalias', 'unset',
                 'until', 'wait', 'while']
+
+    def _create_shell_configuration(self, content, path, reload):
+        return ShellConfiguration(
+            content=content,
+            path=path,
+            reload=reload,
+            can_configure_automatically=Path(path).expanduser().exists())
