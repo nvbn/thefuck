@@ -3,6 +3,7 @@ import sys
 import tty
 import termios
 import colorama
+from distutils.spawn import find_executable
 from .. import const
 
 init_output = colorama.init
@@ -34,6 +35,13 @@ def get_key():
                 return const.KEY_DOWN
 
     return ch
+
+
+def open_command(arg):
+    if find_executable('xdg-open'):
+        return 'xdg-open ' + arg
+    return 'open ' + arg
+
 
 try:
     from pathlib import Path

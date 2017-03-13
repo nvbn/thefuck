@@ -23,8 +23,14 @@ def get_key():
     if ch == b'P':
         return const.KEY_DOWN
 
-    encoding = sys.stdout.encoding or os.environ.get('PYTHONIOENCODING', 'utf-8')
+    encoding = (sys.stdout.encoding
+                or os.environ.get('PYTHONIOENCODING', 'utf-8'))
     return ch.decode(encoding)
+
+
+def open_command(arg):
+    return 'cmd /c start ' + arg
+
 
 try:
     from pathlib import Path
