@@ -51,6 +51,7 @@ def test_match(command):
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command('yarn help clean', stdout=stdout_clean), open_command('https://yarnpkg.com/en/docs/cli/clean'))])
+    (Command('yarn help clean', stdout=stdout_clean),
+     open_command('https://yarnpkg.com/en/docs/cli/clean'))])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command
