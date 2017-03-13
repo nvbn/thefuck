@@ -20,7 +20,8 @@ patterns = ['permission denied',
             'authentication is required',
             'edspermissionerror',
             'you don\'t have write permissions',
-            'use `sudo`']
+            'use `sudo`',
+            'SudoRequiredError']
 
 
 def match(command):
