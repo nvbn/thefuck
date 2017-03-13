@@ -1,4 +1,5 @@
 pip
+flake8
 pytest
 mock
 pytest-mock

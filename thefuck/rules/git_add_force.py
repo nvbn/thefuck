@@ -10,4 +10,4 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-	return replace_argument(command.script, 'add', 'add --force')
+    return replace_argument(command.script, 'add', 'add --force')

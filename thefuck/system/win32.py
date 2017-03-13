@@ -41,5 +41,6 @@ except ImportError:
 def _expanduser(self):
     return self.__class__(os.path.expanduser(str(self)))
 
+
 # pathlib's expanduser fails on windows, see http://bugs.python.org/issue19776
 Path.expanduser = _expanduser

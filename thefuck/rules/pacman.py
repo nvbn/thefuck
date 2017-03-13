@@ -13,4 +13,5 @@ def get_new_command(command):
     return [formatme.format(pacman, package, command.script)
             for package in packages]
 
+
 enabled_by_default, pacman = archlinux_env()

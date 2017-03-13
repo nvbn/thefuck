@@ -45,5 +45,5 @@ def test_not_match(command):
      'fab prepare_extension:version=2016 deploy:beta=true -H the.fuck'),
 ])
 def test_get_new_command(script, result):
-    command = Command(script, stdout,stderr)
+    command = Command(script, stdout, stderr)
     assert get_new_command(command) == result

@@ -27,8 +27,8 @@ def test_not_match(command):
     (Command(script='vagrant ssh', stderr='VM must be running to open SSH connection. Run `vagrant up`\nto start the virtual machine.'), 'vagrant up && vagrant ssh'),
     (Command(script='vagrant ssh devbox', stderr='VM must be running to open SSH connection. Run `vagrant up`\nto start the virtual machine.'), ['vagrant up devbox && vagrant ssh devbox', 'vagrant up && vagrant ssh devbox']),
     (Command(script='vagrant rdp',
-            stderr='VM must be created before running this command. Run `vagrant up` first.'), 'vagrant up && vagrant rdp'),
+             stderr='VM must be created before running this command. Run `vagrant up` first.'), 'vagrant up && vagrant rdp'),
     (Command(script='vagrant rdp devbox',
-            stderr='VM must be created before running this command. Run `vagrant up` first.'), ['vagrant up devbox && vagrant rdp devbox', 'vagrant up && vagrant rdp devbox'])])
+             stderr='VM must be created before running this command. Run `vagrant up` first.'), ['vagrant up devbox && vagrant rdp devbox', 'vagrant up && vagrant rdp devbox'])])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command

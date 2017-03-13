@@ -191,7 +191,7 @@ E       NameError: name 'mocker' is not defined
 
 /home/thefuck/tests/rules/test_fix_file.py:218: NameError
 """, ''),
-)
+)  # noqa
 
 
 @pytest.mark.parametrize('test', tests)
@@ -227,10 +227,6 @@ def test_get_new_command(mocker, monkeypatch, test):
     mocker.patch('os.path.isfile', return_value=True)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
 
-    cmd = Command(script=test[0], stdout=test[4], stderr=test[5])
-    #assert (get_new_command(cmd, Settings({})) ==
-    #    'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))
-
 
 @pytest.mark.parametrize('test', tests)
 @pytest.mark.usefixtures('no_memoize')
@@ -243,7 +239,7 @@ def test_get_new_command_with_settings(mocker, monkeypatch, test, settings):
 
     if test[3]:
         assert (get_new_command(cmd) ==
-            u'dummy_editor {} +{}:{} && {}'.format(test[1], test[2], test[3], test[0]))
+                u'dummy_editor {} +{}:{} && {}'.format(test[1], test[2], test[3], test[0]))
     else:
         assert (get_new_command(cmd) ==
-            u'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))
+                u'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))

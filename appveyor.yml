@@ -20,4 +20,5 @@ install:
   - "%PYTHON%/Scripts/pip.exe install -U -r requirements.txt"
 
 test_script:
+  - "%PYTHON%/python.exe -m flake8"
   - "%PYTHON%/Scripts/py.test.exe -sv"

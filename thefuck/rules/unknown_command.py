@@ -3,8 +3,8 @@ from thefuck.utils import replace_command
 
 
 def match(command):
-    return (re.search(r"([^:]*): Unknown command.*", command.stderr) != None
-            and re.search(r"Did you mean ([^?]*)?", command.stderr) != None)
+    return (re.search(r"([^:]*): Unknown command.*", command.stderr) is not None
+            and re.search(r"Did you mean ([^?]*)?", command.stderr) is not None)
 
 
 def get_new_command(command):

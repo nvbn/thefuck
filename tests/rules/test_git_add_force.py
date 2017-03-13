@@ -18,5 +18,5 @@ def test_match(stderr):
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command('git add dist/*.js', stderr=stderr)) \
-           == "git add --force dist/*.js"
+    assert (get_new_command(Command('git add dist/*.js', stderr=stderr))
+            == "git add --force dist/*.js")

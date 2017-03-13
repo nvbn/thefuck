@@ -47,8 +47,8 @@ def test_get_corrected_commands(mocker):
                   get_new_command=lambda x: [x.script + '@', x.script + ';'],
                   priority=60)]
     mocker.patch('thefuck.corrector.get_rules', return_value=rules)
-    assert [cmd.script for cmd in get_corrected_commands(command)] \
-           == ['test!', 'test@', 'test;']
+    assert ([cmd.script for cmd in get_corrected_commands(command)]
+            == ['test!', 'test@', 'test;'])
 
 
 def test_organize_commands():

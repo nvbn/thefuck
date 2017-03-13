@@ -11,6 +11,7 @@ def match(command):
     else:
         return False
 
+
 # git's output here is too complicated to be parsed (see the test file)
 stash_commands = (
     'apply',

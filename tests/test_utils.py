@@ -18,8 +18,7 @@ from tests.utils import Command
 def test_default_settings(settings, override, old, new):
     settings.clear()
     settings.update(old)
-    fn = lambda _: _
-    default_settings(override)(fn)(None)
+    default_settings(override)(lambda _: _)(None)
     assert settings == new
 
 

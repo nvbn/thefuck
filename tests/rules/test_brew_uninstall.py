@@ -22,7 +22,7 @@ def test_match(stdout, script):
 
 @pytest.mark.parametrize('script', ['brew remove gnuplot'])
 def test_not_match(script):
-    stdout='Uninstalling /usr/local/Cellar/gnuplot/5.0.4_1... (44 files, 2.3M)\n'
+    stdout = 'Uninstalling /usr/local/Cellar/gnuplot/5.0.4_1... (44 files, 2.3M)\n'
     assert not match(Command(script=script, stdout=stdout))
 
 

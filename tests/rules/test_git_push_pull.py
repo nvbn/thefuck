@@ -39,12 +39,7 @@ To /tmp/bar
 @pytest.mark.parametrize('command', [
     Command(script='git push', stderr=git_err),
     Command(script='git push nvbn', stderr=git_err),
-    Command(script='git push nvbn master', stderr=git_err)])
-def test_match(command):
-    assert match(command)
-
-
-@pytest.mark.parametrize('command', [
+    Command(script='git push nvbn master', stderr=git_err),
     Command(script='git push', stderr=git_err2),
     Command(script='git push nvbn', stderr=git_err2),
     Command(script='git push nvbn master', stderr=git_err2)])
@@ -68,12 +63,7 @@ def test_not_match(command):
     (Command(script='git push nvbn', stderr=git_err),
      'git pull nvbn && git push nvbn'),
     (Command(script='git push nvbn master', stderr=git_err),
-     'git pull nvbn master && git push nvbn master')])
-def test_get_new_command(command, output):
-    assert get_new_command(command) == output
-
-
-@pytest.mark.parametrize('command, output', [
+     'git pull nvbn master && git push nvbn master'),
     (Command(script='git push', stderr=git_err2), 'git pull && git push'),
     (Command(script='git push nvbn', stderr=git_err2),
      'git pull nvbn && git push nvbn'),

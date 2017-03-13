@@ -82,7 +82,7 @@ yarn_help_stdout = b'''
 
   Run `yarn help COMMAND` for more information on specific commands.
   Visit https://yarnpkg.com/en/docs/cli/ to learn more about Yarn.
-'''
+''' # noqa
 
 
 @pytest.fixture(autouse=True)

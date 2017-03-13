@@ -15,5 +15,5 @@ def test_match(stderr):
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command('git pull', stderr=stderr)) \
-           == "git stash && git pull && git stash pop"
+    assert (get_new_command(Command('git pull', stderr=stderr))
+            == "git stash && git pull && git stash pop")
