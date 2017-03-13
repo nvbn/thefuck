@@ -220,6 +220,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
+* `missing_space_before_subcommand` &ndash; fixes command with missing space like `npminstall`;
 * `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
 * `mvn_no_command` &ndash; adds `clean package` to `mvn`;
 * `mvn_unknown_lifecycle_phase` &ndash; fixes misspelled lifecycle phases with `mvn`;
