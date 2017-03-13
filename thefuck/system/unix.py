@@ -52,5 +52,6 @@ except ImportError:
 def _expanduser(self):
     return self.__class__(os.path.expanduser(str(self)))
 
+
 if not hasattr(Path, 'expanduser'):
     Path.expanduser = _expanduser

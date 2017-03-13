@@ -388,6 +388,12 @@ pip install -r requirements.txt
 python setup.py develop
 ```
 
+Run code style checks:
+
+```bash
+flake8
+```
+
 Run unit tests:
 
 ```bash

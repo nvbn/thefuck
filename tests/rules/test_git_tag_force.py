@@ -14,5 +14,5 @@ def test_match(stderr):
 
 
 def test_get_new_command(stderr):
-    assert get_new_command(Command('git tag alert', stderr=stderr)) \
-           == "git tag --force alert"
+    assert (get_new_command(Command('git tag alert', stderr=stderr))
+            == "git tag --force alert")

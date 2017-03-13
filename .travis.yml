@@ -42,6 +42,7 @@ install:
   - python setup.py develop
   - rm -rf build
 script:
+  - flake8
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
   - export RUN_TESTS="coverage run --source=thefuck,tests -m py.test -v --capture=sys tests"
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi

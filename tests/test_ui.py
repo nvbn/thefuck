@@ -30,11 +30,11 @@ def test_read_actions(patch_get_key):
         const.KEY_DOWN, 'j',
         # Ctrl+C:
         const.KEY_CTRL_C, 'q'])
-    assert list(islice(ui.read_actions(), 8)) \
-           == [const.ACTION_SELECT, const.ACTION_SELECT,
-               const.ACTION_PREVIOUS, const.ACTION_PREVIOUS,
-               const.ACTION_NEXT, const.ACTION_NEXT,
-               const.ACTION_ABORT, const.ACTION_ABORT]
+    assert (list(islice(ui.read_actions(), 8))
+            == [const.ACTION_SELECT, const.ACTION_SELECT,
+                const.ACTION_PREVIOUS, const.ACTION_PREVIOUS,
+                const.ACTION_NEXT, const.ACTION_NEXT,
+                const.ACTION_ABORT, const.ACTION_ABORT])
 
 
 def test_command_selector():
@@ -74,8 +74,8 @@ class TestSelectCommand(object):
     def test_without_confirmation_with_side_effects(
             self, capsys, commands_with_side_effect, settings):
         settings.require_confirmation = False
-        assert ui.select_command(iter(commands_with_side_effect)) \
-               == commands_with_side_effect[0]
+        assert (ui.select_command(iter(commands_with_side_effect))
+                == commands_with_side_effect[0])
         assert capsys.readouterr() == ('', 'ls (+side effect)\n')
 
     def test_with_confirmation(self, capsys, patch_get_key, commands):
@@ -91,8 +91,8 @@ class TestSelectCommand(object):
     def test_with_confirmation_with_side_effct(self, capsys, patch_get_key,
                                                commands_with_side_effect):
         patch_get_key(['\n'])
-        assert ui.select_command(iter(commands_with_side_effect)) \
-               == commands_with_side_effect[0]
+        assert (ui.select_command(iter(commands_with_side_effect))
+                == commands_with_side_effect[0])
         assert capsys.readouterr() == ('', u'\x1b[1K\rls (+side effect) [enter/↑/↓/ctrl+c]\n')
 
     def test_with_confirmation_select_second(self, capsys, patch_get_key, commands):

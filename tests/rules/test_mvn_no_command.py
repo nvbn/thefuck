@@ -25,7 +25,7 @@ def test_match(command):
 [INFO] Finished at: Wed Aug 26 13:05:47 BST 2015
 [INFO] Final Memory: 6M/240M
 [INFO] ------------------------------------------------------------------------
-"""),
+"""),  # noqa
     Command(script='mvn --help'),
     Command(script='mvn -v')
 ])

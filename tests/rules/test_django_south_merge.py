@@ -39,5 +39,5 @@ def test_match(stderr):
 
 
 def test_get_new_command():
-    assert get_new_command(Command('./manage.py migrate auth')) \
-           == './manage.py migrate auth --merge'
+    assert (get_new_command(Command('./manage.py migrate auth'))
+            == './manage.py migrate auth --merge')

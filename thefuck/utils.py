@@ -40,6 +40,8 @@ def memoize(fn):
         return value
 
     return wrapper
+
+
 memoize.disabled = False
 
 
@@ -238,6 +240,8 @@ def cache(*depends_on):
                 return value
 
     return _cache
+
+
 cache.disabled = False
 
 

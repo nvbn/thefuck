@@ -3,16 +3,16 @@ from .system import init_output
 
 init_output()
 
-from argparse import ArgumentParser
-from pprint import pformat
-import sys
-from . import logs, types
-from .shells import shell
-from .conf import settings
-from .corrector import get_corrected_commands
-from .exceptions import EmptyCommand
-from .utils import get_installation_info, get_alias
-from .ui import select_command
+from argparse import ArgumentParser  # noqa: E402
+from pprint import pformat  # noqa: E402
+import sys  # noqa: E402
+from . import logs, types  # noqa: E402
+from .shells import shell  # noqa: E402
+from .conf import settings  # noqa: E402
+from .corrector import get_corrected_commands  # noqa: E402
+from .exceptions import EmptyCommand  # noqa: E402
+from .utils import get_installation_info, get_alias  # noqa: E402
+from .ui import select_command  # noqa: E402
 
 
 def fix_command():
@@ -59,11 +59,10 @@ def how_to_configure_alias():
 def main():
     parser = ArgumentParser(prog='thefuck')
     version = get_installation_info().version
-    parser.add_argument(
-            '-v', '--version',
-            action='version',
-            version='The Fuck {} using Python {}'.format(
-                    version, sys.version.split()[0]))
+    parser.add_argument('-v', '--version',
+                        action='version',
+                        version='The Fuck {} using Python {}'.format(
+                            version, sys.version.split()[0]))
     parser.add_argument('-a', '--alias',
                         action='store_true',
                         help='[custom-alias-name] prints alias for current shell')

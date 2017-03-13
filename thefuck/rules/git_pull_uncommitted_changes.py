@@ -6,7 +6,7 @@ from thefuck.specific.git import git_support
 def match(command):
     return ('pull' in command.script
             and ('You have unstaged changes' in command.stderr
-            or 'contains uncommitted changes' in command.stderr))
+                 or 'contains uncommitted changes' in command.stderr))
 
 
 @git_support
