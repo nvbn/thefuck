@@ -268,7 +268,9 @@ def get_valid_history_without_current(command):
     from thefuck.shells import shell
     history = shell.get_history()
     tf_alias = get_alias()
-    executables = set(get_all_executables())
+    executables = set(get_all_executables())\
+        .union(shell.get_builtin_commands())
+
     return [line for line in _not_corrected(history, tf_alias)
             if not line.startswith(tf_alias) and not line == command.script
             and line.split(' ')[0] in executables]
