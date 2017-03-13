@@ -68,7 +68,7 @@ class Fish(Generic):
 
     def how_to_configure(self):
         return self._create_shell_configuration(
-            content=r"eval (thefuck --alias | tr '\n' ';')",
+            content=u"eval (thefuck --alias | tr '\n' ';')",
             path='~/.config/fish/config.fish',
             reload='fish')
 

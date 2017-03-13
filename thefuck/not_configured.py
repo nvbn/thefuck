@@ -5,6 +5,7 @@ init_output()
 
 import os  # noqa: E402
 from psutil import Process  # noqa: E402
+import six  # noqa: E402
 from . import logs  # noqa: E402
 from .shells import shell  # noqa: E402
 from .conf import settings  # noqa: E402
@@ -30,7 +31,7 @@ def _get_not_configured_usage_tracker_path():
 def _record_first_run():
     """Records shell pid to tracker file."""
     with _get_not_configured_usage_tracker_path().open('w') as tracker:
-        tracker.write(str(_get_shell_pid()))
+        tracker.write(six.text_type(_get_shell_pid()))
 
 
 def _is_second_run():
@@ -41,7 +42,7 @@ def _is_second_run():
 
     current_pid = _get_shell_pid()
     with tracker_path.open('r') as tracker:
-        return tracker.read() == str(current_pid)
+        return tracker.read() == six.text_type(current_pid)
 
 
 def _is_already_configured(configuration_details):
@@ -55,9 +56,9 @@ def _configure(configuration_details):
     """Adds alias to shell config."""
     path = Path(configuration_details.path).expanduser()
     with path.open('a') as shell_config:
-        shell_config.write('\n')
+        shell_config.write(u'\n')
         shell_config.write(configuration_details.content)
-        shell_config.write('\n')
+        shell_config.write(u'\n')
 
 
 def main():

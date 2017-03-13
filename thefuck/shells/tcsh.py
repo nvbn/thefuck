@@ -32,6 +32,6 @@ class Tcsh(Generic):
 
     def how_to_configure(self):
         return self._create_shell_configuration(
-            content='eval `thefuck --alias`',
+            content=u'eval `thefuck --alias`',
             path='~/.tcshrc',
             reload='tcsh')

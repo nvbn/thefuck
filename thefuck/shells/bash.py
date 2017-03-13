@@ -46,6 +46,6 @@ class Bash(Generic):
             config = 'bash config'
 
         return self._create_shell_configuration(
-            content='eval $(thefuck --alias)',
+            content=u'eval $(thefuck --alias)',
             path=config,
             reload=u'source {}'.format(config))
