@@ -1,4 +1,5 @@
 import pytest
+from mock import MagicMock
 from thefuck.shells.generic import ShellConfiguration
 from thefuck.not_configured import main
 
@@ -6,7 +7,8 @@ from thefuck.not_configured import main
 @pytest.fixture(autouse=True)
 def usage_tracker(mocker):
     return mocker.patch(
-        'thefuck.not_configured._get_not_configured_usage_tracker_path')
+        'thefuck.not_configured._get_not_configured_usage_tracker_path',
+        new_callable=MagicMock)
 
 
 def _assert_tracker_updated(usage_tracker, pid):
@@ -26,12 +28,14 @@ def _change_tracker(usage_tracker, pid):
 
 @pytest.fixture(autouse=True)
 def shell_pid(mocker):
-    return mocker.patch('thefuck.not_configured._get_shell_pid')
+    return mocker.patch('thefuck.not_configured._get_shell_pid',
+                        new_callable=MagicMock)
 
 
 @pytest.fixture(autouse=True)
 def shell(mocker):
-    shell = mocker.patch('thefuck.not_configured.shell')
+    shell = mocker.patch('thefuck.not_configured.shell',
+                         new_callable=MagicMock)
     shell.get_history.return_value = []
     shell.how_to_configure.return_value = ShellConfiguration(
         content='eval $(thefuck --alias)',
@@ -43,7 +47,8 @@ def shell(mocker):
 
 @pytest.fixture(autouse=True)
 def shell_config(mocker):
-    path_mock = mocker.patch('thefuck.not_configured.Path')
+    path_mock = mocker.patch('thefuck.not_configured.Path',
+                             new_callable=MagicMock)
     return path_mock.return_value \
         .expanduser.return_value \
         .open.return_value \
@@ -52,7 +57,8 @@ def shell_config(mocker):
 
 @pytest.fixture(autouse=True)
 def logs(mocker):
-    return mocker.patch('thefuck.not_configured.logs')
+    return mocker.patch('thefuck.not_configured.logs',
+                        new_callable=MagicMock)
 
 
 def test_for_generic_shell(shell, logs):
