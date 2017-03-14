@@ -33,7 +33,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'alter_history': True,
                     'wait_slow_command': 15,
                     'slow_commands': ['lein', 'react-native', 'gradle',
-                                      './gradlew'],
+                                      './gradlew', 'vagrant'],
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
