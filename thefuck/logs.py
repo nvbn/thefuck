@@ -80,34 +80,34 @@ def debug_time(msg):
 
 
 def how_to_configure_alias(configuration_details):
-    print("Seems like {bold}fuck{reset} alias isn't configured!".format(
+    print(u"Seems like {bold}fuck{reset} alias isn't configured!".format(
         bold=color(colorama.Style.BRIGHT),
         reset=color(colorama.Style.RESET_ALL)))
 
     if configuration_details:
         print(
-            "Please put {bold}{content}{reset} in your "
-            "{bold}{path}{reset} and apply "
-            "changes with {bold}{reload}{reset} or restart your shell.".format(
+            u"Please put {bold}{content}{reset} in your "
+            u"{bold}{path}{reset} and apply "
+            u"changes with {bold}{reload}{reset} or restart your shell.".format(
                 bold=color(colorama.Style.BRIGHT),
                 reset=color(colorama.Style.RESET_ALL),
                 **configuration_details._asdict()))
 
         if configuration_details.can_configure_automatically:
             print(
-                "Or run {bold}fuck{reset} second time for configuring"
-                " it automatically.".format(
+                u"Or run {bold}fuck{reset} second time for configuring"
+                u" it automatically.".format(
                     bold=color(colorama.Style.BRIGHT),
                     reset=color(colorama.Style.RESET_ALL)))
 
-    print('More details - https://github.com/nvbn/thefuck#manual-installation')
+    print(u'More details - https://github.com/nvbn/thefuck#manual-installation')
 
 
 def already_configured(configuration_details):
     print(
-        "Seems like {bold}fuck{reset} alias already configured!\n"
-        "For applying changes run {bold}{reload}{reset}"
-        " or restart your shell.".format(
+        u"Seems like {bold}fuck{reset} alias already configured!\n"
+        u"For applying changes run {bold}{reload}{reset}"
+        u" or restart your shell.".format(
             bold=color(colorama.Style.BRIGHT),
             reset=color(colorama.Style.RESET_ALL),
             reload=configuration_details.reload))
@@ -115,9 +115,9 @@ def already_configured(configuration_details):
 
 def configured_successfully(configuration_details):
     print(
-        "{bold}fuck{reset} alias configured successfully!\n"
-        "For applying changes run {bold}{reload}{reset}"
-        " or restart your shell.".format(
+        u"{bold}fuck{reset} alias configured successfully!\n"
+        u"For applying changes run {bold}{reload}{reset}"
+        u" or restart your shell.".format(
             bold=color(colorama.Style.BRIGHT),
             reset=color(colorama.Style.RESET_ALL),
             reload=configuration_details.reload))
