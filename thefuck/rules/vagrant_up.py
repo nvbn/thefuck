@@ -13,8 +13,9 @@ def get_new_command(command):
     if len(cmds) >= 3:
         machine = cmds[2]
 
-    startAllInstances = shell.and_("vagrant up", command.script)
+    start_all_instances = shell.and_(u"vagrant up", command.script)
     if machine is None:
-        return startAllInstances
+        return start_all_instances
     else:
-        return [shell.and_("vagrant up " + machine, command.script), startAllInstances]
+        return [shell.and_(u"vagrant up {}".format(machine), command.script),
+                start_all_instances]
