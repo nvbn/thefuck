@@ -1,7 +1,5 @@
 import re
 
-from thefuck.utils import replace_command
-
 fix = 'git commit -m "Initial commit." && {command}'
 refspec_does_not_match = re.compile(r'src refspec \w+ does not match any\.')
 
