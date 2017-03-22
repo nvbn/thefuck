@@ -11,7 +11,7 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return shell.and_('git add .', 'git stash pop', 'git reset .')
+    return shell.and_('git add --update', 'git stash pop', 'git reset .')
 
 
 # make it come before the other applicable rules
