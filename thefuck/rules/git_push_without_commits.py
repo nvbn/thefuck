@@ -1,14 +1,13 @@
 import re
+from thefuck.specific.git import git_support
 
-fix = 'git commit -m "Initial commit." && {command}'
+fix = u'git commit -m "Initial commit." && {command}'
 refspec_does_not_match = re.compile(r'src refspec \w+ does not match any\.')
 
 
+@git_support
 def match(command):
-    if refspec_does_not_match.search(command.stderr):
-        return True
-
-    return False
+    return bool(refspec_does_not_match.search(command.stderr))
 
 
 def get_new_command(command):
