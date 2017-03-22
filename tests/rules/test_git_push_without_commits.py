@@ -5,7 +5,6 @@ from thefuck.rules.git_push_without_commits import (
     fix,
     get_new_command,
     match,
-    refspec_does_not_match,
 )
 
 command = 'git push -u origin master'
