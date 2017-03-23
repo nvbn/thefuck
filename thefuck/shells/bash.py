@@ -41,7 +41,7 @@ class Bash(Generic):
         if os.path.join(os.path.expanduser('~'), '.bashrc'):
             config = '~/.bashrc'
         elif os.path.join(os.path.expanduser('~'), '.bash_profile'):
-            config = '~/.bashrc'
+            config = '~/.bash_profile'
         else:
             config = 'bash config'
 
