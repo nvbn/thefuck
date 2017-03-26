@@ -259,6 +259,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
 * `yarn_alias` &ndash; fixes aliased `yarn` commands like `yarn ls`;
 * `yarn_command_not_found` &ndash; fixes misspelled `yarn` commands;
+* `yarn_command_replaced` &ndash; fixes replaced `yarn` commands;
 * `yarn_help` &ndash; makes it easier to open `yarn` documentation;
 
 Enabled by default only on specific platforms:
