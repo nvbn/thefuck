@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 
-from io import BytesIO
 import pytest
 from tests.utils import Command
 from thefuck.rules.yarn_command_replaced import match, get_new_command
