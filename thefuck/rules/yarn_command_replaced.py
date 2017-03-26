@@ -7,6 +7,5 @@ regex = re.compile(r'Run "(.*)" instead')
 def match(command):
     return regex.findall(command.stderr)
 
-
 def get_new_command(command):
     return regex.findall(command.stderr)[0]
