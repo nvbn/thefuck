@@ -24,3 +24,10 @@ def test_match(command):
     (Command('yarn install zxmnc', stderr=stderr('zxmnc')), 'yarn add zxmnc')])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command
+
+
+@pytest.mark.parametrize('command', [
+    Command('yarn install')])
+def test_not_match(command):
+    assert not match(command)
+
