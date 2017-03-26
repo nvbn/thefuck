@@ -30,4 +30,3 @@ def test_get_new_command(command, new_command):
     Command('yarn install')])
 def test_not_match(command):
     assert not match(command)
-
