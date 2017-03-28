@@ -1,22 +1,29 @@
 import os
 from ..conf import settings
+from ..const import ARGUMENT_PLACEHOLDER
 from ..utils import memoize
 from .generic import Generic
 
 
 class Bash(Generic):
-    def app_alias(self, fuck):
-        # It is VERY important to have the variables declared WITHIN the alias
-        alias = "alias {0}='TF_CMD=$(TF_ALIAS={0}" \
-                " PYTHONIOENCODING=utf-8" \
-                " TF_SHELL_ALIASES=$(alias)" \
-                " thefuck $(fc -ln -1)) &&" \
-                " eval $TF_CMD".format(fuck)
-
-        if settings.alter_history:
-            return alias + "; history -s $TF_CMD'"
-        else:
-            return alias + "'"
+    def app_alias(self, alias_name):
+        # It is VERY important to have the variables declared WITHIN the function
+        return '''
+            function {name} () {{
+                TF_PREVIOUS=$(fc -ln -1);
+                TF_CMD=$(
+                    TF_ALIAS={name}
+                    TF_SHELL_ALIASES=$(alias)
+                    PYTHONIOENCODING=utf-8
+                    thefuck $TF_PREVIOUS {argument_placeholder} $@
+                ) && eval $TF_CMD;
+                {alter_history}
+            }}
+        '''.format(
+            name=alias_name,
+            argument_placeholder=ARGUMENT_PLACEHOLDER,
+            alter_history=('history -s $TF_CMD;'
+                           if settings.alter_history else ''))
 
     def _parse_alias(self, alias):
         name, value = alias.replace('alias ', '', 1).split('=', 1)
