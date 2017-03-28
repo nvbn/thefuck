@@ -121,6 +121,8 @@ class Settings(dict):
             from_args['require_confirmation'] = not args.yes
         if args.debug:
             from_args['debug'] = args.debug
+        if args.repeat:
+            from_args['repeat'] = args.repeat
         return from_args
 
 

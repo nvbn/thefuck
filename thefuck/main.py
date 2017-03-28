@@ -20,9 +20,11 @@ def fix_command(known_args):
     settings.init(known_args)
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))
+        raw_command = ([known_args.force_command] if known_args.force_command
+                       else known_args.command)
 
         try:
-            command = types.Command.from_raw_script(known_args.command)
+            command = types.Command.from_raw_script(raw_command)
         except EmptyCommand:
             logs.debug('Empty command, nothing to do')
             return

@@ -55,6 +55,9 @@ class TestFish(object):
     def test_and_(self, shell):
         assert shell.and_('foo', 'bar') == 'foo; and bar'
 
+    def test_or_(self, shell):
+        assert shell.or_('foo', 'bar') == 'foo; or bar'
+
     def test_get_aliases(self, shell):
         assert shell.get_aliases() == {'fish_config': 'fish_config',
                                        'fuck': 'fuck',

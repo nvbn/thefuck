@@ -18,6 +18,9 @@ class TestGeneric(object):
     def test_and_(self, shell):
         assert shell.and_('ls', 'cd') == 'ls && cd'
 
+    def test_or_(self, shell):
+        assert shell.or_('ls', 'cd') == 'ls || cd'
+
     def test_get_aliases(self, shell):
         assert shell.get_aliases() == {}
 

@@ -1,5 +1,5 @@
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, SUPPRESS
 from .const import ARGUMENT_PLACEHOLDER
 from .utils import get_alias
 
@@ -20,17 +20,27 @@ class Parser(object):
             '-h', '--help',
             action='store_true',
             help='show this help message and exit')
-        self._parser.add_argument(
+        group = self._parser.add_mutually_exclusive_group()
+        group.add_argument(
             '-y', '--yes',
             action='store_true',
             help='execute fixed command without confirmation')
+        group.add_argument(
+            '-r', '--repeat',
+            action='store_true',
+            help='repeat on failure')
         self._parser.add_argument(
             '-d', '--debug',
             action='store_true',
             help='enable debug output')
-        self._parser.add_argument('command',
-                                  nargs='*',
-                                  help='command that should be fixed')
+        self._parser.add_argument(
+            '--force-command',
+            action='store',
+            help=SUPPRESS)
+        self._parser.add_argument(
+            'command',
+            nargs='*',
+            help='command that should be fixed')
 
     def _get_arguments(self, argv):
         if ARGUMENT_PLACEHOLDER in argv:
