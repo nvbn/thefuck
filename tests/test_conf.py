@@ -79,6 +79,12 @@ class TestSettingsFromEnv(object):
         assert settings.rules == const.DEFAULT_RULES + ['bash', 'lisp']
 
 
+def test_settings_from_args(settings):
+    settings.init(Mock(yes=True, debug=True))
+    assert not settings.require_confirmation
+    assert settings.debug
+
+
 class TestInitializeSettingsFile(object):
     def test_ignore_if_exists(self, settings):
         settings_path_mock = Mock(is_file=Mock(return_value=True), open=Mock())

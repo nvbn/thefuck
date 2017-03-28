@@ -24,6 +24,10 @@ class Parser(object):
             '-y', '--yes',
             action='store_true',
             help='execute fixed command without confirmation')
+        self._parser.add_argument(
+            '-d', '--debug',
+            action='store_true',
+            help='enable debug output')
         self._parser.add_argument('command',
                                   nargs='*',
                                   help='command that should be fixed')

@@ -113,10 +113,15 @@ class Settings(dict):
 
     def _settings_from_args(self, args):
         """Loads settings from args."""
-        if args and args.yes:
-            return {'require_confirmation': False}
-        else:
+        if not args:
             return {}
+
+        from_args = {}
+        if args.yes:
+            from_args['require_confirmation'] = not args.yes
+        if args.debug:
+            from_args['debug'] = args.debug
+        return from_args
 
 
 settings = Settings(const.DEFAULT_SETTINGS)
