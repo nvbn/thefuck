@@ -111,12 +111,15 @@ def get_all_executables():
     tf_entry_points = get_installation_info().get_entry_map()\
                                              .get('console_scripts', {})\
                                              .keys()
+
     bins = [exe.name.decode('utf8') if six.PY2 else exe.name
             for path in os.environ.get('PATH', '').split(':')
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]
-    aliases = [alias for alias in shell.get_aliases() if alias != tf_alias]
+    aliases = [alias.decode('utf8') if six.PY2 else alias
+               for alias in shell.get_aliases() if alias != tf_alias]
+
     return bins + aliases
 
 
