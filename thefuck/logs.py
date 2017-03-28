@@ -126,4 +126,4 @@ def configured_successfully(configuration_details):
 def version(thefuck_version, python_version):
     sys.stderr.write(
         u'The Fuck {} using Python {}'.format(thefuck_version,
-                                                python_version))
+                                              python_version))
