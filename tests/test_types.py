@@ -28,6 +28,20 @@ class TestCorrectedCommand(object):
         assert u'{}'.format(CorrectedCommand(u'echo café', None, 100)) == \
                u'CorrectedCommand(script=echo café, side_effect=None, priority=100)'
 
+    @pytest.mark.parametrize('script, printed, override_settings', [
+        ('git branch', 'git branch', {'repeat': False, 'debug': False}),
+        ('git brunch',
+         "git brunch || fuck --repeat --force-command 'git brunch'",
+         {'repeat': True, 'debug': False}),
+        ('git brunch',
+         "git brunch || fuck --repeat --debug --force-command 'git brunch'",
+         {'repeat': True, 'debug': True})])
+    def test_run(self, capsys, settings, script, printed, override_settings):
+        settings.update(override_settings)
+        CorrectedCommand(script, None, 1000).run(Command())
+        out, _ = capsys.readouterr()
+        assert out[:-1] == printed
+
 
 class TestRule(object):
     def test_from_path(self, mocker):

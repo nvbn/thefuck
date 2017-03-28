@@ -1,12 +1,21 @@
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, SUPPRESS
 from .const import ARGUMENT_PLACEHOLDER
 from .utils import get_alias
 
 
 class Parser(object):
+    """Argument parser that can handle arguments with our special
+    placeholder.
+
+    """
+
     def __init__(self):
         self._parser = ArgumentParser(prog='thefuck', add_help=False)
+        self._add_arguments()
+
+    def _add_arguments(self):
+        """Adds arguments to parser."""
         self._parser.add_argument(
             '-v', '--version',
             action='store_true',
@@ -20,19 +29,42 @@ class Parser(object):
             '-h', '--help',
             action='store_true',
             help='show this help message and exit')
-        self._parser.add_argument(
-            '-y', '--yes',
-            action='store_true',
-            help='execute fixed command without confirmation')
+        self._add_conflicting_arguments()
         self._parser.add_argument(
             '-d', '--debug',
             action='store_true',
             help='enable debug output')
-        self._parser.add_argument('command',
-                                  nargs='*',
-                                  help='command that should be fixed')
+        self._parser.add_argument(
+            '--force-command',
+            action='store',
+            help=SUPPRESS)
+        self._parser.add_argument(
+            'command',
+            nargs='*',
+            help='command that should be fixed')
 
-    def _get_arguments(self, argv):
+    def _add_conflicting_arguments(self):
+        """It's too dangerous to use `-y` and `-r` together."""
+        group = self._parser.add_mutually_exclusive_group()
+        group.add_argument(
+            '-y', '--yes',
+            action='store_true',
+            help='execute fixed command without confirmation')
+        group.add_argument(
+            '-r', '--repeat',
+            action='store_true',
+            help='repeat on failure')
+
+    def _prepare_arguments(self, argv):
+        """Prepares arguments by:
+
+        - removing placeholder and moving arguments after it to beginning,
+          we need this to distinguish arguments from `command` with ours;
+
+        - adding `--` before `command`, so our parse would ignore arguments
+          of `command`.
+
+        """
         if ARGUMENT_PLACEHOLDER in argv:
             index = argv.index(ARGUMENT_PLACEHOLDER)
             return argv[index + 1:] + ['--'] + argv[:index]
@@ -42,7 +74,7 @@ class Parser(object):
             return argv
 
     def parse(self, argv):
-        arguments = self._get_arguments(argv[1:])
+        arguments = self._prepare_arguments(argv[1:])
         return self._parser.parse_args(arguments)
 
     def print_usage(self):

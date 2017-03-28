@@ -66,6 +66,9 @@ class Generic(object):
     def and_(self, *commands):
         return u' && '.join(commands)
 
+    def or_(self, *commands):
+        return u' || '.join(commands)
+
     def how_to_configure(self):
         return
 

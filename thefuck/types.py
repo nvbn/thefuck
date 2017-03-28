@@ -9,6 +9,7 @@ from .shells import shell
 from .conf import settings
 from .const import DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
+from .utils import get_alias
 
 
 class Command(object):
@@ -276,6 +277,22 @@ class CorrectedCommand(object):
         return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
             self.script, self.side_effect, self.priority)
 
+    def _get_script(self):
+        """Returns fixed commands script.
+
+        If `settings.repeat` is `True`, appends command with second attempt
+        of running fuck in case fixed command fails again.
+
+        """
+        if settings.repeat:
+            repeat_fuck = '{} --repeat {}--force-command {}'.format(
+                get_alias(),
+                '--debug ' if settings.debug else '',
+                shell.quote(self.script))
+            return shell.or_(self.script, repeat_fuck)
+        else:
+            return self.script
+
     def run(self, old_cmd):
         """Runs command from rule for passed command.
 
@@ -289,4 +306,5 @@ class CorrectedCommand(object):
         # This depends on correct setting of PYTHONIOENCODING by the alias:
         logs.debug(u'PYTHONIOENCODING: {}'.format(
             os.environ.get('PYTHONIOENCODING', '!!not-set!!')))
-        print(self.script)
+
+        print(self._get_script())
