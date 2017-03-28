@@ -1,23 +1,28 @@
 from time import time
 import os
 from ..conf import settings
+from ..const import ARGUMENT_PLACEHOLDER
 from ..utils import memoize
 from .generic import Generic
 
 
 class Zsh(Generic):
     def app_alias(self, alias_name):
-        # It is VERY important to have the variables declared WITHIN the alias
-        alias = "alias {0}='TF_CMD=$(TF_ALIAS={0}" \
-                " PYTHONIOENCODING=utf-8" \
-                " TF_SHELL_ALIASES=$(alias)" \
-                " thefuck $(fc -ln -1 | tail -n 1)) &&" \
-                " eval $TF_CMD".format(alias_name)
-
-        if settings.alter_history:
-            return alias + " ; test -n \"$TF_CMD\" && print -s $TF_CMD'"
-        else:
-            return alias + "'"
+        # It is VERY important to have the variables declared WITHIN the function
+        return '''
+            {name} () {{
+                TF_ALIAS={name};
+                PYTHONIOENCODING=utf-8;
+                TF_SHELL_ALIASES=$(alias);
+                TF_PREVIOUS=$(fc -ln -1 | tail -n 1);
+                TF_CMD=$(thefuck $TF_PREVIOUS {argument_placeholder} $*) && eval $TF_CMD;
+                {alter_history}
+            }}
+        '''.format(
+            name=alias_name,
+            argument_placeholder=ARGUMENT_PLACEHOLDER,
+            alter_history=('test -n "$TF_CMD" && print -s $TF_CMD'
+                           if settings.alter_history else ''))
 
     def _parse_alias(self, alias):
         name, value = alias.split('=', 1)

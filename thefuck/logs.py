@@ -121,3 +121,9 @@ def configured_successfully(configuration_details):
             bold=color(colorama.Style.BRIGHT),
             reset=color(colorama.Style.RESET_ALL),
             reload=configuration_details.reload))
+
+
+def version(thefuck_version, python_version):
+    print(u'The Fuck {} using Python {}'.format(thefuck_version,
+                                                python_version),
+          file=sys.stderr)

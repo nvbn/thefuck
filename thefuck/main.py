@@ -3,7 +3,6 @@ from .system import init_output
 
 init_output()
 
-from argparse import ArgumentParser  # noqa: E402
 from pprint import pformat  # noqa: E402
 import sys  # noqa: E402
 from . import logs, types  # noqa: E402
@@ -11,18 +10,19 @@ from .shells import shell  # noqa: E402
 from .conf import settings  # noqa: E402
 from .corrector import get_corrected_commands  # noqa: E402
 from .exceptions import EmptyCommand  # noqa: E402
-from .utils import get_installation_info, get_alias  # noqa: E402
 from .ui import select_command  # noqa: E402
+from .argument_parser import Parser  # noqa: E402
+from .utils import get_installation_info  # noqa: E402
 
 
-def fix_command():
+def fix_command(known_args):
     """Fixes previous command. Used when `thefuck` called without arguments."""
-    settings.init()
+    settings.init(known_args)
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))
 
         try:
-            command = types.Command.from_raw_script(sys.argv[1:])
+            command = types.Command.from_raw_script(known_args.command)
         except EmptyCommand:
             logs.debug('Empty command, nothing to do')
             return
@@ -36,34 +36,18 @@ def fix_command():
             sys.exit(1)
 
 
-def print_alias():
-    """Prints alias for current shell."""
-    try:
-        alias = sys.argv[2]
-    except IndexError:
-        alias = get_alias()
-
-    print(shell.app_alias(alias))
-
-
 def main():
-    parser = ArgumentParser(prog='thefuck')
-    version = get_installation_info().version
-    parser.add_argument('-v', '--version',
-                        action='version',
-                        version='The Fuck {} using Python {}'.format(
-                            version, sys.version.split()[0]))
-    parser.add_argument('-a', '--alias',
-                        action='store_true',
-                        help='[custom-alias-name] prints alias for current shell')
-    parser.add_argument('command',
-                        nargs='*',
-                        help='command that should be fixed')
-    known_args = parser.parse_args(sys.argv[1:2])
+    parser = Parser()
+    known_args = parser.parse(sys.argv)
 
-    if known_args.alias:
-        print_alias()
+    if known_args.help:
+        parser.print_help()
+    elif known_args.version:
+        logs.version(get_installation_info().version,
+                     sys.version.split()[0])
     elif known_args.command:
-        fix_command()
+        fix_command(known_args)
+    elif known_args.alias:
+        print(shell.app_alias(known_args.alias))
     else:
         parser.print_usage()

@@ -14,7 +14,7 @@ class Settings(dict):
     def __setattr__(self, key, value):
         self[key] = value
 
-    def init(self):
+    def init(self, args=None):
         """Fills `settings` with values from `settings.py` and env."""
         from .logs import exception
 
@@ -30,6 +30,8 @@ class Settings(dict):
             self.update(self._settings_from_env())
         except Exception:
             exception("Can't load settings from env", sys.exc_info())
+
+        self.update(self._settings_from_args(args))
 
     def _init_settings_file(self):
         settings_path = self.user_dir.joinpath('settings.py')
@@ -108,6 +110,13 @@ class Settings(dict):
         return {attr: self._val_from_env(env, attr)
                 for env, attr in const.ENV_TO_ATTR.items()
                 if env in os.environ}
+
+    def _settings_from_args(self, args):
+        """Loads settings from args."""
+        if args and args.yes:
+            return {'require_confirmation': False}
+        else:
+            return {}
 
 
 settings = Settings(const.DEFAULT_SETTINGS)
