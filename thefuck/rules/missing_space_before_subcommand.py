@@ -1,4 +1,4 @@
-from thefuck.utils import get_all_executables, memoize, which
+from thefuck.utils import get_all_executables, memoize
 
 
 @memoize

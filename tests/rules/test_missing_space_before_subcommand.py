@@ -17,7 +17,7 @@ def test_match(script):
     assert match(Command(script))
 
 
-@pytest.mark.parametrize('script',  ['git branch' 'vimfile'])
+@pytest.mark.parametrize('script', ['git branch', 'vimfile'])
 def test_not_match(script):
     assert not match(Command(script))
 
