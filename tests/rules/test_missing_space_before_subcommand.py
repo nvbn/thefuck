@@ -5,12 +5,6 @@ from tests.utils import Command
 
 
 @pytest.fixture(autouse=True)
-def which(mocker):
-    return mocker.patch('thefuck.rules.missing_space_before_subcommand.which',
-                        return_value=None)
-
-
-@pytest.fixture(autouse=True)
 def all_executables(mocker):
     return mocker.patch(
         'thefuck.rules.missing_space_before_subcommand.get_all_executables',
@@ -23,11 +17,8 @@ def test_match(script):
     assert match(Command(script))
 
 
-@pytest.mark.parametrize('script, which_result', [
-    ('git branch', '/usr/bin/git'),
-    ('vimfile', None)])
-def test_not_match(script, which_result, which):
-    which.return_value = which_result
+@pytest.mark.parametrize('script',  ['git branch' 'vimfile'])
+def test_not_match(script):
     assert not match(Command(script))
 
 
