@@ -1,5 +1,6 @@
 import sys
 from argparse import ArgumentParser, SUPPRESS
+from typing import List
 from .const import ARGUMENT_PLACEHOLDER
 from .utils import get_alias
 
@@ -55,7 +56,7 @@ class Parser(object):
             action='store_true',
             help='repeat on failure')
 
-    def _prepare_arguments(self, argv):
+    def _prepare_arguments(self, argv: List[str]) -> List[str]:
         """Prepares arguments by:
 
         - removing placeholder and moving arguments after it to beginning,
@@ -73,7 +74,7 @@ class Parser(object):
         else:
             return argv
 
-    def parse(self, argv):
+    def parse(self, argv: List[str]) -> List[str]:
         arguments = self._prepare_arguments(argv[1:])
         return self._parser.parse_args(arguments)
 
