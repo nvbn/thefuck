@@ -13,7 +13,7 @@ from .system import Path  # noqa: E402
 from .utils import get_cache_dir  # noqa: E402
 
 
-def _get_shell_pid():
+def _get_shell_pid() -> int:
     """Returns parent process pid."""
     proc = Process(os.getpid())
 

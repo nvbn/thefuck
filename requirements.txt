@@ -9,3 +9,4 @@ pexpect
 pypandoc
 pytest-benchmark
 pytest-docker-pexpect
+astunparse

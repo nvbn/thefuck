@@ -33,6 +33,7 @@ VERSION = '3.16'
 
 install_requires = ['psutil', 'colorama', 'six', 'decorator']
 extras_require = {':python_version<"3.4"': ['pathlib2'],
+                  ':python_version<"3.5"': ['typing'],
                   ":sys_platform=='win32'": ['win_unicode_console']}
 
 setup(name='thefuck',
