@@ -14,6 +14,9 @@ init:
 
 install:
   - ps: (new-object net.webclient).DownloadFile('https://bootstrap.pypa.io/get-pip.py', 'C:/get-pip.py')
+  - "Python36/python.exe C:/get-pip.py"
+  - "Python36/Scripts/pip.exe install astunparse"
+  - "Python36/python.exe type_eraser.py"
   - "%PYTHON%/python.exe C:/get-pip.py"
   - "%PYTHON%/Scripts/pip.exe install -U setuptools"
   - "%PYTHON%/python.exe setup.py develop"
