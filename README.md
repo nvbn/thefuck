@@ -429,9 +429,9 @@ Project License can be found [here](LICENSE.md).
 
 [version-badge]:   https://img.shields.io/pypi/v/thefuck.svg?label=version
 [version-link]:    https://pypi.python.org/pypi/thefuck/
-[travis-badge]:    https://img.shields.io/travis/nvbn/thefuck.svg
+[travis-badge]:    https://travis-ci.org/nvbn/thefuck.svg?branch=master
 [travis-link]:     https://travis-ci.org/nvbn/thefuck
-[appveyor-badge]:  https://img.shields.io/appveyor/ci/nvbn/thefuck.svg?label=windows%20build
+[appveyor-badge]:  https://ci.appveyor.com/api/projects/status/1sskj4imj02um0gu/branch/master?svg=true
 [appveyor-link]:   https://ci.appveyor.com/project/nvbn/thefuck
 [coverage-badge]:  https://img.shields.io/coveralls/nvbn/thefuck.svg
 [coverage-link]:   https://coveralls.io/github/nvbn/thefuck
