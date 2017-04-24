@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
 Removes type annotation from source code.
-
-Should be executed with python 3 before release.
 """
 
-import ast
-from pathlib import Path
+from typed_ast import ast3 as ast
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 from astunparse import unparse
 
 

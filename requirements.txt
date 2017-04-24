@@ -10,3 +10,5 @@ pypandoc
 pytest-benchmark
 pytest-docker-pexpect
 astunparse
+mypy
+typed-ast

@@ -30,12 +30,9 @@ addons:
     packages:
       - python-commandnotfound
       - python3-commandnotfound
-      - python3
-      - python3-pip
 before_install:
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then brew update ; fi
-  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then if brew ls --versions python3; then brew upgrade python3 || echo Python 3 is up to date; else brew install python3; fi; fi
-  - if [[ $TRAVIS_OS_NAME == "osx" && $FORMULA == "python" ]]; then if brew ls --versions $FORMULA; then brew upgrade $FORMULA || echo Python is up to date; else brew install $FORMULA; fi; fi
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then if brew ls --versions $FORMULA; then brew upgrade $FORMULA || echo Python is up to date; else brew install $FORMULA; fi; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then virtualenv venv -p $FORMULA; fi
   - if [[ $TRAVIS_OS_NAME == "osx" ]]; then source venv/bin/activate; fi
   - pip install -U pip
@@ -45,8 +42,8 @@ install:
   - python setup.py develop
   - rm -rf build
 script:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; flake8; fi
-  - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then pip3 install astunparse; ./type_eraser.py; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then flake8; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != 3.6 ]]; then python type_eraser.py; fi
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
   - export RUN_TESTS="coverage run --source=thefuck,tests -m py.test -v --capture=sys tests"
   - if [[ $TRAVIS_PYTHON_VERSION == 3.6 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi

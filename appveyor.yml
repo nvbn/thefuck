@@ -21,6 +21,7 @@ install:
   - "%PYTHON%/Scripts/pip.exe install -U setuptools"
   - "%PYTHON%/python.exe setup.py develop"
   - "%PYTHON%/Scripts/pip.exe install -U -r requirements.txt"
+  - "%PYTHON%/python.exe type_eraser.py"
 
 test_script:
   - "%PYTHON%/Scripts/py.test.exe -sv"
