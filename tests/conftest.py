@@ -7,7 +7,7 @@ shells.shell = shells.Generic()
 
 
 def pytest_addoption(parser):
-    """Adds `--run-without-docker` argument."""
+    """Adds `--enable-functional` argument."""
     group = parser.getgroup("thefuck")
     group.addoption('--enable-functional', action="store_true", default=False,
                     help="Enable functional tests")
