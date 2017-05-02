@@ -158,6 +158,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `chmod_x` &ndash; add execution bit;
 * `composer_not_command` &ndash; fixes composer command name;
+* `cp_dir` &ndash; adds `-r` when you try to copy a directory;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
 * `dirty_untar` &ndash; fixes `tar x` command that untarred in the current directory;
