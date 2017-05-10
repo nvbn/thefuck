@@ -4,6 +4,7 @@ import sys
 from .conf import settings
 from .exceptions import NoRuleMatched
 from .system import get_key
+from .utils import get_alias
 from . import logs, const
 
 
@@ -69,7 +70,8 @@ def select_command(corrected_commands):
     try:
         selector = CommandSelector(corrected_commands)
     except NoRuleMatched:
-        logs.failed('No fucks given')
+        logs.failed('No fucks given' if get_alias() == 'fuck'
+                    else 'Nothing found')
         return
 
     if not settings.require_confirmation:
