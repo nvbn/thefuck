@@ -11,12 +11,14 @@ class Bash(Generic):
         return '''
             function {name} () {{
                 TF_PREVIOUS=$(fc -ln -1);
+                TF_PYTHONIOENCODING=$PYTHONIOENCODING;
+                export TF_ALIAS={name};
+                export TF_SHELL_ALIASES=$(alias);
+                export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
-                    export TF_ALIAS={name}
-                    export TF_SHELL_ALIASES=$(alias)
-                    export PYTHONIOENCODING=utf-8
                     thefuck $TF_PREVIOUS {argument_placeholder} $@
                 ) && eval $TF_CMD;
+                export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
                 {alter_history}
             }}
         '''.format(
