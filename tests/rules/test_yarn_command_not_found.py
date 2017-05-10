@@ -106,6 +106,13 @@ def test_not_match(command):
 
 
 @pytest.mark.parametrize('command, result', [
-    (Command('yarn whyy webpack', stderr=stderr('whyy')), 'yarn why webpack')])
+    (Command('yarn whyy webpack', stderr=stderr('whyy')),
+     'yarn why webpack'),
+    (Command('yarn require lodash', stderr=stderr('require')),
+     'yarn add lodash')])
 def test_get_new_command(command, result):
-    assert get_new_command(command)[0] == result
+    fixed_command = get_new_command(command)
+    if isinstance(fixed_command, list):
+        fixed_command = fixed_command[0]
+
+    assert fixed_command == result
