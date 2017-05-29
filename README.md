@@ -106,13 +106,13 @@ On Ubuntu you can install `The Fuck` with:
 ```bash
 sudo apt update
 sudo apt install python3-dev python3-pip
-pip3 install --user thefuck
+sudo pip3 install thefuck
 ```
 
 On other systems you can install `The Fuck` with `pip`:
 
 ```bash
-pip install --user thefuck
+pip install thefuck
 ```
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
@@ -139,7 +139,7 @@ alias fuck-it='export THEFUCK_REQUIRE_CONFIRMATION=False; fuck; export THEFUCK_R
 ## Update
 
 ```bash
-pip install --user thefuck --upgrade
+pip install thefuck --upgrade
 ```
 
 **Aliases changed in 1.34.**
