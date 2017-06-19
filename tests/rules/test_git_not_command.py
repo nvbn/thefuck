@@ -7,7 +7,7 @@ from tests.utils import Command
 def git_not_command():
     return """git: 'brnch' is not a git command. See 'git --help'.
 
-Did you mean this?
+The most similar command is
 branch
 """
 
@@ -16,7 +16,7 @@ branch
 def git_not_command_one_of_this():
     return """git: 'st' is not a git command. See 'git --help'.
 
-Did you mean one of these?
+The most similar commands are
 status
 reset
 stage
@@ -29,7 +29,7 @@ stats
 def git_not_command_closest():
     return '''git: 'tags' is not a git command. See 'git --help'.
 
-Did you mean one of these?
+The most similar commands are
 \tstage
 \ttag
 '''
