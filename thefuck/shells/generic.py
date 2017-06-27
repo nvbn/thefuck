@@ -42,6 +42,9 @@ class Generic(object):
     def _get_history_line(self, command_script):
         return ''
 
+    def is_last_history_item_good(self):
+        return self.get_history()[-1] == 'fuck'
+
     @memoize
     def get_history(self):
         return list(self._get_history_lines())

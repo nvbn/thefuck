@@ -46,6 +46,11 @@ class Bash(Generic):
     def _get_history_line(self, command_script):
         return u'{}\n'.format(command_script)
 
+    # bash unfortunately stores its recent history in ram only with
+    # no way to get the last history item of the calling bash instance
+    def is_last_history_item_good(self):
+        return True
+
     def how_to_configure(self):
         if os.path.join(os.path.expanduser('~'), '.bashrc'):
             config = '~/.bashrc'
