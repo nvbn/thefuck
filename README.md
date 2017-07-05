@@ -272,7 +272,6 @@ Enabled by default only on specific platforms:
 * `brew_uninstall` &ndash; adds `--force` to `brew uninstall` if multiple versions were installed;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_update_formula` &ndash; turns `brew update <formula>` into `brew upgrade <formula>`;
-* `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available);
 * `pacman_not_found` &ndash; fixes package name with `pacman` or `yaourt`.
 
