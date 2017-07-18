@@ -39,7 +39,6 @@ parametrize_extensions = pytest.mark.parametrize('ext', tar_extensions)
 # (filename as typed by the user, unquoted filename, quoted filename as per shells.quote)
 parametrize_filename = pytest.mark.parametrize('filename, unquoted, quoted', [
     ('foo{}', 'foo{}', 'foo{}'),
-    ('foo\ bar{}', 'foo bar{}', "'foo bar{}'"),
     ('"foo bar{}"', 'foo bar{}', "'foo bar{}'")])
 
 parametrize_script = pytest.mark.parametrize('script, fixed', [
