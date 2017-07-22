@@ -77,7 +77,7 @@ class Generic(object):
         encoded = self.encode_utf8(command)
 
         try:
-            splitted = shlex.split(encoded)
+            splitted = [s.replace("??", "\ ") for s in shlex.split(encoded.replace('\ ', '??'))]
         except ValueError:
             splitted = encoded.split(' ')
 
