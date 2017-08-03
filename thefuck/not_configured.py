@@ -37,7 +37,7 @@ def _record_first_run():
 def _is_second_run():
     """Returns `True` when we know that `fuck` called second time."""
     tracker_path = _get_not_configured_usage_tracker_path()
-    if not tracker_path.exists() or not shell.get_history()[-1] == 'fuck':
+    if not tracker_path.exists() or not shell.is_last_history_item_good():
         return False
 
     current_pid = _get_shell_pid()

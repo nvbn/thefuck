@@ -77,7 +77,7 @@ def test_on_first_run(usage_tracker, shell_pid, logs):
 
 def test_on_run_after_other_commands(usage_tracker, shell_pid, shell, logs):
     shell_pid.return_value = 12
-    shell.get_history.return_value = ['fuck', 'ls']
+    shell.is_last_history_item_good.return_value = False
     _change_tracker(usage_tracker, 12)
     main()
     logs.how_to_configure_alias.assert_called_once()
