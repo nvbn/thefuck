@@ -18,17 +18,14 @@ class TestFish(object):
             b'man\nmath\npopd\npushd\nruby')
         return mock
 
-    @pytest.fixture
-    def os_environ(self, monkeypatch, key, value):
-        monkeypatch.setattr('os.environ', {key: value})
-
     @pytest.mark.parametrize('key, value', [
         ('TF_OVERRIDDEN_ALIASES', 'cut,git,sed'),  # legacy
         ('THEFUCK_OVERRIDDEN_ALIASES', 'cut,git,sed'),
         ('THEFUCK_OVERRIDDEN_ALIASES', 'cut, git, sed'),
         ('THEFUCK_OVERRIDDEN_ALIASES', ' cut,\tgit,sed\n'),
         ('THEFUCK_OVERRIDDEN_ALIASES', '\ncut,\n\ngit,\tsed\r')])
-    def test_get_overridden_aliases(self, shell, os_environ):
+    def test_get_overridden_aliases(self, shell, os_environ, key, value):
+        os_environ[key] = value
         assert shell._get_overridden_aliases() == {'cd', 'cut', 'git', 'grep',
                                                    'ls', 'man', 'open', 'sed'}
 

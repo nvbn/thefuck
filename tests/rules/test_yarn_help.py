@@ -50,8 +50,8 @@ def test_match(command):
     assert match(command)
 
 
-@pytest.mark.parametrize('command, new_command', [
+@pytest.mark.parametrize('command, url', [
     (Command('yarn help clean', stdout=stdout_clean),
-     open_command('https://yarnpkg.com/en/docs/cli/clean'))])
-def test_get_new_command(command, new_command):
-    assert get_new_command(command) == new_command
+     'https://yarnpkg.com/en/docs/cli/clean')])
+def test_get_new_command(command, url):
+    assert get_new_command(command) == open_command(url)

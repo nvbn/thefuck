@@ -206,8 +206,7 @@ class TestGetValidHistoryWithoutCurrent(object):
                             return_value='fuck')
 
     @pytest.fixture(autouse=True)
-    def bins(self, mocker, monkeypatch):
-        monkeypatch.setattr('thefuck.conf.os.environ', {'PATH': 'path'})
+    def bins(self, mocker):
         callables = list()
         for name in ['diff', 'ls', 'café']:
             bin_mock = mocker.Mock(name=name)

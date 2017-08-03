@@ -115,11 +115,10 @@ class TestCommand(object):
 
     @pytest.fixture(autouse=True)
     def prepare(self, monkeypatch):
-        monkeypatch.setattr('thefuck.types.os.environ', {})
         monkeypatch.setattr('thefuck.types.Command._wait_output',
                             staticmethod(lambda *_: True))
 
-    def test_from_script_calls(self, Popen, settings):
+    def test_from_script_calls(self, Popen, settings, os_environ):
         settings.env = {}
         assert Command.from_raw_script(
             ['apt-get', 'search', 'vim']) == Command(
@@ -129,7 +128,7 @@ class TestCommand(object):
                                       stdin=PIPE,
                                       stdout=PIPE,
                                       stderr=PIPE,
-                                      env={})
+                                      env=os_environ)
 
     @pytest.mark.parametrize('script, result', [
         ([''], None),

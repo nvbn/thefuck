@@ -56,7 +56,13 @@ def set_shell(monkeypatch, request):
     def _set(cls):
         shell = cls()
         monkeypatch.setattr('thefuck.shells.shell', shell)
-        request.addfinalizer()
         return shell
 
     return _set
+
+
+@pytest.fixture(autouse=True)
+def os_environ(monkeypatch):
+    env = {'PATH': ''}
+    monkeypatch.setattr('os.environ', env)
+    return env
