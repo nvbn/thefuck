@@ -1,3 +1,4 @@
+import os
 import pytest
 from thefuck import shells
 from thefuck import conf, const
@@ -63,6 +64,6 @@ def set_shell(monkeypatch, request):
 
 @pytest.fixture(autouse=True)
 def os_environ(monkeypatch):
-    env = {'PATH': ''}
+    env = {'PATH': os.environ['PATH']}
     monkeypatch.setattr('os.environ', env)
     return env
