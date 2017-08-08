@@ -1,4 +1,6 @@
 import pytest
+import json
+from six import StringIO
 from mock import MagicMock
 from thefuck.shells.generic import ShellConfiguration
 from thefuck.not_configured import main
@@ -11,19 +13,33 @@ def usage_tracker(mocker):
         new_callable=MagicMock)
 
 
-def _assert_tracker_updated(usage_tracker, pid):
+@pytest.fixture(autouse=True)
+def usage_tracker_io(usage_tracker):
+    io = StringIO()
     usage_tracker.return_value \
-        .open.return_value \
-        .__enter__.return_value \
-        .write.assert_called_once_with(str(pid))
+                 .open.return_value \
+                 .__enter__.return_value = io
+    return io
 
 
-def _change_tracker(usage_tracker, pid):
-    usage_tracker.return_value.exists.return_value = True
+@pytest.fixture(autouse=True)
+def usage_tracker_exists(usage_tracker):
     usage_tracker.return_value \
-        .open.return_value \
-        .__enter__.return_value \
-        .read.return_value = str(pid)
+                 .exists.return_value = True
+    return usage_tracker.return_value.exists
+
+
+def _assert_tracker_updated(usage_tracker_io, pid):
+    usage_tracker_io.seek(0)
+    info = json.load(usage_tracker_io)
+    assert info['pid'] == pid
+
+
+def _change_tracker(usage_tracker_io, pid):
+    usage_tracker_io.truncate(0)
+    info = {'pid': pid, 'time': 0}
+    json.dump(info, usage_tracker_io)
+    usage_tracker_io.seek(0)
 
 
 @pytest.fixture(autouse=True)
@@ -67,29 +83,28 @@ def test_for_generic_shell(shell, logs):
     logs.how_to_configure_alias.assert_called_once()
 
 
-def test_on_first_run(usage_tracker, shell_pid, logs):
+def test_on_first_run(usage_tracker_io, usage_tracker_exists, shell_pid, logs):
     shell_pid.return_value = 12
-    usage_tracker.return_value.exists.return_value = False
     main()
-    _assert_tracker_updated(usage_tracker, 12)
+    usage_tracker_exists.return_value = False
+    _assert_tracker_updated(usage_tracker_io, 12)
     logs.how_to_configure_alias.assert_called_once()
 
 
-def test_on_run_after_other_commands(usage_tracker, shell_pid, shell, logs):
+def test_on_run_after_other_commands(usage_tracker_io, shell_pid, shell, logs):
     shell_pid.return_value = 12
     shell.get_history.return_value = ['fuck', 'ls']
-    _change_tracker(usage_tracker, 12)
+    _change_tracker(usage_tracker_io, 12)
     main()
     logs.how_to_configure_alias.assert_called_once()
 
 
-def test_on_first_run_from_current_shell(usage_tracker, shell_pid,
+def test_on_first_run_from_current_shell(usage_tracker_io, shell_pid,
                                          shell, logs):
     shell.get_history.return_value = ['fuck']
     shell_pid.return_value = 12
-    _change_tracker(usage_tracker, 55)
     main()
-    _assert_tracker_updated(usage_tracker, 12)
+    _assert_tracker_updated(usage_tracker_io, 12)
     logs.how_to_configure_alias.assert_called_once()
 
 
@@ -104,21 +119,21 @@ def test_when_cant_configure_automatically(shell_pid, shell, logs):
     logs.how_to_configure_alias.assert_called_once()
 
 
-def test_when_already_configured(usage_tracker, shell_pid,
+def test_when_already_configured(usage_tracker_io, shell_pid,
                                  shell, shell_config, logs):
     shell.get_history.return_value = ['fuck']
     shell_pid.return_value = 12
-    _change_tracker(usage_tracker, 12)
+    _change_tracker(usage_tracker_io, 12)
     shell_config.read.return_value = 'eval $(thefuck --alias)'
     main()
     logs.already_configured.assert_called_once()
 
 
-def test_when_successfuly_configured(usage_tracker, shell_pid,
-                                     shell, shell_config, logs):
+def test_when_successfully_configured(usage_tracker_io, shell_pid,
+                                      shell, shell_config, logs):
     shell.get_history.return_value = ['fuck']
     shell_pid.return_value = 12
-    _change_tracker(usage_tracker, 12)
+    _change_tracker(usage_tracker_io, 12)
     shell_config.read.return_value = ''
     main()
     shell_config.write.assert_any_call('eval $(thefuck --alias)')

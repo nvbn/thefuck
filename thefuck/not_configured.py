@@ -4,9 +4,11 @@ from .system import init_output
 init_output()
 
 import os  # noqa: E402
-from psutil import Process  # noqa: E402
+import json  # noqa: E402
+import time  # noqa: E402
 import six  # noqa: E402
-from . import logs  # noqa: E402
+from psutil import Process  # noqa: E402
+from . import logs, const  # noqa: E402
 from .shells import shell  # noqa: E402
 from .conf import settings  # noqa: E402
 from .system import Path  # noqa: E402
@@ -30,19 +32,32 @@ def _get_not_configured_usage_tracker_path():
 
 def _record_first_run():
     """Records shell pid to tracker file."""
-    with _get_not_configured_usage_tracker_path().open('w') as tracker:
-        tracker.write(six.text_type(_get_shell_pid()))
+    info = {'pid': _get_shell_pid(),
+            'time': time.time()}
+
+    mode = 'wb' if six.PY2 else 'w'
+    with _get_not_configured_usage_tracker_path().open(mode) as tracker:
+        json.dump(info, tracker)
 
 
 def _is_second_run():
     """Returns `True` when we know that `fuck` called second time."""
     tracker_path = _get_not_configured_usage_tracker_path()
-    if not tracker_path.exists() or not shell.get_history()[-1] == 'fuck':
+    if not tracker_path.exists():
         return False
 
     current_pid = _get_shell_pid()
     with tracker_path.open('r') as tracker:
-        return tracker.read() == six.text_type(current_pid)
+        try:
+            info = json.load(tracker)
+        except ValueError:
+            return False
+
+    if not (isinstance(info, dict) and info.get('pid') == current_pid):
+        return False
+
+    return (shell.get_history()[-1] == 'fuck' or
+            time.time() - info.get('time', 0) < const.CONFIGURATION_TIMEOUT)
 
 
 def _is_already_configured(configuration_details):
