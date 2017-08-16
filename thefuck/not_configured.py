@@ -40,6 +40,15 @@ def _record_first_run():
         json.dump(info, tracker)
 
 
+def _get_previous_command():
+    history = shell.get_history()
+
+    if history:
+        return history[-1]
+    else:
+        return None
+
+
 def _is_second_run():
     """Returns `True` when we know that `fuck` called second time."""
     tracker_path = _get_not_configured_usage_tracker_path()
@@ -56,7 +65,7 @@ def _is_second_run():
     if not (isinstance(info, dict) and info.get('pid') == current_pid):
         return False
 
-    return (shell.get_history()[-1] == 'fuck' or
+    return (_get_previous_command() == 'fuck' or
             time.time() - info.get('time', 0) < const.CONFIGURATION_TIMEOUT)
 
 
