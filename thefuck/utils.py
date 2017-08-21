@@ -1,6 +1,5 @@
 import os
 import pickle
-import pkg_resources
 import re
 import shelve
 import six
@@ -108,9 +107,7 @@ def get_all_executables():
             return fallback
 
     tf_alias = get_alias()
-    tf_entry_points = get_installation_info().get_entry_map()\
-                                             .get('console_scripts', {})\
-                                             .keys()
+    tf_entry_points = ['thefuck', 'fuck']
 
     bins = [exe.name.decode('utf8') if six.PY2 else exe.name
             for path in os.environ.get('PATH', '').split(':')
@@ -255,6 +252,8 @@ cache.disabled = False
 
 
 def get_installation_info():
+    import pkg_resources
+
     return pkg_resources.require('thefuck')[0]
 
 
