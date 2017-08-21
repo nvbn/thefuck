@@ -1,6 +1,5 @@
 import os
 import pickle
-import pkg_resources
 import re
 import shelve
 import six
@@ -255,6 +254,8 @@ cache.disabled = False
 
 
 def get_installation_info():
+    import pkg_resources
+
     return pkg_resources.require('thefuck')[0]
 
 
