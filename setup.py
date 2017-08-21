@@ -3,6 +3,8 @@ from setuptools import setup, find_packages
 import pkg_resources
 import sys
 import os
+import fastentrypoints
+
 
 try:
     if int(pkg_resources.get_distribution("pip").version.split('.')[0]) < 6:
