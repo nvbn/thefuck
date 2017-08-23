@@ -298,7 +298,7 @@ side_effect(old_command: Command, fixed_command: str) -> None
 ```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
-`Command` has three attributes: `script`, `stdout`, `stderr` and `script_parts`.
+`Command` has four attributes: `script`, `stdout`, `stderr` and `script_parts`.
 Rule shouldn't change `Command`.
 
 
