@@ -133,7 +133,7 @@ To make them available immediately, run `source ~/.bashrc` (or your shell config
 If you want separate alias for running fixed command without confirmation you can use alias like:
 
 ```bash
-alias fuck-it='export THEFUCK_REQUIRE_CONFIRMATION=False; fuck; export THEFUCK_REQUIRE_CONFIRMATION=True'
+alias fuck-it='THEFUCK_REQUIRE_CONFIRMATION=False fuck'
 ```
 
 ## Update
