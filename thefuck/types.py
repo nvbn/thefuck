@@ -2,14 +2,13 @@ from imp import load_source
 from subprocess import Popen, PIPE
 import os
 import sys
-import six
-from psutil import Process, TimeoutExpired
 from . import logs
 from .shells import shell
 from .conf import settings
 from .const import DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
-from .utils import get_alias
+from .utils import get_alias, format_raw_script
+from .output import get_output
 
 
 class Command(object):
@@ -61,44 +60,6 @@ class Command(object):
         kwargs.setdefault('stderr', self.stderr)
         return Command(**kwargs)
 
-    @staticmethod
-    def _wait_output(popen, is_slow):
-        """Returns `True` if we can get output of the command in the
-        `settings.wait_command` time.
-
-        Command will be killed if it wasn't finished in the time.
-
-        :type popen: Popen
-        :rtype: bool
-
-        """
-        proc = Process(popen.pid)
-        try:
-            proc.wait(settings.wait_slow_command if is_slow
-                      else settings.wait_command)
-            return True
-        except TimeoutExpired:
-            for child in proc.children(recursive=True):
-                child.kill()
-            proc.kill()
-            return False
-
-    @staticmethod
-    def _prepare_script(raw_script):
-        """Creates single script from a list of script parts.
-
-        :type raw_script: [basestring]
-        :rtype: basestring
-
-        """
-        if six.PY2:
-            script = ' '.join(arg.decode('utf-8') for arg in raw_script)
-        else:
-            script = ' '.join(raw_script)
-
-        script = script.strip()
-        return shell.from_shell(script)
-
     @classmethod
     def from_raw_script(cls, raw_script):
         """Creates instance of `Command` from a list of script parts.
@@ -108,29 +69,12 @@ class Command(object):
         :raises: EmptyCommand
 
         """
-        script = cls._prepare_script(raw_script)
+        script = format_raw_script(raw_script)
         if not script:
             raise EmptyCommand
 
-        env = dict(os.environ)
-        env.update(settings.env)
-
-        is_slow = script.split(' ')[0] in settings.slow_commands
-        with logs.debug_time(u'Call: {}; with env: {}; is slow: '.format(
-                script, env, is_slow)):
-            result = Popen(script, shell=True, stdin=PIPE,
-                           stdout=PIPE, stderr=PIPE, env=env)
-            if cls._wait_output(result, is_slow):
-                stdout = result.stdout.read().decode('utf-8')
-                stderr = result.stderr.read().decode('utf-8')
-
-                logs.debug(u'Received stdout: {}'.format(stdout))
-                logs.debug(u'Received stderr: {}'.format(stderr))
-
-                return cls(script, stdout, stderr)
-            else:
-                logs.debug(u'Execution timed out!')
-                return cls(script, None, None)
+        stdout, stderr = get_output(script)
+        return cls(script, stdout, stderr)
 
 
 class Rule(object):
