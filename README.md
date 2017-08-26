@@ -403,6 +403,8 @@ By default The Fuck reruns a previous command and that takes time,
 in instant mode The Fuck logs output with [script](https://en.wikipedia.org/wiki/Script_(Unix))
 and just reads the log.
 
+[![gif with instant mode][instant-mode-gif-link]][instant-mode-gif-link]
+
 At the moment only Python 3 with bash or zsh is supported.
 
 For enabling instant mode you need to add `--enable-experimental-instant-mode`
@@ -460,4 +462,5 @@ Project License can be found [here](LICENSE.md).
 [coverage-link]:   https://coveralls.io/github/nvbn/thefuck
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
+[instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example_instant_mode.gif
 [homebrew]:        http://brew.sh/
