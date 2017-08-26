@@ -35,6 +35,7 @@ VERSION = '3.21'
 
 install_requires = ['psutil', 'colorama', 'six', 'decorator', 'pyte']
 extras_require = {':python_version<"3.4"': ['pathlib2'],
+                  ':python_version<"3.3"': ['backports.shutil_get_terminal_size'],
                   ":sys_platform=='win32'": ['win_unicode_console']}
 
 setup(name='thefuck',

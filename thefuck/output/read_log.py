@@ -1,6 +1,9 @@
 import os
 import shlex
-from shutil import get_terminal_size
+try:
+    from shutil import get_terminal_size
+except ImportError:
+    from backports.shutil_get_terminal_size import get_terminal_size
 from warnings import warn
 import pyte
 from ..exceptions import ScriptNotInLog
@@ -60,7 +63,7 @@ def get_output(script):
             lines = _get_output_lines(script, log_file)
             output = '\n'.join(lines).strip()
             return output, output
-    except FileNotFoundError:
+    except OSError:
         warn("Can't read output log")
         return None, None
     except ScriptNotInLog:
