@@ -5,6 +5,7 @@ try:
 except ImportError:
     from backports.shutil_get_terminal_size import get_terminal_size
 from warnings import warn
+import six
 import pyte
 from ..exceptions import ScriptNotInLog
 from .. import const
@@ -53,7 +54,17 @@ def _get_output_lines(script, log_file):
     return screen.display
 
 
-def get_output(script, _):
+def get_output(script):
+    """Reads script output from log.
+
+    :type script: str
+    :rtype: (str, str)
+
+    """
+    if six.PY2:
+        warn('Experimental instant mode is Python 3+ only')
+        return None, None
+
     if 'THEFUCK_OUTPUT_LOG' not in os.environ:
         warn("Output log isn't specified")
         return None, None

@@ -29,6 +29,13 @@ def _wait_output(popen, is_slow):
 
 
 def get_output(script, expanded):
+    """Runs the script and obtains stdin/stderr.
+
+    :type script: str
+    :type expanded: str
+    :rtype: (str, str)
+
+    """
     env = dict(os.environ)
     env.update(settings.env)
 
