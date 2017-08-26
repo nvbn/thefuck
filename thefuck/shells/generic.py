@@ -3,6 +3,7 @@ import os
 import shlex
 import six
 from collections import namedtuple
+from warnings import warn
 from ..utils import memoize
 from ..conf import settings
 from ..system import Path
@@ -32,9 +33,13 @@ class Generic(object):
         """Prepares command for running in shell."""
         return command_script
 
-    def app_alias(self, fuck):
+    def app_alias(self, alias_name):
         return "alias {0}='eval $(TF_ALIAS={0} PYTHONIOENCODING=utf-8 " \
-               "thefuck $(fc -ln -1))'".format(fuck)
+               "thefuck $(fc -ln -1))'".format(alias_name)
+
+    def instant_mode_alias(self, alias_name):
+        warn("Instant mode not supported by your shell")
+        return self.app_alias(alias_name)
 
     def _get_history_file_name(self):
         return ''

@@ -18,7 +18,7 @@ class Fish(Generic):
             default.add(alias.strip())
         return default
 
-    def app_alias(self, fuck):
+    def app_alias(self, alias_name):
         if settings.alter_history:
             alter_history = ('    builtin history delete --exact'
                              ' --case-sensitive -- $fucked_up_command\n'
@@ -33,7 +33,7 @@ class Fish(Generic):
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n{1}'
                 '  end\n'
-                'end').format(fuck, alter_history)
+                'end').format(alias_name, alter_history)
 
     @memoize
     @cache('.config/fish/config.fish', '.config/fish/functions')

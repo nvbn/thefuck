@@ -50,6 +50,11 @@ def main():
     elif known_args.command:
         fix_command(known_args)
     elif known_args.alias:
-        print(shell.app_alias(known_args.alias))
+        if known_args.enable_experimental_instant_mode:
+            alias = shell.instant_mode_alias(known_args.alias)
+        else:
+            alias = shell.app_alias(known_args.alias)
+
+        print(alias)
     else:
         parser.print_usage()

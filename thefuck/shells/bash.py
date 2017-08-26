@@ -1,6 +1,7 @@
 import os
+from uuid import uuid4
 from ..conf import settings
-from ..const import ARGUMENT_PLACEHOLDER
+from ..const import ARGUMENT_PLACEHOLDER, USER_COMMAND_MARK
 from ..utils import memoize
 from .generic import Generic
 
@@ -26,6 +27,21 @@ class Bash(Generic):
             argument_placeholder=ARGUMENT_PLACEHOLDER,
             alter_history=('history -s $TF_CMD;'
                            if settings.alter_history else ''))
+
+    def instant_mode_alias(self, alias_name):
+        if os.environ.get('THEFUCK_INSTANT_MODE'):
+            return '''
+                export PS1="{user_command_mark}$PS1";
+                {app_alias}
+            '''.format(user_command_mark=USER_COMMAND_MARK,
+                       app_alias=self.app_alias(alias_name))
+        else:
+            return '''
+                export THEFUCK_INSTANT_MODE=True;
+                export THEFUCK_OUTPUT_LOG={log};
+                script -feq {log};
+                exit
+            '''.format(log='/tmp/thefuck-script-log-{}'.format(uuid4().hex))
 
     def _parse_alias(self, alias):
         name, value = alias.replace('alias ', '', 1).split('=', 1)
