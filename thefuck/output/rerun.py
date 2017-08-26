@@ -28,14 +28,14 @@ def _wait_output(popen, is_slow):
         return False
 
 
-def get_output(script):
+def get_output(script, expanded):
     env = dict(os.environ)
     env.update(settings.env)
 
-    is_slow = shlex.split(script) in settings.slow_commands
+    is_slow = shlex.split(expanded) in settings.slow_commands
     with logs.debug_time(u'Call: {}; with env: {}; is slow: '.format(
             script, env, is_slow)):
-        result = Popen(script, shell=True, stdin=PIPE,
+        result = Popen(expanded, shell=True, stdin=PIPE,
                        stdout=PIPE, stderr=PIPE, env=env)
         if _wait_output(result, is_slow):
             stdout = result.stdout.read().decode('utf-8')

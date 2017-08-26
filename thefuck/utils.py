@@ -291,12 +291,9 @@ def format_raw_script(raw_script):
     :rtype: basestring
 
     """
-    from .shells import shell
-
     if six.PY2:
         script = ' '.join(arg.decode('utf-8') for arg in raw_script)
     else:
         script = ' '.join(raw_script)
 
-    script = script.strip()
-    return shell.from_shell(script)
+    return script.strip()

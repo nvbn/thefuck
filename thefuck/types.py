@@ -72,8 +72,9 @@ class Command(object):
         if not script:
             raise EmptyCommand
 
-        stdout, stderr = get_output(script)
-        return cls(script, stdout, stderr)
+        expanded = shell.from_shell(script)
+        stdout, stderr = get_output(script, expanded)
+        return cls(expanded, stdout, stderr)
 
 
 class Rule(object):

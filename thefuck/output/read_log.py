@@ -53,7 +53,7 @@ def _get_output_lines(script, log_file):
     return screen.display
 
 
-def get_output(script):
+def get_output(script, _):
     if 'THEFUCK_OUTPUT_LOG' not in os.environ:
         warn("Output log isn't specified")
         return None, None
