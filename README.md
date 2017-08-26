@@ -462,5 +462,5 @@ Project License can be found [here](LICENSE.md).
 [coverage-link]:   https://coveralls.io/github/nvbn/thefuck
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
-[instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example_instant_mode.gif
+[instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/682-instant-fuck-mode/example_instant_mode.gif
 [homebrew]:        http://brew.sh/
