@@ -6,7 +6,8 @@ from thefuck.const import ARGUMENT_PLACEHOLDER
 def _args(**override):
     args = {'alias': None, 'command': [], 'yes': False,
             'help': False, 'version': False, 'debug': False,
-            'force_command': None, 'repeat': False}
+            'force_command': None, 'repeat': False,
+            'enable_experimental_instant_mode': False}
     args.update(override)
     return args
 
@@ -14,6 +15,8 @@ def _args(**override):
 @pytest.mark.parametrize('argv, result', [
     (['thefuck'], _args()),
     (['thefuck', '-a'], _args(alias='fuck')),
+    (['thefuck', '--alias', '--enable-experimental-instant-mode'],
+     _args(alias='fuck', enable_experimental_instant_mode=True)),
     (['thefuck', '-a', 'fix'], _args(alias='fix')),
     (['thefuck', 'git', 'branch', ARGUMENT_PLACEHOLDER, '-y'],
      _args(command=['git', 'branch'], yes=True)),

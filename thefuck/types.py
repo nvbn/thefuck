@@ -1,5 +1,4 @@
 from imp import load_source
-from subprocess import Popen, PIPE
 import os
 import sys
 from . import logs

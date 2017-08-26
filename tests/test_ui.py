@@ -69,34 +69,40 @@ class TestSelectCommand(object):
     def test_without_confirmation(self, capsys, commands, settings):
         settings.require_confirmation = False
         assert ui.select_command(iter(commands)) == commands[0]
-        assert capsys.readouterr() == ('', 'ls\n')
+        assert capsys.readouterr() == ('', const.USER_COMMAND_MARK + 'ls\n')
 
     def test_without_confirmation_with_side_effects(
             self, capsys, commands_with_side_effect, settings):
         settings.require_confirmation = False
         assert (ui.select_command(iter(commands_with_side_effect))
                 == commands_with_side_effect[0])
-        assert capsys.readouterr() == ('', 'ls (+side effect)\n')
+        assert capsys.readouterr() == ('', const.USER_COMMAND_MARK + 'ls (+side effect)\n')
 
     def test_with_confirmation(self, capsys, patch_get_key, commands):
         patch_get_key(['\n'])
         assert ui.select_command(iter(commands)) == commands[0]
-        assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\n')
+        assert capsys.readouterr() == (
+            '', const.USER_COMMAND_MARK + u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\n')
 
     def test_with_confirmation_abort(self, capsys, patch_get_key, commands):
         patch_get_key([const.KEY_CTRL_C])
         assert ui.select_command(iter(commands)) is None
-        assert capsys.readouterr() == ('', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\nAborted\n')
+        assert capsys.readouterr() == (
+            '', const.USER_COMMAND_MARK + u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\nAborted\n')
 
     def test_with_confirmation_with_side_effct(self, capsys, patch_get_key,
                                                commands_with_side_effect):
         patch_get_key(['\n'])
         assert (ui.select_command(iter(commands_with_side_effect))
                 == commands_with_side_effect[0])
-        assert capsys.readouterr() == ('', u'\x1b[1K\rls (+side effect) [enter/↑/↓/ctrl+c]\n')
+        assert capsys.readouterr() == (
+            '', const.USER_COMMAND_MARK + u'\x1b[1K\rls (+side effect) [enter/↑/↓/ctrl+c]\n')
 
     def test_with_confirmation_select_second(self, capsys, patch_get_key, commands):
         patch_get_key([const.KEY_DOWN, '\n'])
         assert ui.select_command(iter(commands)) == commands[1]
-        assert capsys.readouterr() == (
-            '', u'\x1b[1K\rls [enter/↑/↓/ctrl+c]\x1b[1K\rcd [enter/↑/↓/ctrl+c]\n')
+        stderr = (
+            u'{mark}\x1b[1K\rls [enter/↑/↓/ctrl+c]'
+            u'{mark}\x1b[1K\rcd [enter/↑/↓/ctrl+c]\n'
+        ).format(mark=const.USER_COMMAND_MARK)
+        assert capsys.readouterr() == ('', stderr)
