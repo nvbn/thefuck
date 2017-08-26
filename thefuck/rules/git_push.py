@@ -1,3 +1,4 @@
+import re
 from thefuck.utils import replace_argument
 from thefuck.specific.git import git_support
 
@@ -32,5 +33,6 @@ def get_new_command(command):
         if len(command_parts) > upstream_option_index:
             command_parts.pop(upstream_option_index)
 
-    push_upstream = command.stderr.split('\n')[-3].strip().partition('git ')[2]
-    return replace_argument(" ".join(command_parts), 'push', push_upstream)
+    arguments = re.findall(r'git push (.*)', command.stderr)[0].strip()
+    return replace_argument(" ".join(command_parts), 'push',
+                            'push {}'.format(arguments))
