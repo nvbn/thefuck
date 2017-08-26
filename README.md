@@ -130,10 +130,16 @@ eval $(thefuck --alias FUCK)
 Changes will be available only in a new shell session.
 To make them available immediately, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
 
-If you want separate alias for running fixed command without confirmation you can use alias like:
+If you want to run fixed command without confirmation you can use `-y` option:
 
 ```bash
-alias fuck-it='export THEFUCK_REQUIRE_CONFIRMATION=False; fuck; export THEFUCK_REQUIRE_CONFIRMATION=True'
+fuck -y
+```
+
+If you want to fix commands recursively until success you can use `-r` option:
+
+```bash
+fuck -r
 ```
 
 ## Update
