@@ -4,6 +4,8 @@ Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
+The Fuck is too slow? [Try experimental instant mode!](#experimental-instant-mode) 
+
 [![gif with examples][examples-link]][examples-link]
 
 Few more examples:
@@ -393,6 +395,21 @@ export THEFUCK_WAIT_COMMAND=10
 export THEFUCK_NO_COLORS='false'
 export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
 export THEFUCK_HISTORY_LIMIT='2000'
+```
+
+## Experimental instant mode
+
+By default The Fuck reruns a previous command and that takes time,
+in instant mode The Fuck logs output with [script](https://en.wikipedia.org/wiki/Script_(Unix))
+and just reads the log.
+
+At the moment only Python 3 with bash or zsh is supported.
+
+For enabling instant mode you need to add `--enable-experimental-instant-mode`
+to alias initialization in your `.bashrc`, `.bash_profile` or `.zshrc` like:
+
+```bash
+eval $(thefuck --alias --enable-experimental-instant-mode)
 ```
 
 ## Developing
