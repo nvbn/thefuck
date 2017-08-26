@@ -7,7 +7,7 @@ from .conf import settings
 from .const import DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
 from .utils import get_alias, format_raw_script
-from .output import get_output
+from .output_readers import get_output
 
 
 class Command(object):
