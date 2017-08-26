@@ -3,7 +3,7 @@ import os
 import shlex
 import six
 from collections import namedtuple
-from warnings import warn
+from ..logs import warn
 from ..utils import memoize
 from ..conf import settings
 from ..system import Path

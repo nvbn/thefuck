@@ -4,10 +4,10 @@ try:
     from shutil import get_terminal_size
 except ImportError:
     from backports.shutil_get_terminal_size import get_terminal_size
-from warnings import warn
 import six
 import pyte
 from ..exceptions import ScriptNotInLog
+from ..logs import warn
 from .. import const
 
 

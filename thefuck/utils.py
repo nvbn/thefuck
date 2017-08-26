@@ -7,7 +7,7 @@ from contextlib import closing
 from decorator import decorator
 from difflib import get_close_matches
 from functools import wraps
-from warnings import warn
+from .logs import warn
 from .conf import settings
 from .system import Path
 
