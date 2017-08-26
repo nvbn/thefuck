@@ -29,7 +29,7 @@ class Bash(Generic):
                            if settings.alter_history else ''))
 
     def instant_mode_alias(self, alias_name):
-        if os.environ.get('THEFUCK_INSTANT_MODE'):
+        if os.environ.get('THEFUCK_INSTANT_MODE', '').lower() == 'true':
             return '''
                 export PS1="{user_command_mark}$PS1";
                 {app_alias}
