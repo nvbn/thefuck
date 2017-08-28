@@ -52,6 +52,9 @@ def main():
     elif known_args.command:
         fix_command(known_args)
     elif known_args.alias:
+        warn("The Fuck will drop Python 2 support soon, more details "
+             "https://github.com/nvbn/thefuck/issues/685")
+
         if known_args.enable_experimental_instant_mode:
             if six.PY2:
                 warn("Instant mode not supported with Python 2")
