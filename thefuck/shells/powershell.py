@@ -2,8 +2,8 @@ from .generic import Generic, ShellConfiguration
 
 
 class Powershell(Generic):
-    def app_alias(self, fuck):
-        return 'function ' + fuck + ' {\n' \
+    def app_alias(self, alias_name):
+        return 'function ' + alias_name + ' {\n' \
                '    $history = (Get-History -Count 1).CommandLine;\n' \
                '    if (-not [string]::IsNullOrWhiteSpace($history)) {\n' \
                '        $fuck = $(thefuck $history);\n' \

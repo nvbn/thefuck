@@ -98,7 +98,7 @@ class Settings(dict):
         elif attr in ('wait_command', 'history_limit', 'wait_slow_command'):
             return int(val)
         elif attr in ('require_confirmation', 'no_colors', 'debug',
-                      'alter_history'):
+                      'alter_history', 'instant_mode'):
             return val.lower() == 'true'
         elif attr == 'slow_commands':
             return val.split(':')

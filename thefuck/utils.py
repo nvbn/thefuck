@@ -7,7 +7,7 @@ from contextlib import closing
 from decorator import decorator
 from difflib import get_close_matches
 from functools import wraps
-from warnings import warn
+from .logs import warn
 from .conf import settings
 from .system import Path
 
@@ -282,3 +282,18 @@ def get_valid_history_without_current(command):
     return [line for line in _not_corrected(history, tf_alias)
             if not line.startswith(tf_alias) and not line == command.script
             and line.split(' ')[0] in executables]
+
+
+def format_raw_script(raw_script):
+    """Creates single script from a list of script parts.
+
+    :type raw_script: [basestring]
+    :rtype: basestring
+
+    """
+    if six.PY2:
+        script = ' '.join(arg.decode('utf-8') for arg in raw_script)
+    else:
+        script = ' '.join(raw_script)
+
+    return script.strip()

@@ -6,6 +6,7 @@ import sys
 from traceback import format_exception
 import colorama
 from .conf import settings
+from . import const
 
 
 def color(color_):
@@ -14,6 +15,14 @@ def color(color_):
         return ''
     else:
         return color_
+
+
+def warn(title):
+    sys.stderr.write(u'{warn}[WARN] {title}{reset}\n'.format(
+        warn=color(colorama.Back.RED + colorama.Fore.WHITE
+                   + colorama.Style.BRIGHT),
+        reset=color(colorama.Style.RESET_ALL),
+        title=title))
 
 
 def exception(title, exc_info):
@@ -39,7 +48,8 @@ def failed(msg):
 
 
 def show_corrected_command(corrected_command):
-    sys.stderr.write(u'{bold}{script}{reset}{side_effect}\n'.format(
+    sys.stderr.write(u'{prefix}{bold}{script}{reset}{side_effect}\n'.format(
+        prefix=const.USER_COMMAND_MARK,
         script=corrected_command.script,
         side_effect=u' (+side effect)' if corrected_command.side_effect else u'',
         bold=color(colorama.Style.BRIGHT),
@@ -48,9 +58,10 @@ def show_corrected_command(corrected_command):
 
 def confirm_text(corrected_command):
     sys.stderr.write(
-        (u'{clear}{bold}{script}{reset}{side_effect} '
+        (u'{prefix}{clear}{bold}{script}{reset}{side_effect} '
          u'[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
          u'/{red}ctrl+c{reset}]').format(
+            prefix=const.USER_COMMAND_MARK,
             script=corrected_command.script,
             side_effect=' (+side effect)' if corrected_command.side_effect else '',
             clear='\033[1K\r',

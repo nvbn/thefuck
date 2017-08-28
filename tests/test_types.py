@@ -110,13 +110,13 @@ class TestCommand(object):
         Popen = Mock()
         Popen.return_value.stdout.read.return_value = b'stdout'
         Popen.return_value.stderr.read.return_value = b'stderr'
-        monkeypatch.setattr('thefuck.types.Popen', Popen)
+        monkeypatch.setattr('thefuck.output_readers.rerun.Popen', Popen)
         return Popen
 
     @pytest.fixture(autouse=True)
     def prepare(self, monkeypatch):
-        monkeypatch.setattr('thefuck.types.Command._wait_output',
-                            staticmethod(lambda *_: True))
+        monkeypatch.setattr('thefuck.output_readers.rerun._wait_output',
+                            lambda *_: True)
 
     def test_from_script_calls(self, Popen, settings, os_environ):
         settings.env = {}

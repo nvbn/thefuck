@@ -5,6 +5,7 @@ init_output()
 
 from pprint import pformat  # noqa: E402
 import sys  # noqa: E402
+import six  # noqa: E402
 from . import logs, types  # noqa: E402
 from .shells import shell  # noqa: E402
 from .conf import settings  # noqa: E402
@@ -13,6 +14,7 @@ from .exceptions import EmptyCommand  # noqa: E402
 from .ui import select_command  # noqa: E402
 from .argument_parser import Parser  # noqa: E402
 from .utils import get_installation_info  # noqa: E402
+from .logs import warn  # noqa: E402
 
 
 def fix_command(known_args):
@@ -50,6 +52,15 @@ def main():
     elif known_args.command:
         fix_command(known_args)
     elif known_args.alias:
-        print(shell.app_alias(known_args.alias))
+        if known_args.enable_experimental_instant_mode:
+            if six.PY2:
+                warn("Instant mode not supported with Python 2")
+                alias = shell.app_alias(known_args.alias)
+            else:
+                alias = shell.instant_mode_alias(known_args.alias)
+        else:
+            alias = shell.app_alias(known_args.alias)
+
+        print(alias)
     else:
         parser.print_usage()

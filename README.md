@@ -4,6 +4,8 @@ Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
+The Fuck is too slow? [Try experimental instant mode!](#experimental-instant-mode) 
+
 [![gif with examples][examples-link]][examples-link]
 
 Few more examples:
@@ -395,6 +397,23 @@ export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
 export THEFUCK_HISTORY_LIMIT='2000'
 ```
 
+## Experimental instant mode
+
+By default The Fuck reruns a previous command and that takes time,
+in instant mode The Fuck logs output with [script](https://en.wikipedia.org/wiki/Script_(Unix))
+and just reads the log.
+
+[![gif with instant mode][instant-mode-gif-link]][instant-mode-gif-link]
+
+At the moment only Python 3 with bash or zsh is supported.
+
+For enabling instant mode you need to add `--enable-experimental-instant-mode`
+to alias initialization in your `.bashrc`, `.bash_profile` or `.zshrc` like:
+
+```bash
+eval $(thefuck --alias --enable-experimental-instant-mode)
+```
+
 ## Developing
 
 Install `The Fuck` for development:
@@ -443,4 +462,5 @@ Project License can be found [here](LICENSE.md).
 [coverage-link]:   https://coveralls.io/github/nvbn/thefuck
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
+[instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/682-instant-fuck-mode/example_instant_mode.gif
 [homebrew]:        http://brew.sh/

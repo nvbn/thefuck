@@ -26,6 +26,10 @@ class Parser(object):
             const=get_alias(),
             help='[custom-alias-name] prints alias for current shell')
         self._parser.add_argument(
+            '--enable-experimental-instant-mode',
+            action='store_true',
+            help='enable experimental instant mode, use on your own risk')
+        self._parser.add_argument(
             '-h', '--help',
             action='store_true',
             help='show this help message and exit')

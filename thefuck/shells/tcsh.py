@@ -6,10 +6,10 @@ from .generic import Generic
 
 
 class Tcsh(Generic):
-    def app_alias(self, fuck):
+    def app_alias(self, alias_name):
         return ("alias {0} 'setenv TF_ALIAS {0} && "
                 "set fucked_cmd=`history -h 2 | head -n 1` && "
-                "eval `thefuck ${{fucked_cmd}}`'").format(fuck)
+                "eval `thefuck ${{fucked_cmd}}`'").format(alias_name)
 
     def _parse_alias(self, alias):
         name, value = alias.split("\t", 1)

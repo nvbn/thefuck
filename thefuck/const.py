@@ -35,6 +35,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'slow_commands': ['lein', 'react-native', 'gradle',
                                       './gradlew', 'vagrant'],
                     'repeat': False,
+                    'instant_mode': False,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
@@ -48,7 +49,8 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_ALTER_HISTORY': 'alter_history',
                'THEFUCK_WAIT_SLOW_COMMAND': 'wait_slow_command',
                'THEFUCK_SLOW_COMMANDS': 'slow_commands',
-               'THEFUCK_REPEAT': 'repeat'}
+               'THEFUCK_REPEAT': 'repeat',
+               'THEFUCK_INSTANT_MODE': 'instant_mode'}
 
 SETTINGS_HEADER = u"""# The Fuck settings file
 #
@@ -65,3 +67,7 @@ SETTINGS_HEADER = u"""# The Fuck settings file
 ARGUMENT_PLACEHOLDER = 'THEFUCK_ARGUMENT_PLACEHOLDER'
 
 CONFIGURATION_TIMEOUT = 60
+
+USER_COMMAND_MARK = u'\u200B' * 10
+
+LOG_SIZE = 1000
