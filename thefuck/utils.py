@@ -208,7 +208,7 @@ def cache(*depends_on):
 
     """
     def _get_mtime(name):
-        path = os.path.join(os.path.expanduser('~'), name)
+        path = Path(name).expanduser().absolute().as_posix()
         try:
             return str(os.path.getmtime(path))
         except OSError:
