@@ -123,7 +123,7 @@ You should place this command in your `.bash_profile`, `.bashrc`, `.zshrc` or ot
 
 ```bash
 eval $(thefuck --alias)
-# You can use whatever you want as an alias, like for Mondays:
+# You can use whatever the fuck you want as an alias, like for Mondays:
 eval $(thefuck --alias FUCK)
 ```
 
