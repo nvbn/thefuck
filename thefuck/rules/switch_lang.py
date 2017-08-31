@@ -30,7 +30,7 @@ def _switch_command(command, layout):
 
 
 def match(command):
-    if 'not found' not in command.stderr:
+    if 'not found' not in command.output:
         return False
     matched_layout = _get_matched_layout(command)
     return (matched_layout and

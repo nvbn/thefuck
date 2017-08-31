@@ -14,7 +14,7 @@ from thefuck.specific.sudo import sudo_support
 
 @sudo_support
 def match(command):
-    return (command.stderr.endswith("hard link not allowed for directory") and
+    return (command.output.endswith("hard link not allowed for directory") and
             command.script_parts[0] == 'ln')
 
 

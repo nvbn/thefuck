@@ -17,7 +17,7 @@ def match(command):
         r"Warning: the \S+ host key for '([^']+)' differs from the key for the IP address '([^']+)'",
     )
 
-    return any(re.findall(pattern, command.stderr) for pattern in patterns)
+    return any(re.findall(pattern, command.output) for pattern in patterns)
 
 
 def get_new_command(command):
@@ -28,7 +28,7 @@ def side_effect(old_cmd, command):
     offending_pattern = re.compile(
         r'(?:Offending (?:key for IP|\S+ key)|Matching host key) in ([^:]+):(\d+)',
         re.MULTILINE)
-    offending = offending_pattern.findall(old_cmd.stderr)
+    offending = offending_pattern.findall(old_cmd.output)
     for filepath, lineno in offending:
         with open(filepath, 'r') as fh:
             lines = fh.readlines()

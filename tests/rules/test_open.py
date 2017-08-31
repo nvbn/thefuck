@@ -1,10 +1,10 @@
 import pytest
 from thefuck.rules.open import is_arg_url, match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
-def stderr(script):
+def output(script):
     return 'The file {} does not exist.\n'.format(script.split(' ', 1)[1])
 
 
@@ -20,12 +20,12 @@ def stderr(script):
     'open foo.se',
     'open www.foo.ru'])
 def test_is_arg_url(script):
-    assert is_arg_url(Command(script))
+    assert is_arg_url(Command(script, ''))
 
 
 @pytest.mark.parametrize('script', ['open foo', 'open bar.txt', 'open egg.doc'])
 def test_not_is_arg_url(script):
-    assert not is_arg_url(Command(script))
+    assert not is_arg_url(Command(script, ''))
 
 
 @pytest.mark.parametrize('script', [
@@ -34,8 +34,8 @@ def test_not_is_arg_url(script):
     'gnome-open foo.com',
     'kde-open foo.com',
     'open nonest'])
-def test_match(script, stderr):
-    assert match(Command(script, stderr=stderr))
+def test_match(script, output):
+    assert match(Command(script, output))
 
 
 @pytest.mark.parametrize('script, new_command', [
@@ -45,5 +45,5 @@ def test_match(script, stderr):
     ('kde-open foo.io', ['kde-open http://foo.io']),
     ('open nonest', ['touch nonest && open nonest',
                      'mkdir nonest && open nonest'])])
-def test_get_new_command(script, new_command, stderr):
-    assert get_new_command(Command(script, stderr=stderr)) == new_command
+def test_get_new_command(script, new_command, output):
+    assert get_new_command(Command(script, output)) == new_command

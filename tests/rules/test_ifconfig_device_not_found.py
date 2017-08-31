@@ -1,10 +1,10 @@
 import pytest
 from six import BytesIO
 from thefuck.rules.ifconfig_device_not_found import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
-stderr = '{}: error fetching interface information: Device not found'
+output = '{}: error fetching interface information: Device not found'
 
 stdout = b'''
 wlp2s0    Link encap:Ethernet  HWaddr 5c:51:4f:7c:58:5d
@@ -26,21 +26,21 @@ def ifconfig(mocker):
     return mock
 
 
-@pytest.mark.parametrize('script, stderr', [
-    ('ifconfig wlan0', stderr.format('wlan0')),
-    ('ifconfig -s eth0', stderr.format('eth0')),
+@pytest.mark.parametrize('script, output', [
+    ('ifconfig wlan0', output.format('wlan0')),
+    ('ifconfig -s eth0', output.format('eth0')),
 ])
-def test_match(script, stderr):
-    assert match(Command(script, stderr=stderr))
+def test_match(script, output):
+    assert match(Command(script, output))
 
 
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('config wlan0',
      'wlan0: error fetching interface information: Device not found'),
     ('ifconfig eth0', ''),
 ])
-def test_not_match(script, stderr):
-    assert not match(Command(script, stderr=stderr))
+def test_not_match(script, output):
+    assert not match(Command(script, output))
 
 
 @pytest.mark.parametrize('script, result', [
@@ -49,5 +49,5 @@ def test_not_match(script, stderr):
 ])
 def test_get_new_comman(script, result):
     new_command = get_new_command(
-        Command(script, stderr=stderr.format('wlan0')))
+        Command(script, output.format('wlan0')))
     assert new_command == result

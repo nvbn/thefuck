@@ -8,7 +8,7 @@ from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
     get_all_matched_commands, is_app, for_app, cache, \
     get_valid_history_without_current
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.mark.parametrize('override, old, new', [
@@ -107,7 +107,7 @@ def test_get_all_matched_commands(stderr, result):
     ('hub diff', ['git', 'hub'], True),
     ('hg diff', ['git', 'hub'], False)])
 def test_is_app(script, names, result):
-    assert is_app(Command(script), *names) == result
+    assert is_app(Command(script, ''), *names) == result
 
 
 @pytest.mark.usefixtures('no_memoize')
@@ -120,7 +120,7 @@ def test_for_app(script, names, result):
     def match(command):
         return True
 
-    assert match(Command(script)) == result
+    assert match(Command(script, '')) == result
 
 
 class TestCache(object):
@@ -222,5 +222,5 @@ class TestGetValidHistoryWithoutCurrent(object):
         (u'cafe ô', ['ls cat', 'diff x', u'café ô']),
     ])
     def test_get_valid_history_without_current(self, script, result):
-        command = Command(script=script)
+        command = Command(script, '')
         assert get_valid_history_without_current(command) == result

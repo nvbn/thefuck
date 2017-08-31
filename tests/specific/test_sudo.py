@@ -1,6 +1,6 @@
 import pytest
 from thefuck.specific.sudo import sudo_support
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.mark.parametrize('return_value, command, called, result', [
@@ -13,7 +13,7 @@ from tests.utils import Command
     (False, 'ls', 'ls', False)])
 def test_sudo_support(return_value, command, called, result):
     def fn(command):
-        assert command == Command(called)
+        assert command == Command(called, '')
         return return_value
 
-    assert sudo_support(fn)(Command(command)) == result
+    assert sudo_support(fn)(Command(command, '')) == result

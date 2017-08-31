@@ -2,27 +2,27 @@
 
 import pytest
 from thefuck.rules import switch_lang
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.mark.parametrize('command', [
-    Command(stderr='command not found: фзе-пуе', script=u'фзе-пуе'),
-    Command(stderr='command not found: λσ', script=u'λσ')])
+    Command(u'фзе-пуе', 'command not found: фзе-пуе'),
+    Command(u'λσ', 'command not found: λσ')])
 def test_match(command):
     assert switch_lang.match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command(stderr='command not found: pat-get', script=u'pat-get'),
-    Command(stderr='command not found: ls', script=u'ls'),
-    Command(stderr='command not found: агсл', script=u'агсл'),
-    Command(stderr='some info', script=u'фзе-пуе')])
+    Command(u'pat-get', 'command not found: pat-get'),
+    Command(u'ls', 'command not found: ls'),
+    Command(u'агсл', 'command not found: агсл'),
+    Command(u'фзе-пуе', 'some info')])
 def test_not_match(command):
     assert not switch_lang.match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command(u'фзе-пуе штыефдд мшь'), 'apt-get install vim'),
-    (Command(u'λσ -λα'), 'ls -la')])
+    (Command(u'фзе-пуе штыефдд мшь', ''), 'apt-get install vim'),
+    (Command(u'λσ -λα', ''), 'ls -la')])
 def test_get_new_command(command, new_command):
     assert switch_lang.get_new_command(command) == new_command

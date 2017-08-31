@@ -1,6 +1,6 @@
 from io import BytesIO
 import pytest
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.rules.apt_invalid_operation import match, get_new_command, \
     _get_operations
 
@@ -77,19 +77,19 @@ apt_get_operations = ['update', 'upgrade', 'install', 'remove', 'autoremove',
                       'changelog', 'download']
 
 
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('apt', invalid_operation('saerch')),
     ('apt-get', invalid_operation('isntall')),
     ('apt-cache', invalid_operation('rumove'))])
-def test_match(script, stderr):
-    assert match(Command(script, stderr=stderr))
+def test_match(script, output):
+    assert match(Command(script, output))
 
 
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('vim', invalid_operation('vim')),
     ('apt-get', "")])
-def test_not_match(script, stderr):
-    assert not match(Command(script, stderr=stderr))
+def test_not_match(script, output):
+    assert not match(Command(script, output))
 
 
 @pytest.fixture
@@ -111,12 +111,12 @@ def test_get_operations(set_help, app, help_text, operations):
     assert _get_operations(app) == operations
 
 
-@pytest.mark.parametrize('script, stderr, help_text, result', [
+@pytest.mark.parametrize('script, output, help_text, result', [
     ('apt-get isntall vim', invalid_operation('isntall'),
      apt_get_help, 'apt-get install vim'),
     ('apt saerch vim', invalid_operation('saerch'),
      apt_help, 'apt search vim'),
 ])
-def test_get_new_command(set_help, stderr, script, help_text, result):
+def test_get_new_command(set_help, output, script, help_text, result):
     set_help(help_text)
-    assert get_new_command(Command(script, stderr=stderr))[0] == result
+    assert get_new_command(Command(script, output))[0] == result

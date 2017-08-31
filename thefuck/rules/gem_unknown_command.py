@@ -6,12 +6,12 @@ from thefuck.utils import for_app, eager, replace_command
 @for_app('gem')
 def match(command):
     return ('ERROR:  While executing gem ... (Gem::CommandLineError)'
-            in command.stderr
-            and 'Unknown command' in command.stderr)
+            in command.output
+            and 'Unknown command' in command.output)
 
 
 def _get_unknown_command(command):
-    return re.findall(r'Unknown command (.*)$', command.stderr)[0]
+    return re.findall(r'Unknown command (.*)$', command.output)[0]
 
 
 @eager

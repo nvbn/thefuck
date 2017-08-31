@@ -1,6 +1,6 @@
 def match(command):
     return (command.script.startswith(u'man')
-            and u'command not found' in command.stderr.lower())
+            and u'command not found' in command.output.lower())
 
 
 def get_new_command(command):

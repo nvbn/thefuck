@@ -2,7 +2,7 @@ import os
 import pytest
 from thefuck.rules.ssh_known_hosts import match, get_new_command,\
     side_effect
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
@@ -43,19 +43,19 @@ Host key verification failed.""".format(path, '98.765.432.321')
 
 def test_match(ssh_error):
     errormsg, _, _, _ = ssh_error
-    assert match(Command('ssh', stderr=errormsg))
-    assert match(Command('ssh', stderr=errormsg))
-    assert match(Command('scp something something', stderr=errormsg))
-    assert match(Command('scp something something', stderr=errormsg))
-    assert not match(Command(stderr=errormsg))
-    assert not match(Command('notssh', stderr=errormsg))
-    assert not match(Command('ssh'))
+    assert match(Command('ssh', errormsg))
+    assert match(Command('ssh', errormsg))
+    assert match(Command('scp something something', errormsg))
+    assert match(Command('scp something something', errormsg))
+    assert not match(Command(errormsg, ''))
+    assert not match(Command('notssh', errormsg))
+    assert not match(Command('ssh', ''))
 
 
 @pytest.mark.skipif(os.name == 'nt', reason='Skip if testing on Windows')
 def test_side_effect(ssh_error):
     errormsg, path, reset, known_hosts = ssh_error
-    command = Command('ssh user@host', stderr=errormsg)
+    command = Command('ssh user@host', errormsg)
     side_effect(command, None)
     expected = ['123.234.567.890 asdjkasjdakjsd\n', '111.222.333.444 qwepoiwqepoiss\n']
     assert known_hosts(path) == expected
@@ -63,4 +63,4 @@ def test_side_effect(ssh_error):
 
 def test_get_new_command(ssh_error, monkeypatch):
     errormsg, _, _, _ = ssh_error
-    assert get_new_command(Command('ssh user@host', stderr=errormsg)) == 'ssh user@host'
+    assert get_new_command(Command('ssh user@host', errormsg)) == 'ssh user@host'

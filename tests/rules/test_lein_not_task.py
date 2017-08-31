@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.lein_not_task import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
@@ -14,10 +14,10 @@ Did you mean this?
 
 
 def test_match(is_not_task):
-    assert match(Command(script='lein rpl', stderr=is_not_task))
-    assert not match(Command(script='ls', stderr=is_not_task))
+    assert match(Command('lein rpl', is_not_task))
+    assert not match(Command('ls', is_not_task))
 
 
 def test_get_new_command(is_not_task):
-    assert (get_new_command(Command(script='lein rpl --help', stderr=is_not_task))
+    assert (get_new_command(Command('lein rpl --help', is_not_task))
             == ['lein repl --help', 'lein jar --help'])

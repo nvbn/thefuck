@@ -5,7 +5,7 @@ from thefuck.specific.sudo import sudo_support
 @sudo_support
 def match(command):
     return ('rm' in command.script
-            and 'is a directory' in command.stderr.lower())
+            and 'is a directory' in command.output.lower())
 
 
 @sudo_support

@@ -1,6 +1,6 @@
 import pytest
 from io import BytesIO
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.rules.docker_not_command import get_new_command, match
 
 
@@ -104,20 +104,20 @@ Run 'docker COMMAND --help' for more information on a command.
     return mock
 
 
-def stderr(cmd):
+def output(cmd):
     return "docker: '{}' is not a docker command.\n" \
            "See 'docker --help'.".format(cmd)
 
 
 def test_match():
-    assert match(Command('docker pes', stderr=stderr('pes')))
+    assert match(Command('docker pes', output('pes')))
 
 
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('docker ps', ''),
-    ('cat pes', stderr('pes'))])
-def test_not_match(script, stderr):
-    assert not match(Command(script, stderr=stderr))
+    ('cat pes', output('pes'))])
+def test_not_match(script, output):
+    assert not match(Command(script, output))
 
 
 @pytest.mark.usefixtures('docker_help')
@@ -125,5 +125,5 @@ def test_not_match(script, stderr):
     ('pes', ['ps', 'push', 'pause']),
     ('tags', ['tag', 'stats', 'images'])])
 def test_get_new_command(wrong, fixed):
-    command = Command('docker {}'.format(wrong), stderr=stderr(wrong))
+    command = Command('docker {}'.format(wrong), output(wrong))
     assert get_new_command(command) == ['docker {}'.format(x) for x in fixed]

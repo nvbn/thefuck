@@ -4,7 +4,8 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('set-url' in command.script and 'fatal: No such remote' in command.stderr)
+    return ('set-url' in command.script
+            and 'fatal: No such remote' in command.output)
 
 
 def get_new_command(command):

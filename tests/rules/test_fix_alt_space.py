@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from thefuck.rules.fix_alt_space import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 def test_match():
@@ -11,12 +11,12 @@ def test_match():
 
     """
     assert match(Command(u'ps -ef | grep foo',
-                         stderr=u'-bash:  grep: command not found'))
-    assert not match(Command('ps -ef | grep foo'))
-    assert not match(Command())
+                         u'-bash:  grep: command not found'))
+    assert not match(Command('ps -ef | grep foo', ''))
+    assert not match(Command('', ''))
 
 
 def test_get_new_command():
     """ Replace the Alt+Space character by a simple space """
-    assert (get_new_command(Command(u'ps -ef | grep foo'))
+    assert (get_new_command(Command(u'ps -ef | grep foo', ''))
             == 'ps -ef | grep foo')

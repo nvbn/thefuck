@@ -1,7 +1,7 @@
 import pytest
 from io import BytesIO
 from thefuck.rules.git_checkout import match, get_branches, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
@@ -21,17 +21,17 @@ def git_branch(mocker, branches):
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='git checkout unknown', stderr=did_not_match('unknown')),
-    Command(script='git commit unknown', stderr=did_not_match('unknown'))])
+    Command('git checkout unknown', did_not_match('unknown')),
+    Command('git commit unknown', did_not_match('unknown'))])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='git submodule update unknown',
-            stderr=did_not_match('unknown', True)),
-    Command(script='git checkout known', stderr=('')),
-    Command(script='git commit known', stderr=(''))])
+    Command('git submodule update unknown',
+            did_not_match('unknown', True)),
+    Command('git checkout known', ''),
+    Command('git commit known', '')])
 def test_not_match(command):
     assert not match(command)
 
@@ -51,18 +51,18 @@ def test_get_branches(branches, branch_list, git_branch):
 
 @pytest.mark.parametrize('branches, command, new_command', [
     (b'',
-     Command(script='git checkout unknown', stderr=did_not_match('unknown')),
+     Command('git checkout unknown', did_not_match('unknown')),
      'git branch unknown && git checkout unknown'),
     (b'',
-     Command('git commit unknown', stderr=did_not_match('unknown')),
+     Command('git commit unknown', did_not_match('unknown')),
      'git branch unknown && git commit unknown'),
     (b'  test-random-branch-123',
-     Command(script='git checkout tst-rdm-brnch-123',
-             stderr=did_not_match('tst-rdm-brnch-123')),
+     Command('git checkout tst-rdm-brnch-123',
+             did_not_match('tst-rdm-brnch-123')),
      'git checkout test-random-branch-123'),
     (b'  test-random-branch-123',
-     Command(script='git commit tst-rdm-brnch-123',
-             stderr=did_not_match('tst-rdm-brnch-123')),
+     Command('git commit tst-rdm-brnch-123',
+             did_not_match('tst-rdm-brnch-123')),
      'git commit test-random-branch-123')])
 def test_get_new_command(branches, command, new_command, git_branch):
     git_branch(branches)

@@ -24,8 +24,7 @@ def _get_pid_by_port(port):
 @memoize
 def _get_used_port(command):
     for pattern in patterns:
-        matched = (re.search(pattern, command.stderr)
-                   or re.search(pattern, command.stdout))
+        matched = re.search(pattern, command.output)
         if matched:
             return matched.group('port')
 

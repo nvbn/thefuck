@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.git_push_pull import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 git_err = '''
@@ -37,37 +37,37 @@ To /tmp/bar
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='git push', stderr=git_err),
-    Command(script='git push nvbn', stderr=git_err),
-    Command(script='git push nvbn master', stderr=git_err),
-    Command(script='git push', stderr=git_err2),
-    Command(script='git push nvbn', stderr=git_err2),
-    Command(script='git push nvbn master', stderr=git_err2)])
+    Command('git push', git_err),
+    Command('git push nvbn', git_err),
+    Command('git push nvbn master', git_err),
+    Command('git push', git_err2),
+    Command('git push nvbn', git_err2),
+    Command('git push nvbn master', git_err2)])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='git push', stderr=git_ok),
-    Command(script='git push', stderr=git_uptodate),
-    Command(script='git push nvbn', stderr=git_ok),
-    Command(script='git push nvbn master', stderr=git_uptodate),
-    Command(script='git push nvbn', stderr=git_ok),
-    Command(script='git push nvbn master', stderr=git_uptodate)])
+    Command('git push', git_ok),
+    Command('git push', git_uptodate),
+    Command('git push nvbn', git_ok),
+    Command('git push nvbn master', git_uptodate),
+    Command('git push nvbn', git_ok),
+    Command('git push nvbn master', git_uptodate)])
 def test_not_match(command):
     assert not match(command)
 
 
 @pytest.mark.parametrize('command, output', [
-    (Command(script='git push', stderr=git_err), 'git pull && git push'),
-    (Command(script='git push nvbn', stderr=git_err),
+    (Command('git push', git_err), 'git pull && git push'),
+    (Command('git push nvbn', git_err),
      'git pull nvbn && git push nvbn'),
-    (Command(script='git push nvbn master', stderr=git_err),
+    (Command('git push nvbn master', git_err),
      'git pull nvbn master && git push nvbn master'),
-    (Command(script='git push', stderr=git_err2), 'git pull && git push'),
-    (Command(script='git push nvbn', stderr=git_err2),
+    (Command('git push', git_err2), 'git pull && git push'),
+    (Command('git push nvbn', git_err2),
      'git pull nvbn && git push nvbn'),
-    (Command(script='git push nvbn master', stderr=git_err2),
+    (Command('git push nvbn master', git_err2),
      'git pull nvbn master && git push nvbn master')])
 def test_get_new_command(command, output):
     assert get_new_command(command) == output

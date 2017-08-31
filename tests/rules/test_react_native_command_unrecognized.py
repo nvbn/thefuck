@@ -2,9 +2,9 @@ import pytest
 from io import BytesIO
 from thefuck.rules.react_native_command_unrecognized import match, \
     get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
-stderr = "Unrecognized command '{}'".format
+output = "Unrecognized command '{}'".format
 
 stdout = b'''
 Scanning 615 folders for symlinks in /home/nvbn/work/zcho/BookkaWebView/node_modules (6ms)
@@ -38,23 +38,23 @@ Scanning 615 folders for symlinks in /home/nvbn/work/zcho/BookkaWebView/node_mod
 
 
 @pytest.mark.parametrize('command', [
-    Command('react-native star', stderr=stderr('star')),
-    Command('react-native android-logs', stderr=stderr('android-logs'))])
+    Command('react-native star', output('star')),
+    Command('react-native android-logs', output('android-logs'))])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command('gradle star', stderr=stderr('star')),
-    Command('react-native start')])
+    Command('gradle star', output('star')),
+    Command('react-native start', '')])
 def test_not_match(command):
     assert not match(command)
 
 
 @pytest.mark.parametrize('command, result', [
-    (Command('react-native star', stderr=stderr('star')),
+    (Command('react-native star', output('star')),
      'react-native start'),
-    (Command('react-native logsandroid -f', stderr=stderr('logsandroid')),
+    (Command('react-native logsandroid -f', output('logsandroid')),
      'react-native log-android -f')])
 def test_get_new_command(mocker, command, result):
     patch = mocker.patch(

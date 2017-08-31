@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-from subprocess import PIPE
+from subprocess import PIPE, STDOUT
 from mock import Mock
 import pytest
-from tests.utils import CorrectedCommand, Rule, Command
+from tests.utils import CorrectedCommand, Rule
 from thefuck import const
 from thefuck.exceptions import EmptyCommand
 from thefuck.system import Path
+from thefuck.types import Command
 
 
 class TestCorrectedCommand(object):
@@ -38,7 +39,7 @@ class TestCorrectedCommand(object):
          {'repeat': True, 'debug': True})])
     def test_run(self, capsys, settings, script, printed, override_settings):
         settings.update(override_settings)
-        CorrectedCommand(script, None, 1000).run(Command())
+        CorrectedCommand(script, None, 1000).run(Command(script, ''))
         out, _ = capsys.readouterr()
         assert out[:-1] == printed
 
@@ -77,30 +78,30 @@ class TestRule(object):
 
     def test_isnt_match(self):
         assert not Rule('', lambda _: False).is_match(
-            Command('ls'))
+            Command('ls', ''))
 
     def test_is_match(self):
         rule = Rule('', lambda x: x.script == 'cd ..')
-        assert rule.is_match(Command('cd ..'))
+        assert rule.is_match(Command('cd ..', ''))
 
     @pytest.mark.usefixtures('no_colors')
     def test_isnt_match_when_rule_failed(self, capsys):
         rule = Rule('test', Mock(side_effect=OSError('Denied')),
                     requires_output=False)
-        assert not rule.is_match(Command('ls'))
+        assert not rule.is_match(Command('ls', ''))
         assert capsys.readouterr()[1].split('\n')[0] == '[WARN] Rule test:'
 
     def test_get_corrected_commands_with_rule_returns_list(self):
         rule = Rule(get_new_command=lambda x: [x.script + '!', x.script + '@'],
                     priority=100)
-        assert (list(rule.get_corrected_commands(Command(script='test')))
+        assert (list(rule.get_corrected_commands(Command('test', '')))
                 == [CorrectedCommand(script='test!', priority=100),
                     CorrectedCommand(script='test@', priority=200)])
 
     def test_get_corrected_commands_with_rule_returns_command(self):
         rule = Rule(get_new_command=lambda x: x.script + '!',
                     priority=100)
-        assert (list(rule.get_corrected_commands(Command(script='test')))
+        assert (list(rule.get_corrected_commands(Command('test', '')))
                 == [CorrectedCommand(script='test!', priority=100)])
 
 
@@ -108,8 +109,7 @@ class TestCommand(object):
     @pytest.fixture(autouse=True)
     def Popen(self, monkeypatch):
         Popen = Mock()
-        Popen.return_value.stdout.read.return_value = b'stdout'
-        Popen.return_value.stderr.read.return_value = b'stderr'
+        Popen.return_value.stdout.read.return_value = b'output'
         monkeypatch.setattr('thefuck.output_readers.rerun.Popen', Popen)
         return Popen
 
@@ -122,12 +122,12 @@ class TestCommand(object):
         settings.env = {}
         assert Command.from_raw_script(
             ['apt-get', 'search', 'vim']) == Command(
-            'apt-get search vim', 'stdout', 'stderr')
+            'apt-get search vim', 'output')
         Popen.assert_called_once_with('apt-get search vim',
                                       shell=True,
                                       stdin=PIPE,
                                       stdout=PIPE,
-                                      stderr=PIPE,
+                                      stderr=STDOUT,
                                       env=os_environ)
 
     @pytest.mark.parametrize('script, result', [

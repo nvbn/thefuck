@@ -13,17 +13,25 @@ from .output_readers import get_output
 class Command(object):
     """Command that should be fixed."""
 
-    def __init__(self, script, stdout, stderr):
+    def __init__(self, script, output):
         """Initializes command with given values.
 
         :type script: basestring
-        :type stdout: basestring
-        :type stderr: basestring
+        :type output: basestring
 
         """
         self.script = script
-        self.stdout = stdout
-        self.stderr = stderr
+        self.output = output
+
+    @property
+    def stdout(self):
+        logs.warn('`stdout` is deprecated, please use `output` instead')
+        return self.output
+
+    @property
+    def stderr(self):
+        logs.warn('`stderr` is deprecated, please use `output` instead')
+        return self.output
 
     @property
     def script_parts(self):
@@ -39,14 +47,13 @@ class Command(object):
 
     def __eq__(self, other):
         if isinstance(other, Command):
-            return ((self.script, self.stdout, self.stderr)
-                    == (other.script, other.stdout, other.stderr))
+            return (self.script, self.output) == (other.script, other.output)
         else:
             return False
 
     def __repr__(self):
-        return u'Command(script={}, stdout={}, stderr={})'.format(
-            self.script, self.stdout, self.stderr)
+        return u'Command(script={}, output={})'.format(
+            self.script, self.output)
 
     def update(self, **kwargs):
         """Returns new command with replaced fields.
@@ -55,8 +62,7 @@ class Command(object):
 
         """
         kwargs.setdefault('script', self.script)
-        kwargs.setdefault('stdout', self.stdout)
-        kwargs.setdefault('stderr', self.stderr)
+        kwargs.setdefault('output', self.output)
         return Command(**kwargs)
 
     @classmethod
@@ -73,8 +79,8 @@ class Command(object):
             raise EmptyCommand
 
         expanded = shell.from_shell(script)
-        stdout, stderr = get_output(script, expanded)
-        return cls(expanded, stdout, stderr)
+        output = get_output(script, expanded)
+        return cls(expanded, output)
 
 
 class Rule(object):
@@ -163,9 +169,7 @@ class Rule(object):
         :rtype: bool
 
         """
-        script_only = command.stdout is None and command.stderr is None
-
-        if script_only and self.requires_output:
+        if command.output is None and self.requires_output:
             return False
 
         try:

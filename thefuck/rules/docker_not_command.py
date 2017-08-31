@@ -8,7 +8,7 @@ from thefuck.specific.sudo import sudo_support
 @sudo_support
 @for_app('docker')
 def match(command):
-    return 'is not a docker command' in command.stderr
+    return 'is not a docker command' in command.output
 
 
 def get_docker_commands():
@@ -23,5 +23,5 @@ def get_docker_commands():
 @sudo_support
 def get_new_command(command):
     wrong_command = re.findall(
-        r"docker: '(\w+)' is not a docker command.", command.stderr)[0]
+        r"docker: '(\w+)' is not a docker command.", command.output)[0]
     return replace_command(command, wrong_command, get_docker_commands())

@@ -6,7 +6,7 @@ from thefuck.specific.git import git_support
 def match(command):
     # catches "Please commit or stash them" and "Please, commit your changes or
     # stash them before you can switch branches."
-    return 'or stash them' in command.stderr
+    return 'or stash them' in command.output
 
 
 @git_support

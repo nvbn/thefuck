@@ -4,8 +4,8 @@ from thefuck.specific.git import git_support
 @git_support
 def match(command):
     return (' rm ' in command.script
-            and "fatal: not removing '" in command.stderr
-            and "' recursively without -r" in command.stderr)
+            and "fatal: not removing '" in command.output
+            and "' recursively without -r" in command.output)
 
 
 @git_support
