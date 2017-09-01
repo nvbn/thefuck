@@ -12,12 +12,13 @@ class Zsh(Generic):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
             {name} () {{
-                TF_PREVIOUS=$(fc -ln -1 | tail -n 1);
+                TF_HISTORY=$(fc -ln -10)
                 TF_CMD=$(
                     TF_ALIAS={name}
                     TF_SHELL_ALIASES=$(alias)
+                    TF_HISTORY=$TF_HISTORY
                     PYTHONIOENCODING=utf-8
-                    thefuck $TF_PREVIOUS {argument_placeholder} $*
+                    thefuck {argument_placeholder} $*
                 ) && eval $TF_CMD;
                 {alter_history}
             }}
