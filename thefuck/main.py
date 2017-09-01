@@ -4,17 +4,35 @@ from .system import init_output
 init_output()
 
 from pprint import pformat  # noqa: E402
+import os  # noqa: E402
 import sys  # noqa: E402
+from difflib import SequenceMatcher  # noqa: E402
 import six  # noqa: E402
-from . import logs, types  # noqa: E402
+from . import logs, types, const  # noqa: E402
 from .shells import shell  # noqa: E402
 from .conf import settings  # noqa: E402
 from .corrector import get_corrected_commands  # noqa: E402
 from .exceptions import EmptyCommand  # noqa: E402
 from .ui import select_command  # noqa: E402
 from .argument_parser import Parser  # noqa: E402
-from .utils import get_installation_info  # noqa: E402
+from .utils import (get_installation_info, get_alias,
+                    get_all_executables)  # noqa: E402
 from .logs import warn  # noqa: E402
+
+
+def _get_raw_command(known_args):
+    if known_args.force_command:
+        return known_args.force_command
+    elif 'TF_HISTORY' not in os.environ:
+        return known_args.command
+    else:
+        history = os.environ['TF_HISTORY'].split('\n')[::-1]
+        alias = get_alias()
+        executables = get_all_executables()
+        for command in history:
+            diff = SequenceMatcher(a=alias, b=command).ratio()
+            if diff < const.DIFF_WITH_ALIAS or command in executables:
+                return [command]
 
 
 def fix_command(known_args):
@@ -22,8 +40,7 @@ def fix_command(known_args):
     settings.init(known_args)
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))
-        raw_command = ([known_args.force_command] if known_args.force_command
-                       else known_args.command)
+        raw_command = _get_raw_command(known_args)
 
         try:
             command = types.Command.from_raw_script(raw_command)
@@ -49,7 +66,7 @@ def main():
     elif known_args.version:
         logs.version(get_installation_info().version,
                      sys.version.split()[0])
-    elif known_args.command:
+    elif known_args.command or 'TF_HISTORY' in os.environ:
         fix_command(known_args)
     elif known_args.alias:
         if six.PY2:
