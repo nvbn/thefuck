@@ -75,7 +75,7 @@ def default_settings(params):
     Usage:
 
         @default_settings({'apt': '/usr/bin/apt'})
-        def match(command, settings):
+        def match(command):
             print(settings.apt)
 
     """
