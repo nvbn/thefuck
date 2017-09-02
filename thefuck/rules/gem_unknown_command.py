@@ -1,6 +1,6 @@
 import re
 import subprocess
-from thefuck.utils import for_app, eager, replace_command
+from thefuck.utils import for_app, eager, replace_command, cache, which
 
 
 @for_app('gem')
@@ -24,6 +24,10 @@ def _get_all_commands():
 
         if line.startswith('    '):
             yield line.strip().split(' ')[0]
+
+
+if which('gem'):
+    _get_all_commands = cache(which('gem'))(_get_all_commands)
 
 
 def get_new_command(command):

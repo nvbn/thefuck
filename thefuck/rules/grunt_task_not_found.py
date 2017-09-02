@@ -1,6 +1,6 @@
 import re
 from subprocess import Popen, PIPE
-from thefuck.utils import for_app, eager, get_closest
+from thefuck.utils import for_app, eager, get_closest, cache
 
 regex = re.compile(r'Warning: Task "(.*)" not found.')
 
@@ -10,6 +10,7 @@ def match(command):
     return regex.findall(command.output)
 
 
+@cache('Gruntfile.js')
 @eager
 def _get_all_tasks():
     proc = Popen(['grunt', '--help'], stdout=PIPE)

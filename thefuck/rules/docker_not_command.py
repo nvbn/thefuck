@@ -1,7 +1,7 @@
 from itertools import dropwhile, takewhile, islice
 import re
 import subprocess
-from thefuck.utils import replace_command, for_app
+from thefuck.utils import replace_command, for_app, which, cache
 from thefuck.specific.sudo import sudo_support
 
 
@@ -18,6 +18,10 @@ def get_docker_commands():
     lines = islice(lines, 1, None)
     lines = list(takewhile(lambda line: line != '\n', lines))
     return [line.strip().split(' ')[0] for line in lines]
+
+
+if which('docker'):
+    get_docker_commands = cache(which('docker'))(get_docker_commands)
 
 
 @sudo_support
