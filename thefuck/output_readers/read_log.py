@@ -54,6 +54,12 @@ def _get_output_lines(script, log_file):
     return screen.display
 
 
+def _skip_old_lines(log_file):
+    size = os.path.getsize(os.environ['THEFUCK_OUTPUT_LOG'])
+    if size > const.LOG_SIZE_IN_BYTES:
+        log_file.seek(size - const.LOG_SIZE_IN_BYTES)
+
+
 def get_output(script):
     """Reads script output from log.
 
@@ -76,6 +82,7 @@ def get_output(script):
 
     try:
         with open(os.environ['THEFUCK_OUTPUT_LOG'], 'rb') as log_file:
+            _skip_old_lines(log_file)
             lines = _get_output_lines(script, log_file)
             output = '\n'.join(lines).strip()
             debug(u'Received output: {}'.format(output))
