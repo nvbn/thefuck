@@ -1,5 +1,6 @@
 from time import time
 import os
+from tempfile import gettempdir
 from uuid import uuid4
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER, USER_COMMAND_MARK
@@ -36,13 +37,15 @@ class Zsh(Generic):
             '''.format(user_command_mark=USER_COMMAND_MARK,
                        app_alias=self.app_alias(alias_name))
         else:
+            log_path = os.path.join(
+                gettempdir(), 'thefuck-script-log-{}'.format(uuid4().hex))
             return '''
                 export THEFUCK_INSTANT_MODE=True;
                 export THEFUCK_OUTPUT_LOG={log};
                 script -feq {log};
                 rm {log};
                 exit
-            '''.format(log='/tmp/thefuck-script-log-{}'.format(uuid4().hex))
+            '''.format(log=log_path)
 
     def _parse_alias(self, alias):
         name, value = alias.split('=', 1)
