@@ -4,8 +4,8 @@ from thefuck.utils import for_app
 
 @for_app('tsuru')
 def match(command):
-    return ('not authenticated' in command.stderr
-            and 'session has expired' in command.stderr)
+    return ('not authenticated' in command.output
+            and 'session has expired' in command.output)
 
 
 def get_new_command(command):

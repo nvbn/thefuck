@@ -1,10 +1,10 @@
 import pytest
 from thefuck.rules.git_rebase_merge_dir import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
-def stderr():
+def output():
     return ('\n\nIt seems that there is already a rebase-merge directory, and\n'
             'I wonder if you are in the middle of another rebase.  If that is the\n'
             'case, please try\n'
@@ -16,14 +16,16 @@ def stderr():
 
 
 @pytest.mark.parametrize('script', [
-    ('git rebase master'), ('git rebase -skip'), ('git rebase')])
-def test_match(stderr, script):
-    assert match(Command(script=script, stderr=stderr))
+    'git rebase master',
+    'git rebase -skip',
+    'git rebase'])
+def test_match(output, script):
+    assert match(Command(script, output))
 
 
 @pytest.mark.parametrize('script', ['git rebase master', 'git rebase -abort'])
 def test_not_match(script):
-    assert not match(Command(script=script))
+    assert not match(Command(script, ''))
 
 
 @pytest.mark.parametrize('script, result', [
@@ -36,5 +38,5 @@ def test_not_match(script):
     ('git rebase', [
         'git rebase --skip', 'git rebase --abort', 'git rebase --continue',
         'rm -fr "/foo/bar/baz/egg/.git/rebase-merge"'])])
-def test_get_new_command(stderr, script, result):
-    assert get_new_command(Command(script=script, stderr=stderr)) == result
+def test_get_new_command(output, script, result):
+    assert get_new_command(Command(script, output)) == result

@@ -1,14 +1,14 @@
 import pytest
 from thefuck.rules.apt_get import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.mark.parametrize('command, packages', [
-    (Command(script='vim', stderr='vim: command not found'),
+    (Command('vim', 'vim: command not found'),
      [('vim', 'main'), ('vim-tiny', 'main')]),
-    (Command(script='sudo vim', stderr='vim: command not found'),
+    (Command('sudo vim', 'vim: command not found'),
      [('vim', 'main'), ('vim-tiny', 'main')]),
-    (Command(script='vim', stderr="The program 'vim' is currently not installed. You can install it by typing: sudo apt install vim"),
+    (Command('vim', "The program 'vim' is currently not installed. You can install it by typing: sudo apt install vim"),
      [('vim', 'main'), ('vim-tiny', 'main')])])
 def test_match(mocker, command, packages):
     mocker.patch('thefuck.rules.apt_get.which', return_value=None)
@@ -20,13 +20,13 @@ def test_match(mocker, command, packages):
 
 
 @pytest.mark.parametrize('command, packages, which', [
-    (Command(script='a_bad_cmd', stderr='a_bad_cmd: command not found'),
+    (Command('a_bad_cmd', 'a_bad_cmd: command not found'),
      [], None),
-    (Command(script='vim', stderr=''), [], None),
-    (Command(), [], None),
-    (Command(script='vim', stderr='vim: command not found'),
+    (Command('vim', ''), [], None),
+    (Command('', ''), [], None),
+    (Command('vim', 'vim: command not found'),
      ['vim'], '/usr/bin/vim'),
-    (Command(script='sudo vim', stderr='vim: command not found'),
+    (Command('sudo vim', 'vim: command not found'),
      ['vim'], '/usr/bin/vim')])
 def test_not_match(mocker, command, packages, which):
     mocker.patch('thefuck.rules.apt_get.which', return_value=which)
@@ -38,14 +38,14 @@ def test_not_match(mocker, command, packages, which):
 
 
 @pytest.mark.parametrize('command, new_command, packages', [
-    (Command('vim'), 'sudo apt-get install vim && vim',
+    (Command('vim', ''), 'sudo apt-get install vim && vim',
      [('vim', 'main'), ('vim-tiny', 'main')]),
-    (Command('convert'), 'sudo apt-get install imagemagick && convert',
+    (Command('convert', ''), 'sudo apt-get install imagemagick && convert',
      [('imagemagick', 'main'),
       ('graphicsmagick-imagemagick-compat', 'universe')]),
-    (Command('sudo vim'), 'sudo apt-get install vim && sudo vim',
+    (Command('sudo vim', ''), 'sudo apt-get install vim && sudo vim',
      [('vim', 'main'), ('vim-tiny', 'main')]),
-    (Command('sudo convert'), 'sudo apt-get install imagemagick && sudo convert',
+    (Command('sudo convert', ''), 'sudo apt-get install imagemagick && sudo convert',
      [('imagemagick', 'main'),
       ('graphicsmagick-imagemagick-compat', 'universe')])])
 def test_get_new_command(mocker, command, new_command, packages):

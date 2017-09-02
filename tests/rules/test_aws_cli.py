@@ -1,7 +1,7 @@
 import pytest
 
 from thefuck.rules.aws_cli import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 no_suggestions = '''\
@@ -77,25 +77,25 @@ Invalid choice: 't-item', maybe you meant:
 
 
 @pytest.mark.parametrize('command', [
-    Command('aws dynamdb scan', stderr=misspelled_command),
-    Command('aws dynamodb scn', stderr=misspelled_subcommand),
+    Command('aws dynamdb scan', misspelled_command),
+    Command('aws dynamodb scn', misspelled_subcommand),
     Command('aws dynamodb t-item',
-            stderr=misspelled_subcommand_with_multiple_options)])
+            misspelled_subcommand_with_multiple_options)])
 def test_match(command):
     assert match(command)
 
 
 def test_not_match():
-    assert not match(Command('aws dynamodb invalid', stderr=no_suggestions))
+    assert not match(Command('aws dynamodb invalid', no_suggestions))
 
 
 @pytest.mark.parametrize('command, result', [
-    (Command('aws dynamdb scan', stderr=misspelled_command),
+    (Command('aws dynamdb scan', misspelled_command),
      ['aws dynamodb scan']),
-    (Command('aws dynamodb scn', stderr=misspelled_subcommand),
+    (Command('aws dynamodb scn', misspelled_subcommand),
      ['aws dynamodb scan']),
     (Command('aws dynamodb t-item',
-             stderr=misspelled_subcommand_with_multiple_options),
+             misspelled_subcommand_with_multiple_options),
      ['aws dynamodb put-item', 'aws dynamodb get-item'])])
 def test_get_new_command(command, result):
     assert get_new_command(command) == result

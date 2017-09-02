@@ -1,6 +1,6 @@
 import pytest
 
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.rules.git_push_without_commits import (
     fix,
     get_new_command,
@@ -14,13 +14,13 @@ error: failed to push some refs to 'git@github.com:User/repo.git'
 '''
 
 
-@pytest.mark.parametrize('command', [Command(command, stderr=expected_error)])
+@pytest.mark.parametrize('command', [Command(command, expected_error)])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command, result', [(
-    Command(command, stderr=expected_error),
+    Command(command, expected_error),
     fix.format(command=command),
 )])
 def test_get_new_command(command, result):

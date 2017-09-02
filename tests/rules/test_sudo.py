@@ -1,25 +1,25 @@
 import pytest
 from thefuck.rules.sudo import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
-@pytest.mark.parametrize('stderr, stdout', [
-    ('Permission denied', ''),
-    ('permission denied', ''),
-    ("npm ERR! Error: EACCES, unlink", ''),
-    ('requested operation requires superuser privilege', ''),
-    ('need to be root', ''),
-    ('need root', ''),
-    ('must be root', ''),
-    ('You don\'t have access to the history DB.', ''),
-    ('', "error: [Errno 13] Permission denied: '/usr/local/lib/python2.7/dist-packages/ipaddr.py'")])
-def test_match(stderr, stdout):
-    assert match(Command(stderr=stderr, stdout=stdout))
+@pytest.mark.parametrize('output', [
+    'Permission denied',
+    'permission denied',
+    "npm ERR! Error: EACCES, unlink",
+    'requested operation requires superuser privilege',
+    'need to be root',
+    'need root',
+    'must be root',
+    'You don\'t have access to the history DB.',
+    "error: [Errno 13] Permission denied: '/usr/local/lib/python2.7/dist-packages/ipaddr.py'"])
+def test_match(output):
+    assert match(Command('', output))
 
 
 def test_not_match():
-    assert not match(Command())
-    assert not match(Command(script='sudo ls', stderr='Permission denied'))
+    assert not match(Command('', ''))
+    assert not match(Command('sudo ls', 'Permission denied'))
 
 
 @pytest.mark.parametrize('before, after', [
@@ -28,4 +28,4 @@ def test_not_match():
     ('echo "a" >> b', 'sudo sh -c "echo \\"a\\" >> b"'),
     ('mkdir && touch a', 'sudo sh -c "mkdir && touch a"')])
 def test_get_new_command(before, after):
-    assert get_new_command(Command(before)) == after
+    assert get_new_command(Command(before, '')) == after

@@ -6,8 +6,8 @@ from thefuck.utils import for_app
 @sudo_support
 @for_app('cp')
 def match(command):
-    stderr = command.stderr.lower()
-    return 'omitting directory' in stderr or 'is a directory' in stderr
+    output = command.output.lower()
+    return 'omitting directory' in output or 'is a directory' in output
 
 
 @sudo_support

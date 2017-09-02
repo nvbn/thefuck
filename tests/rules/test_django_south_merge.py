@@ -1,10 +1,10 @@
 import pytest
 from thefuck.rules.django_south_merge import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
-def stderr():
+def output():
     return '''Running migrations for app:
  ! Migration app:0003_auto... should not have been applied before app:0002_auto__add_field_query_due_date_ but was.
 Traceback (most recent call last):
@@ -30,14 +30,14 @@ The following options are available:
 '''
 
 
-def test_match(stderr):
-    assert match(Command('./manage.py migrate', stderr=stderr))
-    assert match(Command('python manage.py migrate', stderr=stderr))
-    assert not match(Command('./manage.py migrate'))
-    assert not match(Command('app migrate', stderr=stderr))
-    assert not match(Command('./manage.py test', stderr=stderr))
+def test_match(output):
+    assert match(Command('./manage.py migrate', output))
+    assert match(Command('python manage.py migrate', output))
+    assert not match(Command('./manage.py migrate', ''))
+    assert not match(Command('app migrate', output))
+    assert not match(Command('./manage.py test', output))
 
 
 def test_get_new_command():
-    assert (get_new_command(Command('./manage.py migrate auth'))
+    assert (get_new_command(Command('./manage.py migrate auth', ''))
             == './manage.py migrate auth --merge')

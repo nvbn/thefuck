@@ -306,7 +306,7 @@ side_effect(old_command: Command, fixed_command: str) -> None
 ```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
-`Command` has four attributes: `script`, `stdout`, `stderr` and `script_parts`.
+`Command` has three attributes: `script`, `output` and `script_parts`.
 Rule shouldn't change `Command`.
 
 
@@ -317,8 +317,8 @@ Simple example of the rule for running script with `sudo`:
 
 ```python
 def match(command):
-    return ('permission denied' in command.stderr.lower()
-            or 'EACCES' in command.stderr)
+    return ('permission denied' in command.output.lower()
+            or 'EACCES' in command.output)
 
 
 def get_new_command(command):

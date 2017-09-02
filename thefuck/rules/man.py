@@ -17,7 +17,7 @@ def get_new_command(command):
 
     # If there are no man pages for last_arg, suggest `last_arg --help` instead.
     # Otherwise, suggest `--help` after suggesting other man page sections.
-    if command.stderr.strip() == 'No manual entry for ' + last_arg:
+    if command.output.strip() == 'No manual entry for ' + last_arg:
         return [help_command]
 
     split_cmd2 = command.script_parts

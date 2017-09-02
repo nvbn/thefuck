@@ -14,9 +14,9 @@ def git_support(fn, command):
         return False
 
     # perform git aliases expansion
-    if 'trace: alias expansion:' in command.stderr:
+    if 'trace: alias expansion:' in command.output:
         search = re.search("trace: alias expansion: ([^ ]*) => ([^\n]*)",
-                           command.stderr)
+                           command.output)
         alias = search.group(1)
 
         # by default git quotes everything, for example:

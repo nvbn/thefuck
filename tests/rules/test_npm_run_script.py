@@ -1,9 +1,9 @@
 import pytest
 from io import BytesIO
 from thefuck.rules.npm_run_script import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
-stdout = '''
+output = '''
 Usage: npm <command>
 
 where <command> is one of:
@@ -58,7 +58,7 @@ def run_script(mocker):
 @pytest.mark.parametrize('script', [
     'npm watch-test', 'npm develop'])
 def test_match(script):
-    command = Command(script, stdout)
+    command = Command(script, output)
     assert match(command)
 
 
@@ -66,8 +66,8 @@ def test_match(script):
 @pytest.mark.parametrize('command, run_script_out', [
     (Command('npm test', 'TEST FAIL'), run_script_stdout),
     (Command('npm watch-test', 'TEST FAIL'), run_script_stdout),
-    (Command('npm test', stdout), run_script_stdout),
-    (Command('vim watch-test', stdout), run_script_stdout)])
+    (Command('npm test', output), run_script_stdout),
+    (Command('vim watch-test', output), run_script_stdout)])
 def test_not_match(run_script, command, run_script_out):
     run_script.stdout = BytesIO(run_script_out)
     assert not match(command)
@@ -80,5 +80,5 @@ def test_not_match(run_script, command, run_script_out):
     ('npm -i watch-script --path ..',
      'npm run-script -i watch-script --path ..')])
 def test_get_new_command(script, result):
-    command = Command(script, stdout)
+    command = Command(script, output)
     assert get_new_command(command) == result

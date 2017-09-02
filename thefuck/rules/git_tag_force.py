@@ -5,7 +5,7 @@ from thefuck.specific.git import git_support
 @git_support
 def match(command):
     return ('tag' in command.script_parts
-            and 'already exists' in command.stderr)
+            and 'already exists' in command.output)
 
 
 @git_support

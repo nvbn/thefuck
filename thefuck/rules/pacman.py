@@ -3,7 +3,7 @@ from thefuck.shells import shell
 
 
 def match(command):
-    return 'not found' in command.stderr and get_pkgfile(command.script)
+    return 'not found' in command.output and get_pkgfile(command.script)
 
 
 def get_new_command(command):

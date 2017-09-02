@@ -1,13 +1,12 @@
 import pytest
 from thefuck.rules.fab_command_not_found import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
-stderr = '''
+output = '''
 Warning: Command(s) not found:
     extenson
     deloyp
-'''
-stdout = '''
+
 Available commands:
 
     update_config
@@ -21,16 +20,16 @@ Available commands:
 
 
 @pytest.mark.parametrize('command', [
-    Command('fab extenson', stderr=stderr),
-    Command('fab deloyp', stderr=stderr),
-    Command('fab extenson deloyp', stderr=stderr)])
+    Command('fab extenson', output),
+    Command('fab deloyp', output),
+    Command('fab extenson deloyp', output)])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command('gulp extenson', stderr=stderr),
-    Command('fab deloyp')])
+    Command('gulp extenson', output),
+    Command('fab deloyp', '')])
 def test_not_match(command):
     assert not match(command)
 
@@ -45,5 +44,5 @@ def test_not_match(command):
      'fab prepare_extension:version=2016 deploy:beta=true -H the.fuck'),
 ])
 def test_get_new_command(script, result):
-    command = Command(script, stdout, stderr)
+    command = Command(script, output)
     assert get_new_command(command) == result

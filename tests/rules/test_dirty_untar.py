@@ -3,7 +3,7 @@ import pytest
 import tarfile
 from thefuck.rules.dirty_untar import match, get_new_command, side_effect, \
                                       tar_extensions  # noqa: E126
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
@@ -52,7 +52,7 @@ parametrize_script = pytest.mark.parametrize('script, fixed', [
 @parametrize_script
 def test_match(ext, tar_error, filename, unquoted, quoted, script, fixed):
     tar_error(unquoted.format(ext))
-    assert match(Command(script=script.format(filename.format(ext))))
+    assert match(Command(script.format(filename.format(ext)), ''))
 
 
 @parametrize_extensions
@@ -60,7 +60,7 @@ def test_match(ext, tar_error, filename, unquoted, quoted, script, fixed):
 @parametrize_script
 def test_side_effect(ext, tar_error, filename, unquoted, quoted, script, fixed):
     tar_error(unquoted.format(ext))
-    side_effect(Command(script=script.format(filename.format(ext))), None)
+    side_effect(Command(script.format(filename.format(ext)), ''), None)
     assert set(os.listdir('.')) == {unquoted.format(ext), 'd'}
 
 
@@ -69,5 +69,5 @@ def test_side_effect(ext, tar_error, filename, unquoted, quoted, script, fixed):
 @parametrize_script
 def test_get_new_command(ext, tar_error, filename, unquoted, quoted, script, fixed):
     tar_error(unquoted.format(ext))
-    assert (get_new_command(Command(script=script.format(filename.format(ext))))
+    assert (get_new_command(Command(script.format(filename.format(ext)), ''))
             == fixed.format(dir=quoted.format(''), filename=filename.format(ext)))

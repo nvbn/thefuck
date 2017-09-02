@@ -1,9 +1,9 @@
 import pytest
 from six import BytesIO
 from thefuck.rules.gem_unknown_command import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
-stderr = '''
+output = '''
 ERROR:  While executing gem ... (Gem::CommandLineError)
     Unknown command {}
 '''
@@ -64,19 +64,19 @@ def gem_help_commands(mocker):
     ('gem isntall jekyll', 'isntall'),
     ('gem last --local', 'last')])
 def test_match(script, command):
-    assert match(Command(script, stderr=stderr.format(command)))
+    assert match(Command(script, output.format(command)))
 
 
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('gem install jekyll', ''),
-    ('git log', stderr.format('log'))])
-def test_not_match(script, stderr):
-    assert not match(Command(script, stderr=stderr))
+    ('git log', output.format('log'))])
+def test_not_match(script, output):
+    assert not match(Command(script, output))
 
 
-@pytest.mark.parametrize('script, stderr, result', [
-    ('gem isntall jekyll', stderr.format('isntall'), 'gem install jekyll'),
-    ('gem last --local', stderr.format('last'), 'gem list --local')])
-def test_get_new_command(script, stderr, result):
-    new_command = get_new_command(Command(script, stderr=stderr))
+@pytest.mark.parametrize('script, output, result', [
+    ('gem isntall jekyll', output.format('isntall'), 'gem install jekyll'),
+    ('gem last --local', output.format('last'), 'gem list --local')])
+def test_get_new_command(script, output, result):
+    new_command = get_new_command(Command(script, output))
     assert new_command[0] == result

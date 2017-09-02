@@ -3,29 +3,42 @@ from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation, history_changed, history_not_changed, \
     select_command_with_arrows, how_to_configure
 
-containers = (('thefuck/python3-zsh',
-               u'''FROM python:3
-                   RUN apt-get update
-                   RUN apt-get install -yy zsh''',
-               u'zsh'),
-              ('thefuck/python2-zsh',
-               u'''FROM python:2
-                   RUN apt-get update
-                   RUN apt-get install -yy zsh''',
-               u'zsh'))
+
+python_3 = ('thefuck/python3-zsh',
+            u'''FROM python:3
+                RUN apt-get update
+                RUN apt-get install -yy zsh''',
+            u'sh')
+
+python_2 = ('thefuck/python2-zsh',
+            u'''FROM python:2
+                RUN apt-get update
+                RUN apt-get install -yy zsh''',
+            u'sh')
 
 
-@pytest.fixture(params=containers)
+init_zshrc = u'''echo '
+export SHELL=/usr/bin/zsh
+export HISTFILE=~/.zsh_history
+echo > $HISTFILE
+export SAVEHIST=100
+export HISTSIZE=100
+eval $(thefuck --alias {})
+setopt INC_APPEND_HISTORY
+' > ~/.zshrc'''
+
+
+@pytest.fixture(params=[(python_3, False),
+                        (python_3, True),
+                        (python_2, False)])
 def proc(request, spawnu, TIMEOUT):
-    proc = spawnu(*request.param)
+    container, instant_mode = request.param
+    proc = spawnu(*container)
     proc.sendline(u'pip install /src')
     assert proc.expect([TIMEOUT, u'Successfully installed'])
-    proc.sendline(u'eval $(thefuck --alias)')
-    proc.sendline(u'export HISTFILE=~/.zsh_history')
-    proc.sendline(u'echo > $HISTFILE')
-    proc.sendline(u'export SAVEHIST=100')
-    proc.sendline(u'export HISTSIZE=100')
-    proc.sendline(u'setopt INC_APPEND_HISTORY')
+    proc.sendline(init_zshrc.format(
+        u'--enable-experimental-instant-mode' if instant_mode else ''))
+    proc.sendline(u"zsh")
     return proc
 
 

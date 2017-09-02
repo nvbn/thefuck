@@ -2,10 +2,10 @@
 
 from io import BytesIO
 import pytest
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.rules.yarn_command_not_found import match, get_new_command
 
-stderr = '''
+output = '''
 error Command "{}" not found.
 '''.format
 
@@ -93,22 +93,22 @@ def yarn_help(mocker):
 
 
 @pytest.mark.parametrize('command', [
-    Command('yarn whyy webpack', stderr=stderr('whyy'))])
+    Command('yarn whyy webpack', output('whyy'))])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command('npm nuild', stderr=stderr('nuild')),
-    Command('yarn install')])
+    Command('npm nuild', output('nuild')),
+    Command('yarn install', '')])
 def test_not_match(command):
     assert not match(command)
 
 
 @pytest.mark.parametrize('command, result', [
-    (Command('yarn whyy webpack', stderr=stderr('whyy')),
+    (Command('yarn whyy webpack', output('whyy')),
      'yarn why webpack'),
-    (Command('yarn require lodash', stderr=stderr('require')),
+    (Command('yarn require lodash', output('require')),
      'yarn add lodash')])
 def test_get_new_command(command, result):
     fixed_command = get_new_command(command)

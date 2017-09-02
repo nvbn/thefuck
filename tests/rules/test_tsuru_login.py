@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.tsuru_login import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 error_msg = (
@@ -11,26 +11,26 @@ error_msg = (
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='tsuru app-shell', stderr=error_msg[0]),
-    Command(script='tsuru app-log -f', stderr=error_msg[1]),
+    Command('tsuru app-shell', error_msg[0]),
+    Command('tsuru app-log -f', error_msg[1]),
 ])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='tsuru'),
-    Command(script='tsuru app-restart', stderr=('Error: unauthorized')),
-    Command(script='tsuru app-log -f', stderr=('Error: unparseable data')),
+    Command('tsuru', ''),
+    Command('tsuru app-restart', 'Error: unauthorized'),
+    Command('tsuru app-log -f', 'Error: unparseable data'),
 ])
 def test_not_match(command):
     assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command('tsuru app-shell', stderr=error_msg[0]),
+    (Command('tsuru app-shell', error_msg[0]),
      'tsuru login && tsuru app-shell'),
-    (Command('tsuru app-log -f', stderr=error_msg[1]),
+    (Command('tsuru app-log -f', error_msg[1]),
      'tsuru login && tsuru app-log -f'),
 ])
 def test_get_new_command(command, new_command):

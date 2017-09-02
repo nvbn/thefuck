@@ -5,12 +5,12 @@ import re
 
 def _get_failed_lifecycle(command):
     return re.search(r'\[ERROR\] Unknown lifecycle phase "(.+)"',
-                     command.stdout)
+                     command.output)
 
 
 def _getavailable_lifecycles(command):
     return re.search(
-        r'Available lifecycle phases are: (.+) -> \[Help 1\]', command.stdout)
+        r'Available lifecycle phases are: (.+) -> \[Help 1\]', command.output)
 
 
 @for_app('mvn')

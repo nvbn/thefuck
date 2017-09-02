@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from tests.utils import Rule, CorrectedCommand
 from thefuck import corrector, const
 from thefuck.system import Path
-from tests.utils import Rule, Command, CorrectedCommand
+from thefuck.types import Command
 from thefuck.corrector import get_corrected_commands, organize_commands
 
 
@@ -39,7 +40,7 @@ class TestGetRules(object):
 
 
 def test_get_corrected_commands(mocker):
-    command = Command('test', 'test', 'test')
+    command = Command('test', 'test')
     rules = [Rule(match=lambda _: False),
              Rule(match=lambda _: True,
                   get_new_command=lambda x: x.script + '!', priority=100),

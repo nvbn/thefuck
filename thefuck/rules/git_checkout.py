@@ -8,8 +8,8 @@ from thefuck.shells import shell
 
 @git_support
 def match(command):
-    return ('did not match any file(s) known to git.' in command.stderr
-            and "Did you forget to 'git add'?" not in command.stderr)
+    return ('did not match any file(s) known to git.' in command.output
+            and "Did you forget to 'git add'?" not in command.output)
 
 
 def get_branches():
@@ -29,7 +29,7 @@ def get_branches():
 def get_new_command(command):
     missing_file = re.findall(
         r"error: pathspec '([^']*)' "
-        r"did not match any file\(s\) known to git.", command.stderr)[0]
+        r"did not match any file\(s\) known to git.", command.output)[0]
     closest_branch = utils.get_closest(missing_file, get_branches(),
                                        fallback_to_first=False)
     if closest_branch:

@@ -7,13 +7,13 @@ from thefuck.specific.sudo import sudo_support
 @for_app('pip', 'pip2', 'pip3')
 def match(command):
     return ('pip' in command.script and
-            'unknown command' in command.stderr and
-            'maybe you meant' in command.stderr)
+            'unknown command' in command.output and
+            'maybe you meant' in command.output)
 
 
 def get_new_command(command):
     broken_cmd = re.findall(r'ERROR: unknown command \"([a-z]+)\"',
-                            command.stderr)[0]
-    new_cmd = re.findall(r'maybe you meant \"([a-z]+)\"', command.stderr)[0]
+                            command.output)[0]
+    new_cmd = re.findall(r'maybe you meant \"([a-z]+)\"', command.output)[0]
 
     return replace_argument(command.script, broken_cmd, new_cmd)

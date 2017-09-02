@@ -6,7 +6,7 @@ error_pattern = "fatal: bad flag '(.*?)' used after filename"
 
 @git_support
 def match(command):
-    return re.search(error_pattern, command.stderr)
+    return re.search(error_pattern, command.output)
 
 
 @git_support
@@ -14,7 +14,7 @@ def get_new_command(command):
     command_parts = command.script_parts[:]
 
     # find the bad flag
-    bad_flag = re.search(error_pattern, command.stderr).group(1)
+    bad_flag = re.search(error_pattern, command.output).group(1)
     bad_flag_index = command_parts.index(bad_flag)
 
     # find the filename

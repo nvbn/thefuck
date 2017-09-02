@@ -5,7 +5,7 @@ from thefuck.specific.git import git_support
 @git_support
 def match(command):
     return ('add' in command.script_parts
-            and 'Use -f if you really want to add them.' in command.stderr)
+            and 'Use -f if you really want to add them.' in command.output)
 
 
 @git_support

@@ -5,7 +5,7 @@ from thefuck.utils import for_app, replace_command, eager
 @for_app('ifconfig')
 def match(command):
     return 'error fetching interface information: Device not found' \
-           in command.stderr
+           in command.output
 
 
 @eager
@@ -18,6 +18,6 @@ def _get_possible_interfaces():
 
 
 def get_new_command(command):
-    interface = command.stderr.split(' ')[0][:-1]
+    interface = command.output.split(' ')[0][:-1]
     possible_interfaces = _get_possible_interfaces()
     return replace_command(command, interface, possible_interfaces)

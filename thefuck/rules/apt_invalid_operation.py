@@ -9,7 +9,7 @@ enabled_by_default = apt_available
 @for_app('apt', 'apt-get', 'apt-cache')
 @sudo_support
 def match(command):
-    return 'E: Invalid operation' in command.stderr
+    return 'E: Invalid operation' in command.output
 
 
 @eager

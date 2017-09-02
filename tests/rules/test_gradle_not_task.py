@@ -1,7 +1,7 @@
 import pytest
 from io import BytesIO
 from thefuck.rules.gradle_no_task import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 gradle_tasks = b'''
 :tasks
@@ -97,7 +97,7 @@ BUILD SUCCESSFUL
 Total time: 1.936 secs
 '''
 
-stderr_not_found = '''
+output_not_found = '''
 
 FAILURE: Build failed with an exception.
 
@@ -108,7 +108,7 @@ Task '{}' not found in root project 'org.rerenderer_example.snake'.
 Run gradlew tasks to get a list of available tasks. Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
 '''.format
 
-stderr_ambiguous = '''
+output_ambiguous = '''
 
 FAILURE: Build failed with an exception.
 
@@ -128,31 +128,31 @@ def tasks(mocker):
 
 
 @pytest.mark.parametrize('command', [
-    Command('./gradlew assembler', stderr=stderr_ambiguous('assembler')),
-    Command('./gradlew instar', stderr=stderr_not_found('instar')),
-    Command('gradle assembler', stderr=stderr_ambiguous('assembler')),
-    Command('gradle instar', stderr=stderr_not_found('instar'))])
+    Command('./gradlew assembler', output_ambiguous('assembler')),
+    Command('./gradlew instar', output_not_found('instar')),
+    Command('gradle assembler', output_ambiguous('assembler')),
+    Command('gradle instar', output_not_found('instar'))])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command('./gradlew assemble'),
-    Command('gradle assemble'),
-    Command('npm assembler', stderr=stderr_ambiguous('assembler')),
-    Command('npm instar', stderr=stderr_not_found('instar'))])
+    Command('./gradlew assemble', ''),
+    Command('gradle assemble', ''),
+    Command('npm assembler', output_ambiguous('assembler')),
+    Command('npm instar', output_not_found('instar'))])
 def test_not_match(command):
     assert not match(command)
 
 
 @pytest.mark.parametrize('command, result', [
-    (Command('./gradlew assembler', stderr=stderr_ambiguous('assembler')),
+    (Command('./gradlew assembler', output_ambiguous('assembler')),
      './gradlew assemble'),
-    (Command('./gradlew instardebug', stderr=stderr_not_found('instardebug')),
+    (Command('./gradlew instardebug', output_not_found('instardebug')),
      './gradlew installDebug'),
-    (Command('gradle assembler', stderr=stderr_ambiguous('assembler')),
+    (Command('gradle assembler', output_ambiguous('assembler')),
      'gradle assemble'),
-    (Command('gradle instardebug', stderr=stderr_not_found('instardebug')),
+    (Command('gradle instardebug', output_not_found('instardebug')),
      'gradle installDebug')])
 def test_get_new_command(command, result):
     assert get_new_command(command)[0] == result

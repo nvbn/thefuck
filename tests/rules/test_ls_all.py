@@ -1,12 +1,12 @@
 from thefuck.rules.ls_all import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 def test_match():
-    assert match(Command(script='ls'))
-    assert not match(Command(script='ls', stdout='file.py\n'))
+    assert match(Command('ls', ''))
+    assert not match(Command('ls', 'file.py\n'))
 
 
 def test_get_new_command():
-    assert get_new_command(Command(script='ls empty_dir')) == 'ls -A empty_dir'
-    assert get_new_command(Command(script='ls')) == 'ls -A'
+    assert get_new_command(Command('ls empty_dir', '')) == 'ls -A empty_dir'
+    assert get_new_command(Command('ls', '')) == 'ls -A'
