@@ -19,7 +19,8 @@ def _parse_apt_operations(help_text_lines):
         line = line.decode().strip()
         if is_commands_list and line:
             yield line.split()[0]
-        elif line.startswith('Basic commands:'):
+        elif line.startswith('Basic commands:') \
+                or line.startswith('Most used commands:'):
             is_commands_list = True
 
 
@@ -51,6 +52,6 @@ def _get_operations(app):
 
 @sudo_support
 def get_new_command(command):
-    invalid_operation = command.stderr.split()[-1]
+    invalid_operation = command.output.split()[-1]
     operations = _get_operations(command.script_parts[0])
     return replace_command(command, invalid_operation, operations)
