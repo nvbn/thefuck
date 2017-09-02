@@ -41,6 +41,7 @@ class Bash(Generic):
                 export THEFUCK_INSTANT_MODE=True;
                 export THEFUCK_OUTPUT_LOG={log};
                 script -feq {log};
+                rm {log};
                 exit
             '''.format(log='/tmp/thefuck-script-log-{}'.format(uuid4().hex))
 
