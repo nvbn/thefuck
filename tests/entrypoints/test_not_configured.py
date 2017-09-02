@@ -3,13 +3,13 @@ import json
 from six import StringIO
 from mock import MagicMock
 from thefuck.shells.generic import ShellConfiguration
-from thefuck.not_configured import main
+from thefuck.entrypoints.not_configured import main
 
 
 @pytest.fixture(autouse=True)
 def usage_tracker(mocker):
     return mocker.patch(
-        'thefuck.not_configured._get_not_configured_usage_tracker_path',
+        'thefuck.entrypoints.not_configured._get_not_configured_usage_tracker_path',
         new_callable=MagicMock)
 
 
@@ -44,13 +44,13 @@ def _change_tracker(usage_tracker_io, pid):
 
 @pytest.fixture(autouse=True)
 def shell_pid(mocker):
-    return mocker.patch('thefuck.not_configured._get_shell_pid',
+    return mocker.patch('thefuck.entrypoints.not_configured._get_shell_pid',
                         new_callable=MagicMock)
 
 
 @pytest.fixture(autouse=True)
 def shell(mocker):
-    shell = mocker.patch('thefuck.not_configured.shell',
+    shell = mocker.patch('thefuck.entrypoints.not_configured.shell',
                          new_callable=MagicMock)
     shell.get_history.return_value = []
     shell.how_to_configure.return_value = ShellConfiguration(
@@ -63,7 +63,7 @@ def shell(mocker):
 
 @pytest.fixture(autouse=True)
 def shell_config(mocker):
-    path_mock = mocker.patch('thefuck.not_configured.Path',
+    path_mock = mocker.patch('thefuck.entrypoints.not_configured.Path',
                              new_callable=MagicMock)
     return path_mock.return_value \
         .expanduser.return_value \
@@ -73,7 +73,7 @@ def shell_config(mocker):
 
 @pytest.fixture(autouse=True)
 def logs(mocker):
-    return mocker.patch('thefuck.not_configured.logs',
+    return mocker.patch('thefuck.entrypoints.not_configured.logs',
                         new_callable=MagicMock)
 
 
