@@ -53,7 +53,7 @@ def source_root():
 
 
 @pytest.fixture
-def set_shell(monkeypatch, request):
+def set_shell(monkeypatch):
     def _set(cls):
         shell = cls()
         monkeypatch.setattr('thefuck.shells.shell', shell)
