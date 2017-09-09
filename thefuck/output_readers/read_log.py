@@ -7,8 +7,7 @@ except ImportError:
 import six
 import pyte
 from ..exceptions import ScriptNotInLog
-from ..logs import warn, debug
-from .. import const
+from .. import const, logs
 
 
 def _group_by_calls(log):
@@ -68,28 +67,30 @@ def get_output(script):
 
     """
     if six.PY2:
-        warn('Experimental instant mode is Python 3+ only')
+        logs.warn('Experimental instant mode is Python 3+ only')
         return None
 
     if 'THEFUCK_OUTPUT_LOG' not in os.environ:
-        warn("Output log isn't specified")
+        logs.warn("Output log isn't specified")
         return None
 
     if const.USER_COMMAND_MARK not in os.environ.get('PS1', ''):
-        warn("PS1 doesn't contain user command mark, please ensure "
-             "that PS1 is not changed after The Fuck alias initialization")
+        logs.warn(
+            "PS1 doesn't contain user command mark, please ensure "
+            "that PS1 is not changed after The Fuck alias initialization")
         return None
 
     try:
-        with open(os.environ['THEFUCK_OUTPUT_LOG'], 'rb') as log_file:
+        with logs.debug_time(u'Read output from log'), \
+                open(os.environ['THEFUCK_OUTPUT_LOG'], 'rb') as log_file:
             _skip_old_lines(log_file)
             lines = _get_output_lines(script, log_file)
             output = '\n'.join(lines).strip()
-            debug(u'Received output: {}'.format(output))
+            logs.debug(u'Received output: {}'.format(output))
             return output
     except OSError:
-        warn("Can't read output log")
+        logs.warn("Can't read output log")
         return None
     except ScriptNotInLog:
-        warn("Script not found in output log")
+        logs.warn("Script not found in output log")
         return None
