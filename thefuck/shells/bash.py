@@ -1,4 +1,5 @@
 import os
+from tempfile import gettempdir
 from uuid import uuid4
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER, USER_COMMAND_MARK
@@ -11,14 +12,15 @@ class Bash(Generic):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
             function {name} () {{
-                TF_PREVIOUS=$(fc -ln -1);
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
                 export TF_ALIAS={name};
                 export TF_SHELL_ALIASES=$(alias);
+                export TF_HISTORY=$(fc -ln -10);
                 export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
-                    thefuck $TF_PREVIOUS {argument_placeholder} $@
+                    thefuck {argument_placeholder} $@
                 ) && eval $TF_CMD;
+                unset TF_HISTORY;
                 export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
                 {alter_history}
             }}
@@ -30,18 +32,22 @@ class Bash(Generic):
 
     def instant_mode_alias(self, alias_name):
         if os.environ.get('THEFUCK_INSTANT_MODE', '').lower() == 'true':
+            mark = USER_COMMAND_MARK + '\b' * len(USER_COMMAND_MARK)
             return '''
                 export PS1="{user_command_mark}$PS1";
                 {app_alias}
-            '''.format(user_command_mark=USER_COMMAND_MARK,
+            '''.format(user_command_mark=mark,
                        app_alias=self.app_alias(alias_name))
         else:
+            log_path = os.path.join(
+                gettempdir(), 'thefuck-script-log-{}'.format(uuid4().hex))
             return '''
                 export THEFUCK_INSTANT_MODE=True;
                 export THEFUCK_OUTPUT_LOG={log};
                 script -feq {log};
+                rm {log};
                 exit
-            '''.format(log='/tmp/thefuck-script-log-{}'.format(uuid4().hex))
+            '''.format(log=log_path)
 
     def _parse_alias(self, alias):
         name, value = alias.replace('alias ', '', 1).split('=', 1)

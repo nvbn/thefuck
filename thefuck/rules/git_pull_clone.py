@@ -4,8 +4,8 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('fatal: Not a git repository' in command.stderr
-            and "Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set)." in command.stderr)
+    return ('fatal: Not a git repository' in command.output
+            and "Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set)." in command.output)
 
 
 @git_support

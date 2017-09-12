@@ -9,7 +9,7 @@ def get_output(script, expanded):
     :type script: str
     :param expanded: Console script with expanded aliases.
     :type expanded: str
-    :rtype: (str, str)
+    :rtype: str
 
     """
     if settings.instant_mode:

@@ -1,12 +1,12 @@
 
 from thefuck.rules.sl_ls import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 def test_match():
-    assert match(Command('sl'))
-    assert not match(Command('ls'))
+    assert match(Command('sl', ''))
+    assert not match(Command('ls', ''))
 
 
 def test_get_new_command():
-    assert get_new_command(Command('sl')) == 'ls'
+    assert get_new_command(Command('sl', '')) == 'ls'

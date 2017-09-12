@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.no_command import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture(autouse=True)
@@ -17,25 +17,25 @@ def history_without_current(mocker):
 
 
 @pytest.mark.usefixtures('no_memoize')
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('vom file.py', 'vom: not found'),
     ('fucck', 'fucck: not found'),
     ('got commit', 'got: command not found')])
-def test_match(mocker, script, stderr):
+def test_match(mocker, script, output):
     mocker.patch('thefuck.rules.no_command.which', return_value=None)
 
-    assert match(Command(script, stderr=stderr))
+    assert match(Command(script, output))
 
 
 @pytest.mark.usefixtures('no_memoize')
-@pytest.mark.parametrize('script, stderr, which', [
+@pytest.mark.parametrize('script, output, which', [
     ('qweqwe', 'qweqwe: not found', None),
     ('vom file.py', 'some text', None),
     ('vim file.py', 'vim: not found', 'vim')])
-def test_not_match(mocker, script, stderr, which):
+def test_not_match(mocker, script, output, which):
     mocker.patch('thefuck.rules.no_command.which', return_value=which)
 
-    assert not match(Command(script, stderr=stderr))
+    assert not match(Command(script, output))
 
 
 @pytest.mark.usefixtures('no_memoize')
@@ -44,4 +44,4 @@ def test_not_match(mocker, script, stderr, which):
     ('fucck', ['fsck']),
     ('got commit', ['git commit', 'go commit'])])
 def test_get_new_command(script, result):
-    assert get_new_command(Command(script)) == result
+    assert get_new_command(Command(script, '')) == result

@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.git_fix_stash import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 git_stash_err = '''
@@ -20,11 +20,11 @@ usage: git stash list [<options>]
     'git stash Some message',
     'git stash saev Some message'])
 def test_match(wrong):
-    assert match(Command(wrong, stderr=git_stash_err))
+    assert match(Command(wrong, git_stash_err))
 
 
 def test_not_match():
-    assert not match(Command("git", stderr=git_stash_err))
+    assert not match(Command("git", git_stash_err))
 
 
 @pytest.mark.parametrize('wrong,fixed', [
@@ -32,4 +32,4 @@ def test_not_match():
     ('git stash Some message', 'git stash save Some message'),
     ('git stash saev Some message', 'git stash save Some message')])
 def test_get_new_command(wrong, fixed):
-    assert get_new_command(Command(wrong, stderr=git_stash_err)) == fixed
+    assert get_new_command(Command(wrong, git_stash_err)) == fixed

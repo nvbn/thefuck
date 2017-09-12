@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.hostscli import no_website, get_new_command, match
-from tests.utils import Command
+from thefuck.types import Command
 
 no_website_long = '''
 {}:
@@ -15,15 +15,13 @@ type `hostscli websites` to see a list of websites that you can block/unblock
 
 
 @pytest.mark.parametrize('command', [
-    Command('hostscli block a_website_that_does_not_exist',
-            stderr=no_website_long)])
+    Command('hostscli block a_website_that_does_not_exist', no_website_long)])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command, result', [(
-    Command('hostscli block a_website_that_does_not_exist',
-            stderr=no_website_long),
+    Command('hostscli block a_website_that_does_not_exist', no_website_long),
     ['hostscli websites'])])
 def test_get_new_command(command, result):
     assert get_new_command(command) == result

@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.git_stash import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 cherry_pick_error = (
@@ -15,23 +15,23 @@ rebase_error = (
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='git cherry-pick a1b2c3d', stderr=cherry_pick_error),
-    Command(script='git rebase -i HEAD~7', stderr=rebase_error)])
+    Command('git cherry-pick a1b2c3d', cherry_pick_error),
+    Command('git rebase -i HEAD~7', rebase_error)])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='git cherry-pick a1b2c3d', stderr=('')),
-    Command(script='git rebase -i HEAD~7', stderr=(''))])
+    Command('git cherry-pick a1b2c3d', ''),
+    Command('git rebase -i HEAD~7', '')])
 def test_not_match(command):
     assert not match(command)
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command(script='git cherry-pick a1b2c3d', stderr=cherry_pick_error),
+    (Command('git cherry-pick a1b2c3d', cherry_pick_error),
      'git stash && git cherry-pick a1b2c3d'),
-    (Command('git rebase -i HEAD~7', stderr=rebase_error),
+    (Command('git rebase -i HEAD~7', rebase_error),
      'git stash && git rebase -i HEAD~7')])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command

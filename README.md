@@ -92,7 +92,7 @@ Reading package lists... Done
 
 ## Requirements
 
-- python (2.7+ or 3.3+)
+- python (3.3+)
 - pip
 - python-dev
 
@@ -280,7 +280,6 @@ Enabled by default only on specific platforms:
 * `brew_uninstall` &ndash; adds `--force` to `brew uninstall` if multiple versions were installed;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_update_formula` &ndash; turns `brew update <formula>` into `brew upgrade <formula>`;
-* `brew_upgrade` &ndash; appends `--all` to `brew upgrade` as per Homebrew's new behaviour;
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available);
 * `pacman_not_found` &ndash; fixes package name with `pacman` or `yaourt`.
 
@@ -306,7 +305,7 @@ side_effect(old_command: Command, fixed_command: str) -> None
 ```
 and optional `enabled_by_default`, `requires_output` and `priority` variables.
 
-`Command` has four attributes: `script`, `stdout`, `stderr` and `script_parts`.
+`Command` has three attributes: `script`, `output` and `script_parts`.
 Rule shouldn't change `Command`.
 
 
@@ -317,8 +316,8 @@ Simple example of the rule for running script with `sudo`:
 
 ```python
 def match(command):
-    return ('permission denied' in command.stderr.lower()
-            or 'EACCES' in command.stderr)
+    return ('permission denied' in command.output.lower()
+            or 'EACCES' in command.output)
 
 
 def get_new_command(command):

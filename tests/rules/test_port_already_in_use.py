@@ -2,7 +2,7 @@ from io import BytesIO
 
 import pytest
 from thefuck.rules.port_already_in_use import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 outputs = [
     '''
@@ -76,17 +76,17 @@ def lsof(mocker):
 @pytest.mark.usefixtures('no_memoize')
 @pytest.mark.parametrize(
     'command',
-    [Command('./app', stdout=output) for output in outputs]
-    + [Command('./app', stderr=output) for output in outputs])
+    [Command('./app', output) for output in outputs]
+    + [Command('./app', output) for output in outputs])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.usefixtures('no_memoize')
 @pytest.mark.parametrize('command, lsof_output', [
-    (Command('./app'), lsof_stdout),
-    (Command('./app', stdout=outputs[1]), b''),
-    (Command('./app', stderr=outputs[2]), b'')])
+    (Command('./app', ''), lsof_stdout),
+    (Command('./app', outputs[1]), b''),
+    (Command('./app', outputs[2]), b'')])
 def test_not_match(lsof, command, lsof_output):
     lsof.return_value.stdout = BytesIO(lsof_output)
 
@@ -95,7 +95,7 @@ def test_not_match(lsof, command, lsof_output):
 
 @pytest.mark.parametrize(
     'command',
-    [Command('./app', stdout=output) for output in outputs]
-    + [Command('./app', stderr=output) for output in outputs])
+    [Command('./app', output) for output in outputs]
+    + [Command('./app', output) for output in outputs])
 def test_get_new_command(command):
     assert get_new_command(command) == 'kill 18233 && ./app'

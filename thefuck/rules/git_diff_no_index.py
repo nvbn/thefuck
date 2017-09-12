@@ -8,7 +8,6 @@ def match(command):
              if not arg.startswith('-')]
     return ('diff' in command.script
             and '--no-index' not in command.script
-            and not command.stdout
             and len(files) == 2)
 
 

@@ -7,7 +7,7 @@ from thefuck.specific.sudo import sudo_support
 @sudo_support
 def match(command):
     return (not which(command.script_parts[0])
-            and 'not found' in command.stderr
+            and 'not found' in command.output
             and bool(get_close_matches(command.script_parts[0],
                                        get_all_executables())))
 

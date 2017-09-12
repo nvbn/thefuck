@@ -1,6 +1,6 @@
 import os
 import shlex
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, STDOUT
 from psutil import Process, TimeoutExpired
 from .. import logs
 from ..conf import settings
@@ -33,7 +33,7 @@ def get_output(script, expanded):
 
     :type script: str
     :type expanded: str
-    :rtype: (str, str)
+    :rtype: str | None
 
     """
     env = dict(os.environ)
@@ -43,15 +43,11 @@ def get_output(script, expanded):
     with logs.debug_time(u'Call: {}; with env: {}; is slow: '.format(
             script, env, is_slow)):
         result = Popen(expanded, shell=True, stdin=PIPE,
-                       stdout=PIPE, stderr=PIPE, env=env)
+                       stdout=PIPE, stderr=STDOUT, env=env)
         if _wait_output(result, is_slow):
-            stdout = result.stdout.read().decode('utf-8')
-            stderr = result.stderr.read().decode('utf-8')
-
-            logs.debug(u'Received stdout: {}'.format(stdout))
-            logs.debug(u'Received stderr: {}'.format(stderr))
-
-            return stdout, stderr
+            output = result.stdout.read().decode('utf-8')
+            logs.debug(u'Received output: {}'.format(output))
+            return output
         else:
             logs.debug(u'Execution timed out!')
-            return None, None
+            return None

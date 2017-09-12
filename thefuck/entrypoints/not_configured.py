@@ -1,18 +1,18 @@
 # Initialize output before importing any module, that can use colorama.
-from .system import init_output
+from ..system import init_output
 
 init_output()
 
 import os  # noqa: E402
 import json  # noqa: E402
+from tempfile import gettempdir  # noqa: E402
 import time  # noqa: E402
 import six  # noqa: E402
 from psutil import Process  # noqa: E402
-from . import logs, const  # noqa: E402
-from .shells import shell  # noqa: E402
-from .conf import settings  # noqa: E402
-from .system import Path  # noqa: E402
-from .utils import get_cache_dir  # noqa: E402
+from .. import logs, const  # noqa: E402
+from ..shells import shell  # noqa: E402
+from ..conf import settings  # noqa: E402
+from ..system import Path  # noqa: E402
 
 
 def _get_shell_pid():
@@ -27,7 +27,7 @@ def _get_shell_pid():
 
 def _get_not_configured_usage_tracker_path():
     """Returns path of special file where we store latest shell pid."""
-    return Path(get_cache_dir()).joinpath('thefuck.last_not_configured_run')
+    return Path(gettempdir()).joinpath('thefuck.last_not_configured_run')
 
 
 def _record_first_run():

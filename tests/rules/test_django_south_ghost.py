@@ -1,10 +1,10 @@
 import pytest
 from thefuck.rules.django_south_ghost import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture
-def stderr():
+def output():
     return '''Traceback (most recent call last):
   File "/home/nvbn/work/.../bin/python", line 42, in <module>
     exec(compile(__file__f.read(), __file__, "exec"))
@@ -40,14 +40,14 @@ south.exceptions.GhostMigrations:
 '''  # noqa
 
 
-def test_match(stderr):
-    assert match(Command('./manage.py migrate', stderr=stderr))
-    assert match(Command('python manage.py migrate', stderr=stderr))
-    assert not match(Command('./manage.py migrate'))
-    assert not match(Command('app migrate', stderr=stderr))
-    assert not match(Command('./manage.py test', stderr=stderr))
+def test_match(output):
+    assert match(Command('./manage.py migrate', output))
+    assert match(Command('python manage.py migrate', output))
+    assert not match(Command('./manage.py migrate', ''))
+    assert not match(Command('app migrate', output))
+    assert not match(Command('./manage.py test', output))
 
 
 def test_get_new_command():
-    assert get_new_command(Command('./manage.py migrate auth'))\
+    assert get_new_command(Command('./manage.py migrate auth', ''))\
         == './manage.py migrate auth --delete-ghost-migrations'

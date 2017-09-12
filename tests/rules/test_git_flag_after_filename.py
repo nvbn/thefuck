@@ -1,13 +1,13 @@
 import pytest
 from thefuck.rules.git_flag_after_filename import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 command1 = Command('git log README.md -p',
-                   stderr="fatal: bad flag '-p' used after filename")
+                   "fatal: bad flag '-p' used after filename")
 command2 = Command('git log README.md -p CONTRIBUTING.md',
-                   stderr="fatal: bad flag '-p' used after filename")
+                   "fatal: bad flag '-p' used after filename")
 command3 = Command('git log -p README.md --name-only',
-                   stderr="fatal: bad flag '--name-only' used after filename")
+                   "fatal: bad flag '--name-only' used after filename")
 
 
 @pytest.mark.parametrize('command', [
@@ -17,8 +17,8 @@ def test_match(command):
 
 
 @pytest.mark.parametrize('command', [
-    Command('git log README.md'),
-    Command('git log -p README.md')])
+    Command('git log README.md', ''),
+    Command('git log -p README.md', '')])
 def test_not_match(command):
     assert not match(command)
 

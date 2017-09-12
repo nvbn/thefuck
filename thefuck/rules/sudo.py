@@ -30,8 +30,7 @@ def match(command):
         return False
 
     for pattern in patterns:
-        if pattern in command.stderr.lower()\
-                or pattern in command.stdout.lower():
+        if pattern in command.output.lower():
             return True
     return False
 

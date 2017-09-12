@@ -53,5 +53,5 @@ setup(name='thefuck',
       install_requires=install_requires,
       extras_require=extras_require,
       entry_points={'console_scripts': [
-          'thefuck = thefuck.main:main',
-          'fuck = thefuck.not_configured:main']})
+          'thefuck = thefuck.entrypoints.main:main',
+          'fuck = thefuck.entrypoints.not_configured:main']})

@@ -1,18 +1,18 @@
 import pytest
 from thefuck.specific.git import git_support
-from tests.utils import Command
+from thefuck.types import Command
 
 
-@pytest.mark.parametrize('called, command, stderr', [
+@pytest.mark.parametrize('called, command, output', [
     ('git co', 'git checkout', "19:22:36.299340 git.c:282   trace: alias expansion: co => 'checkout'"),
     ('git com file', 'git commit --verbose file',
      "19:23:25.470911 git.c:282   trace: alias expansion: com => 'commit' '--verbose'")])
-def test_git_support(called, command, stderr):
+def test_git_support(called, command, output):
     @git_support
     def fn(command):
         return command.script
 
-    assert fn(Command(script=called, stderr=stderr)) == command
+    assert fn(Command(called, output)) == command
 
 
 @pytest.mark.parametrize('command, is_git', [
@@ -28,4 +28,4 @@ def test_git_support_match(command, is_git):
     def fn(command):
         return True
 
-    assert fn(Command(script=command)) == is_git
+    assert fn(Command(command, '')) == is_git

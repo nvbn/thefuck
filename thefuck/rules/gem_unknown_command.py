@@ -1,17 +1,17 @@
 import re
 import subprocess
-from thefuck.utils import for_app, eager, replace_command
+from thefuck.utils import for_app, eager, replace_command, cache, which
 
 
 @for_app('gem')
 def match(command):
     return ('ERROR:  While executing gem ... (Gem::CommandLineError)'
-            in command.stderr
-            and 'Unknown command' in command.stderr)
+            in command.output
+            and 'Unknown command' in command.output)
 
 
 def _get_unknown_command(command):
-    return re.findall(r'Unknown command (.*)$', command.stderr)[0]
+    return re.findall(r'Unknown command (.*)$', command.output)[0]
 
 
 @eager
@@ -24,6 +24,10 @@ def _get_all_commands():
 
         if line.startswith('    '):
             yield line.strip().split(' ')[0]
+
+
+if which('gem'):
+    _get_all_commands = cache(which('gem'))(_get_all_commands)
 
 
 def get_new_command(command):

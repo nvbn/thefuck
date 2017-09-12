@@ -1,10 +1,10 @@
 import pytest
 from thefuck.rules.yarn_help import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.system import open_command
 
 
-stdout_clean = '''
+output_clean = '''
 
   Usage: yarn [command] [flags]
 
@@ -45,13 +45,13 @@ stdout_clean = '''
 
 
 @pytest.mark.parametrize('command', [
-    Command(script='yarn help clean', stdout=stdout_clean)])
+    Command('yarn help clean', output_clean)])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command, url', [
-    (Command('yarn help clean', stdout=stdout_clean),
+    (Command('yarn help clean', output_clean),
      'https://yarnpkg.com/en/docs/cli/clean')])
 def test_get_new_command(command, url):
     assert get_new_command(command) == open_command(url)

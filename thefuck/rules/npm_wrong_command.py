@@ -15,7 +15,7 @@ def _get_wrong_command(script_parts):
 @for_app('npm')
 def match(command):
     return (command.script_parts[0] == 'npm' and
-            'where <command> is one of:' in command.stdout and
+            'where <command> is one of:' in command.output and
             _get_wrong_command(command.script_parts))
 
 
@@ -36,7 +36,7 @@ def _get_available_commands(stdout):
 
 
 def get_new_command(command):
-    npm_commands = _get_available_commands(command.stdout)
+    npm_commands = _get_available_commands(command.output)
     wrong_command = _get_wrong_command(command.script_parts)
     fixed = get_closest(wrong_command, npm_commands)
     return replace_argument(command.script, wrong_command, fixed)

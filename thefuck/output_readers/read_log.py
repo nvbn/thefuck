@@ -7,8 +7,7 @@ except ImportError:
 import six
 import pyte
 from ..exceptions import ScriptNotInLog
-from ..logs import warn
-from .. import const
+from .. import const, logs
 
 
 def _group_by_calls(log):
@@ -54,34 +53,44 @@ def _get_output_lines(script, log_file):
     return screen.display
 
 
+def _skip_old_lines(log_file):
+    size = os.path.getsize(os.environ['THEFUCK_OUTPUT_LOG'])
+    if size > const.LOG_SIZE_IN_BYTES:
+        log_file.seek(size - const.LOG_SIZE_IN_BYTES)
+
+
 def get_output(script):
     """Reads script output from log.
 
     :type script: str
-    :rtype: (str, str)
+    :rtype: str | None
 
     """
     if six.PY2:
-        warn('Experimental instant mode is Python 3+ only')
-        return None, None
+        logs.warn('Experimental instant mode is Python 3+ only')
+        return None
 
     if 'THEFUCK_OUTPUT_LOG' not in os.environ:
-        warn("Output log isn't specified")
-        return None, None
+        logs.warn("Output log isn't specified")
+        return None
 
     if const.USER_COMMAND_MARK not in os.environ.get('PS1', ''):
-        warn("PS1 doesn't contain user command mark, please ensure "
-             "that PS1 is not changed after The Fuck alias initialization")
-        return None, None
+        logs.warn(
+            "PS1 doesn't contain user command mark, please ensure "
+            "that PS1 is not changed after The Fuck alias initialization")
+        return None
 
     try:
-        with open(os.environ['THEFUCK_OUTPUT_LOG'], 'rb') as log_file:
+        with logs.debug_time(u'Read output from log'), \
+                open(os.environ['THEFUCK_OUTPUT_LOG'], 'rb') as log_file:
+            _skip_old_lines(log_file)
             lines = _get_output_lines(script, log_file)
             output = '\n'.join(lines).strip()
-            return output, output
+            logs.debug(u'Received output: {}'.format(output))
+            return output
     except OSError:
-        warn("Can't read output log")
-        return None, None
+        logs.warn("Can't read output log")
+        return None
     except ScriptNotInLog:
-        warn("Script not found in output log")
-        return None, None
+        logs.warn("Script not found in output log")
+        return None

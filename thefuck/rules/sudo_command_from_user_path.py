@@ -3,14 +3,14 @@ from thefuck.utils import for_app, which, replace_argument
 
 
 def _get_command_name(command):
-    found = re.findall(r'sudo: (.*): command not found', command.stderr)
+    found = re.findall(r'sudo: (.*): command not found', command.output)
     if found:
         return found[0]
 
 
 @for_app('sudo')
 def match(command):
-    if 'command not found' in command.stderr:
+    if 'command not found' in command.output:
         command_name = _get_command_name(command)
         return which(command_name)
 

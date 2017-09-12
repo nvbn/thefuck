@@ -2,10 +2,10 @@
 
 from io import BytesIO
 import pytest
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.rules.grunt_task_not_found import match, get_new_command
 
-stdout = '''
+output = '''
 Warning: Task "{}" not found. Use --force to continue.
 
 Aborted due to warnings.
@@ -107,23 +107,23 @@ def grunt_help(mocker):
 
 
 @pytest.mark.parametrize('command', [
-    Command('grunt defualt', stdout('defualt')),
-    Command('grunt buld:css', stdout('buld:css'))])
+    Command('grunt defualt', output('defualt')),
+    Command('grunt buld:css', output('buld:css'))])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command('npm nuild', stdout('nuild')),
-    Command('grunt rm')])
+    Command('npm nuild', output('nuild')),
+    Command('grunt rm', '')])
 def test_not_match(command):
     assert not match(command)
 
 
 @pytest.mark.parametrize('command, result', [
-    (Command('grunt defualt', stdout('defualt')), 'grunt default'),
-    (Command('grunt cmpass:all', stdout('cmpass:all')), 'grunt compass:all'),
-    (Command('grunt cmpass:all --color', stdout('cmpass:all')),
+    (Command('grunt defualt', output('defualt')), 'grunt default'),
+    (Command('grunt cmpass:all', output('cmpass:all')), 'grunt compass:all'),
+    (Command('grunt cmpass:all --color', output('cmpass:all')),
      'grunt compass:all --color')])
 def test_get_new_command(command, result):
     assert get_new_command(command) == result

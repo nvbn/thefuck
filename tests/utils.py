@@ -2,11 +2,6 @@ from thefuck import types
 from thefuck.const import DEFAULT_PRIORITY
 
 
-class Command(types.Command):
-    def __init__(self, script='', stdout='', stderr=''):
-        super(Command, self).__init__(script, stdout, stderr)
-
-
 class Rule(types.Rule):
     def __init__(self, name='', match=lambda *_: True,
                  get_new_command=lambda *_: '',

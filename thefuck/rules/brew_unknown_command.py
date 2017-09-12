@@ -67,16 +67,16 @@ def _brew_commands():
 
 def match(command):
     is_proper_command = ('brew' in command.script and
-                         'Unknown command' in command.stderr)
+                         'Unknown command' in command.output)
 
     if is_proper_command:
         broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
-                                command.stderr)[0]
+                                command.output)[0]
         return bool(get_closest(broken_cmd, _brew_commands()))
     return False
 
 
 def get_new_command(command):
     broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
-                            command.stderr)[0]
+                            command.output)[0]
     return replace_command(command, broken_cmd, _brew_commands())

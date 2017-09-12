@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.path_from_history import match, get_new_command
-from tests.utils import Command
+from thefuck.types import Command
 
 
 @pytest.fixture(autouse=True)
@@ -18,26 +18,26 @@ def path_exists(mocker):
     return exists_mock
 
 
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('ls project', 'no such file or directory: project'),
     ('cd project', "can't cd to project"),
 ])
-def test_match(script, stderr):
-    assert match(Command(script, stderr=stderr))
+def test_match(script, output):
+    assert match(Command(script, output))
 
 
-@pytest.mark.parametrize('script, stderr', [
+@pytest.mark.parametrize('script, output', [
     ('myapp cats', 'no such file or directory: project'),
     ('cd project', ""),
 ])
-def test_not_match(script, stderr):
-    assert not match(Command(script, stderr=stderr))
+def test_not_match(script, output):
+    assert not match(Command(script, output))
 
 
-@pytest.mark.parametrize('script, stderr, result', [
+@pytest.mark.parametrize('script, output, result', [
     ('ls project', 'no such file or directory: project', 'ls ~/work/project'),
     ('cd java', "can't cd to java", 'cd /opt/java'),
 ])
-def test_get_new_command(script, stderr, result):
-    new_command = get_new_command(Command(script, stderr=stderr))
+def test_get_new_command(script, output, result):
+    new_command = get_new_command(Command(script, output))
     assert new_command[0] == result

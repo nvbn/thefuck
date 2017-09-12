@@ -5,7 +5,7 @@ from thefuck.utils import for_app
 
 @for_app('sed')
 def match(command):
-    return "unterminated `s' command" in command.stderr
+    return "unterminated `s' command" in command.output
 
 
 def get_new_command(command):

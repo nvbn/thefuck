@@ -1,10 +1,10 @@
 import pytest
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.rules.brew_link import get_new_command, match
 
 
 @pytest.fixture
-def stderr():
+def output():
     return ("Error: Could not symlink bin/gcp\n"
             "Target /usr/local/bin/gcp\n"
             "already exists. You may want to remove it:\n"
@@ -23,16 +23,15 @@ def new_command(formula):
 
 
 @pytest.mark.parametrize('script', ['brew link coreutils', 'brew ln coreutils'])
-def test_match(stderr, script):
-    assert match(Command(script=script, stderr=stderr))
+def test_match(output, script):
+    assert match(Command(script, output))
 
 
 @pytest.mark.parametrize('script', ['brew link coreutils'])
 def test_not_match(script):
-    stderr = ''
-    assert not match(Command(script=script, stderr=stderr))
+    assert not match(Command(script, ''))
 
 
 @pytest.mark.parametrize('script, formula, ', [('brew link coreutils', 'coreutils')])
-def test_get_new_command(stderr, new_command, script, formula):
-    assert get_new_command(Command(script=script, stderr=stderr)) == new_command
+def test_get_new_command(output, new_command, script, formula):
+    assert get_new_command(Command(script, output)) == new_command

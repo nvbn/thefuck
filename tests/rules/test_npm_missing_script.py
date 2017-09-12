@@ -1,9 +1,9 @@
 import pytest
 from io import BytesIO
-from tests.utils import Command
+from thefuck.types import Command
 from thefuck.rules.npm_missing_script import match, get_new_command
 
-stderr = '''
+output = '''
 npm ERR! Linux 4.4.0-31-generic
 npm ERR! argv "/opt/node/bin/node" "/opt/node/bin/npm" "run" "dvelop"
 npm ERR! node v4.4.7
@@ -42,28 +42,28 @@ def run_script(mocker):
 
 
 @pytest.mark.parametrize('command', [
-    Command('npm ru wach', stderr=stderr('wach')),
-    Command('npm run live-tes', stderr=stderr('live-tes')),
-    Command('npm run-script sahare', stderr=stderr('sahare'))])
+    Command('npm ru wach', output('wach')),
+    Command('npm run live-tes', output('live-tes')),
+    Command('npm run-script sahare', output('sahare'))])
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize('command', [
-    Command('npm wach', stderr=stderr('wach')),
-    Command('vim live-tes', stderr=stderr('live-tes')),
-    Command('npm run-script sahare')])
+    Command('npm wach', output('wach')),
+    Command('vim live-tes', output('live-tes')),
+    Command('npm run-script sahare', '')])
 def test_not_match(command):
     assert not match(command)
 
 
-@pytest.mark.parametrize('script, stderr, result', [
-    ('npm ru wach-tests', stderr('wach-tests'), 'npm ru watch-test'),
-    ('npm -i run-script dvelop', stderr('dvelop'),
+@pytest.mark.parametrize('script, output, result', [
+    ('npm ru wach-tests', output('wach-tests'), 'npm ru watch-test'),
+    ('npm -i run-script dvelop', output('dvelop'),
      'npm -i run-script develop'),
-    ('npm -i run-script buld -X POST', stderr('buld'),
+    ('npm -i run-script buld -X POST', output('buld'),
      'npm -i run-script build -X POST')])
-def test_get_new_command(script, stderr, result):
-    command = Command(script, stderr=stderr)
+def test_get_new_command(script, output, result):
+    command = Command(script, output)
 
     assert get_new_command(command)[0] == result
