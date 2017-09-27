@@ -119,6 +119,7 @@ pip install thefuck
 
 [Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
 
+<span id='manual-installation'></span>
 You should place this command in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
 
 ```bash
