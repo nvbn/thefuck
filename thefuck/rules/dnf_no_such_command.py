@@ -15,6 +15,9 @@ def match(command):
 
 
 def _parse_operations(help_text_lines):
+    # The regex has to be a bytes-style regex since reading from a file
+    # like stdin returns a bytes-style object and a string-style regex
+    # wouldn't work.
     operation_regex = re.compile(b'^([a-z-]+) +', re.MULTILINE)
     return operation_regex.findall(help_text_lines)
 
