@@ -196,6 +196,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
 * `git_pull_uncommitted_changes` &ndash; stashes changes before pulling and pops them afterwards;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
+* `git_push_different_branch_names` &ndash; fixes pushes when local brach name does not match remote branch name ;
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
 * `git_push_without_commits` &ndash; Creates an initial commit if you forget and only `git add .`, when setting up a new project;
 * `git_rebase_no_changes` &ndash; runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
