@@ -1,5 +1,4 @@
 import re
-from thefuck.utils import replace_argument
 from thefuck.specific.git import git_support
 
 
@@ -9,11 +8,8 @@ def match(command):
 
 
 @git_support
-def _parse_git_output(output):
-    regex = re.compile(r'^ +(git push [^\s]+ [^\s]+)', re.MULTILINE)
-    return regex.findall(output)[0]
-
-
-@git_support
 def get_new_command(command):
-    return replace_argument(command.script, "delete", "remove")
+    return re.findall(r'^ +(git push [^\s]+ [^\s]+)', command.output, re.MULTILINE)[0]
+
+
+enabled_by_default = True
