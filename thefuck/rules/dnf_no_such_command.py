@@ -15,10 +15,7 @@ def match(command):
 
 
 def _parse_operations(help_text_lines):
-    # The regex has to be a bytes-style regex since reading from a file
-    # like stdin returns a bytes-style object and a string-style regex
-    # wouldn't work.
-    operation_regex = re.compile(b'^([a-z-]+) +', re.MULTILINE)
+    operation_regex = re.compile(r'^([a-z-]+) +', re.MULTILINE)
     return operation_regex.findall(help_text_lines)
 
 
@@ -26,7 +23,7 @@ def _get_operations():
     proc = subprocess.Popen(["dnf", '--help'],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE)
-    lines = proc.stdout.read()
+    lines = proc.stdout.read().decode("utf-8")
 
     return _parse_operations(lines)
 
