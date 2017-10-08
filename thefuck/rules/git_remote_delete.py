@@ -10,6 +10,3 @@ def match(command):
 @git_support
 def get_new_command(command):
     return replace_argument(command.script, "delete", "remove")
-
-
-enabled_by_default = True

@@ -53,6 +53,3 @@ def get_new_command(command):
         else:
             return cd_mkdir.get_new_command(command)
     return u'cd "{0}"'.format(cwd)
-
-
-enabled_by_default = True
