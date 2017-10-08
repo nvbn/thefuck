@@ -26,6 +26,10 @@ class Parser(object):
             const=get_alias(),
             help='[custom-alias-name] prints alias for current shell')
         self._parser.add_argument(
+            '-l', '--shell-logger',
+            action='store',
+            help='log shell output to the file')
+        self._parser.add_argument(
             '--enable-experimental-instant-mode',
             action='store_true',
             help='enable experimental instant mode, use on your own risk')

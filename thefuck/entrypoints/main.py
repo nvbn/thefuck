@@ -10,6 +10,7 @@ from ..argument_parser import Parser  # noqa: E402
 from ..utils import get_installation_info  # noqa: E402
 from .alias import print_alias  # noqa: E402
 from .fix_command import fix_command  # noqa: E402
+from .shell_logger import shell_logger  # noqa: E402
 
 
 def main():
@@ -25,5 +26,7 @@ def main():
         fix_command(known_args)
     elif known_args.alias:
         print_alias(known_args)
+    elif known_args.shell_logger:
+        shell_logger(known_args.shell_logger)
     else:
         parser.print_usage()

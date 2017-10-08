@@ -42,7 +42,7 @@ class Zsh(Generic):
             return '''
                 export THEFUCK_INSTANT_MODE=True;
                 export THEFUCK_OUTPUT_LOG={log};
-                script -feq {log};
+                thefuck --shell-logger {log};
                 rm {log};
                 exit
             '''.format(log=log_path)
