@@ -16,6 +16,7 @@ To push to the branch of the same name on the remote, use
 To choose either option permanently, see push.default in 'git help config'.
 """
 
+
 def error_msg(localbranch, remotebranch):
     return output % (remotebranch, localbranch)
 
@@ -27,8 +28,7 @@ def test_match():
 @pytest.mark.parametrize('command', [
     Command('vim', ''),
     Command('git status', error_msg('foo', 'bar')),
-    Command('git push', ''),
-    Command('git push', error_msg('bar', 'foo'))
+    Command('git push', '')
 ])
 def test_not_match(command):
     assert not match(command)
