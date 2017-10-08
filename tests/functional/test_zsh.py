@@ -25,6 +25,7 @@ export SAVEHIST=100
 export HISTSIZE=100
 eval $(thefuck --alias {})
 setopt INC_APPEND_HISTORY
+echo "instant mode ready: $THEFUCK_INSTANT_MODE"
 ' > ~/.zshrc'''
 
 
@@ -39,6 +40,8 @@ def proc(request, spawnu, TIMEOUT):
     proc.sendline(init_zshrc.format(
         u'--enable-experimental-instant-mode' if instant_mode else ''))
     proc.sendline(u"zsh")
+    if instant_mode:
+        assert proc.expect([TIMEOUT, u'instant mode ready: True'])
     return proc
 
 

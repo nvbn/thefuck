@@ -18,6 +18,7 @@ export SHELL=/bin/bash
 export PS1="$ "
 echo > $HISTFILE
 eval $(thefuck --alias {})
+echo "instant mode ready: $THEFUCK_INSTANT_MODE"
 ' > ~/.bashrc'''
 
 
@@ -32,6 +33,8 @@ def proc(request, spawnu, TIMEOUT):
     proc.sendline(init_bashrc.format(
         u'--enable-experimental-instant-mode' if instant_mode else ''))
     proc.sendline(u"bash")
+    if instant_mode:
+        assert proc.expect([TIMEOUT, u'instant mode ready: True'])
     return proc
 
 
