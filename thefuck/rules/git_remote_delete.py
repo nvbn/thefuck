@@ -1,4 +1,5 @@
-from thefuck.utils import replace_argument
+import re
+
 from thefuck.specific.git import git_support
 
 
@@ -9,4 +10,4 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return replace_argument(command.script, "delete", "remove")
+    return re.sub(r"delete", "remove", command.script, 1)
