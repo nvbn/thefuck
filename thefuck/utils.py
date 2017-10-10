@@ -1,5 +1,4 @@
 import atexit
-import json
 import os
 import pickle
 import re
@@ -227,7 +226,7 @@ class Cache(object):
     def _get_key(self, fn, depends_on, args, kwargs):
         parts = (fn.__module__, repr(fn).split('at')[0],
                  depends_on, args, kwargs)
-        return json.dumps(parts)
+        return str(pickle.dumps(parts))
 
     def get_value(self, fn, depends_on, args, kwargs):
         if self._db is None:
@@ -235,7 +234,6 @@ class Cache(object):
 
         depends_on = [Path(name).expanduser().absolute().as_posix()
                       for name in depends_on]
-        # We can't use pickle here
         key = self._get_key(fn, depends_on, args, kwargs)
         etag = '.'.join(self._get_mtime(path) for path in depends_on)
 
