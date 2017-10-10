@@ -149,11 +149,11 @@ class TestCache(object):
     @pytest.fixture(autouse=True)
     def enable_cache(self, monkeypatch, shelve):
         monkeypatch.setattr('thefuck.utils.cache.disabled', False)
+        _cache._init_db()
 
     @pytest.fixture(autouse=True)
     def mtime(self, mocker):
         mocker.patch('thefuck.utils.os.path.getmtime', return_value=0)
-        _cache._init_db()
 
     @pytest.fixture
     def fn(self):
