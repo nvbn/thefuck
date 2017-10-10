@@ -9,6 +9,13 @@ from ..utils import DEVNULL, cache
 from .generic import Generic
 
 
+@cache('~/.config/fish/config.fish', '~/.config/fish/functions')
+def _get_aliases(overridden):
+    proc = Popen(['fish', '-ic', 'functions'], stdout=PIPE, stderr=DEVNULL)
+    functions = proc.stdout.read().decode('utf-8').strip().split('\n')
+    return {func: func for func in functions if func not in overridden}
+
+
 class Fish(Generic):
     def _get_overridden_aliases(self):
         overridden = os.environ.get('THEFUCK_OVERRIDDEN_ALIASES',
@@ -35,12 +42,9 @@ class Fish(Generic):
                 '  end\n'
                 'end').format(alias_name, alter_history)
 
-    @cache('~/.config/fish/config.fish', '~/.config/fish/functions')
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
-        proc = Popen(['fish', '-ic', 'functions'], stdout=PIPE, stderr=DEVNULL)
-        functions = proc.stdout.read().decode('utf-8').strip().split('\n')
-        return {func: func for func in functions if func not in overridden}
+        return _get_aliases(overridden)
 
     def _expand_aliases(self, command_script):
         aliases = self.get_aliases()

@@ -254,7 +254,7 @@ def cache(*depends_on):
     Cache will be expired when modification date of files from `depends_on`
     will be changed.
 
-    Function wrapped in `cache` should be arguments agnostic.
+    Only functions should be wrapped in `cache`, not methods.
 
     """
     def cache_decorator(fn):
