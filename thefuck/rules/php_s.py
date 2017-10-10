@@ -10,5 +10,4 @@ def get_new_command(command):
     return replace_argument(command.script, "-s", "-S")
 
 
-enabled_by_default = True
 requires_output = False
