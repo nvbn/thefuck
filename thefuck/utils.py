@@ -195,7 +195,7 @@ class Cache(object):
 
         try:
             self._db = shelve.open(cache_path)
-        except (shelve_open_error, ImportError):
+        except shelve_open_error + (ImportError,):
             # Caused when switching between Python versions
             warn("Removing possibly out-dated cache")
             os.remove(cache_path)
