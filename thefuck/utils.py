@@ -1,9 +1,10 @@
+import atexit
+import json
 import os
 import pickle
 import re
 import shelve
 import six
-from contextlib import closing
 from decorator import decorator
 from difflib import get_close_matches
 from functools import wraps
@@ -183,19 +184,70 @@ def for_app(*app_names, **kwargs):
     return decorator(_for_app)
 
 
-def get_cache_dir():
-    default_xdg_cache_dir = os.path.expanduser("~/.cache")
-    cache_dir = os.getenv("XDG_CACHE_HOME", default_xdg_cache_dir)
+class Cache(object):
+    """Lazy read cache and save changes at exit."""
 
-    # Ensure the cache_path exists, Python 2 does not have the exist_ok
-    # parameter
-    try:
-        os.makedirs(cache_dir)
-    except OSError:
-        if not os.path.isdir(cache_dir):
-            raise
+    def __init__(self):
+        self._db = None
 
-    return cache_dir
+    def _init_db(self):
+        cache_dir = self._get_cache_dir()
+        cache_path = Path(cache_dir).joinpath('thefuck').as_posix()
+
+        try:
+            self._db = shelve.open(cache_path)
+        except (shelve_open_error, ImportError):
+            # Caused when switching between Python versions
+            warn("Removing possibly out-dated cache")
+            os.remove(cache_path)
+            self._db = shelve.open(cache_path)
+
+        atexit.register(self._db.close)
+
+    def _get_cache_dir(self):
+        default_xdg_cache_dir = os.path.expanduser("~/.cache")
+        cache_dir = os.getenv("XDG_CACHE_HOME", default_xdg_cache_dir)
+
+        # Ensure the cache_path exists, Python 2 does not have the exist_ok
+        # parameter
+        try:
+            os.makedirs(cache_dir)
+        except OSError:
+            if not os.path.isdir(cache_dir):
+                raise
+
+        return cache_dir
+
+    def _get_mtime(self, path):
+        try:
+            return str(os.path.getmtime(path))
+        except OSError:
+            return '0'
+
+    def _get_key(self, fn, depends_on, args, kwargs):
+        parts = (fn.__module__, repr(fn).split('at')[0],
+                 depends_on, args, kwargs)
+        return json.dumps(parts)
+
+    def get_value(self, fn, depends_on, args, kwargs):
+        if self._db is None:
+            self._init_db()
+
+        depends_on = [Path(name).expanduser().absolute().as_posix()
+                      for name in depends_on]
+        # We can't use pickle here
+        key = self._get_key(fn, depends_on, args, kwargs)
+        etag = '.'.join(self._get_mtime(path) for path in depends_on)
+
+        if self._db.get(key, {}).get('etag') == etag:
+            return self._db[key]['value']
+        else:
+            value = fn(*args, **kwargs)
+            self._db[key] = {'etag': etag, 'value': value}
+            return value
+
+
+_cache = Cache()
 
 
 def cache(*depends_on):
@@ -207,45 +259,18 @@ def cache(*depends_on):
     Function wrapped in `cache` should be arguments agnostic.
 
     """
-    def _get_mtime(name):
-        path = Path(name).expanduser().absolute().as_posix()
-        try:
-            return str(os.path.getmtime(path))
-        except OSError:
-            return '0'
+    def cache_decorator(fn):
+        @memoize
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            if cache.disabled:
+                return fn(*args, **kwargs)
+            else:
+                return _cache.get_value(fn, depends_on, args, kwargs)
 
-    @decorator
-    def _cache(fn, *args, **kwargs):
-        if cache.disabled:
-            return fn(*args, **kwargs)
+        return wrapper
 
-        # A bit obscure, but simplest way to generate unique key for
-        # functions and methods in python 2 and 3:
-        key = '{}.{}'.format(fn.__module__, repr(fn).split('at')[0])
-
-        etag = '.'.join(_get_mtime(name) for name in depends_on)
-        cache_dir = get_cache_dir()
-        cache_path = Path(cache_dir).joinpath('thefuck').as_posix()
-
-        try:
-            with closing(shelve.open(cache_path)) as db:
-                if db.get(key, {}).get('etag') == etag:
-                    return db[key]['value']
-                else:
-                    value = fn(*args, **kwargs)
-                    db[key] = {'etag': etag, 'value': value}
-                    return value
-        except (shelve_open_error, ImportError):
-            # Caused when switching between Python versions
-            warn("Removing possibly out-dated cache")
-            os.remove(cache_path)
-
-            with closing(shelve.open(cache_path)) as db:
-                value = fn(*args, **kwargs)
-                db[key] = {'etag': etag, 'value': value}
-                return value
-
-    return _cache
+    return cache_decorator
 
 
 cache.disabled = False

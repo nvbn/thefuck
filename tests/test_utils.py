@@ -3,11 +3,10 @@
 import pytest
 import warnings
 from mock import Mock
-import six
 from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
     get_all_matched_commands, is_app, for_app, cache, \
-    get_valid_history_without_current
+    get_valid_history_without_current, _cache
 from thefuck.types import Command
 
 
@@ -124,10 +123,6 @@ def test_for_app(script, names, result):
 
 
 class TestCache(object):
-    @pytest.fixture(autouse=True)
-    def enable_cache(self, monkeypatch):
-        monkeypatch.setattr('thefuck.utils.cache.disabled', False)
-
     @pytest.fixture
     def shelve(self, mocker):
         value = {}
@@ -152,8 +147,13 @@ class TestCache(object):
         return value
 
     @pytest.fixture(autouse=True)
+    def enable_cache(self, monkeypatch, shelve):
+        monkeypatch.setattr('thefuck.utils.cache.disabled', False)
+
+    @pytest.fixture(autouse=True)
     def mtime(self, mocker):
         mocker.patch('thefuck.utils.os.path.getmtime', return_value=0)
+        _cache._init_db()
 
     @pytest.fixture
     def fn(self):
@@ -164,11 +164,10 @@ class TestCache(object):
         return fn
 
     @pytest.fixture
-    def key(self):
-        if six.PY2:
-            return 'tests.test_utils.<function fn '
-        else:
-            return 'tests.test_utils.<function TestCache.fn.<locals>.fn '
+    def key(self, monkeypatch):
+        monkeypatch.setattr('thefuck.utils.Cache._get_key',
+                            lambda *_: 'key')
+        return 'key'
 
     def test_with_blank_cache(self, shelve, fn, key):
         assert shelve == {}

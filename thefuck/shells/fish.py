@@ -5,7 +5,7 @@ import sys
 import six
 from .. import logs
 from ..conf import settings
-from ..utils import DEVNULL, memoize, cache
+from ..utils import DEVNULL, cache
 from .generic import Generic
 
 
@@ -35,7 +35,6 @@ class Fish(Generic):
                 '  end\n'
                 'end').format(alias_name, alter_history)
 
-    @memoize
     @cache('~/.config/fish/config.fish', '~/.config/fish/functions')
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
