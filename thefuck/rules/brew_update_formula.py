@@ -5,7 +5,8 @@ from thefuck.utils import for_app
 def match(command):
     return ('update' in command.script
             and "Error: This command updates brew itself" in command.output
-            and "Use 'brew upgrade <formula>'" in command.output)
+            and "Use 'brew upgrade" in command.output
+            and "instead" in command.output)
 
 
 def get_new_command(command):
