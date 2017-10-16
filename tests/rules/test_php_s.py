@@ -3,8 +3,12 @@ from thefuck.rules.php_s import get_new_command, match
 from thefuck.types import Command
 
 
-def test_match():
-    assert match(Command('php -s localhost:8000', ''))
+@pytest.mark.parametrize('command', [
+    Command('php -s localhost:8000', ''),
+    Command('php -t pub -s 0.0.0.0:8080', '')
+])
+def test_match(command):
+    assert match(command)
 
 
 @pytest.mark.parametrize('command', [
@@ -15,6 +19,9 @@ def test_not_match(command):
     assert not match(command)
 
 
-def test_get_new_command():
-    new_command = get_new_command(Command('php -s localhost:8000', ''))
-    assert new_command == 'php -S localhost:8000'
+@pytest.mark.parametrize('command, new_command', [
+    (Command('php -s localhost:8000', ''), 'php -S localhost:8000'),
+    (Command('php -t pub -s 0.0.0.0:8080', ''), 'php -t pub -S 0.0.0.0:8080')
+])
+def test_get_new_command(command, new_command):
+    assert get_new_command(command) == new_command
