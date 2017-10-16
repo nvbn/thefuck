@@ -12,6 +12,12 @@ class _GenConst(object):
 KEY_UP = _GenConst('↑')
 KEY_DOWN = _GenConst('↓')
 KEY_CTRL_C = _GenConst('Ctrl+C')
+KEY_CTRL_N = _GenConst('Ctrl+N')
+KEY_CTRL_P = _GenConst('Ctrl+P')
+
+KEY_MAPPING = {'\x0e': KEY_CTRL_N,
+               '\x03': KEY_CTRL_C,
+               '\x10': KEY_CTRL_P}
 
 ACTION_SELECT = _GenConst('select')
 ACTION_ABORT = _GenConst('abort')

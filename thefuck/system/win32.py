@@ -16,8 +16,8 @@ def get_key():
     if ch in (b'\x00', b'\xe0'):  # arrow or function key prefix?
         ch = msvcrt.getch()  # second call returns the actual key code
 
-    if ch == b'\x03':
-        return const.KEY_CTRL_C
+    if ch in const.KEY_MAPPING:
+        return const.KEY_MAPPING[ch]
     if ch == b'H':
         return const.KEY_UP
     if ch == b'P':

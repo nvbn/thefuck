@@ -22,8 +22,8 @@ def getch():
 def get_key():
     ch = getch()
 
-    if ch == '\x03':
-        return const.KEY_CTRL_C
+    if ch in const.KEY_MAPPING:
+        return const.KEY_MAPPING[ch]
     elif ch == '\x1b':
         next_ch = getch()
         if next_ch == '[':
