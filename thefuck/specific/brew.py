@@ -11,5 +11,5 @@ def get_brew_path_prefix():
     try:
         return subprocess.check_output(['brew', '--prefix'],
                                        universal_newlines=True).strip()
-    except:
+    except Exception:
         return None

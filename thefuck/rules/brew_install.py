@@ -15,7 +15,7 @@ def _get_formulas():
         for file_name in os.listdir(brew_formula_path):
             if file_name.endswith('.rb'):
                 yield file_name[:-3]
-    except:
+    except Exception:
         pass
 
 
