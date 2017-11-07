@@ -218,6 +218,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `grunt_task_not_found` &ndash; fixes misspelled `grunt` commands;
 * `gulp_not_task` &ndash; fixes misspelled `gulp` tasks;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
+* `heroku_multiple_apps` &ndash; add `--app <app>` to `heroku` commands like `heroku pg`;
 * `heroku_not_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with most similar command from history;
 * `hostscli` &ndash; tries to fix `hostscli` usage;
