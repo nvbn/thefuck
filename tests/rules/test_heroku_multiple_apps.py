@@ -19,6 +19,22 @@ suggest_output = '''
  ▸    https://devcenter.heroku.com/articles/multiple-environments
 '''
 
+not_match_output = '''
+=== HEROKU_POSTGRESQL_TEAL_URL, DATABASE_URL
+Plan:                  Hobby-basic
+Status:                Available
+Connections:           20/20
+PG Version:            9.6.4
+Created:               2017-01-01 00:00 UTC
+Data Size:             99.9 MB
+Tables:                99
+Rows:                  12345/10000000 (In compliance)
+Fork/Follow:           Unsupported
+Rollback:              Unsupported
+Continuous Protection: Off
+Add-on:                postgresql-round-12345
+'''
+
 
 @pytest.mark.parametrize('cmd', ['pg'])
 def test_match(cmd):
@@ -26,11 +42,10 @@ def test_match(cmd):
         Command('heroku {}'.format(cmd), suggest_output))
 
 
-# TODO
-# @pytest.mark.parametrize('script, output', [
-#     ('cat log', suggest_output)])
-# def test_not_match(script, output):
-#     assert not match(Command(script, output))
+@pytest.mark.parametrize('script, output', [
+    ('heroku pg', not_match_output)])
+def test_not_match(script, output):
+    assert not match(Command(script, output))
 
 
 @pytest.mark.parametrize('cmd, result', [
