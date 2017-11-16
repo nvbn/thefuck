@@ -13,14 +13,16 @@ class Zsh(Generic):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
             {name} () {{
-                TF_HISTORY=$(fc -ln -10)
+                TF_PYTHONIOENCODING=$PYTHONIOENCODING;
+                export TF_ALIAS={name};
+                export TF_SHELL_ALIASES=$(alias);
+                export TF_HISTORY="$(fc -ln -10)";
+                export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
-                    TF_ALIAS={name}
-                    TF_SHELL_ALIASES=$(alias)
-                    TF_HISTORY=$TF_HISTORY
-                    PYTHONIOENCODING=utf-8
-                    thefuck {argument_placeholder} $*
+                    thefuck {argument_placeholder} $@
                 ) && eval $TF_CMD;
+                unset TF_HISTORY;
+                export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
                 {alter_history}
             }}
         '''.format(
