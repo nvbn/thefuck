@@ -47,6 +47,10 @@ class Parser(object):
             action='store',
             help=SUPPRESS)
         self._parser.add_argument(
+            'off',
+            action='store_true',
+            help='')
+        self._parser.add_argument(
             'command',
             nargs='*',
             help='command that should be fixed')

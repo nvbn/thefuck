@@ -16,7 +16,9 @@ def main():
     parser = Parser()
     known_args = parser.parse(sys.argv)
 
-    if known_args.help:
+    if known_args.off:
+        logs.failed('KTHXBAI')
+    elif known_args.help:
         parser.print_help()
     elif known_args.version:
         logs.version(get_installation_info().version,
