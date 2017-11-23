@@ -405,6 +405,25 @@ export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
 export THEFUCK_HISTORY_LIMIT='2000'
 ```
 
+## Third-party packages with rules
+
+If you want to make very specific rules or rules, that you don't want to make public,
+but share with other people.
+You can create a special package with name `thefuck_contrib_*` with following structure:
+
+```
+thefuck_contrib_foo
+  thefuck_contrib_foo
+    rules
+      __init__.py
+      *third-party rules*
+    __init__.py
+    *third-party-utils*
+  setup.py
+```
+
+And thefuck will find all rules from `rules` module.
+
 ## Experimental instant mode
 
 By default The Fuck reruns a previous command and that takes time,

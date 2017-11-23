@@ -1,3 +1,4 @@
+import sys
 from .conf import settings
 from .types import Rule
 from .system import Path
@@ -18,17 +19,33 @@ def get_loaded_rules(rules_paths):
                 yield rule
 
 
+def get_rules_import_paths():
+    """Yields all rules import paths.
+
+    :rtype: Iterable[Path]
+
+    """
+    # Bundled rules:
+    yield Path(__file__).parent.joinpath('rules')
+    # Rules defined by user:
+    yield settings.user_dir.joinpath('rules')
+    # Packages with third-party rules:
+    for path in sys.path:
+        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+            contrib_rules = contrib_module.joinpath('rules')
+            if contrib_rules.is_dir():
+                yield contrib_rules
+
+
 def get_rules():
     """Returns all enabled rules.
 
     :rtype: [Rule]
 
     """
-    bundled = Path(__file__).parent \
-        .joinpath('rules') \
-        .glob('*.py')
-    user = settings.user_dir.joinpath('rules').glob('*.py')
-    return sorted(get_loaded_rules(sorted(bundled) + sorted(user)),
+    paths = [rule_path for path in get_rules_import_paths()
+             for rule_path in sorted(path.glob('*.py'))]
+    return sorted(get_loaded_rules(paths),
                   key=lambda rule: rule.priority)
 
 
