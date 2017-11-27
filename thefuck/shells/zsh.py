@@ -14,6 +14,7 @@ class Zsh(Generic):
         return '''
             {name} () {{
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
+                export TF_SHELL=zsh;
                 export TF_ALIAS={name};
                 export TF_SHELL_ALIASES=$(alias);
                 export TF_HISTORY="$(fc -ln -10)";

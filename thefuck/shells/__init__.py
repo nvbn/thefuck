@@ -20,9 +20,7 @@ shells = {'bash': Bash,
 
 
 def _get_shell_from_env():
-    path = os.environ.get('SHELL', '')
-    base_name = os.path.basename(path)
-    name = os.path.splitext(base_name)[0]
+    name = os.environ.get('TF_SHELL')
 
     if name in shells:
         return shells[name]()
