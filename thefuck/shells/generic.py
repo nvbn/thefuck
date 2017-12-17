@@ -121,6 +121,14 @@ class Generic(object):
 
         """
 
+    def can_edit(self):
+        return False
+
+    # FIXME: this is just an attempt to make it work in bash or zsh
+    def edit_command(self, command):
+        """Return the shell editable command"""
+        return 'export READLINE_LINE="' + command + '"'
+
     def get_builtin_commands(self):
         """Returns shells builtin commands."""
         return ['alias', 'bg', 'bind', 'break', 'builtin', 'case', 'cd',

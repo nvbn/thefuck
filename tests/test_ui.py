@@ -22,6 +22,8 @@ def test_read_actions(patch_get_key):
         '\n',
         # Enter:
         '\r',
+        # Edit:
+        const.KEY_BACKSPACE, 'd',
         # Ignored:
         'x', 'y',
         # Up:
@@ -30,8 +32,9 @@ def test_read_actions(patch_get_key):
         const.KEY_DOWN, 'j',
         # Ctrl+C:
         const.KEY_CTRL_C, 'q'])
-    assert (list(islice(ui.read_actions(), 8))
+    assert (list(islice(ui.read_actions(True), 10))
             == [const.ACTION_SELECT, const.ACTION_SELECT,
+                const.ACTION_EDIT, const.ACTION_EDIT,
                 const.ACTION_PREVIOUS, const.ACTION_PREVIOUS,
                 const.ACTION_NEXT, const.ACTION_NEXT,
                 const.ACTION_ABORT, const.ACTION_ABORT])
