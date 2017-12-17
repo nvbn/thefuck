@@ -16,12 +16,15 @@ def patch_get_key(monkeypatch):
     return patch
 
 
-def test_read_actions(patch_get_key):
+@pytest.mark.parametrize("shell_can_edit", [True, False])
+def test_read_actions(shell_can_edit, patch_get_key):
     patch_get_key([
         # Enter:
         '\n',
         # Enter:
         '\r',
+        # Edit:
+        const.KEY_BACKSPACE, 'd',
         # Ignored:
         'x', 'y',
         # Up:
@@ -30,11 +33,17 @@ def test_read_actions(patch_get_key):
         const.KEY_DOWN, 'j',
         # Ctrl+C:
         const.KEY_CTRL_C, 'q'])
-    assert (list(islice(ui.read_actions(), 8))
-            == [const.ACTION_SELECT, const.ACTION_SELECT,
-                const.ACTION_PREVIOUS, const.ACTION_PREVIOUS,
-                const.ACTION_NEXT, const.ACTION_NEXT,
-                const.ACTION_ABORT, const.ACTION_ABORT])
+    expected_actions = [const.ACTION_SELECT, const.ACTION_SELECT,
+                        const.ACTION_PREVIOUS, const.ACTION_PREVIOUS,
+                        const.ACTION_NEXT, const.ACTION_NEXT,
+                        const.ACTION_ABORT, const.ACTION_ABORT]
+    number_of_items = 8
+    if shell_can_edit:
+        expected_actions.insert(2, const.ACTION_EDIT)
+        expected_actions.insert(2, const.ACTION_EDIT)
+        number_of_items = 10
+    assert (list(islice(ui.read_actions(shell_can_edit), number_of_items))
+            == expected_actions)
 
 
 def test_command_selector():
@@ -104,5 +113,16 @@ class TestSelectCommand(object):
         stderr = (
             u'{mark}\x1b[1K\rls [enter/↑/↓/ctrl+c]'
             u'{mark}\x1b[1K\rcd [enter/↑/↓/ctrl+c]\n'
+        ).format(mark=const.USER_COMMAND_MARK)
+        assert capsys.readouterr() == ('', stderr)
+
+    def test_with_edit(self, capsys, patch_get_key, commands, monkeypatch):
+        monkeypatch.setattr('thefuck.ui.shell.can_edit', lambda: True)
+        patch_get_key([const.KEY_BACKSPACE, '\n'])
+        command = ui.select_command(iter(commands))
+        assert command == commands[0]
+        assert command.should_edit is True
+        stderr = (
+            u'{mark}\x1b[1K\rls [enter/edit/↑/↓/ctrl+c]\n'
         ).format(mark=const.USER_COMMAND_MARK)
         assert capsys.readouterr() == ('', stderr)

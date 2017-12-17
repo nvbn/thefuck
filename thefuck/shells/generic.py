@@ -121,6 +121,13 @@ class Generic(object):
 
         """
 
+    def can_edit(self):
+        return False
+
+    def edit_command(self, command):
+        """Return the shell editable command"""
+        return command
+
     def get_builtin_commands(self):
         """Returns shells builtin commands."""
         return ['alias', 'bg', 'bind', 'break', 'builtin', 'case', 'cd',

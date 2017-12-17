@@ -14,15 +14,18 @@ KEY_DOWN = _GenConst('↓')
 KEY_CTRL_C = _GenConst('Ctrl+C')
 KEY_CTRL_N = _GenConst('Ctrl+N')
 KEY_CTRL_P = _GenConst('Ctrl+P')
+KEY_BACKSPACE = _GenConst('Backspace')
 
 KEY_MAPPING = {'\x0e': KEY_CTRL_N,
                '\x03': KEY_CTRL_C,
-               '\x10': KEY_CTRL_P}
+               '\x10': KEY_CTRL_P,
+               '\x7f': KEY_BACKSPACE}
 
 ACTION_SELECT = _GenConst('select')
 ACTION_ABORT = _GenConst('abort')
 ACTION_PREVIOUS = _GenConst('previous')
 ACTION_NEXT = _GenConst('next')
+ACTION_EDIT = _GenConst('edit')
 
 ALL_ENABLED = _GenConst('All rules enabled')
 DEFAULT_RULES = [ALL_ENABLED]
