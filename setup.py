@@ -26,8 +26,8 @@ if version < (2, 7):
     print('thefuck requires Python version 2.7 or later' +
           ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
-elif (3, 0) < version < (3, 3):
-    print('thefuck requires Python version 3.3 or later' +
+elif (3, 0) < version < (3, 4):
+    print('thefuck requires Python version 3.4 or later' +
           ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
 
