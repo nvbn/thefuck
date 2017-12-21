@@ -23,6 +23,8 @@ def test_match(output):
 def test_get_new_command(output):
     assert get_new_command(Command('git push', output))\
         == "git push --set-upstream origin master"
+    assert get_new_command(Command('git push master', output))\
+        == "git push --set-upstream origin master"
     assert get_new_command(Command('git push -u', output))\
         == "git push --set-upstream origin master"
     assert get_new_command(Command('git push -u origin', output))\
