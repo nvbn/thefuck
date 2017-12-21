@@ -1,6 +1,6 @@
 pip
 flake8
-pytest
+pytest<3.3
 mock
 pytest-mock
 wheel
