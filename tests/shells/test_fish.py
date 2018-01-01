@@ -43,7 +43,8 @@ class TestFish(object):
         ('open', 'open'),
         ('vim', 'vim'),
         ('ll', 'fish -ic "ll"'),
-        ('ls', 'ls')])  # Fish has no aliases but functions
+        ('ls', 'ls'),
+        ('g', 'git')])
     def test_from_shell(self, before, after, shell):
         assert shell.from_shell(before) == after
 
