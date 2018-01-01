@@ -10,7 +10,7 @@ class TestFish(object):
     def shell(self):
         return Fish()
 
-    @pytest.fixture
+    @pytest.fixture(autouse=True)
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.fish.Popen')
         mock.return_value.stdout.read.side_effect = [(
@@ -44,7 +44,6 @@ class TestFish(object):
         ('vim', 'vim'),
         ('ll', 'fish -ic "ll"'),
         ('ls', 'ls')])  # Fish has no aliases but functions
-    @pytest.mark.usefixtures('Popen')
     def test_from_shell(self, before, after, shell):
         assert shell.from_shell(before) == after
 
@@ -57,7 +56,6 @@ class TestFish(object):
     def test_or_(self, shell):
         assert shell.or_('foo', 'bar') == 'foo; or bar'
 
-    @pytest.mark.usefixtures('Popen')
     def test_get_aliases(self, shell):
         assert shell.get_aliases() == {'fish_config': 'fish_config',
                                        'fuck': 'fuck',
