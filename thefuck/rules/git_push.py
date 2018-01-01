@@ -32,10 +32,10 @@ def get_new_command(command):
         # In case of `git push -u` we don't have next argument:
         if len(command_parts) > upstream_option_index:
             command_parts.pop(upstream_option_index)
-    elif len(command_parts) > 2:
-        push_idx = command_parts.index('push') + 1
+    else:
         # the only non-qualified permitted options are the repository and refspec; git's
         # suggestion include them, so they won't be lost, but would be duplicated otherwise.
+        push_idx = command_parts.index('push') + 1
         while len(command_parts) > push_idx and command_parts[len(command_parts) - 1][0] != '-':
             command_parts.pop(len(command_parts) - 1)
 
