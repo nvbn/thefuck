@@ -52,7 +52,7 @@ def test_get_branches(branches, branch_list, git_branch):
 @pytest.mark.parametrize('branches, command, new_command', [
     (b'',
      Command('git checkout unknown', did_not_match('unknown')),
-     'git branch unknown && git checkout unknown'),
+     'git checkout -b unknown'),
     (b'',
      Command('git commit unknown', did_not_match('unknown')),
      'git branch unknown && git commit unknown'),
