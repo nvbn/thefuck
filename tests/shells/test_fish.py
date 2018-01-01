@@ -10,12 +10,13 @@ class TestFish(object):
     def shell(self):
         return Fish()
 
-    @pytest.fixture(autouse=True)
+    @pytest.fixture
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.fish.Popen')
-        mock.return_value.stdout.read.return_value = (
+        mock.return_value.stdout.read.side_effect = [(
             b'cd\nfish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nls\n'
-            b'man\nmath\npopd\npushd\nruby')
+            b'man\nmath\npopd\npushd\nruby'),
+            b'alias g git']
         return mock
 
     @pytest.mark.parametrize('key, value', [
@@ -43,6 +44,7 @@ class TestFish(object):
         ('vim', 'vim'),
         ('ll', 'fish -ic "ll"'),
         ('ls', 'ls')])  # Fish has no aliases but functions
+    @pytest.mark.usefixtures('Popen')
     def test_from_shell(self, before, after, shell):
         assert shell.from_shell(before) == after
 
@@ -55,6 +57,7 @@ class TestFish(object):
     def test_or_(self, shell):
         assert shell.or_('foo', 'bar') == 'foo; or bar'
 
+    @pytest.mark.usefixtures('Popen')
     def test_get_aliases(self, shell):
         assert shell.get_aliases() == {'fish_config': 'fish_config',
                                        'fuck': 'fuck',
@@ -65,7 +68,8 @@ class TestFish(object):
                                        'math': 'math',
                                        'popd': 'popd',
                                        'pushd': 'pushd',
-                                       'ruby': 'ruby'}
+                                       'ruby': 'ruby',
+                                       'g': 'git'}
 
     def test_app_alias(self, shell):
         assert 'function fuck' in shell.app_alias('fuck')
