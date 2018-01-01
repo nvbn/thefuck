@@ -16,7 +16,7 @@ class TestFish(object):
         mock.return_value.stdout.read.side_effect = [(
             b'cd\nfish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nls\n'
             b'man\nmath\npopd\npushd\nruby'),
-            b'alias g git']
+            b'alias fish_key_reader /usr/bin/fish_key_reader\nalias g git']
         return mock
 
     @pytest.mark.parametrize('key, value', [
@@ -69,7 +69,8 @@ class TestFish(object):
                                        'popd': 'popd',
                                        'pushd': 'pushd',
                                        'ruby': 'ruby',
-                                       'g': 'git'}
+                                       'g': 'git',
+                                       'fish_key_reader': '/usr/bin/fish_key_reader'}
 
     def test_app_alias(self, shell):
         assert 'function fuck' in shell.app_alias('fuck')
