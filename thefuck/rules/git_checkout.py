@@ -34,7 +34,7 @@ def get_new_command(command):
                                        fallback_to_first=False)
     if closest_branch:
         return replace_argument(command.script, missing_file, closest_branch)
-    elif command.script.startswith('git checkout'):
+    elif command.script_parts[1] == 'checkout':
         return replace_argument(command.script, 'checkout', 'checkout -b')
     else:
         return shell.and_('git branch {}', '{}').format(
