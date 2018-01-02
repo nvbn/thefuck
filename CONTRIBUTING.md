@@ -26,8 +26,6 @@ fixes, etc.
 
 # Developing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md)
-
 Install `The Fuck` for development:
 
 ```bash
