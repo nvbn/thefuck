@@ -92,7 +92,7 @@ Reading package lists... Done
 
 ## Requirements
 
-- python (3.3+)
+- python (3.4+)
 - pip
 - python-dev
 

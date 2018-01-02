@@ -13,9 +13,6 @@ matrix:
       python: "3.4"
     - os: linux
       dist: trusty
-      python: "3.3"
-    - os: linux
-      dist: trusty
       python: "2.7"
     - os: osx
       env: FORMULA="python"
