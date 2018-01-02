@@ -29,7 +29,13 @@ def test_get_new_command(output):
         == "git push --set-upstream origin master"
     assert get_new_command(Command('git push -u origin', output))\
         == "git push --set-upstream origin master"
+    assert get_new_command(Command('git push origin', output))\
+        == "git push --set-upstream origin master"
     assert get_new_command(Command('git push --set-upstream origin', output))\
         == "git push --set-upstream origin master"
     assert get_new_command(Command('git push --quiet', output))\
         == "git push --set-upstream origin master --quiet"
+    assert get_new_command(Command('git push --quiet origin', output))\
+        == "git push --set-upstream origin master --quiet"
+    assert get_new_command(Command('git -c test=test push --quiet origin', output))\
+        == "git -c test=test push --set-upstream origin master --quiet"

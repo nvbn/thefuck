@@ -32,10 +32,12 @@ def get_new_command(command):
         # In case of `git push -u` we don't have next argument:
         if len(command_parts) > upstream_option_index:
             command_parts.pop(upstream_option_index)
-    # If the only argument is the remote/branch, remove it.
-    # git's suggestion includes it, so it won't be lost, and we would duplicate it otherwise.
-    elif len(command_parts) is 3 and command_parts[2][0] != '-':
-        command_parts.pop(2)
+    else:
+        # the only non-qualified permitted options are the repository and refspec; git's
+        # suggestion include them, so they won't be lost, but would be duplicated otherwise.
+        push_idx = command_parts.index('push') + 1
+        while len(command_parts) > push_idx and command_parts[len(command_parts) - 1][0] != '-':
+            command_parts.pop(len(command_parts) - 1)
 
     arguments = re.findall(r'git push (.*)', command.output)[0].strip()
     return replace_argument(" ".join(command_parts), 'push',
