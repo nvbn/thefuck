@@ -17,12 +17,12 @@ To push the current branch and set the remote as upstream, use
 def output_bitbucket():
     return '''Total 0 (delta 0), reused 0 (delta 0)
 remote:
-remote: Create pull request for feature/[...]:
-remote:   https://bitbucket.org/[...]
+remote: Create pull request for feature/test:
+remote:   https://bitbucket.org/test
 remote:
-To git@bitbucket.org:[...].git
-   e5e7fbb..700d998  feature/[...] -> feature/[...]
-Branch feature/[...] set up to track remote branch feature/[...] from origin.
+To git@bitbucket.org:test.git
+   e5e7fbb..700d998  feature/test -> feature/test
+Branch feature/test set up to track remote branch feature/test from origin.
 '''
 
 
