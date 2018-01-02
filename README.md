@@ -148,7 +148,7 @@ fuck -r
 ## Update
 
 ```bash
-pip install thefuck --upgrade
+pip3 install thefuck --upgrade
 ```
 
 **Aliases changed in 1.34.**
