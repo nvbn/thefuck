@@ -158,6 +158,7 @@ pip3 install thefuck --upgrade
 The Fuck tries to match a rule for the previous command, creates a new command
 using the matched rule and runs it. Rules enabled by default are as follows:
 
+* `adb_unknown_command` &ndash; fixes misspelled commands like `adb logcta`;
 * `ag_literal` &ndash; adds `-Q` to `ag` when suggested;
 * `aws_cli` &ndash; fixes misspelled commands like `aws dynamdb scan`;
 * `cargo` &ndash; runs `cargo build` instead of `cargo`;
