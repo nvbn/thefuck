@@ -5,7 +5,7 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('push' in command.script
+    return ('push' in command.script_parts
             and 'set-upstream' in command.output)
 
 
