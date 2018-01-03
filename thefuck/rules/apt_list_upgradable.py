@@ -11,5 +11,6 @@ def match(command):
     return "Run 'apt list --upgradable' to see them." in command.output
 
 
+@sudo_support
 def get_new_command(command):
     return 'apt list --upgradable'
