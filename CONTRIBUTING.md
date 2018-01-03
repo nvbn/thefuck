@@ -23,3 +23,37 @@ It's only with enough information that we can do something to fix the problem.
 We gladly accept pull request on the [official
 repository](https://github.com/nvbn/thefuck) for new rules, new features, bug
 fixes, etc.
+
+# Developing
+
+Install `The Fuck` for development:
+
+```bash
+pip install -r requirements.txt
+python setup.py develop
+```
+
+Run code style checks:
+
+```bash
+flake8
+```
+
+Run unit tests:
+
+```bash
+py.test
+```
+
+Run unit and functional tests (requires docker):
+
+```bash
+py.test --enable-functional
+```
+
+For sending package to pypi:
+
+```bash
+sudo apt-get install pandoc
+./release.py
+```

@@ -444,37 +444,7 @@ eval $(thefuck --alias --enable-experimental-instant-mode)
 
 ## Developing
 
-Install `The Fuck` for development:
-
-```bash
-pip install -r requirements.txt
-python setup.py develop
-```
-
-Run code style checks:
-
-```bash
-flake8
-```
-
-Run unit tests:
-
-```bash
-py.test
-```
-
-Run unit and functional tests (requires docker):
-
-```bash
-py.test --enable-functional
-```
-
-For sending package to pypi:
-
-```bash
-sudo apt-get install pandoc
-./release.py
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License MIT
 Project License can be found [here](LICENSE.md).
