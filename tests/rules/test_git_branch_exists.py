@@ -4,8 +4,8 @@ from thefuck.types import Command
 
 
 @pytest.fixture
-def output(branch_name):
-    return "fatal: A branch named '{}' already exists.".format(branch_name)
+def output(src_branch_name):
+    return "fatal: A branch named '{}' already exists.".format(src_branch_name)
 
 
 @pytest.fixture
@@ -17,18 +17,25 @@ def new_command(branch_name):
         'git branch -D {0} && git checkout -b {0}', 'git checkout {0}']]
 
 
-@pytest.mark.parametrize('script, branch_name', [
-    ('git branch foo', 'foo'), ('git checkout bar', 'bar')])
+@pytest.mark.parametrize('script, src_branch_name, branch_name', [
+    ('git branch foo', 'foo', 'foo'),
+    ('git checkout bar', 'bar', 'bar'),
+    ('git checkout -b "let\s-push-this"', '"let\s-push-this"', '"let\s-push-this"')])
 def test_match(output, script, branch_name):
     assert match(Command(script, output))
 
 
-@pytest.mark.parametrize('script', ['git branch foo', 'git checkout bar'])
+@pytest.mark.parametrize('script', [
+    'git branch foo',
+    'git checkout bar',
+    'git checkout -b "let\s-push-this"'])
 def test_not_match(script):
     assert not match(Command(script, ''))
 
 
-@pytest.mark.parametrize('script, branch_name, ', [
-    ('git branch foo', 'foo'), ('git checkout bar', 'bar')])
-def test_get_new_command(output, new_command, script, branch_name):
+@pytest.mark.parametrize('script, src_branch_name, branch_name', [
+    ('git branch foo', 'foo', 'foo'),
+    ('git checkout bar', 'bar', 'bar'),
+    ('git checkout -b "let\'s-push-this"', "let's-push-this", "let\\'s-push-this")])
+def test_get_new_command(output, new_command, script, src_branch_name, branch_name):
     assert get_new_command(Command(script, output)) == new_command
