@@ -7,13 +7,12 @@ from thefuck.types import Command
 def output(request):
     if not request.param:
         return ''
-    else:
-        return '''fatal: The current branch {} has no upstream branch.
-    To push the current branch and set the remote as upstream, use
+    return '''fatal: The current branch {} has no upstream branch.
+To push the current branch and set the remote as upstream, use
 
-        git push --set-upstream origin {}
+    git push --set-upstream origin {}
 
-    '''.format(request.param, request.param)
+'''.format(request.param, request.param)
 
 
 @pytest.mark.parametrize('script, output', [
