@@ -30,9 +30,7 @@ def test_not_match(output, script, branch_name):
 
 
 @pytest.mark.parametrize('script, branch_name, new_command', [
-    ('git push master', 'master',
-     'git push --set-upstream origin master'),
-    ('git push master', 'master',
+    ('git push', 'master',
      'git push --set-upstream origin master'),
     ('git push master', 'master',
      'git push --set-upstream origin master'),
