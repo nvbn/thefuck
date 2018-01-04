@@ -34,7 +34,7 @@ def test_not_match(script):
 @pytest.mark.parametrize('script, new_command', [
     ('adb puhs test.bin /sdcard/test.bin', 'adb push test.bin /sdcard/test.bin'),
     ('adb -s 1111 logcta', 'adb -s 1111 logcat'),
-    ('adb -p 666 pulll /sdcard/test.bin', 'adb -p 666 pull /sdcard/test.bin'),
+    ('adb -P 666 pulll /sdcard/test.bin', 'adb -P 666 pull /sdcard/test.bin'),
     ('adb -d logcatt', 'adb -d logcat'),
     ('adb -e reboott', 'adb -e reboot')])
 def test_get_new_command(script, output, new_command):
