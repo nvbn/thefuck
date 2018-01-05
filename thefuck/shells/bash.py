@@ -17,6 +17,7 @@ class Bash(Generic):
             function {name} () {{
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
                 export TF_SHELL=bash;
+                export TF_STATUS=$?;
                 export TF_ALIAS={name};
                 export TF_SHELL_ALIASES=$(alias);
                 export TF_HISTORY=$(fc -ln -10);
