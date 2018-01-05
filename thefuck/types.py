@@ -24,6 +24,10 @@ class Command(object):
         self.output = output
 
     @property
+    def status_code(self):
+        return int(os.environ.get('TF_STATUS_CODE', 1))
+
+    @property
     def stdout(self):
         logs.warn('`stdout` is deprecated, please use `output` instead')
         return self.output
@@ -52,8 +56,8 @@ class Command(object):
             return False
 
     def __repr__(self):
-        return u'Command(script={}, output={})'.format(
-            self.script, self.output)
+        return u'Command(script={}, output={}, status_code={})'.format(
+            self.script, self.output, self.status_code)
 
     def update(self, **kwargs):
         """Returns new command with replaced fields.
