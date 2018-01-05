@@ -20,7 +20,7 @@ def new_command(branch_name):
 @pytest.mark.parametrize('script, src_branch_name, branch_name', [
     ('git branch foo', 'foo', 'foo'),
     ('git checkout bar', 'bar', 'bar'),
-    ('git checkout -b "let\s-push-this"', '"let\s-push-this"', '"let\s-push-this"')])
+    ('git checkout -b "let\'s-push-this"', '"let\'s-push-this"', '"let\'s-push-this"')])
 def test_match(output, script, branch_name):
     assert match(Command(script, output))
 
@@ -28,7 +28,7 @@ def test_match(output, script, branch_name):
 @pytest.mark.parametrize('script', [
     'git branch foo',
     'git checkout bar',
-    'git checkout -b "let\s-push-this"'])
+    'git checkout -b "let\'s-push-this"'])
 def test_not_match(script):
     assert not match(Command(script, ''))
 
