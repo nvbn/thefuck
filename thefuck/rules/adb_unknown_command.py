@@ -1,16 +1,23 @@
 from thefuck.utils import is_app, get_closest, replace_argument
 
 
-# the most common ADB commands
 _ADB_COMMANDS = (
     'backup',
     'bugreport',
     'connect',
     'devices',
+    'disable-verity',
     'disconnect',
+    'enable-verity',
+    'emu',
     'forward',
+    'get-devpath',
+    'get-serialno',
+    'get-state',
     'install',
+    'install-multiple',
     'jdwp',
+    'keygen',
     'kill-server',
     'logcat',
     'pull',
@@ -19,11 +26,17 @@ _ADB_COMMANDS = (
     'reconnect',
     'restore',
     'reverse',
+    'root',
     'run-as',
     'shell',
+    'sideload',
     'start-server',
     'sync',
-    'uninstall'
+    'tcpip',
+    'uninstall',
+    'unroot',
+    'usb',
+    'wait-for',
 )
 
 
