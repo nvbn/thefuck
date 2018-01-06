@@ -158,6 +158,7 @@ pip3 install thefuck --upgrade
 The Fuck tries to match a rule for the previous command, creates a new command
 using the matched rule and runs it. Rules enabled by default are as follows:
 
+* `adb_unknown_command` &ndash; fixes misspelled commands like `adb logcta`;
 * `ag_literal` &ndash; adds `-Q` to `ag` when suggested;
 * `aws_cli` &ndash; fixes misspelled commands like `aws dynamdb scan`;
 * `cargo` &ndash; runs `cargo build` instead of `cargo`;
@@ -186,6 +187,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_branch_exists` &ndash; offers `git branch -d foo`, `git branch -D foo` or `git checkout foo` when creating a branch that already exists;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
+* `git_commit_amend` &ndash; offers `git commit --amend` after previous commit;
 * `git_diff_no_index` &ndash; adds `--no-index` to previous `git diff` on untracked files;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
 * `git_fix_stash` &ndash; fixes `git stash` commands (misspelled subcommand and missing `save`);
@@ -283,6 +285,7 @@ Enabled by default only on specific platforms:
 * `apt_get_search` &ndash; changes trying to search using `apt-get` with searching using `apt-cache`;
 * `apt_invalid_operation` &ndash; fixes invalid `apt` and `apt-get` calls, like `apt-get isntall vim`;
 * `apt_list_upgradable` &ndash; helps you run `apt list --upgradable` after `apt update`;
+* `apt_upgrade` &ndash; helps you run `apt upgrade` after `apt list --upgradable`;
 * `brew_cask_dependency` &ndash; installs cask dependencies;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_link` &ndash; adds `--overwrite --dry-run` if linking fails;
@@ -444,37 +447,7 @@ eval $(thefuck --alias --enable-experimental-instant-mode)
 
 ## Developing
 
-Install `The Fuck` for development:
-
-```bash
-pip install -r requirements.txt
-python setup.py develop
-```
-
-Run code style checks:
-
-```bash
-flake8
-```
-
-Run unit tests:
-
-```bash
-py.test
-```
-
-Run unit and functional tests (requires docker):
-
-```bash
-py.test --enable-functional
-```
-
-For sending package to pypi:
-
-```bash
-sudo apt-get install pandoc
-./release.py
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License MIT
 Project License can be found [here](LICENSE.md).

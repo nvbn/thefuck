@@ -4,13 +4,15 @@ from thefuck.types import Command
 
 
 @pytest.fixture
-def output():
-    return '''fatal: The current branch master has no upstream branch.
+def output(branch_name):
+    if not branch_name:
+        return ''
+    return '''fatal: The current branch {} has no upstream branch.
 To push the current branch and set the remote as upstream, use
 
-    git push --set-upstream origin master
+    git push --set-upstream origin {}
 
-'''
+'''.format(branch_name, branch_name)
 
 
 @pytest.fixture
@@ -26,33 +28,44 @@ Branch feature/set-upstream set up to track remote branch feature/set-upstream f
 '''
 
 
-def test_match(output):
-    assert match(Command('git push', output))
-    assert match(Command('git push master', output))
-    assert not match(Command('git push master', ''))
-    assert not match(Command('ls', output))
+@pytest.mark.parametrize('script, branch_name', [
+    ('git push', 'master'),
+    ('git push origin', 'master')])
+def test_match(output, script, branch_name):
+    assert match(Command(script, output))
 
 
 def test_match_bitbucket(output_bitbucket):
     assert not match(Command('git push origin', output_bitbucket))
 
 
-def test_get_new_command(output):
-    assert get_new_command(Command('git push', output))\
-        == "git push --set-upstream origin master"
-    assert get_new_command(Command('git push master', output))\
-        == "git push --set-upstream origin master"
-    assert get_new_command(Command('git push -u', output))\
-        == "git push --set-upstream origin master"
-    assert get_new_command(Command('git push -u origin', output))\
-        == "git push --set-upstream origin master"
-    assert get_new_command(Command('git push origin', output))\
-        == "git push --set-upstream origin master"
-    assert get_new_command(Command('git push --set-upstream origin', output))\
-        == "git push --set-upstream origin master"
-    assert get_new_command(Command('git push --quiet', output))\
-        == "git push --set-upstream origin master --quiet"
-    assert get_new_command(Command('git push --quiet origin', output))\
-        == "git push --set-upstream origin master --quiet"
-    assert get_new_command(Command('git -c test=test push --quiet origin', output))\
-        == "git -c test=test push --set-upstream origin master --quiet"
+@pytest.mark.parametrize('script, branch_name', [
+    ('git push master', None),
+    ('ls', 'master')])
+def test_not_match(output, script, branch_name):
+    assert not match(Command(script, output))
+
+
+@pytest.mark.parametrize('script, branch_name, new_command', [
+    ('git push', 'master',
+     'git push --set-upstream origin master'),
+    ('git push master', 'master',
+     'git push --set-upstream origin master'),
+    ('git push -u', 'master',
+     'git push --set-upstream origin master'),
+    ('git push -u origin', 'master',
+     'git push --set-upstream origin master'),
+    ('git push origin', 'master',
+     'git push --set-upstream origin master'),
+    ('git push --set-upstream origin', 'master',
+     'git push --set-upstream origin master'),
+    ('git push --quiet', 'master',
+     'git push --set-upstream origin master --quiet'),
+    ('git push --quiet origin', 'master',
+     'git push --set-upstream origin master --quiet'),
+    ('git -c test=test push --quiet origin', 'master',
+     'git -c test=test push --set-upstream origin master --quiet'),
+    ('git push', "test's",
+     "git push --set-upstream origin test\\'s")])
+def test_get_new_command(output, script, branch_name, new_command):
+    assert get_new_command(Command(script, output)) == new_command
