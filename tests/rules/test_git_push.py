@@ -15,11 +15,28 @@ To push the current branch and set the remote as upstream, use
 '''.format(branch_name, branch_name)
 
 
+@pytest.fixture
+def output_bitbucket():
+    return '''Total 0 (delta 0), reused 0 (delta 0)
+remote:
+remote: Create pull request for feature/set-upstream:
+remote:   https://bitbucket.org/set-upstream
+remote:
+To git@bitbucket.org:test.git
+   e5e7fbb..700d998  feature/set-upstream -> feature/set-upstream
+Branch feature/set-upstream set up to track remote branch feature/set-upstream from origin.
+'''
+
+
 @pytest.mark.parametrize('script, branch_name', [
     ('git push', 'master'),
     ('git push origin', 'master')])
 def test_match(output, script, branch_name):
     assert match(Command(script, output))
+
+
+def test_match_bitbucket(output_bitbucket):
+    assert not match(Command('git push origin', output_bitbucket))
 
 
 @pytest.mark.parametrize('script, branch_name', [

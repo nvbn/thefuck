@@ -6,7 +6,7 @@ from thefuck.specific.git import git_support
 @git_support
 def match(command):
     return ('push' in command.script_parts
-            and 'set-upstream' in command.output)
+            and 'git push --set-upstream' in command.output)
 
 
 def _get_upstream_option_index(command_parts):
