@@ -111,6 +111,12 @@ sudo apt install python3-dev python3-pip
 sudo pip3 install thefuck
 ```
 
+On FreeBSD you can install `The Fuck` with:
+```bash
+sudo portsnap fetch update
+cd /usr/ports/misc/thefuck && sudo make install clean
+```
+
 On other systems you can install `The Fuck` with `pip`:
 
 ```bash
