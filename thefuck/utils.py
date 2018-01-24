@@ -4,6 +4,7 @@ import pickle
 import re
 import shelve
 import six
+import sys
 from decorator import decorator
 from difflib import get_close_matches
 from functools import wraps
@@ -108,15 +109,22 @@ def get_all_executables():
 
     tf_alias = get_alias()
     tf_entry_points = ['thefuck', 'fuck']
-
+    
+    win32 = sys.platform.startswith('win')
+    paths = os.environ.get('PATH', '')
+    paths = paths.split(';') if win32 else paths.split(':')
+    
     bins = [exe.name.decode('utf8') if six.PY2 else exe.name
-            for path in os.environ.get('PATH', '').split(':')
+            for path in paths
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]
     aliases = [alias.decode('utf8') if six.PY2 else alias
                for alias in shell.get_aliases() if alias != tf_alias]
-
+    
+    if win32:
+        bins += [exe[:-4] for exe in bins if exe.endswith(".exe")]
+    
     return bins + aliases
 
 
