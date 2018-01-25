@@ -9,7 +9,7 @@ from thefuck.types import Command
     Command(u'фзе-пуе', 'command not found: фзе-пуе'),
     Command(u'λσ', 'command not found: λσ'),
     Command(u'שפא-עקא', 'command not found: שפא-עקא'),
-    Command(u'ךד', 'command not found: ךד'),])
+    Command(u'ךד', 'command not found: ךד')])
 def test_match(command):
     assert switch_lang.match(command)
 
