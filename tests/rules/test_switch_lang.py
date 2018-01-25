@@ -27,7 +27,7 @@ def test_not_match(command):
 @pytest.mark.parametrize('command, new_command', [
     (Command(u'фзе-пуе штыефдд мшь', ''), 'apt-get install vim'),
     (Command(u'λσ -λα', ''), 'ls -la'),
-    (Command(u'דוגם שפא-עקא ןמדאשךך הןצ', ''), 'apt-get install vim'),
+    (Command(u'שפא-עקא ןמדאשךך הןצ', ''), 'apt-get install vim'),
     (Command(u'ךד -ךש', ''), 'ls -la')])
 def test_get_new_command(command, new_command):
     assert switch_lang.get_new_command(command) == new_command
