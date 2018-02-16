@@ -37,7 +37,11 @@ def get_new_command(command):
     dest = command.script_parts[1].split(os.sep)
     if dest[-1] == '':
         dest = dest[:-1]
-    if six.PY2:
+
+    if dest[0] == '':
+        cwd = os.sep
+        dest = dest[1:]
+    elif six.PY2:
         cwd = os.getcwdu()
     else:
         cwd = os.getcwd()
