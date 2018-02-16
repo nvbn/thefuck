@@ -21,9 +21,12 @@ def _get_sub_dirs(parent):
 @for_app('cd')
 def match(command):
     """Match function copied from cd_mkdir.py"""
-    return (command.script.startswith('cd ')
-            and ('no such file or directory' in command.output.lower()
-                 or 'cd: can\'t cd to' in command.output.lower()))
+    return (
+        command.script.startswith('cd ') and any((
+            'no such file or directory' in command.output.lower(),
+            'cd: can\'t cd to' in command.output.lower(),
+            'does not exist' in command.output.lower()
+        )))
 
 
 @sudo_support
