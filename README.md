@@ -4,7 +4,7 @@ Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
-The Fuck is too slow? [Try experimental instant mode!](#experimental-instant-mode) 
+The Fuck is too slow? [Try experimental instant mode!](#experimental-instant-mode)
 
 [![gif with examples][examples-link]][examples-link]
 
@@ -278,6 +278,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
 * `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command", for example adds missing '-' to the command on `hdfs dfs ls`;
+* `unsudo` &ndash; removes `sudo` from previous command if a process refuses to run on super user privilege.
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
