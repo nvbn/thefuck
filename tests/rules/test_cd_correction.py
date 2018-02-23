@@ -1,5 +1,5 @@
 import pytest
-from thefuck.rules.cd_mkdir import match, get_new_command
+from thefuck.rules.cd_correction import match
 from thefuck.types import Command
 
 
@@ -19,8 +19,5 @@ def test_not_match(command):
     assert not match(command)
 
 
-@pytest.mark.parametrize('command, new_command', [
-    (Command('cd foo', ''), 'mkdir -p foo && cd foo'),
-    (Command('cd foo/bar/baz', ''), 'mkdir -p foo/bar/baz && cd foo/bar/baz')])
-def test_get_new_command(command, new_command):
-    assert get_new_command(command) == new_command
+# Note that get_new_command uses local filesystem, so not testing it here.
+# Instead, see the functional test `functional.test_cd_correction`
