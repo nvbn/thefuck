@@ -4,7 +4,7 @@ Magnificent app which corrects your previous console command,
 inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320).
 
-The Fuck is too slow? [Try experimental instant mode!](#experimental-instant-mode) 
+The Fuck is too slow? [Try experimental instant mode!](#experimental-instant-mode)
 
 [![gif with examples][examples-link]][examples-link]
 
@@ -92,7 +92,7 @@ Reading package lists... Done
 
 ## Requirements
 
-- python (3.3+)
+- python (3.4+)
 - pip
 - python-dev
 
@@ -109,6 +109,12 @@ On Ubuntu you can install `The Fuck` with:
 sudo apt update
 sudo apt install python3-dev python3-pip
 sudo pip3 install thefuck
+```
+
+On FreeBSD you can install `The Fuck` with:
+```bash
+sudo portsnap fetch update
+cd /usr/ports/misc/thefuck && sudo make install clean
 ```
 
 On other systems you can install `The Fuck` with `pip`:
@@ -148,7 +154,7 @@ fuck -r
 ## Update
 
 ```bash
-pip install thefuck --upgrade
+pip3 install thefuck --upgrade
 ```
 
 **Aliases changed in 1.34.**
@@ -158,6 +164,7 @@ pip install thefuck --upgrade
 The Fuck tries to match a rule for the previous command, creates a new command
 using the matched rule and runs it. Rules enabled by default are as follows:
 
+* `adb_unknown_command` &ndash; fixes misspelled commands like `adb logcta`;
 * `ag_literal` &ndash; adds `-Q` to `ag` when suggested;
 * `aws_cli` &ndash; fixes misspelled commands like `aws dynamdb scan`;
 * `cargo` &ndash; runs `cargo build` instead of `cargo`;
@@ -186,11 +193,14 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `git_branch_exists` &ndash; offers `git branch -d foo`, `git branch -D foo` or `git checkout foo` when creating a branch that already exists;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
+* `git_commit_amend` &ndash; offers `git commit --amend` after previous commit;
 * `git_diff_no_index` &ndash; adds `--no-index` to previous `git diff` on untracked files;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
 * `git_fix_stash` &ndash; fixes `git stash` commands (misspelled subcommand and missing `save`);
 * `git_flag_after_filename` &ndash; fixes `fatal: bad flag '...' after filename`
 * `git_help_aliased` &ndash; fixes `git help <alias>` commands replacing <alias> with the aliased command;
+* `git_merge` &ndash; adds remote to branch names;
+* `git_merge_unrelated` &ndash; adds `--allow-unrelated-histories` when required
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
@@ -268,6 +278,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
 * `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command", for example adds missing '-' to the command on `hdfs dfs ls`;
+* `unsudo` &ndash; removes `sudo` from previous command if a process refuses to run on super user privilege.
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
@@ -282,6 +293,7 @@ Enabled by default only on specific platforms:
 * `apt_get_search` &ndash; changes trying to search using `apt-get` with searching using `apt-cache`;
 * `apt_invalid_operation` &ndash; fixes invalid `apt` and `apt-get` calls, like `apt-get isntall vim`;
 * `apt_list_upgradable` &ndash; helps you run `apt list --upgradable` after `apt update`;
+* `apt_upgrade` &ndash; helps you run `apt upgrade` after `apt list --upgradable`;
 * `brew_cask_dependency` &ndash; installs cask dependencies;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_link` &ndash; adds `--overwrite --dry-run` if linking fails;
@@ -443,37 +455,7 @@ eval $(thefuck --alias --enable-experimental-instant-mode)
 
 ## Developing
 
-Install `The Fuck` for development:
-
-```bash
-pip install -r requirements.txt
-python setup.py develop
-```
-
-Run code style checks:
-
-```bash
-flake8
-```
-
-Run unit tests:
-
-```bash
-py.test
-```
-
-Run unit and functional tests (requires docker):
-
-```bash
-py.test --enable-functional
-```
-
-For sending package to pypi:
-
-```bash
-sudo apt-get install pandoc
-./release.py
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License MIT
 Project License can be found [here](LICENSE.md).

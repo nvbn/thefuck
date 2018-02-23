@@ -69,4 +69,7 @@ def test_not_match(command):
 
 def test_get_new_command():
     new_command = get_new_command(Command('sudo apt update', match_output))
+    assert new_command == 'sudo apt list --upgradable'
+
+    new_command = get_new_command(Command('apt update', match_output))
     assert new_command == 'apt list --upgradable'

@@ -10,10 +10,22 @@ from .generic import Generic
 
 
 @cache('~/.config/fish/config.fish', '~/.config/fish/functions')
-def _get_aliases(overridden):
+def _get_functions(overridden):
     proc = Popen(['fish', '-ic', 'functions'], stdout=PIPE, stderr=DEVNULL)
     functions = proc.stdout.read().decode('utf-8').strip().split('\n')
     return {func: func for func in functions if func not in overridden}
+
+
+@cache('~/.config/fish/config.fish')
+def _get_aliases(overridden):
+    aliases = {}
+    proc = Popen(['fish', '-ic', 'alias'], stdout=PIPE, stderr=DEVNULL)
+    alias_out = proc.stdout.read().decode('utf-8').strip().split('\n')
+    for alias in alias_out:
+        name, value = alias.replace('alias ', '', 1).split(' ', 1)
+        if name not in overridden:
+            aliases[name] = value
+    return aliases
 
 
 class Fish(Generic):
@@ -35,7 +47,7 @@ class Fish(Generic):
         # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
                 '  set -l fucked_up_command $history[1]\n'
-                '  env TF_ALIAS={0} PYTHONIOENCODING=utf-8'
+                '  env TF_SHELL=fish TF_ALIAS={0} PYTHONIOENCODING=utf-8'
                 ' thefuck $fucked_up_command | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n{1}'
@@ -44,12 +56,17 @@ class Fish(Generic):
 
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
-        return _get_aliases(overridden)
+        functions = _get_functions(overridden)
+        raw_aliases = _get_aliases(overridden)
+        functions.update(raw_aliases)
+        return functions
 
     def _expand_aliases(self, command_script):
         aliases = self.get_aliases()
         binary = command_script.split(' ')[0]
-        if binary in aliases:
+        if binary in aliases and aliases[binary] != binary:
+            return command_script.replace(binary, aliases[binary], 1)
+        elif binary in aliases:
             return u'fish -ic "{}"'.format(command_script.replace('"', r'\"'))
         else:
             return command_script

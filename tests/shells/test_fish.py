@@ -13,9 +13,10 @@ class TestFish(object):
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
         mock = mocker.patch('thefuck.shells.fish.Popen')
-        mock.return_value.stdout.read.return_value = (
+        mock.return_value.stdout.read.side_effect = [(
             b'cd\nfish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nls\n'
-            b'man\nmath\npopd\npushd\nruby')
+            b'man\nmath\npopd\npushd\nruby'),
+            b'alias fish_key_reader /usr/bin/fish_key_reader\nalias g git']
         return mock
 
     @pytest.mark.parametrize('key, value', [
@@ -42,7 +43,8 @@ class TestFish(object):
         ('open', 'open'),
         ('vim', 'vim'),
         ('ll', 'fish -ic "ll"'),
-        ('ls', 'ls')])  # Fish has no aliases but functions
+        ('ls', 'ls'),
+        ('g', 'git')])
     def test_from_shell(self, before, after, shell):
         assert shell.from_shell(before) == after
 
@@ -65,12 +67,15 @@ class TestFish(object):
                                        'math': 'math',
                                        'popd': 'popd',
                                        'pushd': 'pushd',
-                                       'ruby': 'ruby'}
+                                       'ruby': 'ruby',
+                                       'g': 'git',
+                                       'fish_key_reader': '/usr/bin/fish_key_reader'}
 
     def test_app_alias(self, shell):
         assert 'function fuck' in shell.app_alias('fuck')
         assert 'function FUCK' in shell.app_alias('FUCK')
         assert 'thefuck' in shell.app_alias('fuck')
+        assert 'TF_SHELL=fish' in shell.app_alias('fuck')
         assert 'TF_ALIAS=fuck PYTHONIOENCODING' in shell.app_alias('fuck')
         assert 'PYTHONIOENCODING=utf-8 thefuck' in shell.app_alias('fuck')
 

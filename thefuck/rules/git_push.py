@@ -5,8 +5,8 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('push' in command.script
-            and 'set-upstream' in command.output)
+    return ('push' in command.script_parts
+            and 'git push --set-upstream' in command.output)
 
 
 def _get_upstream_option_index(command_parts):
@@ -32,7 +32,13 @@ def get_new_command(command):
         # In case of `git push -u` we don't have next argument:
         if len(command_parts) > upstream_option_index:
             command_parts.pop(upstream_option_index)
+    else:
+        # the only non-qualified permitted options are the repository and refspec; git's
+        # suggestion include them, so they won't be lost, but would be duplicated otherwise.
+        push_idx = command_parts.index('push') + 1
+        while len(command_parts) > push_idx and command_parts[len(command_parts) - 1][0] != '-':
+            command_parts.pop(len(command_parts) - 1)
 
-    arguments = re.findall(r'git push (.*)', command.output)[0].strip()
+    arguments = re.findall(r'git push (.*)', command.output)[0].replace("'", r"\'").strip()
     return replace_argument(" ".join(command_parts), 'push',
                             'push {}'.format(arguments))
