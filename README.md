@@ -315,6 +315,7 @@ Bundled, but not enabled by default:
 
 * `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
+* `smart_rule`; returns recommended commands based on user corrected commands.
 
 ## Creating your own rules
 

@@ -8,6 +8,7 @@ def _args(**override):
             'help': False, 'version': False, 'debug': False,
             'force_command': None, 'repeat': False,
             'enable_experimental_instant_mode': False,
+            'enable_experimental_shell_history': False,
             'shell_logger': None}
     args.update(override)
     return args
@@ -18,6 +19,8 @@ def _args(**override):
     (['thefuck', '-a'], _args(alias='fuck')),
     (['thefuck', '--alias', '--enable-experimental-instant-mode'],
      _args(alias='fuck', enable_experimental_instant_mode=True)),
+    (['thefuck', '--enable-experimental-shell-history'],
+     _args(enable_experimental_shell_history=True)),
     (['thefuck', '-a', 'fix'], _args(alias='fix')),
     (['thefuck', 'git', 'branch', ARGUMENT_PLACEHOLDER, '-y'],
      _args(command=['git', 'branch'], yes=True)),
