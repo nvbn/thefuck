@@ -134,6 +134,13 @@ eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 ```
 
+If you want to enable , add place these commands in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
+
+```bash
+export SHELL_PATH=$(PWD)
+eval $(thefuck --enable-experimental-shell-history)
+```
+
 [Or in your shell config (Bash, Zsh, Fish, Powershell, tcsh).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
 
 Changes will be available only in a new shell session.

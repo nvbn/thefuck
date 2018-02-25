@@ -42,7 +42,8 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                                       './gradlew', 'vagrant'],
                     'repeat': False,
                     'instant_mode': False,
-                    'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
+                    'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1', '__SHELL_LOGGER_SOCKET': '/tmp/tf_socket',
+                            '__SHELL_LOGGER_BINARY_PATH': '$HOME/.local/bin/shell_logger'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_EXCLUDE_RULES': 'exclude_rules',

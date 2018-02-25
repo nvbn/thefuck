@@ -1,5 +1,10 @@
+import subprocess
+import urllib.request
+
 import six
-from ..logs import warn
+
+from ..conf import settings
+from ..logs import warn, debug
 from ..shells import shell
 from ..utils import which
 
@@ -24,3 +29,19 @@ def _get_alias(known_args):
 
 def print_alias(known_args):
     print(_get_alias(known_args))
+
+
+def print_experimental_shell_history():
+    client_release = 'https://www.dropbox.com/s/m0jqp8i4c6woko5/client?dl=1'
+    filename = settings.env['__SHELL_LOGGER_BINARY_PATH']
+    debug('Downloading the shell_logger release and putting it in the path ... ')
+    urllib.request.urlretrieve(client_release, filename)
+
+    subprocess.Popen(['chmod', '+x', filename])
+
+    proc = subprocess.Popen(['./{0}'.format(filename), '-mode', 'configure'], stdout=subprocess.PIPE,
+                            env={'__SHELL_LOGGER_BINARY_PATH': settings.env['__SHELL_LOGGER_BINARY_PATH']})
+    print(''.join([line.decode() for line in proc.stdout.readlines()]))
+
+    subprocess.Popen(['./{0}'.format(filename), '-mode', 'daemon'],
+                     env={'__SHELL_LOGGER_SOCKET': settings.env['__SHELL_LOGGER_SOCKET']})
