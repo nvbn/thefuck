@@ -1,7 +1,9 @@
 import subprocess
 import urllib.request
 
+import sys
 import six
+import psutil
 
 from ..conf import settings
 from ..logs import warn, debug
@@ -32,6 +34,7 @@ def print_alias(known_args):
 
 
 def print_experimental_shell_history():
+    filename_suffix = sys.platform
     client_release = 'https://www.dropbox.com/s/m0jqp8i4c6woko5/client?dl=1'
     filename = settings.env['__SHELL_LOGGER_BINARY_PATH']
     debug('Downloading the shell_logger release and putting it in the path ... ')
@@ -42,6 +45,11 @@ def print_experimental_shell_history():
     proc = subprocess.Popen(['./{0}'.format(filename), '-mode', 'configure'], stdout=subprocess.PIPE,
                             env={'__SHELL_LOGGER_BINARY_PATH': settings.env['__SHELL_LOGGER_BINARY_PATH']})
     print(''.join([line.decode() for line in proc.stdout.readlines()]))
+
+    # If process is running, close it
+    if filename in (p.name() for p in psutil.process_iter()):
+        subprocess.Popen(['./{0}'.format(filename), '-mode', 'daemon'])
+        subprocess.Popen(['rm', './{0}'.format(filename)])
 
     subprocess.Popen(['./{0}'.format(filename), '-mode', 'daemon'],
                      env={'__SHELL_LOGGER_SOCKET': settings.env['__SHELL_LOGGER_SOCKET']})
