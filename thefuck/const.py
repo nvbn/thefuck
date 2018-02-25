@@ -28,6 +28,10 @@ ALL_ENABLED = _GenConst('All rules enabled')
 DEFAULT_RULES = [ALL_ENABLED]
 DEFAULT_PRIORITY = 1000
 
+SHELL_LOGGER_SOCKET_ENV_VAR = '__SHELL_LOGGER_SOCKET'
+SHELL_LOGGER_SOCKET_PATH = '/tmp/tf_socket'
+SHELL_LOGGER_BINARY_FILENAME = 'shell_logger'
+
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'exclude_rules': [],
                     'wait_command': 3,
@@ -42,8 +46,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                                       './gradlew', 'vagrant'],
                     'repeat': False,
                     'instant_mode': False,
-                    'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1', '__SHELL_LOGGER_SOCKET': '/tmp/tf_socket',
-                            '__SHELL_LOGGER_BINARY_PATH': '$HOME/.local/bin/shell_logger'}}
+                    'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_EXCLUDE_RULES': 'exclude_rules',

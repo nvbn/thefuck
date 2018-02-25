@@ -1,11 +1,14 @@
 import subprocess
 import urllib.request
 
+import os
 import sys
 import six
 import psutil
+from psutil import ZombieProcess
 
 from ..conf import settings
+from ..const import SHELL_LOGGER_SOCKET_ENV_VAR, SHELL_LOGGER_SOCKET_PATH, SHELL_LOGGER_BINARY_FILENAME
 from ..logs import warn, debug
 from ..shells import shell
 from ..utils import which
@@ -33,23 +36,27 @@ def print_alias(known_args):
     print(_get_alias(known_args))
 
 
-def print_experimental_shell_history():
+def print_experimental_shell_history(known_args):
+    settings.init(known_args)
+
     filename_suffix = sys.platform
     client_release = 'https://www.dropbox.com/s/m0jqp8i4c6woko5/client?dl=1'
-    filename = settings.env['__SHELL_LOGGER_BINARY_PATH']
+    binary_path = '{}/{}'.format(settings.data_dir, SHELL_LOGGER_BINARY_FILENAME)
+
     debug('Downloading the shell_logger release and putting it in the path ... ')
-    urllib.request.urlretrieve(client_release, filename)
+    urllib.request.urlretrieve(client_release, binary_path)
 
-    subprocess.Popen(['chmod', '+x', filename])
+    subprocess.Popen(['chmod', '+x', binary_path])
 
-    proc = subprocess.Popen(['./{0}'.format(filename), '-mode', 'configure'], stdout=subprocess.PIPE,
-                            env={'__SHELL_LOGGER_BINARY_PATH': settings.env['__SHELL_LOGGER_BINARY_PATH']})
+    proc = subprocess.Popen([binary_path, '-mode', 'configure'], stdout=subprocess.PIPE)
     print(''.join([line.decode() for line in proc.stdout.readlines()]))
 
-    # If process is running, close it
-    if filename in (p.name() for p in psutil.process_iter()):
-        subprocess.Popen(['./{0}'.format(filename), '-mode', 'daemon'])
-        subprocess.Popen(['rm', './{0}'.format(filename)])
+    try:
+        # If process is not running, start the process
+        if SHELL_LOGGER_BINARY_FILENAME not in (p.name() for p in psutil.process_iter()):
+            os.spawnve(os.P_NOWAIT, binary_path, [binary_path, '-mode', 'daemon'],
+                       env={SHELL_LOGGER_SOCKET_ENV_VAR: SHELL_LOGGER_SOCKET_PATH})
+    except ZombieProcess as e:
+        warn("Zombie process is running. Please kill the running process " % e)
 
-    subprocess.Popen(['./{0}'.format(filename), '-mode', 'daemon'],
-                     env={'__SHELL_LOGGER_SOCKET': settings.env['__SHELL_LOGGER_SOCKET']})
+

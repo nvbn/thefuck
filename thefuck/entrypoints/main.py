@@ -33,7 +33,7 @@ def main():
         else:
             shell_logger(known_args.shell_logger)
     elif known_args.enable_experimental_shell_history:
-        print_experimental_shell_history()
+        print_experimental_shell_history(known_args)
     else:
         parser.print_usage()
 
