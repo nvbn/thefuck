@@ -1,20 +1,21 @@
 import sys
 import socket
 
-from ..conf import settings
-
-SHELL_LOGGER_SOCKET = '__SHELL_LOGGER_SOCKET'
+from thefuck.conf import settings
+from thefuck.const import SHELL_LOGGER_SOCKET_PATH
 
 
 def match(command):
+    import ipdb; ipdb.set_trace()
     return True
 
 
 def get_new_command(command):
+    import ipdb; ipdb.set_trace()
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     list_of_commands = []
     try:
-        sock.connect(settings.env.get(SHELL_LOGGER_SOCKET))
+        sock.connect(settings.env.get(SHELL_LOGGER_SOCKET_PATH))
         sock.sendall(command)
         number_of_strings = int.from_bytes(sock.recv(1), sys.byteorder)
         for i in range(number_of_strings):
