@@ -8,6 +8,7 @@ import psutil
 from psutil import ZombieProcess
 
 from ..conf import settings
+from ..system import get_shell_logger_bname_from_sys
 from ..const import SHELL_LOGGER_SOCKET_ENV_VAR, SHELL_LOGGER_SOCKET_PATH, \
                     SHELL_LOGGER_BINARY_FILENAME, SHELL_LOGGER_DB_FILENAME, SHELL_LOGGER_DB_ENV_VAR
 from ..logs import warn, debug
@@ -40,8 +41,9 @@ def print_alias(known_args):
 def print_experimental_shell_history(known_args):
     settings.init(known_args)
 
-    filename_suffix = sys.platform
-    client_release = 'https://www.dropbox.com/s/m0jqp8i4c6woko5/client?dl=1'
+    filename_suffix = get_shell_logger_bname_from_sys()
+    client_release = 'https://github.com/nvbn/shell_logger/releases/download/0.1.0a1/shell_logger_{}'\
+                     .format(filename_suffix)
     binary_path = '{}/{}'.format(settings.data_dir, SHELL_LOGGER_BINARY_FILENAME)
     db_path = '{}/{}'.format(settings.data_dir, SHELL_LOGGER_DB_FILENAME)
 
@@ -55,14 +57,9 @@ def print_experimental_shell_history(known_args):
     proc = subprocess.Popen([binary_path, '-mode', 'configure'], stdout=subprocess.PIPE,
                             env=my_env)
     print(''.join([line.decode() for line in proc.stdout.readlines()]))
-
-    try:
-        # If process is not running, start the process
-        if SHELL_LOGGER_BINARY_FILENAME not in (p.name() for p in psutil.process_iter()):
-            os.spawnve(os.P_NOWAIT, binary_path, [binary_path, '-mode', 'daemon'],
-                       env={SHELL_LOGGER_SOCKET_ENV_VAR: SHELL_LOGGER_SOCKET_PATH,
-                            SHELL_LOGGER_DB_ENV_VAR: db_path})
-    except ZombieProcess as e:
-        warn("Zombie process is running. Please kill the running process " % e)
+    # TODO seems like daemon returns something, so redirect stdout so eval doesn't hang
+    subprocess.Popen(["{} -mode daemon &".format(binary_path)], shell=True,
+                               env={SHELL_LOGGER_SOCKET_ENV_VAR: SHELL_LOGGER_SOCKET_PATH,
+                                    SHELL_LOGGER_DB_ENV_VAR: db_path}, stdout=2)
 
 
