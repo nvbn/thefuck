@@ -1,6 +1,7 @@
 import pytest
 from mock import patch, MagicMock
 from thefuck.rules.smart_rule import match, get_new_command
+from thefuck.types import Command
 
 
 def test_match_simple():
@@ -19,7 +20,7 @@ def test_get_new_command(socket_mock, script, socket_response, new_command):
     recv_mock = MagicMock(side_effect=socket_response)
     socket_mock.socket.return_value = sock_mock
     sock_mock.recv = recv_mock
-    returned_commands = get_new_command(script)
+    returned_commands = get_new_command(Command(script, None))
     assert returned_commands == new_command
 
 

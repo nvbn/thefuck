@@ -8,7 +8,8 @@ import psutil
 from psutil import ZombieProcess
 
 from ..conf import settings
-from ..const import SHELL_LOGGER_SOCKET_ENV_VAR, SHELL_LOGGER_SOCKET_PATH, SHELL_LOGGER_BINARY_FILENAME
+from ..const import SHELL_LOGGER_SOCKET_ENV_VAR, SHELL_LOGGER_SOCKET_PATH, \
+                    SHELL_LOGGER_BINARY_FILENAME, SHELL_LOGGER_DB_FILENAME, SHELL_LOGGER_DB_ENV_VAR
 from ..logs import warn, debug
 from ..shells import shell
 from ..utils import which
@@ -42,20 +43,25 @@ def print_experimental_shell_history(known_args):
     filename_suffix = sys.platform
     client_release = 'https://www.dropbox.com/s/m0jqp8i4c6woko5/client?dl=1'
     binary_path = '{}/{}'.format(settings.data_dir, SHELL_LOGGER_BINARY_FILENAME)
+    db_path = '{}/{}'.format(settings.data_dir, SHELL_LOGGER_DB_FILENAME)
 
     debug('Downloading the shell_logger release and putting it in the path ... ')
     urllib.request.urlretrieve(client_release, binary_path)
 
     subprocess.Popen(['chmod', '+x', binary_path])
 
-    proc = subprocess.Popen([binary_path, '-mode', 'configure'], stdout=subprocess.PIPE)
+    my_env = os.environ.copy()
+    my_env[SHELL_LOGGER_DB_ENV_VAR] = db_path
+    proc = subprocess.Popen([binary_path, '-mode', 'configure'], stdout=subprocess.PIPE,
+                            env=my_env)
     print(''.join([line.decode() for line in proc.stdout.readlines()]))
 
     try:
         # If process is not running, start the process
         if SHELL_LOGGER_BINARY_FILENAME not in (p.name() for p in psutil.process_iter()):
             os.spawnve(os.P_NOWAIT, binary_path, [binary_path, '-mode', 'daemon'],
-                       env={SHELL_LOGGER_SOCKET_ENV_VAR: SHELL_LOGGER_SOCKET_PATH})
+                       env={SHELL_LOGGER_SOCKET_ENV_VAR: SHELL_LOGGER_SOCKET_PATH,
+                            SHELL_LOGGER_DB_ENV_VAR: db_path})
     except ZombieProcess as e:
         warn("Zombie process is running. Please kill the running process " % e)
 

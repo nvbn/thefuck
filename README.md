@@ -134,10 +134,9 @@ eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 ```
 
-If you want to enable , add place these commands in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
+If you want to enable the experimental smart rule, place this command in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
 
 ```bash
-export SHELL_PATH=$(PWD)
 eval $(thefuck --enable-experimental-shell-history)
 ```
 
