@@ -1,19 +1,24 @@
 import array
 import fcntl
 from functools import partial
+import mmap
 import os
 import pty
 import signal
 import sys
 import termios
 import tty
-from ..logs import warn
+from .. import logs, const
 
 
 def _read(f, fd):
     data = os.read(fd, 1024)
-    f.write(data)
-    f.flush()
+    try:
+        f.write(data)
+    except ValueError:
+        f.move(0, const.LOG_SIZE_TO_CLEAN,
+               const.LOG_SIZE_IN_BYTES - const.LOG_SIZE_TO_CLEAN)
+        f.seek(const.LOG_SIZE_IN_BYTES - const.LOG_SIZE_TO_CLEAN)
     return data
 
 
@@ -61,10 +66,12 @@ def shell_logger(output):
 
     """
     if not os.environ.get('SHELL'):
-        warn("Shell logger doesn't support your platform.")
+        logs.warn("Shell logger doesn't support your platform.")
         sys.exit(1)
 
-    with open(output, 'wb') as f:
-        return_code = _spawn(os.environ['SHELL'], partial(_read, f))
+    fd = os.open(output, os.O_CREAT | os.O_TRUNC | os.O_RDWR)
+    os.write(fd, b'\x00' * const.LOG_SIZE_IN_BYTES)
+    buffer = mmap.mmap(fd, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_WRITE)
+    return_code = _spawn(os.environ['SHELL'], partial(_read, buffer))
 
     sys.exit(return_code)
