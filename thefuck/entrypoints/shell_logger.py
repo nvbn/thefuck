@@ -16,9 +16,11 @@ def _read(f, fd):
     try:
         f.write(data)
     except ValueError:
-        f.move(0, const.LOG_SIZE_TO_CLEAN,
-               const.LOG_SIZE_IN_BYTES - const.LOG_SIZE_TO_CLEAN)
-        f.seek(const.LOG_SIZE_IN_BYTES - const.LOG_SIZE_TO_CLEAN)
+        position = const.LOG_SIZE_IN_BYTES - const.LOG_SIZE_TO_CLEAN
+        f.move(0, const.LOG_SIZE_TO_CLEAN, position)
+        f.seek(position)
+        f.write(b'\x00' * const.LOG_SIZE_TO_CLEAN)
+        f.seek(position)
     return data
 
 
