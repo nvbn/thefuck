@@ -1,14 +1,15 @@
 # The Fuck [![Version][version-badge]][version-link] [![Build Status][travis-badge]][travis-link] [![Windows Build Status][appveyor-badge]][appveyor-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
 
-Magnificent app which corrects your previous console command,
-inspired by a [@liamosaur](https://twitter.com/liamosaur/)
-[tweet](https://twitter.com/liamosaur/status/506975850596536320).
+*The Fuck* is a magnificent app inspired by a [@liamosaur](https://twitter.com/liamosaur/)
+[tweet](https://twitter.com/liamosaur/status/506975850596536320)
+that corrects errors in previous console commands.
 
-The Fuck is too slow? [Try experimental instant mode!](#experimental-instant-mode)
+
+Is *The Fuck* too slow? [Try the experimental instant mode!](#experimental-instant-mode)
 
 [![gif with examples][examples-link]][examples-link]
 
-Few more examples:
+More examples:
 
 ```bash
 ➜ apt-get install vim
@@ -75,8 +76,8 @@ REPL-y 0.3.1
 ...
 ```
 
-If you are not scared to blindly run the changed command, there is a `require_confirmation`
-[settings](#settings) option:
+If you're not afraid of blinding running corrected commands, the
+`require_confirmation` [settings](#settings) option can be disabled:
 
 ```bash
 ➜ apt-get install vim
@@ -98,35 +99,36 @@ Reading package lists... Done
 
 ## Installation
 
-On OS X you can install `The Fuck` with [Homebrew][homebrew]:
+On OS X, you can install *The Fuck* via [Homebrew][homebrew]:
 
 ```bash
 brew install thefuck
 ```
 
-On Ubuntu you can install `The Fuck` with:
+On Ubuntu, install *The Fuck* with the following commands:
 ```bash
 sudo apt update
 sudo apt install python3-dev python3-pip
 sudo pip3 install thefuck
 ```
 
-On FreeBSD you can install `The Fuck` with:
+On FreeBSD, install *The Fuck* with the following commands:
 ```bash
 sudo portsnap fetch update
 cd /usr/ports/misc/thefuck && sudo make install clean
 ```
 
-On other systems you can install `The Fuck` with `pip`:
+On other systems, install *The Fuck*  by using `pip`:
 
 ```bash
 pip install thefuck
 ```
 
-[Or using an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
+[Alternatively, you may use an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
 
 <a href='#manual-installation' name='manual-installation'>#</a>
-You should place this command in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
+It is recommended that you place this command in your `.bash_profile`,
+`.bashrc`, `.zshrc` or other startup script:
 
 ```bash
 eval $(thefuck --alias)
@@ -136,33 +138,34 @@ eval $(thefuck --alias FUCK)
 
 [Or in your shell config (Bash, Zsh, Fish, Powershell, tcsh).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
 
-Changes will be available only in a new shell session.
-To make them available immediately, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
+Changes are only available in a new shell session. To make changes immediately
+available, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
 
-If you want to run fixed command without confirmation you can use `-y` option:
+To run fixed commands without confirmation, use the `-y` option:
 
 ```bash
 fuck -y
 ```
 
-If you want to fix commands recursively until success you can use `-r` option:
+To fix commands recursively until succeeding, use the `-r` option:
 
 ```bash
 fuck -r
 ```
 
-## Update
+## Updating
 
 ```bash
 pip3 install thefuck --upgrade
 ```
 
-**Aliases changed in 1.34.**
+**Note: Alias functionality was changed in v1.34 of *The Fuck***
 
 ## How it works
 
-The Fuck tries to match a rule for the previous command, creates a new command
-using the matched rule and runs it. Rules enabled by default are as follows:
+*The Fuck* attempts to match the previous command with a rule. If a match is
+found, a new command is created using the matched rule and executed. The
+following rules are enabled by default:
 
 * `adb_unknown_command` &ndash; fixes misspelled commands like `adb logcta`;
 * `ag_literal` &ndash; adds `-Q` to `ag` when suggested;
@@ -287,7 +290,7 @@ using the matched rule and runs it. Rules enabled by default are as follows:
 * `yarn_command_replaced` &ndash; fixes replaced `yarn` commands;
 * `yarn_help` &ndash; makes it easier to open `yarn` documentation;
 
-Enabled by default only on specific platforms:
+The following rules are enabled by default on specific platforms only:
 
 * `apt_get` &ndash; installs app from apt if it not installed (requires `python-commandnotfound` / `python3-commandnotfound`);
 * `apt_get_search` &ndash; changes trying to search using `apt-get` with searching using `apt-cache`;
@@ -304,36 +307,40 @@ Enabled by default only on specific platforms:
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available);
 * `pacman_not_found` &ndash; fixes package name with `pacman` or `yaourt`.
 
-Bundled, but not enabled by default:
+The following commands are bundled with *The Fuck*, but are not enabled by
+default:
 
 * `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
 ## Creating your own rules
 
-For adding your own rule you should create `your-rule-name.py`
-in `~/.config/thefuck/rules`. The rule should contain two functions:
+To add your own rule, create a file named `your-rule-name.py`
+in `~/.config/thefuck/rules`. The rule file must contain two functions:
 
 ```python
 match(command: Command) -> bool
 get_new_command(command: Command) -> str | list[str]
 ```
 
-Also the rule can contain an optional function
+Additionally, rules can contain optional functions:
 
 ```python
 side_effect(old_command: Command, fixed_command: str) -> None
 ```
-and optional `enabled_by_default`, `requires_output` and `priority` variables.
+Rules can also contain the optional variables `enabled_by_default`, `requires_output` and `priority`.
 
 `Command` has three attributes: `script`, `output` and `script_parts`.
-Rule shouldn't change `Command`.
+Your rule should not change `Command`.
 
 
-*Rules api changed in 3.0:* For accessing settings in rule you need to import it with `from thefuck.conf import settings`.
-`settings` is a special object filled with `~/.config/thefuck/settings.py` and values from env ([see more below](#settings)).
+**Rules api changed in 3.0:** To access a rule's settings, import it with
+ `from thefuck.conf import settings`
+  
+`settings` is a special object assembled from `~/.config/thefuck/settings.py`, 
+and values from env ([see more below](#settings)).
 
-Simple example of the rule for running script with `sudo`:
+A simple example rule for running a script with `sudo`:
 
 ```python
 def match(command):
@@ -361,7 +368,8 @@ requires_output = True
 
 ## Settings
 
-The Fuck has a few settings parameters which can be changed in `$XDG_CONFIG_HOME/thefuck/settings.py` (`$XDG_CONFIG_HOME` defaults to `~/.config`):
+Several *The Fuck* parameters can be changed in the file `$XDG_CONFIG_HOME/thefuck/settings.py`
+(`$XDG_CONFIG_HOME` defaults to `~/.config`):
 
 * `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
 * `exclude_rules` &ndash; list of disabled rules, by default `[]`;
@@ -375,7 +383,7 @@ The Fuck has a few settings parameters which can be changed in `$XDG_CONFIG_HOME
 * `wait_slow_command` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
 * `slow_commands` &ndash; list of slow commands.
 
-Example of `settings.py`:
+An example of `settings.py`:
 
 ```python
 rules = ['sudo', 'no_command']
@@ -419,9 +427,9 @@ export THEFUCK_HISTORY_LIMIT='2000'
 
 ## Third-party packages with rules
 
-If you want to make very specific rules or rules, that you don't want to make public,
-but share with other people.
-You can create a special package with name `thefuck_contrib_*` with following structure:
+If you'd like to make a specific set of non-public rules, but would still like
+to share them with others, create a package named `thefuck_contrib_*` with
+the following structure:
 
 ```
 thefuck_contrib_foo
@@ -434,20 +442,22 @@ thefuck_contrib_foo
   setup.py
 ```
 
-And thefuck will find all rules from `rules` module.
+*The Fuck* will find rules located in the `rules` module.
 
 ## Experimental instant mode
 
-By default The Fuck reruns a previous command and that takes time,
-in instant mode The Fuck logs output with [script](https://en.wikipedia.org/wiki/Script_(Unix))
-and just reads the log.
+The default behavior of *The Fuck* requires time to re-run previous commands.
+When in instant mode, *The Fuck* saves time by logging output with [script](https://en.wikipedia.org/wiki/Script_(Unix)),
+then reading the log.
 
 [![gif with instant mode][instant-mode-gif-link]][instant-mode-gif-link]
 
-At the moment only Python 3 with bash or zsh is supported.
+Currently, instant mode only supports Python 3 with bash or zsh.
 
-For enabling instant mode you need to add `--enable-experimental-instant-mode`
-to alias initialization in your `.bashrc`, `.bash_profile` or `.zshrc` like:
+To enable instant mode, add `--enable-experimental-instant-mode`
+to the alias initialization in `.bashrc`, `.bash_profile` or `.zshrc`.
+
+For example:
 
 ```bash
 eval $(thefuck --alias --enable-experimental-instant-mode)
