@@ -76,7 +76,7 @@ REPL-y 0.3.1
 ...
 ```
 
-If you're not afraid of blinding running corrected commands, the
+If you're not afraid of blindly running corrected commands, the
 `require_confirmation` [settings](#settings) option can be disabled:
 
 ```bash
