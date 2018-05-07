@@ -239,6 +239,7 @@ following rules are enabled by default:
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
+* `long_form_help` &ndash; changes `-h` to `--help` when the short form version is not supported
 * `ln_no_hard_link` &ndash; catches hard link creation on directories, suggest symbolic link;
 * `ln_s_order` &ndash; fixes `ln -s` arguments order;
 * `ls_all` &ndash; adds `-A` to `ls` when output is empty;
