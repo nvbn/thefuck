@@ -118,6 +118,11 @@ sudo portsnap fetch update
 cd /usr/ports/misc/thefuck && sudo make install clean
 ```
 
+On ChromeOS, install *The Fuck* using [chromebrew](https://github.com/skycocker/chromebrew) with the following command:
+```bash
+crew install thefuck
+```
+
 On other systems, install *The Fuck*  by using `pip`:
 
 ```bash
