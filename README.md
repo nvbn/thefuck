@@ -232,7 +232,7 @@ following rules are enabled by default:
 * `gradle_no_task` &ndash; fixes not found or ambiguous `gradle` task;
 * `gradle_wrapper` &ndash; replaces `gradle` with `./gradlew`;
 * `grep_arguments_order` &ndash; fixes grep arguments order for situations like `grep -lir . test`;
-* `grep_recursive` &ndash; adds `-r` when you trying to `grep` directory;
+* `grep_recursive` &ndash; adds `-r` when you try to `grep` directory;
 * `grunt_task_not_found` &ndash; fixes misspelled `grunt` commands;
 * `gulp_not_task` &ndash; fixes misspelled `gulp` tasks;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
@@ -252,7 +252,7 @@ following rules are enabled by default:
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
 * `missing_space_before_subcommand` &ndash; fixes command with missing space like `npminstall`;
-* `mkdir_p` &ndash; adds `-p` when you trying to create directory without parent;
+* `mkdir_p` &ndash; adds `-p` when you try to create a directory without parent;
 * `mvn_no_command` &ndash; adds `clean package` to `mvn`;
 * `mvn_unknown_lifecycle_phase` &ndash; fixes misspelled lifecycle phases with `mvn`;
 * `npm_missing_script` &ndash; fixes `npm` custom script name in `npm run-script <script>`;
@@ -265,13 +265,13 @@ following rules are enabled by default:
 * `php_s` &ndash; replaces `-s` by `-S` when trying to run a local php server;
 * `port_already_in_use` &ndash; kills process that bound port;
 * `prove_recursively` &ndash; adds `-r` when called with directory;
-* `python_command` &ndash; prepends `python` when you trying to run not executable/without `./` python script;
+* `python_command` &ndash; prepends `python` when you try to run non-executable/without `./` python script;
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
 * `path_from_history` &ndash; replaces not found path with similar absolute path from history;
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
 * `remove_trailing_cedilla` &ndash; remove trailling cedillas `ç`, a common typo for european keyboard layouts;
-* `rm_dir` &ndash; adds `-rf` when you trying to remove directory;
+* `rm_dir` &ndash; adds `-rf` when you try to remove a directory;
 * `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
