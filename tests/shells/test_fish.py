@@ -16,7 +16,8 @@ class TestFish(object):
         mock.return_value.stdout.read.side_effect = [(
             b'cd\nfish_config\nfuck\nfunced\nfuncsave\ngrep\nhistory\nll\nls\n'
             b'man\nmath\npopd\npushd\nruby'),
-            b'alias fish_key_reader /usr/bin/fish_key_reader\nalias g git']
+            (b'alias fish_key_reader /usr/bin/fish_key_reader\nalias g git\n'
+             b'alias alias_with_equal_sign=echo\ninvalid_alias'), b'func1\nfunc2', b'']
         return mock
 
     @pytest.mark.parametrize('key, value', [
@@ -69,7 +70,9 @@ class TestFish(object):
                                        'pushd': 'pushd',
                                        'ruby': 'ruby',
                                        'g': 'git',
-                                       'fish_key_reader': '/usr/bin/fish_key_reader'}
+                                       'fish_key_reader': '/usr/bin/fish_key_reader',
+                                       'alias_with_equal_sign': 'echo'}
+        assert shell.get_aliases() == {'func1': 'func1', 'func2': 'func2'}
 
     def test_app_alias(self, shell):
         assert 'function fuck' in shell.app_alias('fuck')
