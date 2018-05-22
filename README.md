@@ -305,6 +305,7 @@ The following rules are enabled by default on specific platforms only:
 * `apt_upgrade` &ndash; helps you run `apt upgrade` after `apt list --upgradable`;
 * `brew_cask_dependency` &ndash; installs cask dependencies;
 * `brew_install` &ndash; fixes formula name for `brew install`;
+* `brew_reinstall` &ndash; turns `brew install <formula>` into `brew reinstall <formula>`;
 * `brew_link` &ndash; adds `--overwrite --dry-run` if linking fails;
 * `brew_uninstall` &ndash; adds `--force` to `brew uninstall` if multiple versions were installed;
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
