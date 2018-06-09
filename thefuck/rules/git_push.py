@@ -39,6 +39,6 @@ def get_new_command(command):
         while len(command_parts) > push_idx and command_parts[len(command_parts) - 1][0] != '-':
             command_parts.pop(len(command_parts) - 1)
 
-    arguments = re.findall(r'git push (.*)', command.output)[0].replace("'", r"\'").strip()
+    arguments = re.findall(r'git push (.*)', command.output)[-1].replace("'", r"\'").strip()
     return replace_argument(" ".join(command_parts), 'push',
                             'push {}'.format(arguments))
