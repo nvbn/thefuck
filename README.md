@@ -459,7 +459,7 @@ then reading the log.
 
 [![gif with instant mode][instant-mode-gif-link]][instant-mode-gif-link]
 
-Currently, instant mode only supports Python 3 with bash or zsh.
+Currently, instant mode only supports Python 3 with bash or zsh. zsh's autocorrect function also needs to be disabled in order for thefuck to work properly.
 
 To enable instant mode, add `--enable-experimental-instant-mode`
 to the alias initialization in `.bashrc`, `.bash_profile` or `.zshrc`.
