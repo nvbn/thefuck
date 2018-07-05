@@ -146,10 +146,10 @@ eval $(thefuck --alias FUCK)
 Changes are only available in a new shell session. To make changes immediately
 available, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
 
-To run fixed commands without confirmation, use the `-y` option:
+To run fixed commands without confirmation, use the `--yeah` option (or just `-y` for short):
 
 ```bash
-fuck -y
+fuck --yeah
 ```
 
 To fix commands recursively until succeeding, use the `-r` option:
