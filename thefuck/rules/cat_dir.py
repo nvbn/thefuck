@@ -1,12 +1,10 @@
-import re
-
-
 def match(command):
     return (
         command.script.startswith('cat') and
-        re.match(r'cat: .+: Is a directory', command.output)
+        command.output.startswith('cat: ') and
+        command.output.rstrip().endswith(': Is a directory')
     )
 
 
 def get_new_command(command):
-    return re.sub(r'^cat', 'ls', command.script)
+    return command.script.replace('cat', 'ls', 1)
