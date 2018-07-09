@@ -66,6 +66,10 @@ def test_not_match(output, script, branch_name):
     ('git -c test=test push --quiet origin', 'master',
      'git -c test=test push --set-upstream origin master --quiet'),
     ('git push', "test's",
-     "git push --set-upstream origin test\\'s")])
+     "git push --set-upstream origin test\\'s"),
+    ('git push --force', 'master',
+     'git push --set-upstream origin master --force'),
+    ('git push --force-with-lease', 'master',
+     'git push --set-upstream origin master --force-with-lease')])
 def test_get_new_command(output, script, branch_name, new_command):
     assert get_new_command(Command(script, output)) == new_command
