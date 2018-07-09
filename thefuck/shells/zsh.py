@@ -16,8 +16,10 @@ class Zsh(Generic):
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
                 export TF_SHELL=zsh;
                 export TF_ALIAS={name};
-                export TF_SHELL_ALIASES=$(alias);
-                export TF_HISTORY="$(fc -ln -10)";
+                TF_SHELL_ALIASES=$(alias);
+                export TF_SHELL_ALIASES;
+                TF_HISTORY="$(fc -ln -10)";
+                export TF_HISTORY;
                 export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
                     thefuck {argument_placeholder} $@
