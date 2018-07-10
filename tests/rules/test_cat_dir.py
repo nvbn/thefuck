@@ -1,3 +1,4 @@
+import errno
 import gettext
 import os
 import warnings
@@ -52,8 +53,11 @@ def test_localization_possible(language):
     if not language.startswith('en_US'):
         try:
             gettext.translation('libc', languages=[language])
-        except FileNotFoundError as e:
-            warnings.warn("No '%s' translation file found for language '%s'; the localization tests for `cat_dir` will be ineffective" % (e.filename, language))
+        except EnvironmentError as e:
+            if e.errno == errno.ENOENT:
+                warnings.warn("No '%s' translation file found for language '%s'; the localization tests for `cat_dir` will be ineffective" % (e.filename, language))
+            else:
+                raise
 
 
 def test_match(cat_command):
