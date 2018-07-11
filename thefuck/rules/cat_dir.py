@@ -1,8 +1,13 @@
+import os
+
+from thefuck.utils import for_app
+
+
+@for_app('cat')
 def match(command):
     return (
-        command.script.startswith('cat') and
         command.output.startswith('cat: ') and
-        command.output.rstrip().endswith(': Is a directory')
+        os.path.isdir(command.script_parts[1])
     )
 
 
