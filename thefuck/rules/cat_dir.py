@@ -1,9 +1,8 @@
 import os
-
 from thefuck.utils import for_app
 
 
-@for_app('cat')
+@for_app('cat', at_least=1)
 def match(command):
     return (
         command.output.startswith('cat: ') and
