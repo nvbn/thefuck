@@ -175,6 +175,7 @@ following rules are enabled by default:
 * `adb_unknown_command` &ndash; fixes misspelled commands like `adb logcta`;
 * `ag_literal` &ndash; adds `-Q` to `ag` when suggested;
 * `aws_cli` &ndash; fixes misspelled commands like `aws dynamdb scan`;
+* `az_cli` &ndash; fixes misspelled commands like `az providers`;
 * `cargo` &ndash; runs `cargo build` instead of `cargo`;
 * `cargo_no_command` &ndash; fixes wrongs commands like `cargo buid`;
 * `cat_dir` &ndash; replaces `cat` with `ls` when you try to `cat` a directory;
