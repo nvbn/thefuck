@@ -5,7 +5,6 @@ matrix:
     - os: linux
       dist: xenial
       python: "3.7"
-      sudo: true
     - os: linux
       dist: trusty
       python: "3.6"
