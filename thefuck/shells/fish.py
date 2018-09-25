@@ -103,6 +103,13 @@ class Fish(Generic):
             path='~/.config/fish/config.fish',
             reload='fish')
 
+    def info(self):
+        """Returns the name and version of the current shell"""
+        proc = Popen(['fish', '-c', 'echo $FISH_VERSION'],
+                     stdout=PIPE, stderr=DEVNULL)
+        version = proc.stdout.read().decode('utf-8').strip()
+        return u'Fish Shell {}'.format(version)
+
     def put_to_history(self, command):
         try:
             return self._put_to_history(command)

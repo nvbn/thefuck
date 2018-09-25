@@ -6,11 +6,8 @@ update The Fuck and see if the bug is still there. -->
 if not, just open an issue on [GitHub](https://github.com/nvbn/thefuck) with
 the following basic information: -->
 
-The output of `thefuck --version` (something like `The Fuck 3.1 using Python 3.5.0`):
-
-    FILL THIS IN
-
-Your shell and its version (`bash`, `zsh`, *Windows PowerShell*, etc.):
+The output of `thefuck --version` (something like `The Fuck 3.1 using Python
+3.5.0 and Bash 4.4.12(1)-release`):
 
     FILL THIS IN
 

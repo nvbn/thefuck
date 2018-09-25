@@ -131,6 +131,10 @@ class Generic(object):
                 'type', 'typeset', 'ulimit', 'umask', 'unalias', 'unset',
                 'until', 'wait', 'while']
 
+    def info(self):
+        """Returns the name and version of the current shell"""
+        return 'Generic Shell'
+
     def _create_shell_configuration(self, content, path, reload):
         return ShellConfiguration(
             content=content,

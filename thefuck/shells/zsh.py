@@ -1,10 +1,11 @@
 from time import time
 import os
+from subprocess import Popen, PIPE
 from tempfile import gettempdir
 from uuid import uuid4
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER, USER_COMMAND_MARK
-from ..utils import memoize
+from ..utils import DEVNULL, memoize
 from .generic import Generic
 
 
@@ -85,3 +86,10 @@ class Zsh(Generic):
             content=u'eval $(thefuck --alias)',
             path='~/.zshrc',
             reload='source ~/.zshrc')
+
+    def info(self):
+        """Returns the name and version of the current shell"""
+        proc = Popen(['zsh', '-c', 'echo $ZSH_VERSION'],
+                     stdout=PIPE, stderr=DEVNULL)
+        version = proc.stdout.read().decode('utf-8').strip()
+        return u'ZSH {}'.format(version)
