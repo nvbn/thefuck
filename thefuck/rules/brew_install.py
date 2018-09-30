@@ -20,7 +20,7 @@ def _get_formulas():
 
 
 def _get_similar_formula(formula_name):
-    return get_closest(formula_name, _get_formulas(), 1, 0.85)
+    return get_closest(formula_name, _get_formulas(), cutoff=0.85)
 
 
 def match(command):
