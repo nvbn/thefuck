@@ -19,6 +19,7 @@ class Settings(dict):
         from .logs import exception
 
         self._setup_user_dir()
+        self._setup_data_dir()
         self._init_settings_file()
 
         try:
@@ -63,6 +64,18 @@ class Settings(dict):
         if not rules_dir.is_dir():
             rules_dir.mkdir(parents=True)
         self.user_dir = user_dir
+
+    def _get_user_data_path(self):
+        """Return Path object representing the user local resource"""
+        xdg_config_home = os.environ.get('XDG_DATA_HOME', '~/.local/share')
+        user_dir = Path(xdg_config_home, 'thefuck').expanduser()
+        return user_dir
+
+    def _setup_data_dir(self):
+        data_dir = self._get_user_data_path()
+        if not data_dir.is_dir():
+            data_dir.mkdir(parents=True)
+        self.data_dir = data_dir
 
     def _settings_from_file(self):
         """Loads settings from file."""

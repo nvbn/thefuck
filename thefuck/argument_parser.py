@@ -34,6 +34,10 @@ class Parser(object):
             action='store_true',
             help='enable experimental instant mode, use on your own risk')
         self._parser.add_argument(
+            '--enable-experimental-shell-history',
+            action='store_true',
+            help='enable experimental shell history')
+        self._parser.add_argument(
             '-h', '--help',
             action='store_true',
             help='show this help message and exit')

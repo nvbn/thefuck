@@ -28,6 +28,12 @@ ALL_ENABLED = _GenConst('All rules enabled')
 DEFAULT_RULES = [ALL_ENABLED]
 DEFAULT_PRIORITY = 1000
 
+SHELL_LOGGER_SOCKET_ENV_VAR = '__SHELL_LOGGER_SOCKET'
+SHELL_LOGGER_DB_ENV_VAR = '__SHELL_LOGGER_DB_PATH'
+SHELL_LOGGER_DB_FILENAME = 'my.db'
+SHELL_LOGGER_SOCKET_PATH = '/tmp/tf_socket'
+SHELL_LOGGER_BINARY_FILENAME = 'shell_logger'
+
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'exclude_rules': [],
                     'wait_command': 3,

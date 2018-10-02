@@ -141,6 +141,12 @@ eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 ```
 
+If you want to enable the experimental smart rule, place this command in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
+
+```bash
+eval $(thefuck --enable-experimental-shell-history)
+```
+
 [Or in your shell config (Bash, Zsh, Fish, Powershell, tcsh).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
 
 Changes are only available in a new shell session. To make changes immediately
@@ -321,6 +327,7 @@ default:
 
 * `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
+* `smart_rule`; returns recommended commands based on user corrected commands.
 
 ## Creating your own rules
 

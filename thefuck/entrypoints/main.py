@@ -8,7 +8,7 @@ import sys  # noqa: E402
 from .. import logs  # noqa: E402
 from ..argument_parser import Parser  # noqa: E402
 from ..utils import get_installation_info  # noqa: E402
-from .alias import print_alias  # noqa: E402
+from .alias import print_alias, print_experimental_shell_history  # noqa: E402
 from .fix_command import fix_command  # noqa: E402
 
 
@@ -32,5 +32,8 @@ def main():
             logs.warn('Shell logger supports only Linux and macOS')
         else:
             shell_logger(known_args.shell_logger)
+    elif known_args.enable_experimental_shell_history:
+        print_experimental_shell_history(known_args)
     else:
         parser.print_usage()
+
