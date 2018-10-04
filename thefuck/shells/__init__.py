@@ -16,7 +16,8 @@ shells = {'bash': Bash,
           'zsh': Zsh,
           'csh': Tcsh,
           'tcsh': Tcsh,
-          'powershell': Powershell}
+          'powershell': Powershell,
+          'pwsh': Powershell}
 
 
 def _get_shell_from_env():
