@@ -53,7 +53,8 @@ class TestSettingsFromEnv(object):
                            'THEFUCK_NO_COLORS': 'false',
                            'THEFUCK_PRIORITY': 'bash=10:lisp=wrong:vim=15',
                            'THEFUCK_WAIT_SLOW_COMMAND': '999',
-                           'THEFUCK_SLOW_COMMANDS': 'lein:react-native:./gradlew'})
+                           'THEFUCK_SLOW_COMMANDS': 'lein:react-native:./gradlew',
+                           'THEFUCK_NUM_CLOSE_MATCHES': '359'})
         settings.init()
         assert settings.rules == ['bash', 'lisp']
         assert settings.exclude_rules == ['git', 'vim']
@@ -63,6 +64,7 @@ class TestSettingsFromEnv(object):
         assert settings.priority == {'bash': 10, 'vim': 15}
         assert settings.wait_slow_command == 999
         assert settings.slow_commands == ['lein', 'react-native', './gradlew']
+        assert settings.num_close_matches == 359
 
     def test_from_env_with_DEFAULT(self, os_environ, settings):
         os_environ.update({'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'})

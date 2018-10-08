@@ -2,11 +2,11 @@
 
 import pytest
 import warnings
-from mock import Mock
+from mock import Mock, patch
 from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
     get_all_matched_commands, is_app, for_app, cache, \
-    get_valid_history_without_current, _cache
+    get_valid_history_without_current, _cache, get_close_matches
 from thefuck.types import Command
 
 
@@ -48,6 +48,18 @@ class TestGetClosest(object):
     def test_without_fallback(self):
         assert get_closest('st', ['status', 'reset'],
                            fallback_to_first=False) is None
+
+
+class TestGetCloseMatches(object):
+    @patch('thefuck.utils.difflib_get_close_matches')
+    def test_call_with_n(self, difflib_mock):
+        get_close_matches('', [], 1)
+        assert difflib_mock.call_args[0][2] == 1
+
+    @patch('thefuck.utils.difflib_get_close_matches')
+    def test_call_without_n(self, difflib_mock, settings):
+        get_close_matches('', [])
+        assert difflib_mock.call_args[0][2] == settings.get('num_close_matches')
 
 
 @pytest.fixture

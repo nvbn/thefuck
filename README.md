@@ -390,7 +390,8 @@ Several *The Fuck* parameters can be changed in the file `$XDG_CONFIG_HOME/thefu
 * `history_limit` &ndash; numeric value of how many history commands will be scanned, like `2000`;
 * `alter_history` &ndash; push fixed command to history, by default `True`;
 * `wait_slow_command` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
-* `slow_commands` &ndash; list of slow commands.
+* `slow_commands` &ndash; list of slow commands;
+* `num_close_matches` &ndash; maximum number of close matches to suggest, by default `3`.
 
 An example of `settings.py`:
 
@@ -405,6 +406,7 @@ debug = False
 history_limit = 9999
 wait_slow_command = 20
 slow_commands = ['react-native', 'gradle']
+num_close_matches = 5
 ```
 
 Or via environment variables:
@@ -420,7 +422,8 @@ rule with lower `priority` will be matched first;
 * `THEFUCK_HISTORY_LIMIT` &ndash; how many history commands will be scanned, like `2000`;
 * `THEFUCK_ALTER_HISTORY` &ndash; push fixed command to history `true/false`;
 * `THEFUCK_WAIT_SLOW_COMMAND` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
-* `THEFUCK_SLOW_COMMANDS` &ndash; list of slow commands, like `lein:gradle`.
+* `THEFUCK_SLOW_COMMANDS` &ndash; list of slow commands, like `lein:gradle`;
+* `THEFUCK_NUM_CLOSE_MATCHES` &ndash; maximum number of close matches to suggest, like `5`.
 
 For example:
 
@@ -432,6 +435,7 @@ export THEFUCK_WAIT_COMMAND=10
 export THEFUCK_NO_COLORS='false'
 export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
 export THEFUCK_HISTORY_LIMIT='2000'
+export THEFUCK_NUM_CLOSE_MATCHES='5'
 ```
 
 ## Third-party packages with rules

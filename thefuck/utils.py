@@ -5,7 +5,7 @@ import re
 import shelve
 import six
 from decorator import decorator
-from difflib import get_close_matches
+from difflib import get_close_matches as difflib_get_close_matches
 from functools import wraps
 from .logs import warn
 from .conf import settings
@@ -86,14 +86,21 @@ def default_settings(params):
     return decorator(_default_settings)
 
 
-def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
+def get_closest(word, possibilities, cutoff=0.6, fallback_to_first=True):
     """Returns closest match or just first from possibilities."""
     possibilities = list(possibilities)
     try:
-        return get_close_matches(word, possibilities, n, cutoff)[0]
+        return difflib_get_close_matches(word, possibilities, 1, cutoff)[0]
     except IndexError:
         if fallback_to_first:
             return possibilities[0]
+
+
+def get_close_matches(word, possibilities, n=None, cutoff=0.6):
+    """Overrides `difflib.get_close_match` to controle argument `n`."""
+    if n is None:
+        n = settings.num_close_matches
+    return difflib_get_close_matches(word, possibilities, n, cutoff)
 
 
 @memoize

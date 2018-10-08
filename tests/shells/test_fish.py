@@ -112,3 +112,7 @@ class TestFish(object):
                                                     config_exists):
         config_exists.return_value = False
         assert not shell.how_to_configure().can_configure_automatically
+
+    def test_info(self, shell, Popen):
+        Popen.return_value.stdout.read.side_effect = [b'3.5.9']
+        assert shell.info() == 'Fish Shell 3.5.9'

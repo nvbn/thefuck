@@ -4,8 +4,19 @@ matrix:
   include:
     - os: linux
       dist: xenial
+      python: "nightly"
+    - os: linux
+      dist: xenial
+      python: "3.8-dev"
+    - os: linux
+      dist: xenial
+      python: "3.7-dev"
+    - os: linux
+      dist: xenial
       python: "3.7"
-      sudo: true
+    - os: linux
+      dist: trusty
+      python: "3.6-dev"
     - os: linux
       dist: trusty
       python: "3.6"
@@ -20,6 +31,11 @@ matrix:
       python: "2.7"
     - os: osx
       language: generic
+  allow_failures:
+    - python: nightly
+    - python: 3.8-dev
+    - python: 3.7-dev
+    - python: 3.6-dev
 services:
   - docker
 addons:

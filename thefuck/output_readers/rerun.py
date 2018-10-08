@@ -1,9 +1,23 @@
 import os
 import shlex
 from subprocess import Popen, PIPE, STDOUT
-from psutil import Process, TimeoutExpired
+from psutil import AccessDenied, Process, TimeoutExpired
 from .. import logs
 from ..conf import settings
+
+
+def _kill_process(proc):
+    """Tries to kill the process otherwise just logs a debug message, the
+    process will be killed when thefuck terminates.
+
+    :type proc: Process
+
+    """
+    try:
+        proc.kill()
+    except AccessDenied:
+        logs.debug(u'Rerun: process PID {} ({}) could not be terminated'.format(
+            proc.pid, proc.exe()))
 
 
 def _wait_output(popen, is_slow):
@@ -23,8 +37,8 @@ def _wait_output(popen, is_slow):
         return True
     except TimeoutExpired:
         for child in proc.children(recursive=True):
-            child.kill()
-        proc.kill()
+            _kill_process(child)
+        _kill_process(proc)
         return False
 
 

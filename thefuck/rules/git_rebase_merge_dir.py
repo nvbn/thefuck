@@ -1,4 +1,4 @@
-from difflib import get_close_matches
+from thefuck.utils import get_close_matches
 from thefuck.specific.git import git_support
 
 
