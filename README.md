@@ -233,7 +233,7 @@ following rules are enabled by default:
 * `go_run` &ndash; appends `.go` extension when compiling/running Go programs;
 * `gradle_no_task` &ndash; fixes not found or ambiguous `gradle` task;
 * `gradle_wrapper` &ndash; replaces `gradle` with `./gradlew`;
-* `grep_arguments_order` &ndash; fixes grep arguments order for situations like `grep -lir . test`;
+* `grep_arguments_order` &ndash; fixes `grep` arguments order for situations like `grep -lir . test`;
 * `grep_recursive` &ndash; adds `-r` when you try to `grep` directory;
 * `grunt_task_not_found` &ndash; fixes misspelled `grunt` commands;
 * `gulp_not_task` &ndash; fixes misspelled `gulp` tasks;
