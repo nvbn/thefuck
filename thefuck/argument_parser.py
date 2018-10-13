@@ -39,7 +39,7 @@ class Parser(object):
             help='show this help message and exit')
         self._add_conflicting_arguments()
         self._parser.add_argument(
-            '-d', '--debug',
+            '-d', '--debug', '--you'
             action='store_true',
             help='enable debug output')
         self._parser.add_argument(
