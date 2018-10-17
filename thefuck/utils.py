@@ -3,11 +3,12 @@ import os
 import pickle
 import re
 import shelve
+import sys
 import six
 from decorator import decorator
 from difflib import get_close_matches as difflib_get_close_matches
 from functools import wraps
-from .logs import warn
+from .logs import warn, exception
 from .conf import settings
 from .system import Path
 
@@ -197,6 +198,13 @@ class Cache(object):
         self._db = None
 
     def _init_db(self):
+        try:
+            self._setup_db()
+        except Exception:
+            exception("Unable to init cache", sys.exc_info())
+            self._db = {}
+
+    def _setup_db(self):
         cache_dir = self._get_cache_dir()
         cache_path = Path(cache_dir).joinpath('thefuck').as_posix()
 
