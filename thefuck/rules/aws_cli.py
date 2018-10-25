@@ -3,7 +3,7 @@ import re
 from thefuck.utils import for_app, replace_argument
 
 INVALID_CHOICE = "(?<=Invalid choice: ')(.*)(?=', maybe you meant:)"
-OPTIONS = "^\s*\*\s(.*)"
+OPTIONS = "^\\s*\\*\\s(.*)"
 
 
 @for_app('aws')
