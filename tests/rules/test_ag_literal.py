@@ -9,7 +9,7 @@ def output():
             'If you meant to search for a literal string, run ag with -Q\n')
 
 
-@pytest.mark.parametrize('script', ['ag \('])
+@pytest.mark.parametrize('script', ['ag \\('])
 def test_match(script, output):
     assert match(Command(script, output))
 
@@ -20,6 +20,6 @@ def test_not_match(script):
 
 
 @pytest.mark.parametrize('script, new_cmd', [
-    ('ag \(', 'ag -Q \(')])
+    ('ag \\(', 'ag -Q \\(')])
 def test_get_new_command(script, new_cmd, output):
     assert get_new_command((Command(script, output))) == new_cmd

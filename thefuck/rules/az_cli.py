@@ -3,7 +3,7 @@ import re
 from thefuck.utils import for_app, replace_argument
 
 INVALID_CHOICE = "(?=az)(?:.*): '(.*)' is not in the '.*' command group."
-OPTIONS = "^The most similar choice to '.*' is:\n\s*(.*)$"
+OPTIONS = "^The most similar choice to '.*' is:\n\\s*(.*)$"
 
 
 @for_app('az')
