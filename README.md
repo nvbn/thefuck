@@ -105,10 +105,10 @@ On OS X, you can install *The Fuck* via [Homebrew][homebrew]:
 brew install thefuck
 ```
 
-On Ubuntu, install *The Fuck* with the following commands:
+On Ubuntu / Mint, install *The Fuck* with the following commands:
 ```bash
 sudo apt update
-sudo apt install python3-dev python3-pip
+sudo apt install python3-dev python3-pip python3-setuptools
 sudo pip3 install thefuck
 ```
 
