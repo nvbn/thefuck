@@ -4,6 +4,7 @@ from thefuck.utils import memoize, get_alias
 target_layout = '''qwertyuiop[]asdfghjkl;'zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?'''
 
 source_layouts = [u'''йцукенгшщзхъфывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,''',
+                  u'''йцукенгшщзхїфівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ,''',
                   u'''ضصثقفغعهخحجچشسیبلاتنمکگظطزرذدپو./ًٌٍَُِّْ][}{ؤئيإأآة»«:؛كٓژٰ‌ٔء><؟''',
                   u''';ςερτυθιοπ[]ασδφγηξκλ΄ζχψωβνμ,./:΅ΕΡΤΥΘΙΟΠ{}ΑΣΔΦΓΗΞΚΛ¨"ΖΧΨΩΒΝΜ<>?''',
                   u'''/'קראטוןםפ][שדגכעיחלךף,זסבהנמצתץ.QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?''']
@@ -13,9 +14,16 @@ source_layouts = [u'''йцукенгшщзхъфывапролджэячсмит
 def _get_matched_layout(command):
     # don't use command.split_script here because a layout mismatch will likely
     # result in a non-splitable sript as per shlex
-    cmd = command.script.split(' ')
+    cmd = command.split(' ')
     for source_layout in source_layouts:
-        if all([ch in source_layout or ch in '-_' for ch in cmd[0]]):
+        is_all_match = True
+
+        for cmd_part in cmd:
+            if not all([ch in source_layout or ch in '-_' for ch in cmd_part]):
+                is_all_match = False
+                break
+
+        if is_all_match:
             return source_layout
 
 
