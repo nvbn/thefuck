@@ -14,7 +14,7 @@ source_layouts = [u'''йцукенгшщзхъфывапролджэячсмит
 def _get_matched_layout(command):
     # don't use command.split_script here because a layout mismatch will likely
     # result in a non-splitable sript as per shlex
-    cmd = command.split(' ')
+    cmd = command.script.split(' ')
     for source_layout in source_layouts:
         is_all_match = True
 
