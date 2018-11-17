@@ -1,34 +1,18 @@
 language: python
 sudo: false
+os: linux
+dist: xenial
 matrix:
   include:
-    - os: linux
-      dist: xenial
-      python: "nightly"
-    - os: linux
-      dist: xenial
-      python: "3.8-dev"
-    - os: linux
-      dist: xenial
-      python: "3.7-dev"
-    - os: linux
-      dist: xenial
-      python: "3.7"
-    - os: linux
-      dist: trusty
-      python: "3.6-dev"
-    - os: linux
-      dist: trusty
-      python: "3.6"
-    - os: linux
-      dist: trusty
-      python: "3.5"
-    - os: linux
-      dist: trusty
-      python: "3.4"
-    - os: linux
-      dist: trusty
-      python: "2.7"
+    - python: "nightly"
+    - python: "3.8-dev"
+    - python: "3.7-dev"
+    - python: "3.7"
+    - python: "3.6-dev"
+    - python: "3.6"
+    - python: "3.5"
+    - python: "3.4"
+    - python: "2.7"
     - os: osx
       language: generic
   allow_failures:
