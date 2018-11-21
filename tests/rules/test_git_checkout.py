@@ -4,7 +4,6 @@ from thefuck.rules.git_checkout import match, get_branches, get_new_command
 from thefuck.types import Command
 
 
-@pytest.fixture
 def did_not_match(target, did_you_forget=False):
     error = ("error: pathspec '{}' did not match any "
              "file(s) known to git.".format(target))
