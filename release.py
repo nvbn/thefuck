@@ -32,5 +32,6 @@ call('git push --tags', shell=True)
 
 env = os.environ
 env['CONVERT_README'] = 'true'
+call('rm -rf dist/*')
 call('python setup.py sdist bdist_wheel', shell=True, env=env)
 call('twine upload dist/*', shell=True, env=env)
