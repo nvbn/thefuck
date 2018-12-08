@@ -6,8 +6,8 @@ from thefuck.utils import for_app, eager, replace_command
 enabled_by_default = apt_available
 
 
-@for_app('apt', 'apt-get', 'apt-cache')
 @sudo_support
+@for_app('apt', 'apt-get', 'apt-cache')
 def match(command):
     return 'E: Invalid operation' in command.output
 
