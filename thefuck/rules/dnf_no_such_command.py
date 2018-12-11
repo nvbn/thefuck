@@ -8,8 +8,8 @@ from thefuck.specific.dnf import dnf_available
 regex = re.compile(r'No such command: (.*)\.')
 
 
-@for_app('dnf')
 @sudo_support
+@for_app('dnf')
 def match(command):
     return 'no such command' in command.output.lower()
 
