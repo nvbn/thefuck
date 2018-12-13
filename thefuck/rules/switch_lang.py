@@ -35,20 +35,20 @@ def _switch(ch, layout):
 
 
 def _switch_command(command, layout):
-    if (source_layouts.index(layout) == 3):#this is for the Greek keyboard
-        keyboardDic = {';':"q", 'ς':"w", 'ε':"e", 'ρ':"r", 'τ':"t", 'υ':"y", 'θ':"u", 'ι':"i", 'ο':"o", 'π':"p", '[':"[", 
-                       ']':"]", 'α':"a", 'σ':"s", 'δ':"d", 'φ':"f", 'γ':"g", 'η':"h", 'ξ':"j", 'κ':"k", 'λ':"l", ';':";", 
-                       '΄':"'", 'ζ':"z", 'χ':"x", 'ψ':"c", 'ω':"v", 'β':"b", 'ν':"n", 'μ':"m", ',':",", '.':".", '/':"/",
-                       ':':"Q", '΅':"W", 'Ε':"E", 'Ρ':"R", 'Τ':"T", 'Υ':"Y", 'Θ':"U", 'Ι':"I", 'Ο':"O", 'Π':"P", '{':"{",
-                       '}':"}", 'Α':"A", 'Σ':"S", 'Δ':"D", 'Φ':"F", 'Γ':"G", 'Η':"H", 'Ξ':"J", 'Κ':"K", 'Λ':"L", '¨':":",
-                       '"':'"', 'Ζ':"Z", 'Χ':"X", 'Ψ':"C", 'Ω':"V", 'Β':"B", 'Ν':"N", 'Μ':"M", '<':"<", '>':">", '?':"?", 
-                       'ά':"a", 'έ':"e", 'ύ':"y", 'ί':"i", 'ό':"o", 'ή':'h', 'ώ':"v", 'Ά':"A", 'Έ':"E", 'Ύ':"Y", 'Ί':"I",
-                       'Ό': "O", 'Ή': "H", 'Ώ': "V"}
+    if (source_layouts.index(layout) == 3):# this is for the Greek keyboard
+        keyboardDic = {';': "q", 'ς': "w", 'ε': "e", 'ρ': "r", 'τ': "t", 'υ': "y", 'θ': "u", 'ι': "i", 'ο': "o", 'π': "p",
+                       '[': "[", ']': "]", 'α': "a", 'σ': "s", 'δ': "d", 'φ': "f", 'γ': "g", 'η': "h", 'ξ': "j", 'κ': "k",
+                       'λ': "l", ';': ";", '΄': "'", 'ζ': "z", 'χ': "x", 'ψ': "c", 'ω': "v", 'β': "b", 'ν': "n", 'μ': "m", 
+                       ',': ",", '.': ".", '/': "/", ':': "Q", '΅': "W", 'Ε': "E", 'Ρ': "R", 'Τ': "T", 'Υ': "Y", 'Θ': "U",
+                       'Ι': "I", 'Ο': "O", 'Π': "P", '{': "{", '}': "}", 'Α': "A", 'Σ': "S", 'Δ': "D", 'Φ': "F", 'Γ': "G",
+                       'Η': "H", 'Ξ': "J", 'Κ': "K", 'Λ': "L", '¨': ":", '"': '"', 'Ζ': "Z", 'Χ': "X", 'Ψ': "C", 'Ω': "V",
+                       'Β': "B", 'Ν': "N", 'Μ': "M", '<': "<", '>': ">", '?': "?", 'ά': "a", 'έ': "e", 'ύ': "y", 'ί': "i",
+                       'ό': "o", 'ή': 'h', 'ώ': "v", 'Ά': "A", 'Έ': "E", 'Ύ': "Y", 'Ί': "I", 'Ό': "O", 'Ή': "H", 'Ώ': "V"}
         newCommand = ""
         for ch in command.script:
             try:
                 newCommand += keyboardDic[ch]
-            except KeyError:#This character has no repressentation at the dictionary, so it is a symbol and therefore we can add him, now works only for spaces and for this symbol "-"
+            except KeyError:# This character has no repressentation at the dictionary, so it is a symbol and therefore we can add him, now works only for spaces and for this symbol "-"
                 newCommand += ch
    
         return(newCommand)
