@@ -44,8 +44,7 @@ def _switch_command(command, layout):
                        u'Σ': "S", u'Δ': "D", u'Φ': "F", u'Γ': "G", u'Η': "H", u'Ξ': "J", u'Κ': "K", u'Λ': "L", u'¨': ":",
                        u'"': '"', u'Ζ': "Z", u'Χ': "X", u'Ψ': "C", u'Ω': "V", u'Β': "B", u'Ν': "N", u'Μ': "M", u'<': "<",
                        u'>': ">", u'?': "?", u'ά': "a", u'έ': "e", u'ύ': "y", u'ί': "i", u'ό': "o", u'ή': 'h', u'ώ': u"v",
-                       u'Ά': "A", u'Έ': "E", u'Ύ': "Y", u'Ί': "I", u'Ό': "O", u'Ή': "H", u'Ώ': "V"}  
-        
+                       u'Ά': "A", u'Έ': "E", u'Ύ': "Y", u'Ί': "I", u'Ό': "O", u'Ή': "H", u'Ώ': "V"}
         newCommand = ""
         for ch in command.script:
             try:
