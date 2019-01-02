@@ -99,7 +99,7 @@ Reading package lists... Done
 
 ## Installation
 
-On OS X or linux systems with linuxbrew, you can install *The Fuck* via [Homebrew][homebrew]:
+On OS X, you can install *The Fuck* via [Homebrew][homebrew] (or via [Linuxbrew][linuxbrew] on Linux):
 
 ```bash
 brew install thefuck
@@ -496,3 +496,4 @@ Project License can be found [here](LICENSE.md).
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
 [instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example_instant_mode.gif
 [homebrew]:        http://brew.sh/
+[linuxbrew]:       http://linuxbrew.sh/
