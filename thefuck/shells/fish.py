@@ -105,9 +105,9 @@ class Fish(Generic):
 
     def info(self):
         """Returns the name and version of the current shell"""
-        proc = Popen(['fish', '-c', 'echo $FISH_VERSION'],
+        proc = Popen(['fish', '--version'],
                      stdout=PIPE, stderr=DEVNULL)
-        version = proc.stdout.read().decode('utf-8').strip()
+        version = proc.stdout.read().decode('utf-8').split()[-1]
         return u'Fish Shell {}'.format(version)
 
     def put_to_history(self, command):
