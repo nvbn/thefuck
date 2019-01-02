@@ -114,5 +114,6 @@ class TestFish(object):
         assert not shell.how_to_configure().can_configure_automatically
 
     def test_info(self, shell, Popen):
-        Popen.return_value.stdout.read.side_effect = [b'3.5.9']
+        Popen.return_value.stdout.read.side_effect = [b'fish, version 3.5.9\n']
         assert shell.info() == 'Fish Shell 3.5.9'
+        assert Popen.call_args[0][0] == ['fish', '--version']
