@@ -495,5 +495,5 @@ Project License can be found [here](LICENSE.md).
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
 [instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example_instant_mode.gif
-[homebrew]:        http://brew.sh/
-[linuxbrew]:       http://linuxbrew.sh/
+[homebrew]:        https://brew.sh/
+[linuxbrew]:       https://linuxbrew.sh/
