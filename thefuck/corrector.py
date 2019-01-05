@@ -74,8 +74,7 @@ def organize_commands(corrected_commands):
     logs.debug('Corrected commands: '.format(
         ', '.join(u'{}'.format(cmd) for cmd in [first_command] + sorted_commands)))
 
-    for command in sorted_commands:
-        yield command
+    yield from sorted_commands
 
 
 def get_corrected_commands(command):
