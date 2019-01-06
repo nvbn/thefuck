@@ -37,7 +37,7 @@ http://github.com/ninjaaron/fast-entry_points
 '''
 from setuptools.command import easy_install
 import re
-TEMPLATE = '''\
+TEMPLATE = r'''\
 # -*- coding: utf-8 -*-
 # EASY-INSTALL-ENTRY-SCRIPT: '{3}','{4}','{5}'
 __requires__ = '{3}'
@@ -83,7 +83,7 @@ def main():
     import shutil
     import sys
     dests = sys.argv[1:] or ['.']
-    filename = re.sub('\.pyc$', '.py', __file__)
+    filename = re.sub(r'\.pyc$', '.py', __file__)
 
     for dst in dests:
         shutil.copy(filename, dst)
