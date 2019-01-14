@@ -52,7 +52,7 @@ class CommandSelector(object):
 
     @property
     def value(self):
-        """:rtype hefuck.types.CorrectedCommand"""
+        """:rtype thefuck.types.CorrectedCommand"""
         return self._commands[self._index]
 
 
