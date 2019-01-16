@@ -28,8 +28,9 @@ class TestFish(object):
         ('THEFUCK_OVERRIDDEN_ALIASES', '\ncut,\n\ngit,\tsed\r')])
     def test_get_overridden_aliases(self, shell, os_environ, key, value):
         os_environ[key] = value
-        assert shell._get_overridden_aliases() == {'cd', 'cut', 'git', 'grep',
-                                                   'ls', 'man', 'open', 'sed'}
+        overridden = shell._get_overridden_aliases()
+        assert set(overridden) == {'cd', 'cut', 'git', 'grep',
+                                   'ls', 'man', 'open', 'sed'}
 
     @pytest.mark.parametrize('before, after', [
         ('cd', 'cd'),

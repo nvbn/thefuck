@@ -43,7 +43,7 @@ class Fish(Generic):
         default = {'cd', 'grep', 'ls', 'man', 'open'}
         for alias in overridden.split(','):
             default.add(alias.strip())
-        return default
+        return sorted(default)
 
     def app_alias(self, alias_name):
         if settings.alter_history:
