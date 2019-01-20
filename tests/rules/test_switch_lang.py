@@ -9,7 +9,8 @@ from thefuck.types import Command
     Command(u'фзе-пуе', 'command not found: фзе-пуе'),
     Command(u'λσ', 'command not found: λσ'),
     Command(u'שפא-עקא', 'command not found: שפא-עקא'),
-    Command(u'ךד', 'command not found: ךד')])
+    Command(u'ךד', 'command not found: ךד'),
+    Command(u'녀애 ㅣㄴ', 'command not found: 녀애 ㅣㄴ')])
 def test_match(command):
     assert switch_lang.match(command)
 
@@ -19,7 +20,8 @@ def test_match(command):
     Command(u'ls', 'command not found: ls'),
     Command(u'агсл', 'command not found: агсл'),
     Command(u'фзе-пуе', 'some info'),
-    Command(u'שפא-עקא', 'some info')])
+    Command(u'שפא-עקא', 'some info'),
+    Command(u'녀애 ㅣㄴ', 'some info')])
 def test_not_match(command):
     assert not switch_lang.match(command)
 
@@ -28,6 +30,8 @@ def test_not_match(command):
     (Command(u'фзе-пуе штыефдд мшь', ''), 'apt-get install vim'),
     (Command(u'λσ -λα', ''), 'ls -la'),
     (Command(u'שפא-עקא ןמדאשךך הןצ', ''), 'apt-get install vim'),
-    (Command(u'ךד -ךש', ''), 'ls -la')])
+    (Command(u'ךד -ךש', ''), 'ls -la'),
+    (Command(u'멧-ㅎㄷㅅ ㅑㅜㄴㅅ미ㅣ 퍄ㅡ', ''), 'apt-get install vim'),
+    (Command(u'ㅣㄴ -ㅣㅁ', ''), 'ls- la')])
 def test_get_new_command(command, new_command):
     assert switch_lang.get_new_command(command) == new_command

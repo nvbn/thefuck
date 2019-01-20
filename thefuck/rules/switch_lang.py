@@ -7,7 +7,21 @@ source_layouts = [u'''йцукенгшщзхъфывапролджэячсмит
                   u'''йцукенгшщзхїфівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇФІВАПРОЛДЖЄЯЧСМИТЬБЮ,''',
                   u'''ضصثقفغعهخحجچشسیبلاتنمکگظطزرذدپو./ًٌٍَُِّْ][}{ؤئيإأآة»«:؛كٓژٰ‌ٔء><؟''',
                   u''';ςερτυθιοπ[]ασδφγηξκλ΄ζχψωβνμ,./:΅ΕΡΤΥΘΙΟΠ{}ΑΣΔΦΓΗΞΚΛ¨"ΖΧΨΩΒΝΜ<>?''',
-                  u'''/'קראטוןםפ][שדגכעיחלךף,זסבהנמצתץ.QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?''']
+                  u'''/'קראטוןםפ][שדגכעיחלךף,זסבהנמצתץ.QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?''',
+                  u'''ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔ[]ㅁㄴㅇㄹㅎㅗㅓㅏㅣ;'ㅋㅌㅊㅍㅠㅜㅡ,./ㅃㅉㄸㄲㅆㅛㅕㅑㅒㅖ{}ㅁㄴㅇㄹㅎㅗㅓㅏㅣ:"ㅋㅌㅊㅍㅠㅜㅡ<>?''']
+
+'''Lists used for decomposing korean letters'''
+HEAD_LIST = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ',
+             'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
+BODY_LIST = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ',
+             'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ']
+TAIL_LIST = [' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ',
+             'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ',
+             'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
+DOUBLE_LIST = ['ㅘ', 'ㅙ', 'ㅚ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅢ', 'ㄳ', 'ㄵ', 'ㄶ', 'ㄺ',
+               'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㅀ', 'ㅄ']
+DOUBLE_MOD_LIST = ['ㅗㅏ', 'ㅗㅐ', 'ㅗㅣ', 'ㅜㅓ', 'ㅜㅔ', 'ㅜㅣ', 'ㅡㅣ', 'ㄱㅅ',
+                   'ㄴㅈ', 'ㄴㅎ', 'ㄹㄱ', 'ㄹㅁ', 'ㄹㅂ', 'ㄹㅅ', 'ㄹㅌ', 'ㄹㅎ', 'ㅂㅅ']
 
 
 @memoize
@@ -38,9 +52,34 @@ def _switch_command(command, layout):
     return ''.join(_switch(ch, layout) for ch in command.script)
 
 
+def _decompose_korean(command):
+    def _change_double(ch):
+        if ch in DOUBLE_LIST:
+            return DOUBLE_MOD_LIST[DOUBLE_LIST.index(ch)]
+        else:
+            return ch
+
+    hg_str = ''
+    for ch in command.script:
+        if '가' <= ch <= '힣':
+            ord_ch = ord(ch) - ord('가')
+            hd = ord_ch // 588
+            bd = (ord_ch - 588 * hd) // 28
+            tl = ord_ch - 588 * hd - 28 * bd
+            for ch in [HEAD_LIST[hd], BODY_LIST[bd], TAIL_LIST[tl]]:
+                if ch != ' ':
+                    hg_str += _change_double(ch)
+        else:
+            hg_str += _change_double(ch)
+    return hg_str
+
+
 def match(command):
     if 'not found' not in command.output:
         return False
+    if any(['ㄱ' <= ch <= 'ㅎ' or 'ㅏ' <= ch <= 'ㅣ' or '가' <= ch <= '힣'
+            for ch in command.script]):
+        command.script = _decompose_korean(command)
     matched_layout = _get_matched_layout(command)
     return (matched_layout and
             _switch_command(command, matched_layout) != get_alias())
