@@ -14,9 +14,9 @@ from thefuck.types import Command
 class TestCorrectedCommand(object):
 
     def test_equality(self):
-        assert (CorrectedCommand('ls', None, 100) ==
-                CorrectedCommand('ls', None, 200))
-        assert (CorrectedCommand('ls', None, 100) !=
+        assert (CorrectedCommand('ls', None, 100,) ==
+                CorrectedCommand('ls', None, 200,))
+        assert (CorrectedCommand('ls', None, 100,) !=
                 CorrectedCommand('ls', lambda *_: _, 100))
 
     def test_hashable(self):
@@ -48,16 +48,19 @@ class TestRule(object):
     def test_from_path(self, mocker):
         match = object()
         get_new_command = object()
+        post_match = object()
         load_source = mocker.patch(
             'thefuck.types.load_source',
             return_value=Mock(match=match,
                               get_new_command=get_new_command,
+                              post_match=post_match,
                               enabled_by_default=True,
                               priority=900,
-                              requires_output=True))
+                              requires_output=True,
+                              is_post_match=False))
         rule_path = os.path.join(os.sep, 'rules', 'bash.py')
-        assert (Rule.from_path(Path(rule_path))
-                == Rule('bash', match, get_new_command, priority=900))
+        assert (Rule.from_path(Path(rule_path)) == Rule(
+            'bash', rule_path, match, get_new_command, post_match, priority=900))
         load_source.assert_called_once_with('bash', rule_path)
 
     @pytest.mark.parametrize('rules, exclude_rules, rule, is_enabled', [
@@ -77,16 +80,16 @@ class TestRule(object):
         assert rule.is_enabled == is_enabled
 
     def test_isnt_match(self):
-        assert not Rule('', lambda _: False).is_match(
+        assert not Rule('', match=lambda _: False).is_match(
             Command('ls', ''))
 
     def test_is_match(self):
-        rule = Rule('', lambda x: x.script == 'cd ..')
+        rule = Rule('', match=lambda x: x.script == 'cd ..')
         assert rule.is_match(Command('cd ..', ''))
 
     @pytest.mark.usefixtures('no_colors')
     def test_isnt_match_when_rule_failed(self, capsys):
-        rule = Rule('test', Mock(side_effect=OSError('Denied')),
+        rule = Rule('test', match=Mock(side_effect=OSError('Denied')),
                     requires_output=False)
         assert not rule.is_match(Command('ls', ''))
         assert capsys.readouterr()[1].split('\n')[0] == '[WARN] Rule test:'

@@ -54,13 +54,13 @@ def test_command_selector():
 class TestSelectCommand(object):
     @pytest.fixture
     def commands_with_side_effect(self):
-        return [CorrectedCommand('ls', lambda *_: None, 100),
-                CorrectedCommand('cd', lambda *_: None, 100)]
+        return [CorrectedCommand('ls', lambda *_: None, 100, None),
+                CorrectedCommand('cd', lambda *_: None, 100, None)]
 
     @pytest.fixture
     def commands(self):
-        return [CorrectedCommand('ls', None, 100),
-                CorrectedCommand('cd', None, 100)]
+        return [CorrectedCommand('ls', None, 100, None),
+                CorrectedCommand('cd', None, 100, None)]
 
     def test_without_commands(self, capsys):
         assert ui.select_command(iter([])) is None
