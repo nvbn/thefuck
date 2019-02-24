@@ -24,8 +24,7 @@ def main():
         logs.version(get_installation_info().version,
                      sys.version.split()[0], shell.info())
     elif known_args.post_match:
-        print ("OPE")
-        # post_match_execute(known_args)
+        post_match_execute(known_args)
     elif known_args.command or 'TF_HISTORY' in os.environ:
         fix_command(known_args)
     elif known_args.alias:
