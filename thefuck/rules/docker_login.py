@@ -9,4 +9,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return "docker login && %s" % command.script
+    return 'docker login && {}'.format(command.script)
