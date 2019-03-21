@@ -3,8 +3,8 @@ from thefuck.types import Command
 
 
 def test_match():
-	err_response = """
-	Sending build context to Docker daemon  118.8kB
+    err_response = """
+    Sending build context to Docker daemon  118.8kB
 Step 1/6 : FROM baz/baz:nightly
 pull access denied for baz/baz, repository does not exist or may require 'docker login'
 """
