@@ -41,13 +41,13 @@ Counting objects: 9, done.
 ➜ puthon
 No command 'puthon' found, did you mean:
  Command 'python' from package 'python-minimal' (main)
- Command 'python' from package 'python3' (main)
+ Command 'python' from package 'python3'' (main)
 zsh: command not found: puthon
 
 ➜ fuck
 python [enter/↑/↓/ctrl+c]
 Python 3.4.2 (default, Oct  8 2014, 13:08:17)
-...
+...hi
 ```
 
 ```bash
