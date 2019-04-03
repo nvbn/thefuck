@@ -190,6 +190,7 @@ following rules are enabled by default:
 * `dirty_unzip` &ndash; fixes `unzip` command that unzipped in the current directory;
 * `django_south_ghost` &ndash; adds `--delete-ghost-migrations` to failed because ghosts django south migration;
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
+* `docker_login` &ndash; executes a `docker login` and repeats the previous command;
 * `docker_not_command` &ndash; fixes wrong docker commands like `docker tags`;
 * `dry` &ndash; fixes repetitions like `git git push`;
 * `fab_command_not_found` &ndash; fix misspelled fabric commands;
