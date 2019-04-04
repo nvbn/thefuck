@@ -5,6 +5,7 @@ import sys
 import six
 from .. import logs
 from ..conf import settings
+from ..const import ARGUMENT_PLACEHOLDER
 from ..utils import DEVNULL, cache
 from .generic import Generic
 
@@ -56,11 +57,11 @@ class Fish(Generic):
         return ('function {0} -d "Correct your previous console command"\n'
                 '  set -l fucked_up_command $history[1]\n'
                 '  env TF_SHELL=fish TF_ALIAS={0} PYTHONIOENCODING=utf-8'
-                ' thefuck $fucked_up_command | read -l unfucked_command\n'
+                ' thefuck $fucked_up_command {2} $argv | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n{1}'
                 '  end\n'
-                'end').format(alias_name, alter_history)
+                'end').format(alias_name, alter_history, ARGUMENT_PLACEHOLDER)
 
     def get_aliases(self):
         overridden = self._get_overridden_aliases()
