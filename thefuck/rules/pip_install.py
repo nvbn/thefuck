@@ -11,5 +11,5 @@ def match(command):
 def get_new_command(command):
     if "--user" not in command.script:  # add --user (attempt 1)
         return command.script.replace(" install ", " install --user ")
-    else: # since --user didn't fix things, let's try sudo (attempt 2)
-    	return 'sudo {}'.format(command.script.replace(" --user", ""))        
+    else:  # since --user didn't fix things, let's try sudo (attempt 2)
+        return 'sudo {}'.format(command.script.replace(" --user", ""))
