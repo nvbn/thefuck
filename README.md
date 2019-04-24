@@ -266,6 +266,7 @@ following rules are enabled by default:
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `open` &ndash; either prepends `http://` to address passed to `open` or create a new file or directory and passes it to `open`;
+* `pip_install` &ndash; fixes permission issues with `pip install` commands by adding `--user` or prepending `sudo` if necessary;
 * `pip_unknown_command` &ndash; fixes wrong `pip` commands, for example `pip instatl/pip install`;
 * `php_s` &ndash; replaces `-s` by `-S` when trying to run a local php server;
 * `port_already_in_use` &ndash; kills process that bound port;
