@@ -114,8 +114,7 @@ sudo pip3 install thefuck
 
 On FreeBSD, install *The Fuck* with the following commands:
 ```bash
-sudo portsnap fetch update
-cd /usr/ports/misc/thefuck && sudo make install clean
+pkg install thefuck
 ```
 
 On ChromeOS, install *The Fuck* using [chromebrew](https://github.com/skycocker/chromebrew) with the following command:
