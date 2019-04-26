@@ -315,8 +315,8 @@ The following rules are enabled by default on specific platforms only:
 * `brew_unknown_command` &ndash; fixes wrong brew commands, for example `brew docto/brew doctor`;
 * `brew_update_formula` &ndash; turns `brew update <formula>` into `brew upgrade <formula>`;
 * `dnf_no_such_command` &ndash; fixes mistyped DNF commands;
-* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yaourt` if available);
-* `pacman_not_found` &ndash; fixes package name with `pacman` or `yaourt`.
+* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay` or `yaourt` if available);
+* `pacman_not_found` &ndash; fixes package name with `pacman`, `yay` or `yaourt`.
 
 The following commands are bundled with *The Fuck*, but are not enabled by
 default:

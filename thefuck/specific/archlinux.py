@@ -32,7 +32,9 @@ def get_pkgfile(command):
 
 
 def archlinux_env():
-    if utils.which('yaourt'):
+    if utils.which('yay'):
+        pacman = 'yay'
+    elif utils.which('yaourt'):
         pacman = 'yaourt'
     elif utils.which('pacman'):
         pacman = 'sudo pacman'
