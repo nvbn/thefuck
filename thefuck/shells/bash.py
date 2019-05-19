@@ -20,7 +20,7 @@ class Bash(Generic):
                 export TF_HISTORY=$(fc -ln -10);
                 export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
-                    thefuck {argument_placeholder} $@
+                    thefuck {argument_placeholder} "$@"
                 ) && eval "$TF_CMD";
                 unset TF_HISTORY;
                 export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
