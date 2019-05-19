@@ -21,7 +21,7 @@ class Bash(Generic):
                 export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
                     thefuck {argument_placeholder} $@
-                ) && eval $TF_CMD;
+                ) && eval "$TF_CMD";
                 unset TF_HISTORY;
                 export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
                 {alter_history}
@@ -79,7 +79,7 @@ class Bash(Generic):
             config = 'bash config'
 
         return self._create_shell_configuration(
-            content=u'eval $(thefuck --alias)',
+            content=u'eval "$(thefuck --alias)"',
             path=config,
             reload=u'source {}'.format(config))
 

@@ -34,8 +34,8 @@ class Generic(object):
         return command_script
 
     def app_alias(self, alias_name):
-        return "alias {0}='eval $(TF_ALIAS={0} PYTHONIOENCODING=utf-8 " \
-               "thefuck $(fc -ln -1))'".format(alias_name)
+        return "alias {0}='eval \"$(TF_ALIAS={0}\" PYTHONIOENCODING=utf-8 " \
+               "thefuck \"$(fc -ln -1))\"'".format(alias_name)
 
     def instant_mode_alias(self, alias_name):
         warn("Instant mode not supported by your shell")
