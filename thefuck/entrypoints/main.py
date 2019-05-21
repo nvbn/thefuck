@@ -11,6 +11,7 @@ from ..utils import get_installation_info  # noqa: E402
 from ..shells import shell  # noqa: E402
 from .alias import print_alias  # noqa: E402
 from .fix_command import fix_command  # noqa: E402
+from .post_match_execute import post_match_execute  # noqa: E402
 
 
 def main():
@@ -22,6 +23,8 @@ def main():
     elif known_args.version:
         logs.version(get_installation_info().version,
                      sys.version.split()[0], shell.info())
+    elif known_args.post_match:
+        post_match_execute(known_args)
     elif known_args.command or 'TF_HISTORY' in os.environ:
         fix_command(known_args)
     elif known_args.alias:

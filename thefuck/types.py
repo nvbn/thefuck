@@ -86,9 +86,9 @@ class Command(object):
 class Rule(object):
     """Rule for fixing commands."""
 
-    def __init__(self, name, match, get_new_command,
+    def __init__(self, name, path, match, get_new_command, post_match,
                  enabled_by_default, side_effect,
-                 priority, requires_output):
+                 priority, requires_output, is_post_match):
         """Initializes rule with given fields.
 
         :type name: basestring
@@ -101,31 +101,36 @@ class Rule(object):
 
         """
         self.name = name
+        self.path = path
         self.match = match
         self.get_new_command = get_new_command
+        self.post_match = post_match
         self.enabled_by_default = enabled_by_default
         self.side_effect = side_effect
         self.priority = priority
         self.requires_output = requires_output
+        self.is_post_match = is_post_match
 
     def __eq__(self, other):
         if isinstance(other, Rule):
-            return ((self.name, self.match, self.get_new_command,
-                     self.enabled_by_default, self.side_effect,
-                     self.priority, self.requires_output)
-                    == (other.name, other.match, other.get_new_command,
-                        other.enabled_by_default, other.side_effect,
-                        other.priority, other.requires_output))
+            return ((self.name, self.path, self.match, self.get_new_command,
+                     self.post_match, self.enabled_by_default,
+                     self.side_effect, self.priority,
+                     self.requires_output, self.is_post_match)
+                    == (other.name, other.path, other.match, other.get_new_command,
+                        other.post_match, other.enabled_by_default,
+                        other.side_effect, other.priority,
+                        other.requires_output, other.is_post_match))
         else:
             return False
 
     def __repr__(self):
-        return 'Rule(name={}, match={}, get_new_command={}, ' \
-               'enabled_by_default={}, side_effect={}, ' \
-               'priority={}, requires_output)'.format(
-                   self.name, self.match, self.get_new_command,
-                   self.enabled_by_default, self.side_effect,
-                   self.priority, self.requires_output)
+        return 'Rule(name={}, path={}, match={}, get_new_command={}, ' \
+               'post_match={}, enabled_by_default={}, side_effect={}, ' \
+               'priority={}, requires_output={}, is_post_match={})'.format(
+                   self.name, self.path, self.match, self.get_new_command,
+                   self.post_match, self.enabled_by_default, self.side_effect,
+                   self.priority, self.requires_output, self.is_post_match)
 
     @classmethod
     def from_path(cls, path):
@@ -139,12 +144,14 @@ class Rule(object):
         with logs.debug_time(u'Importing rule: {};'.format(name)):
             rule_module = load_source(name, str(path))
             priority = getattr(rule_module, 'priority', DEFAULT_PRIORITY)
-        return cls(name, rule_module.match,
+        return cls(name, path.as_posix(), rule_module.match,
                    rule_module.get_new_command,
+                   getattr(rule_module, 'post_match', None),
                    getattr(rule_module, 'enabled_by_default', True),
                    getattr(rule_module, 'side_effect', None),
                    settings.priority.get(name, priority),
-                   getattr(rule_module, 'requires_output', True))
+                   getattr(rule_module, 'requires_output', True),
+                   getattr(rule_module, 'is_post_match', False))
 
     @property
     def is_enabled(self):
@@ -192,13 +199,14 @@ class Rule(object):
         for n, new_command in enumerate(new_commands):
             yield CorrectedCommand(script=new_command,
                                    side_effect=self.side_effect,
-                                   priority=(n + 1) * self.priority)
+                                   priority=(n + 1) * self.priority,
+                                   rule=self)
 
 
 class CorrectedCommand(object):
     """Corrected by rule command."""
 
-    def __init__(self, script, side_effect, priority):
+    def __init__(self, script, side_effect, priority, rule):
         """Initializes instance with given fields.
 
         :type script: basestring
@@ -209,6 +217,7 @@ class CorrectedCommand(object):
         self.script = script
         self.side_effect = side_effect
         self.priority = priority
+        self.rule = rule
 
     def __eq__(self, other):
         """Ignores `priority` field."""
@@ -225,14 +234,19 @@ class CorrectedCommand(object):
         return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
             self.script, self.side_effect, self.priority)
 
-    def _get_script(self):
+    def _get_script(self, old_cmd):
         """Returns fixed commands script.
 
         If `settings.repeat` is `True`, appends command with second attempt
         of running fuck in case fixed command fails again.
 
         """
-        if settings.repeat:
+        if self.rule and self.rule.is_post_match:
+            return u'thefuck --post-match {} {} {}'.format(
+                self.rule.path,
+                shell.quote(old_cmd.script),
+                shell.quote(old_cmd.output))
+        elif settings.repeat:
             repeat_fuck = '{} --repeat {}--force-command {}'.format(
                 get_alias(),
                 '--debug ' if settings.debug else '',
@@ -255,4 +269,4 @@ class CorrectedCommand(object):
         logs.debug(u'PYTHONIOENCODING: {}'.format(
             os.environ.get('PYTHONIOENCODING', '!!not-set!!')))
 
-        print(self._get_script())
+        print(self._get_script(old_cmd))
