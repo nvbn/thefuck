@@ -2,7 +2,7 @@
 
 import pytest
 import warnings
-from mock import Mock, patch
+from mock import Mock, call, patch
 from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
     get_all_matched_commands, is_app, for_app, cache, \
@@ -74,6 +74,24 @@ def test_get_all_executables():
     assert 'vim' in all_callables
     assert 'fsck' in all_callables
     assert 'fuck' not in all_callables
+
+
+@pytest.fixture
+def os_environ_pathsep(monkeypatch, path, pathsep):
+    env = {'PATH': path}
+    monkeypatch.setattr('os.environ', env)
+    monkeypatch.setattr('os.pathsep', pathsep)
+    return env
+
+
+@pytest.mark.usefixtures('no_memoize', 'os_environ_pathsep')
+@pytest.mark.parametrize('path, pathsep', [
+    ('/foo:/bar:/baz:/foo/bar', ':'),
+    (r'C:\\foo;C:\\bar;C:\\baz;C:\\foo\\bar', ';')])
+def test_get_all_executables_pathsep(path, pathsep):
+    with patch('thefuck.utils.Path') as Path_mock:
+        get_all_executables()
+        Path_mock.assert_has_calls([call(p) for p in path.split(pathsep)], True)
 
 
 @pytest.mark.parametrize('args, result', [

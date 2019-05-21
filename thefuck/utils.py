@@ -118,7 +118,7 @@ def get_all_executables():
     tf_entry_points = ['thefuck', 'fuck']
 
     bins = [exe.name.decode('utf8') if six.PY2 else exe.name
-            for path in os.environ.get('PATH', '').split(':')
+            for path in os.environ.get('PATH', '').split(os.pathsep)
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]
