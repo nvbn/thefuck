@@ -270,6 +270,7 @@ following rules are enabled by default:
 * `php_s` &ndash; replaces `-s` by `-S` when trying to run a local php server;
 * `port_already_in_use` &ndash; kills process that bound port;
 * `prove_recursively` &ndash; adds `-r` when called with directory;
+* `pyenv_no_such_command` &ndash; fixes wrong pyenv commands like `pyenv isntall` or `pyenv list`;
 * `python_command` &ndash; prepends `python` when you try to run non-executable/without `./` python script;
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
