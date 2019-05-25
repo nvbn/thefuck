@@ -38,6 +38,8 @@ def _get_aliases(overridden):
 
 
 class Fish(Generic):
+    friendly_name = 'Fish Shell'
+
     def _get_overridden_aliases(self):
         overridden = os.environ.get('THEFUCK_OVERRIDDEN_ALIASES',
                                     os.environ.get('TF_OVERRIDDEN_ALIASES', ''))
@@ -104,12 +106,10 @@ class Fish(Generic):
             path='~/.config/fish/config.fish',
             reload='fish')
 
-    def info(self):
-        """Returns the name and version of the current shell"""
-        proc = Popen(['fish', '--version'],
-                     stdout=PIPE, stderr=DEVNULL)
-        version = proc.stdout.read().decode('utf-8').split()[-1]
-        return u'Fish Shell {}'.format(version)
+    def _get_version(self):
+        """Returns the version of the current shell"""
+        proc = Popen(['fish', '--version'], stdout=PIPE, stderr=DEVNULL)
+        return proc.stdout.read().decode('utf-8').split()[-1]
 
     def put_to_history(self, command):
         try:

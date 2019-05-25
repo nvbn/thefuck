@@ -14,6 +14,8 @@ ShellConfiguration = namedtuple('ShellConfiguration', (
 
 
 class Generic(object):
+    friendly_name = 'Generic Shell'
+
     def get_aliases(self):
         return {}
 
@@ -131,9 +133,18 @@ class Generic(object):
                 'type', 'typeset', 'ulimit', 'umask', 'unalias', 'unset',
                 'until', 'wait', 'while']
 
+    def _get_version(self):
+        """Returns the version of the current shell"""
+        return ''
+
     def info(self):
         """Returns the name and version of the current shell"""
-        return 'Generic Shell'
+        try:
+            version = self._get_version()
+        except Exception as e:
+            warn(u'Could not determine shell version: {}'.format(e))
+            version = ''
+        return u'{} {}'.format(self.friendly_name, version).rstrip()
 
     def _create_shell_configuration(self, content, path, reload):
         return ShellConfiguration(

@@ -61,3 +61,17 @@ class TestTcsh(object):
                                                     config_exists):
         config_exists.return_value = False
         assert not shell.how_to_configure().can_configure_automatically
+
+    def test_info(self, shell, Popen):
+        Popen.return_value.stdout.read.side_effect = [
+            b'tcsh 6.20.00 (Astron) 2016-11-24 (unknown-unknown-bsd44) \n']
+        assert shell.info() == 'Tcsh 6.20.00'
+        assert Popen.call_args[0][0] == ['tcsh', '--version']
+
+    @pytest.mark.parametrize('side_effect, exception', [
+        ([b'\n'], IndexError), (OSError, OSError)])
+    def test_get_version_error(self, side_effect, exception, shell, Popen):
+        Popen.return_value.stdout.read.side_effect = side_effect
+        with pytest.raises(exception):
+            shell._get_version()
+        assert Popen.call_args[0][0] == ['tcsh', '--version']

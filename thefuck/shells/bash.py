@@ -9,6 +9,8 @@ from .generic import Generic
 
 
 class Bash(Generic):
+    friendly_name = 'Bash'
+
     def app_alias(self, alias_name):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
@@ -83,9 +85,8 @@ class Bash(Generic):
             path=config,
             reload=u'source {}'.format(config))
 
-    def info(self):
-        """Returns the name and version of the current shell"""
+    def _get_version(self):
+        """Returns the version of the current shell"""
         proc = Popen(['bash', '-c', 'echo $BASH_VERSION'],
                      stdout=PIPE, stderr=DEVNULL)
-        version = proc.stdout.read().decode('utf-8').strip()
-        return u'Bash {}'.format(version)
+        return proc.stdout.read().decode('utf-8').strip()
