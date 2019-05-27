@@ -10,6 +10,8 @@ from .generic import Generic
 
 
 class Zsh(Generic):
+    friendly_name = 'ZSH'
+
     def app_alias(self, alias_name):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
@@ -87,9 +89,8 @@ class Zsh(Generic):
             path='~/.zshrc',
             reload='source ~/.zshrc')
 
-    def info(self):
-        """Returns the name and version of the current shell"""
+    def _get_version(self):
+        """Returns the version of the current shell"""
         proc = Popen(['zsh', '-c', 'echo $ZSH_VERSION'],
                      stdout=PIPE, stderr=DEVNULL)
-        version = proc.stdout.read().decode('utf-8').strip()
-        return u'ZSH {}'.format(version)
+        return proc.stdout.read().decode('utf-8').strip()
