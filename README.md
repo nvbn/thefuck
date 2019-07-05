@@ -191,6 +191,7 @@ following rules are enabled by default:
 * `django_south_merge` &ndash; adds `--merge` to inconsistent django south migration;
 * `docker_login` &ndash; executes a `docker login` and repeats the previous command;
 * `docker_not_command` &ndash; fixes wrong docker commands like `docker tags`;
+* `docker_image_being_used_by_container` &dash; removes the container that is using the image before removing the image;
 * `dry` &ndash; fixes repetitions like `git git push`;
 * `fab_command_not_found` &ndash; fix misspelled fabric commands;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
