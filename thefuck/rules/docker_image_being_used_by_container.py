@@ -1,11 +1,13 @@
-from thefuck.utils import for_app, replace_command
+from thefuck.utils import for_app
 
 
 @for_app('docker')
 def match(command):
-    return 'image is being used by running container' in command.output
+    return ('docker' in command.script
+            and 'image is being used by running container' in command.output)
 
 
 def get_new_command(command):
-    container_id = command.output.split(' ')[-1]
-    return 'docker container rm -f {} && {}'.format(container_id, command.script)
+    container_id = command.output.strip().split(' ')
+    print(container_id[-1])
+    return 'docker container rm -f {} && {}'.format(container_id[-1], command.script)
