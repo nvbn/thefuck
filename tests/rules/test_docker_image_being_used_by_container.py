@@ -7,6 +7,11 @@ def test_match():
     assert match(Command('docker image rm -f cd809b04b6ff', err_response))
 
 
+def test_not_match():
+    err_response = 'bash: docker: command not found'
+    assert not match(Command('docker image rm -f cd809b04b6ff', err_response))
+
+
 def test_get_new_command():
     err_response = """
         Error response from daemon: conflict: unable to delete cd809b04b6ff (cannot be forced) - image
