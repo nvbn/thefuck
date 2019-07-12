@@ -8,7 +8,7 @@ enabled_by_default = apt_available
 @sudo_support
 @for_app('apt')
 def match(command):
-    return "Run 'apt list --upgradable' to see them." in command.output
+    return 'apt list --upgradable' in command.output
 
 
 @sudo_support
