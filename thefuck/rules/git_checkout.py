@@ -8,7 +8,7 @@ from thefuck.shells import shell
 
 @git_support
 def match(command):
-    return ('did not match any file(s) known to git.' in command.output
+    return ('did not match any file(s) known to git' in command.output
             and "Did you forget to 'git add'?" not in command.output)
 
 
