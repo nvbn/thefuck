@@ -12,12 +12,25 @@ def match(command):
 
 
 def get_docker_commands():
-    proc = subprocess.Popen('docker', stdout=subprocess.PIPE)
-    lines = [line.decode('utf-8') for line in proc.stdout.readlines()]
-    lines = dropwhile(lambda line: not line.startswith('Commands:'), lines)
-    lines = islice(lines, 1, None)
-    lines = list(takewhile(lambda line: line != '\n', lines))
-    return [line.strip().split(' ')[0] for line in lines]
+    proc = subprocess.Popen('docker', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    lines = proc.stdout.readlines()
+
+    # Old version docker returns its output to stdout
+    if lines:
+        lines = [line.decode('utf-8') for line in lines]
+        lines = dropwhile(lambda line: not line.startswith('Commands:'), lines)
+        lines = islice(lines, 1, None)
+        lines = list(takewhile(lambda line: line != '\n', lines))
+        return [line.strip().split(' ')[0] for line in lines]
+
+    # New version of docker returns its output to stderr
+    else:
+        lines = proc.stderr.readlines()
+        lines = [line.decode('utf-8') for line in lines]
+        lines = dropwhile(lambda line: not line.startswith('Commands:'), lines)
+        lines = islice(lines, 1, None)
+        lines = list(takewhile(lambda line: line != '\n', lines))
+        return [line.strip().split(' ')[0] for line in lines]
 
 
 if which('docker'):
