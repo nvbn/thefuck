@@ -5,9 +5,6 @@ from thefuck.rules.docker_not_command import get_new_command, match
 from thefuck.utils import memoize
 
 
-# Temporarily disabling memoize because thefuck.rules.get_docker_commands should be run as both old and new versions.
-memoize.disabled = True
-
 _DOCKER_SWARM_OUTPUT = '''
 Usage:	docker swarm COMMAND
 
@@ -46,6 +43,14 @@ Commands:
 
 Run 'docker image COMMAND --help' for more information on a command.
 '''
+
+
+@pytest.fixture(autouse=True)
+def disable_memoize():
+    # Temporarily disabling memoize because thefuck.rules.get_docker_commands should be run as both old and new versions
+    memoize.disabled = True
+    yield
+    memoize.disabled = False
 
 
 @pytest.fixture
@@ -293,6 +298,3 @@ def test_get_new_management_command(wrong, fixed):
 def test_get_new_management_command_subcommand(wrong, fixed, output):
     command = Command('docker {}'.format(wrong), output)
     assert get_new_command(command) == ['docker {}'.format(x) for x in fixed]
-
-
-memoize.disabled = False
