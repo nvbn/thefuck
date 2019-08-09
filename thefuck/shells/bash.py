@@ -9,6 +9,8 @@ from .generic import Generic
 
 
 class Bash(Generic):
+    friendly_name = 'Bash'
+
     def app_alias(self, alias_name):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
@@ -20,8 +22,8 @@ class Bash(Generic):
                 export TF_HISTORY=$(fc -ln -10);
                 export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
-                    thefuck {argument_placeholder} $@
-                ) && eval $TF_CMD;
+                    thefuck {argument_placeholder} "$@"
+                ) && eval "$TF_CMD";
                 unset TF_HISTORY;
                 export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
                 {alter_history}
@@ -79,13 +81,12 @@ class Bash(Generic):
             config = 'bash config'
 
         return self._create_shell_configuration(
-            content=u'eval $(thefuck --alias)',
+            content=u'eval "$(thefuck --alias)"',
             path=config,
             reload=u'source {}'.format(config))
 
-    def info(self):
-        """Returns the name and version of the current shell"""
+    def _get_version(self):
+        """Returns the version of the current shell"""
         proc = Popen(['bash', '-c', 'echo $BASH_VERSION'],
                      stdout=PIPE, stderr=DEVNULL)
-        version = proc.stdout.read().decode('utf-8').strip()
-        return u'Bash {}'.format(version)
+        return proc.stdout.read().decode('utf-8').strip()

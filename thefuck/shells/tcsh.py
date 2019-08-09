@@ -6,6 +6,8 @@ from .generic import Generic
 
 
 class Tcsh(Generic):
+    friendly_name = 'Tcsh'
+
     def app_alias(self, alias_name):
         return ("alias {0} 'setenv TF_SHELL tcsh && setenv TF_ALIAS {0} && "
                 "set fucked_cmd=`history -h 2 | head -n 1` && "
@@ -35,3 +37,8 @@ class Tcsh(Generic):
             content=u'eval `thefuck --alias`',
             path='~/.tcshrc',
             reload='tcsh')
+
+    def _get_version(self):
+        """Returns the version of the current shell"""
+        proc = Popen(['tcsh', '--version'], stdout=PIPE, stderr=DEVNULL)
+        return proc.stdout.read().decode('utf-8').split()[1]

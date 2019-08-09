@@ -6,7 +6,7 @@ from thefuck.types import Command
 @pytest.fixture(autouse=True)
 def get_all_executables(mocker):
     mocker.patch('thefuck.rules.no_command.get_all_executables',
-                 return_value=['vim', 'fsck', 'git', 'go'])
+                 return_value=['vim', 'fsck', 'git', 'go', 'python'])
 
 
 @pytest.fixture(autouse=True)
@@ -20,6 +20,7 @@ def history_without_current(mocker):
 @pytest.mark.parametrize('script, output', [
     ('vom file.py', 'vom: not found'),
     ('fucck', 'fucck: not found'),
+    ('puthon', "'puthon' is not recognized as an internal or external command"),
     ('got commit', 'got: command not found')])
 def test_match(mocker, script, output):
     mocker.patch('thefuck.rules.no_command.which', return_value=None)
