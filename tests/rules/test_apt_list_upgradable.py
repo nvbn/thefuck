@@ -4,7 +4,7 @@ import pytest
 from thefuck.rules.apt_list_upgradable import get_new_command, match
 from thefuck.types import Command
 
-match_output = ['''
+full_english_output = '''
 Hit:1 http://us.archive.ubuntu.com/ubuntu zesty InRelease
 Hit:2 http://us.archive.ubuntu.com/ubuntu zesty-updates InRelease
 Get:3 http://us.archive.ubuntu.com/ubuntu zesty-backports InRelease [89.2 kB]
@@ -17,8 +17,11 @@ Reading package lists... Done
 Building dependency tree
 Reading state information... Done
 8 packages can be upgraded. Run 'apt list --upgradable' to see them.
-''',
-'Führen Sie »apt list --upgradable« aus, um sie anzuzeigen.'
+'''
+
+match_output = [
+    full_english_output,
+    'Führen Sie »apt list --upgradable« aus, um sie anzuzeigen.'  # German
 ]
 
 no_match_output = '''
