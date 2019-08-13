@@ -31,7 +31,7 @@ def get_docker_commands():
     else:
         management_commands = []
     regular_commands = _parse_commands(lines, 'Commands:\n')
-    return management_commands + regular_commands if management_commands else regular_commands
+    return management_commands + regular_commands
 
 
 if which('docker'):
