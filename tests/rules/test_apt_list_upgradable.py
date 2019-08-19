@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 from thefuck.rules.apt_list_upgradable import get_new_command, match
 from thefuck.types import Command
 
-match_output = '''
+full_english_output = '''
 Hit:1 http://us.archive.ubuntu.com/ubuntu zesty InRelease
 Hit:2 http://us.archive.ubuntu.com/ubuntu zesty-updates InRelease
 Get:3 http://us.archive.ubuntu.com/ubuntu zesty-backports InRelease [89.2 kB]
@@ -16,6 +18,11 @@ Building dependency tree
 Reading state information... Done
 8 packages can be upgraded. Run 'apt list --upgradable' to see them.
 '''
+
+match_output = [
+    full_english_output,
+    'Führen Sie »apt list --upgradable« aus, um sie anzuzeigen.'  # German
+]
 
 no_match_output = '''
 Hit:1 http://us.archive.ubuntu.com/ubuntu zesty InRelease
@@ -48,8 +55,9 @@ All packages are up to date.
 '''
 
 
-def test_match():
-    assert match(Command('sudo apt update', match_output))
+@pytest.mark.parametrize('output', match_output)
+def test_match(output):
+    assert match(Command('sudo apt update', output))
 
 
 @pytest.mark.parametrize('command', [
@@ -67,9 +75,10 @@ def test_not_match(command):
     assert not match(command)
 
 
-def test_get_new_command():
-    new_command = get_new_command(Command('sudo apt update', match_output))
+@pytest.mark.parametrize('output', match_output)
+def test_get_new_command(output):
+    new_command = get_new_command(Command('sudo apt update', output))
     assert new_command == 'sudo apt list --upgradable'
 
-    new_command = get_new_command(Command('apt update', match_output))
+    new_command = get_new_command(Command('apt update', output))
     assert new_command == 'apt list --upgradable'
