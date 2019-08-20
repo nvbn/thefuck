@@ -45,14 +45,6 @@ Run 'docker image COMMAND --help' for more information on a command.
 '''
 
 
-@pytest.fixture(autouse=True)
-def disable_memoize():
-    # Temporarily disabling memoize because thefuck.rules.get_docker_commands should be run as both old and new versions
-    memoize.disabled = True
-    yield
-    memoize.disabled = False
-
-
 @pytest.fixture
 def docker_help(mocker):
     help = b'''Usage: docker [OPTIONS] COMMAND [arg...]
@@ -251,6 +243,7 @@ def test_match():
 
 
 # tests docker (management command)
+@pytest.mark.usefixtures('no_memoize')
 @pytest.mark.parametrize('script, output', [
     ('docker swarn', output('swarn')),
     ('docker imge', output('imge'))])
@@ -259,6 +252,7 @@ def test_match_management_cmd(script, output):
 
 
 # tests docker (management cmd) (management subcmd)
+@pytest.mark.usefixtures('no_memoize')
 @pytest.mark.parametrize('script, output', [
     ('docker swarm int', _DOCKER_SWARM_OUTPUT),
     ('docker image la', _DOCKER_IMAGE_OUTPUT)])
@@ -273,7 +267,7 @@ def test_not_match(script, output):
     assert not match(Command(script, output))
 
 
-@pytest.mark.usefixtures('docker_help')
+@pytest.mark.usefixtures('no_memoize', 'docker_help')
 @pytest.mark.parametrize('wrong, fixed', [
     ('pes', ['ps', 'push', 'pause']),
     ('tags', ['tag', 'stats', 'images'])])
@@ -282,7 +276,7 @@ def test_get_new_command(wrong, fixed):
     assert get_new_command(command) == ['docker {}'.format(x) for x in fixed]
 
 
-@pytest.mark.usefixtures('docker_help_new')
+@pytest.mark.usefixtures('no_memoize', 'docker_help_new')
 @pytest.mark.parametrize('wrong, fixed', [
     ('swarn', ['swarm', 'start', 'search']),
     ('inage', ['image', 'images', 'rename'])])
@@ -291,7 +285,7 @@ def test_get_new_management_command(wrong, fixed):
     assert get_new_command(command) == ['docker {}'.format(x) for x in fixed]
 
 
-@pytest.mark.usefixtures('docker_help_new')
+@pytest.mark.usefixtures('no_memoize', 'docker_help_new')
 @pytest.mark.parametrize('wrong, fixed, output', [
     ('swarm int', ['swarm init', 'swarm join', 'swarm join-token'], _DOCKER_SWARM_OUTPUT),
     ('image la', ['image load', 'image ls', 'image tag'], _DOCKER_IMAGE_OUTPUT)])
