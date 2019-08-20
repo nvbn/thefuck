@@ -14,7 +14,7 @@ def match(command):
 def _parse_commands(lines, starts_with):
     lines = dropwhile(lambda line: not line.startswith(starts_with), lines)
     lines = islice(lines, 1, None)
-    lines = list(takewhile(lambda line: line != '\n', lines))
+    lines = list(takewhile(lambda line: line.strip(), lines))
     return [line.strip().split(' ')[0] for line in lines]
 
 
@@ -27,10 +27,10 @@ def get_docker_commands():
 
     # Only newer versions of docker have management commands in the help text.
     if 'Management Commands:\n' in lines:
-        management_commands = _parse_commands(lines, 'Management Commands:\n')
+        management_commands = _parse_commands(lines, 'Management Commands:')
     else:
         management_commands = []
-    regular_commands = _parse_commands(lines, 'Commands:\n')
+    regular_commands = _parse_commands(lines, 'Commands:')
     return management_commands + regular_commands
 
 
@@ -41,7 +41,7 @@ if which('docker'):
 @sudo_support
 def get_new_command(command):
     if 'Usage:' in command.output and len(command.script_parts) > 1:
-        management_subcommands = _parse_commands(map(lambda x: x + '\n', command.output.split('\n')), 'Commands:\n')
+        management_subcommands = _parse_commands(command.output.split('\n'), 'Commands:')
         return replace_command(command, command.script_parts[2], management_subcommands)
 
     wrong_command = re.findall(
