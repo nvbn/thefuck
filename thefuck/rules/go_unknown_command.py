@@ -14,7 +14,7 @@ def get_golang_commands():
 
 
 if which('go'):
-    get_docker_commands = cache(which('go'))(get_golang_commands())
+    get_docker_commands = cache(which('go'))(get_golang_commands)
 
 
 @for_app('go')
