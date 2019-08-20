@@ -1,14 +1,13 @@
-from thefuck.utils import get_closest, replace_argument
+from thefuck.utils import get_closest, replace_argument, for_app
 
 _GOLANG_COMMANDS = (
     "bug", "build", "clean", "doc", "env", "fix", "fmt", "generate", "get",
     "install", "list", "mod", "run", "test", "tool", "version", "vet")
 
 
+@for_app('go')
 def match(command):
-    return (command.script_parts
-            and command.script_parts[0] == "go"
-            and 'unknown command' in command.output)
+    return 'unknown command' in command.output
 
 
 def get_new_command(command):
