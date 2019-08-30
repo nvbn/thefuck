@@ -14,12 +14,13 @@ If the version you need is missing, try upgrading ruby-build:
 
 @pytest.mark.parametrize('script, output', [
     ('rbenv install 2.6.1', expected_output)
-    ])
+])
 def test_match(script, output):
     assert match(Command(script, output))
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command('rbenv install 2.6.1', expected_output), expected_actual_command)])
+    (Command('rbenv install 2.6.1', expected_output), expected_actual_command)
+])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command
