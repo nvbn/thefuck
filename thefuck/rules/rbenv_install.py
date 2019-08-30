@@ -10,5 +10,5 @@ def match(command):
 
 
 def get_new_command(command):
-    output = command.output.split('\n')[-1].lstrip()
-    return shell.to_shell(output)
+    actualCommand = command.output.split('\n')[-1].lstrip()
+    return shell.to_shell(actualCommand)
