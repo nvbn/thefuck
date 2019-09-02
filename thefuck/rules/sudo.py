@@ -21,7 +21,7 @@ patterns = ['permission denied',
             'edspermissionerror',
             'you don\'t have write permissions',
             'use `sudo`',
-            'SudoRequiredError',
+            'sudorequirederror',
             'error: insufficient privileges']
 
 
