@@ -59,7 +59,7 @@ class Parser(object):
             action='store_true',
             help='execute fixed command without confirmation')
         group.add_argument(
-            '-r', '--repeat',
+            '-r', '--repeat', '--bitch',
             action='store_true',
             help='repeat on failure')
 
