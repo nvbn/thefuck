@@ -116,6 +116,8 @@ def test_get_operations(set_help, app, help_text, operations):
      apt_get_help, 'apt-get install vim'),
     ('apt saerch vim', invalid_operation('saerch'),
      apt_help, 'apt search vim'),
+    ('apt uninstall vim', invalid_operation('uninstall'),
+     apt_help, 'apt remove vim'),
 ])
 def test_get_new_command(set_help, output, script, help_text, result):
     set_help(help_text)
