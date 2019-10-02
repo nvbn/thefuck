@@ -321,6 +321,7 @@ The following rules are enabled by default on specific platforms only:
 * `dnf_no_such_command` &ndash; fixes mistyped DNF commands;
 * `nixos_cmd_not_found` &ndash; installs apps on NixOS;
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay` or `yaourt` if available);
+* `pacman_invalid_option` &ndash; replaces lowercase pacman options with uppercase.
 * `pacman_not_found` &ndash; fixes package name with `pacman`, `yay` or `yaourt`.
 
 The following commands are bundled with *The Fuck*, but are not enabled by
@@ -352,8 +353,8 @@ Your rule should not change `Command`.
 
 **Rules api changed in 3.0:** To access a rule's settings, import it with
  `from thefuck.conf import settings`
-  
-`settings` is a special object assembled from `~/.config/thefuck/settings.py`, 
+
+`settings` is a special object assembled from `~/.config/thefuck/settings.py`,
 and values from env ([see more below](#settings)).
 
 A simple example rule for running a script with `sudo`:
