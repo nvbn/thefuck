@@ -3,7 +3,7 @@ import re
 
 
 def match(command):
-    return "error: invalid option" in command.output
+    return "error: invalid option '-s'" in command.output
 
 
 def get_new_command(command):
