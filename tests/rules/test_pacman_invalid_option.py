@@ -7,8 +7,10 @@ bad_output = "error: invalid option '-s'"
 
 
 def test_match():
-    assert match(Command('pacman -Ss meat', good_output))
-    assert match(Command('sudo pacman -Ss meat', good_output))
+    assert not match(Command('pacman -Ss meat', good_output))
+    assert not match(Command('sudo pacman -Ss meat', good_output))
+    assert match(Command('pacman -ss meat', bad_output))
+    assert match(Command('sudo pacman -ss meat', bad_output))
 
 
 def test_get_new_command():
