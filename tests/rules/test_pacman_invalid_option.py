@@ -1,4 +1,5 @@
 import pytest
+from thefuck.rules.apt_upgrade import get_new_command, match
 from thefuck.types import Command
 
 good_output = """community/shared_meataxe 1.0-3
