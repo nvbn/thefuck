@@ -11,4 +11,4 @@ def get_new_command(command):
     return re.sub(opt, opt.upper(), command.script)
 
 
-enabled_by_default=true, pacman = archlinux_env()
+enabled_by_default = true, pacman = archlinux_env()
