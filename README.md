@@ -353,8 +353,8 @@ Your rule should not change `Command`.
 
 **Rules api changed in 3.0:** To access a rule's settings, import it with
  `from thefuck.conf import settings`
-
-`settings` is a special object assembled from `~/.config/thefuck/settings.py`,
+  
+`settings` is a special object assembled from `~/.config/thefuck/settings.py`, 
 and values from env ([see more below](#settings)).
 
 A simple example rule for running a script with `sudo`:
