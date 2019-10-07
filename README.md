@@ -192,6 +192,7 @@ following rules are enabled by default:
 * `docker_login` &ndash; executes a `docker login` and repeats the previous command;
 * `docker_not_command` &ndash; fixes wrong docker commands like `docker tags`;
 * `docker_image_being_used_by_container` &dash; removes the container that is using the image before removing the image;
+* `drmemory_no_dashdash` &ndash; adds `--` to drmemory commands;
 * `dry` &ndash; fixes repetitions like `git git push`;
 * `fab_command_not_found` &ndash; fix misspelled fabric commands;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
@@ -352,8 +353,8 @@ Your rule should not change `Command`.
 
 **Rules api changed in 3.0:** To access a rule's settings, import it with
  `from thefuck.conf import settings`
-  
-`settings` is a special object assembled from `~/.config/thefuck/settings.py`, 
+
+`settings` is a special object assembled from `~/.config/thefuck/settings.py`,
 and values from env ([see more below](#settings)).
 
 A simple example rule for running a script with `sudo`:
