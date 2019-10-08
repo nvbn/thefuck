@@ -163,6 +163,7 @@ def test_get_operations():
     assert _get_operations() == yum_operations
 
 
+@pytest.mark.usefixtures('no_memoize', 'yum_help')
 @pytest.mark.parametrize('script, output, result', [
     ('yum uninstall', yum_invalid_op_text.format('uninstall'), 'yum remove',),
     ('yum saerch asdf', yum_invalid_op_text.format('saerch'), 'yum search asdf',),
