@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import pytest
 
 from thefuck.rules.yum_invalid_operation import match, get_new_command, _get_operations
@@ -149,6 +151,14 @@ def test_not_match(command, output):
     assert not match(Command(command, output))
 
 
+@pytest.fixture
+def yum_help(mocker):
+    mock = mocker.patch('subprocess.Popen')
+    mock.return_value.stdout = BytesIO(bytes(yum_help_text.encode('utf-8')))
+    return mock
+
+
+@pytest.mark.usefixtures('no_memoize', 'yum_help')
 def test_get_operations():
     assert _get_operations() == yum_operations
 
