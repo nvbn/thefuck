@@ -129,8 +129,8 @@ No such command: {}. Please use /usr/bin/yum --help
 yum_operations = [
     'check', 'check-update', 'clean', 'deplist', 'distribution-synchronization', 'downgrade', 'erase', 'fs',
     'fssnapshot', 'groups', 'help', 'history', 'info', 'install', 'langavailable', 'langinfo', 'langinstall',
-    'langlist', 'langremove', 'list', 'load-transactio', 'makecache', 'provides', 'reinstall', 'repo-pkgs', 'repolist',
-    'search', 'shell', 'swap', 'update', 'update-minimal', 'm', 'updateinfo', 'upgrade', 'version', ]
+    'langlist', 'langremove', 'list', 'load-transaction', 'makecache', 'provides', 'reinstall', 'repo-pkgs', 'repolist',
+    'search', 'shell', 'swap', 'update', 'update-minimal', 'updateinfo', 'upgrade', 'version', ]
 
 
 @pytest.mark.parametrize('command', [
