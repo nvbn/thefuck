@@ -90,7 +90,7 @@ def get_flags(man):
 
 def find_at_start(word, line):
     return line.startswith(word) and\
-        (len(line) == len(word) or line[len(word)] in ', ')
+        (len(line) == len(word) or line[len(word)] in ', (:')
 
 
 def find_subcommand(manpage, command, subcommand):
@@ -98,8 +98,8 @@ def find_subcommand(manpage, command, subcommand):
         any(map(partial(find_at_start, "%s-%s" % (command, subcommand)), manpage))
 
 
-def find_flag(manpage, flag):
-    return any(map(partial(find_at_start, flag), manpage))
+def find_flag(flags, flag):
+    return any(map(partial(find_at_start, '-' + flag), flags))
 
 
 @sudo_support
