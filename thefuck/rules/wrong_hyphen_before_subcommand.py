@@ -53,12 +53,39 @@ def get_flags(man):
 
 @sudo_support
 def match(command):
-    return False
+    if '-' not in command.script_parts[0]:
+        return False
 
+    cmd, subcmd, *_ = command.script_parts[0].split('-')
+    if cmd not in get_all_executables():
+        return False
+
+    manpage = get_manpage(cmd)
+    if not manpage:
+        return False
+
+    synopsis = get_synopsis(manpage)
+    if subcmd in synopsis:
+        return True
+
+    flags = "".join(get_flags(manpage))
+    for flag in subcmd:
+        if "-%s" % (flag,) not in flags:
+            return False
+
+    return True
 
 @sudo_support
 def get_new_command(command):
-    return ""
+    cmd, subcmd, *_ = command.script_parts[0].split('-')
+    manpage = get_manpage(cmd)
+    synopsis = get_synopsis(manpage)
+
+    if subcmd in synopsis: # We are dealing with an accidentally added hyphen
+        return command.script.replace('-', ' ', 1)
+
+    else: # We are dealing with a missing space
+        return command.script.replace('-', ' -', 1)
 
 
-priority = 1 # For debugging purposes only
+priority = 2500
