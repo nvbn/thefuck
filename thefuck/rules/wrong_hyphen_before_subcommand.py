@@ -110,7 +110,7 @@ def match(command):
     if '-' not in command.script_parts[0]:
         return False
 
-    cmd, subcmd, *_ = command.script_parts[0].split('-')
+    cmd, subcmd = command.script_parts[0].split('-')[:2]
     if cmd not in get_all_executables():
         return False
 
@@ -135,7 +135,7 @@ def match(command):
 
 @sudo_support
 def get_new_command(command):
-    cmd, subcmd, *_ = command.script_parts[0].split('-')
+    cmd, subcmd = command.script_parts[0].split('-')[:2]
     manpage = get_manpage(cmd)
     synopsis = get_synopsis(manpage)
 
