@@ -87,6 +87,11 @@ def get_flags(man):
     return [x for x in man if x[0] == '-']
 
 
+def find_subcommand(manpage, command, subcommand):
+    return any(map(lambda x: x.startswith(subcommand), manpage)) or\
+        any(map(lambda x: x.startswith("%s-%s" % (command, subcommand)), manpage))
+
+
 @sudo_support
 def match(command):
     if '-' not in command.script_parts[0]:
@@ -104,6 +109,9 @@ def match(command):
     if subcmd in synopsis:
         return True
 
+    if find_subcommand(manpage, cmd, subcmd):
+        return True
+
     flags = "".join(get_flags(manpage))
     for flag in subcmd:
         if "-%s" % (flag,) not in flags:
@@ -118,7 +126,7 @@ def get_new_command(command):
     manpage = get_manpage(cmd)
     synopsis = get_synopsis(manpage)
 
-    if subcmd in synopsis:
+    if subcmd in synopsis or find_subcommand(manpage, cmd, subcmd):
         # We are dealing with an accidentally added hyphen
         return command.script.replace('-', ' ', 1)
 
