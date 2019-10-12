@@ -3,10 +3,11 @@ import pytest
 from thefuck.rules.wrong_hyphen_before_subcommand import match, get_new_command
 from thefuck.types import Command
 
+
 @pytest.fixture(autouse=True)
 def get_all_executables(mocker):
     mocker.patch('thefuck.rules.wrong_hyphen_before_subcommand.get_all_executables',
-        return_value=['git', 'apt', 'apt-get', 'ls', 'pwd'])
+                 return_value=['git', 'apt', 'apt-get', 'ls', 'pwd'])
 
 
 @pytest.mark.parametrize('script', [
