@@ -5,6 +5,7 @@ from thefuck.specific.sudo import sudo_support
 import re
 import gzip
 import os.path
+from functools import partial
 
 
 def get_manpage_dir():
@@ -87,13 +88,25 @@ def get_flags(man):
     return [x for x in man if x[0] == '-']
 
 
+def find_at_start(word, line):
+    return line.startswith(word) and\
+        (len(line) == len(word) or line[len(word)] in ', ')
+
+
 def find_subcommand(manpage, command, subcommand):
-    return any(map(lambda x: x.startswith(subcommand), manpage)) or\
-        any(map(lambda x: x.startswith("%s-%s" % (command, subcommand)), manpage))
+    return any(map(partial(find_at_start, subcommand), manpage)) or\
+        any(map(partial(find_at_start, "%s-%s" % (command, subcommand)), manpage))
+
+
+def find_flag(manpage, flag):
+    return any(map(partial(find_at_start, flag), manpage))
 
 
 @sudo_support
 def match(command):
+    if command.script_parts[0] in get_all_executables():
+        return False
+
     if '-' not in command.script_parts[0]:
         return False
 
@@ -112,9 +125,9 @@ def match(command):
     if find_subcommand(manpage, cmd, subcmd):
         return True
 
-    flags = "".join(get_flags(manpage))
+    flags = get_flags(manpage)
     for flag in subcmd:
-        if "-%s" % (flag,) not in flags:
+        if not find_flag(flags, flag):
             return False
 
     return True
