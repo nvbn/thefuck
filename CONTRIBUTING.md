@@ -26,23 +26,8 @@ fixes, etc.
 
 # Developing
 
-Create and activate Pyton 3 virtual environment.
+[Create and activate a Python 3 virtual environment.](https://docs.python.org/3/tutorial/venv.html)
 
-```bash
-python3 -m venv env
-```
-
-On Windows run:
-
-```bash
-env\Scripts\activate.bat
-```
-
-On Linux, Unix or Mac OS run:
-
-```bash
-source env/bin/activate
-```
 Install `The Fuck` for development:
 
 ```bash
