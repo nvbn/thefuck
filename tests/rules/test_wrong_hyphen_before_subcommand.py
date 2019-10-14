@@ -11,7 +11,6 @@ def get_all_executables(mocker):
 
 
 @pytest.mark.parametrize('script', [
-    'ls-la',
     'git-log',
     'apt-install python'])
 def test_match(mocker, script):
@@ -19,7 +18,6 @@ def test_match(mocker, script):
 
 
 @pytest.mark.parametrize('script, result', [
-    ('ls-la', 'ls -la'),
     ('git-log', 'git log'),
     ('apt-install python', 'apt install python')])
 def test_get_new_command(mocker, script, result):
@@ -27,8 +25,8 @@ def test_get_new_command(mocker, script, result):
 
 
 @pytest.mark.parametrize('script', [
-    'ls la',
-    'git-make',
+    'ls -la',
+    'git2-make',
     'apt-get python'])
 def test_not_match(mocker, script):
     assert not match(Command(script, ""))
