@@ -26,6 +26,16 @@ fixes, etc.
 
 # Developing
 
+When making changes `The Fuck` we assume you have setup a development environment.
+Best practice in Python is to use [virtual environments](https://pypi.org/project/virtualenv/). 
+For simplicity we recommend you use a tool like [pyenv](https://github.com/pyenv/pyenv-virtualenv). 
+After installing pyenv a virtuel environment can be created via:
+
+```bash
+pyenv virtualenv thefuck
+pyenv activate thefuck
+```
+
 Install `The Fuck` for development:
 
 ```bash
