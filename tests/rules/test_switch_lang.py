@@ -32,6 +32,6 @@ def test_not_match(command):
     (Command(u'שפא-עקא ןמדאשךך הןצ', ''), 'apt-get install vim'),
     (Command(u'ךד -ךש', ''), 'ls -la'),
     (Command(u'멧-ㅎㄷㅅ ㅑㅜㄴㅅ미ㅣ 퍄ㅡ', ''), 'apt-get install vim'),
-    (Command(u'ㅣㄴ -ㅣㅁ', ''), 'ls- la')])
+    (Command(u'ㅣㄴ -ㅣㅁ', ''), 'ls -la')])
 def test_get_new_command(command, new_command):
     assert switch_lang.get_new_command(command) == new_command
