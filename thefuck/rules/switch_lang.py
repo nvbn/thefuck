@@ -104,7 +104,7 @@ def match(command):
         return False
     if any(['ㄱ' <= ch <= 'ㅎ' or 'ㅏ' <= ch <= 'ㅣ' or '가' <= ch <= '힣'
             for ch in command.script]):
-        command.script = _decompose_korean(command)
+        return True
 
     matched_layout = _get_matched_layout(command)
     return (matched_layout and
@@ -112,5 +112,8 @@ def match(command):
 
 
 def get_new_command(command):
+    if any(['ㄱ' <= ch <= 'ㅎ' or 'ㅏ' <= ch <= 'ㅣ' or '가' <= ch <= '힣'
+            for ch in command.script]):
+        command.script = _decompose_korean(command)
     matched_layout = _get_matched_layout(command)
     return _switch_command(command, matched_layout)
