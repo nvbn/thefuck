@@ -32,17 +32,17 @@ source_to_target = {
 }
 
 '''Lists used for decomposing korean letters.'''
-HEAD_LIST = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ',
-             'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
-BODY_LIST = ['ㅏ', 'ㅐ', 'ㅑ', 'ㅒ', 'ㅓ', 'ㅔ', 'ㅕ', 'ㅖ', 'ㅗ', 'ㅘ', 'ㅙ',
-             'ㅚ', 'ㅛ', 'ㅜ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅠ', 'ㅡ', 'ㅢ', 'ㅣ']
-TAIL_LIST = [' ', 'ㄱ', 'ㄲ', 'ㄳ', 'ㄴ', 'ㄵ', 'ㄶ', 'ㄷ', 'ㄹ', 'ㄺ', 'ㄻ',
-             'ㄼ', 'ㄽ', 'ㄾ', 'ㄿ', 'ㅀ', 'ㅁ', 'ㅂ', 'ㅄ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ',
-             'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
-DOUBLE_LIST = ['ㅘ', 'ㅙ', 'ㅚ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅢ', 'ㄳ', 'ㄵ', 'ㄶ', 'ㄺ',
-               'ㄻ', 'ㄼ', 'ㄽ', 'ㄾ', 'ㅀ', 'ㅄ']
-DOUBLE_MOD_LIST = ['ㅗㅏ', 'ㅗㅐ', 'ㅗㅣ', 'ㅜㅓ', 'ㅜㅔ', 'ㅜㅣ', 'ㅡㅣ', 'ㄱㅅ',
-                   'ㄴㅈ', 'ㄴㅎ', 'ㄹㄱ', 'ㄹㅁ', 'ㄹㅂ', 'ㄹㅅ', 'ㄹㅌ', 'ㄹㅎ', 'ㅂㅅ']
+HEAD_LIST = [u'ㄱ', u'ㄲ', u'ㄴ', u'ㄷ', u'ㄸ', u'ㄹ', u'ㅁ', u'ㅂ', u'ㅃ', u'ㅅ', u'ㅆ',
+             u'ㅇ', u'ㅈ', u'ㅉ', u'ㅊ', u'ㅋ', u'ㅌ', u'ㅍ', u'ㅎ']
+BODY_LIST = [u'ㅏ', u'ㅐ', u'ㅑ', u'ㅒ', u'ㅓ', u'ㅔ', u'ㅕ', u'ㅖ', u'ㅗ', u'ㅘ', u'ㅙ',
+             u'ㅚ', u'ㅛ', u'ㅜ', u'ㅝ', u'ㅞ', u'ㅟ', u'ㅠ', u'ㅡ', u'ㅢ', u'ㅣ']
+TAIL_LIST = [u' ', u'ㄱ', u'ㄲ', u'ㄳ', u'ㄴ', u'ㄵ', u'ㄶ', u'ㄷ', u'ㄹ', u'ㄺ', u'ㄻ',
+             u'ㄼ', u'ㄽ', u'ㄾ', u'ㄿ', u'ㅀ', u'ㅁ', u'ㅂ', u'ㅄ', u'ㅅ', u'ㅆ', u'ㅇ', u'ㅈ',
+             u'ㅊ', u'ㅋ', u'ㅌ', u'ㅍ', u'ㅎ']
+DOUBLE_LIST = [u'ㅘ', u'ㅙ', u'ㅚ', u'ㅝ', u'ㅞ', u'ㅟ', u'ㅢ', u'ㄳ', u'ㄵ', u'ㄶ', u'ㄺ',
+               u'ㄻ', u'ㄼ', u'ㄽ', u'ㄾ', u'ㅀ', u'ㅄ']
+DOUBLE_MOD_LIST = [u'ㅗㅏ', u'ㅗㅐ', u'ㅗㅣ', u'ㅜㅓ', u'ㅜㅔ', u'ㅜㅣ', u'ㅡㅣ', u'ㄱㅅ',
+                   u'ㄴㅈ', u'ㄴㅎ', u'ㄹㄱ', u'ㄹㅁ', u'ㄹㅂ', u'ㄹㅅ', u'ㄹㅌ', u'ㄹㅎ', u'ㅂㅅ']
 
 
 @memoize
@@ -84,10 +84,10 @@ def _decompose_korean(command):
         else:
             return ch
 
-    hg_str = ''
+    hg_str = u''
     for ch in command.script:
-        if '가' <= ch <= '힣':
-            ord_ch = ord(ch) - ord('가')
+        if u'가' <= ch <= u'힣':
+            ord_ch = ord(ch) - ord(u'가')
             hd = ord_ch // 588
             bd = (ord_ch - 588 * hd) // 28
             tl = ord_ch - 588 * hd - 28 * bd
@@ -102,7 +102,7 @@ def _decompose_korean(command):
 def match(command):
     if 'not found' not in command.output:
         return False
-    if any(['ㄱ' <= ch <= 'ㅎ' or 'ㅏ' <= ch <= 'ㅣ' or '가' <= ch <= '힣'
+    if any([u'ㄱ' <= ch <= u'ㅎ' or u'ㅏ' <= ch <= u'ㅣ' or u'가' <= ch <= u'힣'
             for ch in command.script]):
         return True
 
@@ -112,7 +112,7 @@ def match(command):
 
 
 def get_new_command(command):
-    if any(['ㄱ' <= ch <= 'ㅎ' or 'ㅏ' <= ch <= 'ㅣ' or '가' <= ch <= '힣'
+    if any([u'ㄱ' <= ch <= u'ㅎ' or u'ㅏ' <= ch <= u'ㅣ' or u'가' <= ch <= u'힣'
             for ch in command.script]):
         command.script = _decompose_korean(command)
     matched_layout = _get_matched_layout(command)
