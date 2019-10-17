@@ -64,8 +64,7 @@ def _get_matched_layout(command):
 def _switch(ch, layout):
     if ch in layout:
         return target_layout[layout.index(ch)]
-    else:
-        return ch
+    return ch
 
 
 def _switch_command(command, layout):
@@ -81,8 +80,7 @@ def _decompose_korean(command):
     def _change_double(ch):
         if ch in DOUBLE_LIST:
             return DOUBLE_MOD_LIST[DOUBLE_LIST.index(ch)]
-        else:
-            return ch
+        return ch
 
     hg_str = u''
     for ch in command.script:
@@ -102,8 +100,8 @@ def _decompose_korean(command):
 def match(command):
     if 'not found' not in command.output:
         return False
-    if any([u'ㄱ' <= ch <= u'ㅎ' or u'ㅏ' <= ch <= u'ㅣ' or u'가' <= ch <= u'힣'
-            for ch in command.script]):
+    if any(u'ㄱ' <= ch <= u'ㅎ' or u'ㅏ' <= ch <= u'ㅣ' or u'가' <= ch <= u'힣'
+            for ch in command.script):
         return True
 
     matched_layout = _get_matched_layout(command)
@@ -112,8 +110,8 @@ def match(command):
 
 
 def get_new_command(command):
-    if any([u'ㄱ' <= ch <= u'ㅎ' or u'ㅏ' <= ch <= u'ㅣ' or u'가' <= ch <= u'힣'
-            for ch in command.script]):
+    if any(u'ㄱ' <= ch <= u'ㅎ' or u'ㅏ' <= ch <= u'ㅣ' or u'가' <= ch <= u'힣'
+            for ch in command.script):
         command.script = _decompose_korean(command)
     matched_layout = _get_matched_layout(command)
     return _switch_command(command, matched_layout)
