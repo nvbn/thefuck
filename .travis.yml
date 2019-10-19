@@ -10,6 +10,9 @@ matrix:
       python: "3.8-dev"
     - os: linux
       dist: xenial
+      python: "3.8"
+    - os: linux
+      dist: xenial
       python: "3.7-dev"
     - os: linux
       dist: xenial
@@ -60,7 +63,7 @@ script:
   - flake8
   - export COVERAGE_PYTHON_VERSION=python-${TRAVIS_PYTHON_VERSION:0:1}
   - export RUN_TESTS="coverage run --source=thefuck,tests -m py.test -v --capture=sys tests"
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.7 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi
-  - if [[ $TRAVIS_PYTHON_VERSION != 3.7 || $TRAVIS_OS_NAME == "osx" ]]; then $RUN_TESTS; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.8 && $TRAVIS_OS_NAME != "osx" ]]; then $RUN_TESTS --enable-functional; fi
+  - if [[ $TRAVIS_PYTHON_VERSION != 3.8 || $TRAVIS_OS_NAME == "osx" ]]; then $RUN_TESTS; fi
 after_success:
-  - if [[ $TRAVIS_PYTHON_VERSION == 3.7 && $TRAVIS_OS_NAME != "osx" ]]; then coveralls; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == 3.8 && $TRAVIS_OS_NAME != "osx" ]]; then coveralls; fi
