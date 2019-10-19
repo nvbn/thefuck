@@ -322,6 +322,7 @@ The following rules are enabled by default on specific platforms only:
 * `nixos_cmd_not_found` &ndash; installs apps on NixOS;
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay` or `yaourt` if available);
 * `pacman_not_found` &ndash; fixes package name with `pacman`, `yay` or `yaourt`.
+* `yum_invalid_operation` &ndash; fixes invalid `yum` calls, like `yum isntall vim`;
 
 The following commands are bundled with *The Fuck*, but are not enabled by
 default:
