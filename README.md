@@ -200,6 +200,7 @@ following rules are enabled by default:
 * `git_add_force` &ndash; adds `--force` to `git add <pathspec>...` when paths are .gitignore'd;
 * `git_bisect_usage` &ndash; fixes `git bisect strt`, `git bisect goood`, `git bisect rset`, etc. when bisecting;
 * `git_branch_delete` &ndash; changes `git branch -d` to `git branch -D`;
+* `git_branch_delete_checked_out` &ndash; changes `git branch -d` to `git checkout master && git branch -D` when trying to delete a checked out branch;
 * `git_branch_exists` &ndash; offers `git branch -d foo`, `git branch -D foo` or `git checkout foo` when creating a branch that already exists;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
