@@ -481,7 +481,8 @@ to the alias initialization in `.bashrc`, `.bash_profile` or `.zshrc`.
 For example:
 
 ```bash
-eval $(thefuck --alias --enable-experimental-instant-mode)
+# You can use whatever you want as an alias, example FUCK
+eval $(thefuck --enable-experimental-instant-mode --alias FUCK)
 ```
 
 ## Developing
