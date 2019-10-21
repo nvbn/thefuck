@@ -59,5 +59,8 @@ target/
 .env
 .idea
 
+# pyenv
+.python-version/
+
 # vim temporary files
 .*.swp
