@@ -26,6 +26,8 @@ fixes, etc.
 
 # Developing
 
+[Create and activate a Python 3 virtual environment.](https://docs.python.org/3/tutorial/venv.html)
+
 Install `The Fuck` for development:
 
 ```bash
