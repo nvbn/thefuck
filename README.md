@@ -193,6 +193,7 @@ following rules are enabled by default:
 * `docker_not_command` &ndash; fixes wrong docker commands like `docker tags`;
 * `docker_image_being_used_by_container` &dash; removes the container that is using the image before removing the image;
 * `dry` &ndash; fixes repetitions like `git git push`;
+* `edit_filename` &ndash; fixes e.g. `vim file` to `vim file.ext`
 * `fab_command_not_found` &ndash; fix misspelled fabric commands;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `fix_file` &ndash; opens a file with an error in your `$EDITOR`;
