@@ -61,3 +61,6 @@ target/
 
 # vim temporary files
 .*.swp
+
+# Editor specific files
+.vscode/
