@@ -20,6 +20,3 @@ def match(command):
 
 def get_new_command(command):
     return command.script.replace("$", "", 1).strip()
-
-
-requires_output = True
