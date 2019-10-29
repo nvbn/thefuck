@@ -6,7 +6,7 @@ from thefuck.types import Command
 
 no_suggestions = '''\
 az provider: error: the following arguments are required: _subcommand
-usage: az provider [-h] {list,show,register,unregister,operation} ...
+usage: az provider [-h] {list,show,register,unregister,operation} ....
 '''
 
 
