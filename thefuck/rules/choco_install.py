@@ -1,6 +1,5 @@
 from thefuck.utils import for_app, which
 
-
 @for_app("choco", "cinst")
 def match(command):
     return ((command.script.startswith('choco install') or 'cinst' in command.script_parts)
@@ -10,17 +9,14 @@ def match(command):
 def get_new_command(command):
     # Find the argument that is the package name
     for script_part in command.script_parts:
-        if "choco" in script_part:
+        if script_part in ["choco", "cinst", "install"]:
+            # Need exact match (bc chocolatey is a package)
             continue
-        if "cinst" in script_part:
+        if script_part.startswith('-'):
+            # Leading hyphens are parameters; some packages contain them though
             continue
-        if "install" in script_part:
-            continue
-        if script_part.startswith('-'):   # Some parameters start with hyphens; some packages contain them though
-            continue
-        if '=' in script_part:            # Some paramaters contain '='
-            continue
-        if '/' in script_part:            # Some parameters contain slashes
+        if '=' in script_part or '/' in script_part:
+            # These are certainly parameters
             continue
         else:
             packageName = script_part
