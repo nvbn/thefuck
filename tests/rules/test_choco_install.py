@@ -13,6 +13,6 @@ from thefuck.types import Command
     ('choco install logstitcher -y -n=test /env', 'choco install logstitcher.install -y -n=test /env'),
     ('cinst logstitcher -y -n=test /env', 'cinst logstitcher.install -y -n=test /env'),
     ('choco install chocolatey -y', 'choco install chocolatey.install -y'),
-    ('cinst chocolatey -y', 'cinst chocolatey.install -y'),])
+    ('cinst chocolatey -y', 'cinst chocolatey.install -y'), ])
 def test_get_new_command(before, after):
     assert (get_new_command(Command(before, '')) == after)
