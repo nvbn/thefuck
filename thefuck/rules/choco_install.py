@@ -1,4 +1,4 @@
-from thefuck.utils import for_app
+from thefuck.utils import for_app, which
 
 
 @for_app("choco", "cinst")
@@ -10,20 +10,20 @@ def match(command):
 def get_new_command(command):
     # Find the argument that is the package name
     for script_part in command.script_parts:
-        if "choco" in i:
+        if "choco" in script_part:
             continue
-        if "cinst" in i:
+        if "cinst" in script_part:
             continue
-        if "install" in i:
+        if "install" in script_part:
             continue
-        if i.startswith('-'):   # Some parameters start with hyphens; some packages contain them though
+        if script_part.startswith('-'):   # Some parameters start with hyphens; some packages contain them though
             continue
-        if '=' in i:            # Some paramaters contain '='
+        if '=' in script_part:            # Some paramaters contain '='
             continue
-        if '/' in i:            # Some parameters contain slashes
+        if '/' in script_part:            # Some parameters contain slashes
             continue
         else:
-            packageName = i
+            packageName = script_part
     # Find the name of the broken package, and append metapackage names
     if not packageName:
         return False
