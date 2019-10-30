@@ -1,14 +1,15 @@
+from thefuck.utils import for_app
+
+
+@for_app("choco", "cinst")
 def match(command):
-    return (('choco install' in command.script_parts or 'cinst' in command.script_parts)
+    return ((command.script.startswith('choco install') or 'cinst' in command.script_parts)
             and 'Installing the following packages' in command.output)
 
 
 def get_new_command(command):
-    cmdList = command.script.split(' ')
-    packageName = ""
     # Find the argument that is the package name
-    for i in cmdList:
-        print(i)
+    for script_part in command.script_parts:
         if "choco" in i:
             continue
         if "cinst" in i:
@@ -27,3 +28,6 @@ def get_new_command(command):
     if not packageName:
         return False
     return(command.script.replace(packageName, packageName + ".install"))
+
+
+enabled_by_default = bool(which("choco")) or bool(which("cinst"))
