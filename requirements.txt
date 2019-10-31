@@ -3,7 +3,7 @@ pytest
 mock
 pytest-mock
 wheel
-setuptools>=17.1
+setuptools>=17.2
 pexpect
 pypandoc
 pytest-benchmark
