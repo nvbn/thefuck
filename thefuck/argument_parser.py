@@ -5,11 +5,10 @@ from .utils import get_alias
 
 
 class Parser(object):
-    """Argument parser that can handle arguments with our special
-    placeholder.
-
     """
-
+    Argument parser that can handle arguments with our special
+    placeholder.
+    """
     def __init__(self):
         self._parser = ArgumentParser(prog='thefuck', add_help=False)
         self._add_arguments()
@@ -17,7 +16,7 @@ class Parser(object):
     def _add_arguments(self):
         """Adds arguments to parser."""
         self._parser.add_argument(
-            '-v', '--version',
+            '-v', '--version', '--show-version'
             action='store_true',
             help="show program's version number and exit")
         self._parser.add_argument(
