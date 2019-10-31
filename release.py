@@ -21,7 +21,7 @@ def get_new_setup_py_lines():
 
 
 lines = list(get_new_setup_py_lines())
-with open('setup.py', 'w') as sf:
+with open('setup.py','w') as sf:
     sf.writelines(lines)
 
 call('git pull', shell=True)
