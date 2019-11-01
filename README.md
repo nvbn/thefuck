@@ -183,6 +183,7 @@ following rules are enabled by default:
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `chmod_x` &ndash; add execution bit;
 * `composer_not_command` &ndash; fixes composer command name;
+* `composer_not_package` &ndash; fixes composer misspelled package names;
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
 * `dirty_untar` &ndash; fixes `tar x` command that untarred in the current directory;
