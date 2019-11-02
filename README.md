@@ -279,6 +279,7 @@ following rules are enabled by default:
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
 * `path_from_history` &ndash; replaces not found path with similar absolute path from history;
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
+* `remove_shell_prompt_literal` &ndash; remove leading shell prompt symbol `$`, common when copying commands from documentations;
 * `remove_trailing_cedilla` &ndash; remove trailing cedillas `ç`, a common typo for european keyboard layouts;
 * `rm_dir` &ndash; adds `-rf` when you try to remove a directory;
 * `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
@@ -389,7 +390,7 @@ requires_output = True
 Several *The Fuck* parameters can be changed in the file `$XDG_CONFIG_HOME/thefuck/settings.py`
 (`$XDG_CONFIG_HOME` defaults to `~/.config`):
 
-* `rules` &ndash; list of enabled rules, by default `thefuck.conf.DEFAULT_RULES`;
+* `rules` &ndash; list of enabled rules, by default `thefuck.const.DEFAULT_RULES`;
 * `exclude_rules` &ndash; list of disabled rules, by default `[]`;
 * `require_confirmation` &ndash; requires confirmation before running new command, by default `True`;
 * `wait_command` &ndash; max amount of time in seconds for getting previous command output;

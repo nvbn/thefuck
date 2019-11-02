@@ -24,9 +24,9 @@ class Powershell(Generic):
 
     def how_to_configure(self):
         return ShellConfiguration(
-            content=u'iex "thefuck --alias"',
+            content=u'iex "$(thefuck --alias)"',
             path='$profile',
-            reload='& $profile',
+            reload='. $profile',
             can_configure_automatically=False)
 
     def _get_version(self):
