@@ -2,7 +2,7 @@
 
 *The Fuck* is a magnificent app, inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320),
-that corrects errors in previous console commands.
+that suggests corrections to errors in previous console commands and executes them.
 
 
 Is *The Fuck* too slow? [Try the experimental instant mode!](#experimental-instant-mode)
