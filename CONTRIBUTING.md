@@ -1,4 +1,4 @@
-# Report issues
+## Report issues
 If you have any issue with The Fuck, sorry about that, but we will do what we
 can to fix that. Actually, maybe we already have, so first thing to do is to
 update The Fuck and see if the bug is still there.
@@ -19,12 +19,12 @@ the following basic information:
 
 It's only with enough information that we can do something to fix the problem.
 
-# Make a pull request
+## Make a pull request
 We gladly accept pull request on the [official
 repository](https://github.com/nvbn/thefuck) for new rules, new features, bug
 fixes, etc.
 
-# Developing
+## Developing
 
 [Create and activate a Python 3 virtual environment.](https://docs.python.org/3/tutorial/venv.html)
 
