@@ -7,11 +7,12 @@ def _get_executable(script_part):
         if script_part.startswith(executable):
             if executable.startswith("apt"):
                 if script_part.startswith("apt-get"):
-                    if len(script_part)> len("apt-get"):
+                    if len(script_part) > len("apt-get"):
                         return "apt-get"
                     else:
                         return
             return executable
+
 
 def match(command):
     return (not command.script_parts[0] in get_all_executables()
@@ -24,11 +25,3 @@ def get_new_command(command):
 
 
 priority = 4000
-
-
-
-
-
-
-
-
