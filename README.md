@@ -315,6 +315,7 @@ The following rules are enabled by default on specific platforms only:
 * `apt_list_upgradable` &ndash; helps you run `apt list --upgradable` after `apt update`;
 * `apt_upgrade` &ndash; helps you run `apt upgrade` after `apt list --upgradable`;
 * `brew_cask_dependency` &ndash; installs cask dependencies;
+* `brew_cask_reinstall` &ndash; turns `brew cask install <formula>` into `brew cask reinstall <formula>`;
 * `brew_install` &ndash; fixes formula name for `brew install`;
 * `brew_reinstall` &ndash; turns `brew install <formula>` into `brew reinstall <formula>`;
 * `brew_link` &ndash; adds `--overwrite --dry-run` if linking fails;
