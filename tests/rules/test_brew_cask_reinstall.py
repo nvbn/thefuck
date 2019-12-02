@@ -21,7 +21,7 @@ def test_not_match(script):
 
 @pytest.mark.parametrize('script, formula, ', [
     ('brew cask install foo', 'foo'),
-    ('brew install bar zap', 'bar zap')])
+    ('brew cask install bar zap', 'bar zap')])
 def test_get_new_command(script, formula):
     command = Command(script, output)
     new_command = 'brew cask reinstall {}'.format(formula)
