@@ -4,7 +4,7 @@ from thefuck.rules.brew_cask_reinstall import get_new_command, match
 
 
 output = ("Warning: Cask 'thefuck' is already installed.\n\nTo "
-          "re-install thefuck, run\n  `brew cask reinstall thefuck`")
+          "re-install thefuck, run:\n  brew cask reinstall thefuck")
 
 
 def test_match():
