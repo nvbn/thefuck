@@ -3,7 +3,7 @@ from thefuck.utils import for_app
 
 
 warning_regex = re.compile(r'Warning: Cask \'(?:.(?!is ))+\' is already installed.\n\n')
-message_regex = re.compile(r'To re-install (?:(?!, ).)+, run\n  `brew cask reinstall [^`]+`')
+message_regex = re.compile(r'To re-install (?:(?!, ).)+, run:\n  brew cask reinstall [^\n]+')
 
 
 @for_app('brew', at_least=2)
