@@ -29,4 +29,3 @@ def get_new_command(command):
 
 
 priority = 4000
-
