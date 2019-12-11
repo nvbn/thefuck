@@ -34,10 +34,17 @@ def get_new_command(command):
         r"did not match any file\(s\) known to git", command.output)[0]
     closest_branch = utils.get_closest(missing_file, get_branches(),
                                        fallback_to_first=False)
+
+    new_commands = []
+
     if closest_branch:
-        return replace_argument(command.script, missing_file, closest_branch)
-    elif command.script_parts[1] == 'checkout':
-        return replace_argument(command.script, 'checkout', 'checkout -b')
+        new_commands.append(replace_argument(command.script, missing_file, closest_branch))
+    if command.script_parts[1] == 'checkout':
+        new_commands.append(replace_argument(command.script, 'checkout', 'checkout -b'))
+
+    if new_commands:
+        return new_commands
     else:
+        # if neither the better options above match, then resort to this
         return shell.and_('git branch {}', '{}').format(
             missing_file, command.script)
