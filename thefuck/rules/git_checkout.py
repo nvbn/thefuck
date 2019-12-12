@@ -42,9 +42,8 @@ def get_new_command(command):
     if command.script_parts[1] == 'checkout':
         new_commands.append(replace_argument(command.script, 'checkout', 'checkout -b'))
 
-    if new_commands:
-        return new_commands
-    else:
-        # if neither the better options above match, then resort to this
-        return shell.and_('git branch {}', '{}').format(
-            missing_file, command.script)
+    if not new_commands:
+        new_commands.append(shell.and_('git branch {}', '{}').format(
+            missing_file, command.script))
+
+    return new_commands
