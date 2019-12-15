@@ -9,3 +9,7 @@ pypandoc
 pytest-benchmark
 pytest-docker-pexpect
 twine
+psutil
+colorama
+decorator
+pyte
