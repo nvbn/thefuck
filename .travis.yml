@@ -12,7 +12,6 @@ matrix:
     - python: "3.6-dev"
     - python: "3.6"
     - python: "3.5"
-    - python: "3.4"
     - python: "2.7"
     - os: osx
       language: generic
