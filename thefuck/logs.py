@@ -106,7 +106,7 @@ def how_to_configure_alias(configuration_details):
 
         if configuration_details.can_configure_automatically:
             print(
-                u"Or run {bold}fuck{reset} second time for configuring"
+                u"Or run {bold}fuck{reset} a second time to configure"
                 u" it automatically.".format(
                     bold=color(colorama.Style.BRIGHT),
                     reset=color(colorama.Style.RESET_ALL)))
