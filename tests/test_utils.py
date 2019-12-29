@@ -225,9 +225,12 @@ class TestGetValidHistoryWithoutCurrent(object):
 
     @pytest.fixture(autouse=True)
     def history(self, mocker):
-        return mocker.patch('thefuck.shells.shell.get_history',
-                            return_value=['le cat', 'fuck', 'ls cat',
-                                          'diff x', 'nocommand x', u'café ô'])
+        mock = mocker.patch('thefuck.shells.shell.get_history')
+        #  Passing as an argument causes `UnicodeDecodeError`
+        #  with newer py.test and python 2.7
+        mock.return_value = ['le cat', 'fuck', 'ls cat',
+                             'diff x', 'nocommand x', u'café ô']
+        return mock
 
     @pytest.fixture(autouse=True)
     def alias(self, mocker):
