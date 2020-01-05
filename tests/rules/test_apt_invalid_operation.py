@@ -76,7 +76,7 @@ apt_get_operations = ['update', 'upgrade', 'install', 'remove', 'autoremove',
                       'dselect-upgrade', 'clean', 'autoclean', 'check',
                       'changelog', 'download']
 
-new_apt_get_help = '''apt 1.6.12 (amd64)
+new_apt_get_help = b'''apt 1.6.12 (amd64)
 Usage: apt-get [options] command
        apt-get [options] install|remove pkg1 [pkg2 ...]
        apt-get [options] source pkg1 [pkg2 ...]
