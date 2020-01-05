@@ -43,3 +43,14 @@ class TestGeneric(object):
 
     def test_how_to_configure(self, shell):
         assert shell.how_to_configure() is None
+
+    @pytest.mark.parametrize('side_effect, expected_info, warn', [
+        ([u'3.5.9'], u'Generic Shell 3.5.9', False),
+        ([OSError], u'Generic Shell', True),
+    ])
+    def test_info(self, side_effect, expected_info, warn, shell, mocker):
+        warn_mock = mocker.patch('thefuck.shells.generic.warn')
+        shell._get_version = mocker.Mock(side_effect=side_effect)
+        assert shell.info() == expected_info
+        assert warn_mock.called is warn
+        assert shell._get_version.called

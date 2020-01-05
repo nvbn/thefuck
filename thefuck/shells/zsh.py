@@ -1,14 +1,17 @@
 from time import time
 import os
+from subprocess import Popen, PIPE
 from tempfile import gettempdir
 from uuid import uuid4
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER, USER_COMMAND_MARK
-from ..utils import memoize
+from ..utils import DEVNULL, memoize
 from .generic import Generic
 
 
 class Zsh(Generic):
+    friendly_name = 'ZSH'
+
     def app_alias(self, alias_name):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
@@ -16,8 +19,10 @@ class Zsh(Generic):
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
                 export TF_SHELL=zsh;
                 export TF_ALIAS={name};
-                export TF_SHELL_ALIASES=$(alias);
-                export TF_HISTORY="$(fc -ln -10)";
+                TF_SHELL_ALIASES=$(alias);
+                export TF_SHELL_ALIASES;
+                TF_HISTORY="$(fc -ln -10)";
+                export TF_HISTORY;
                 export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
                     thefuck {argument_placeholder} $@
@@ -49,7 +54,7 @@ class Zsh(Generic):
                 export THEFUCK_INSTANT_MODE=True;
                 export THEFUCK_OUTPUT_LOG={log};
                 thefuck --shell-logger {log};
-                rm {log};
+                rm -f {log};
                 exit
             '''.format(log=log_path)
 
@@ -83,3 +88,9 @@ class Zsh(Generic):
             content=u'eval $(thefuck --alias)',
             path='~/.zshrc',
             reload='source ~/.zshrc')
+
+    def _get_version(self):
+        """Returns the version of the current shell"""
+        proc = Popen(['zsh', '-c', 'echo $ZSH_VERSION'],
+                     stdout=PIPE, stderr=DEVNULL)
+        return proc.stdout.read().decode('utf-8').strip()

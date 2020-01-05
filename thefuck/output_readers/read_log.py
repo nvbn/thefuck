@@ -1,5 +1,7 @@
 import os
 import shlex
+import mmap
+import re
 try:
     from shutil import get_terminal_size
 except ImportError:
@@ -18,11 +20,6 @@ def _group_by_calls(log):
     script_line = None
     lines = []
     for line in log:
-        try:
-            line = line.decode()
-        except UnicodeDecodeError:
-            continue
-
         if const.USER_COMMAND_MARK in line or ps1_counter > 0:
             if script_line and ps1_counter == 0:
                 yield script_line, lines
@@ -53,13 +50,14 @@ def _get_script_group_lines(grouped, script):
 
 
 def _get_output_lines(script, log_file):
-    lines = log_file.readlines()[-const.LOG_SIZE:]
+    data = log_file.read().decode()
+    data = re.sub(r'\x00+$', '', data)
+    lines = data.split('\n')
     grouped = list(_group_by_calls(lines))
     script_lines = _get_script_group_lines(grouped, script)
-
     screen = pyte.Screen(get_terminal_size().columns, len(script_lines))
     stream = pyte.Stream(screen)
-    stream.feed(''.join(script_lines))
+    stream.feed('\n'.join(script_lines))
     return screen.display
 
 
@@ -91,10 +89,11 @@ def get_output(script):
         return None
 
     try:
-        with logs.debug_time(u'Read output from log'), \
-                open(os.environ['THEFUCK_OUTPUT_LOG'], 'rb') as log_file:
-            _skip_old_lines(log_file)
-            lines = _get_output_lines(script, log_file)
+        with logs.debug_time(u'Read output from log'):
+            fd = os.open(os.environ['THEFUCK_OUTPUT_LOG'], os.O_RDONLY)
+            buffer = mmap.mmap(fd, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_READ)
+            _skip_old_lines(buffer)
+            lines = _get_output_lines(script, buffer)
             output = '\n'.join(lines).strip()
             logs.debug(u'Received output: {}'.format(output))
             return output

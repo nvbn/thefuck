@@ -1,3 +1,4 @@
+from types import ModuleType
 from thefuck.specific.apt import apt_available
 from thefuck.utils import memoize, which
 from thefuck.shells import shell
@@ -5,8 +6,14 @@ from thefuck.shells import shell
 try:
     from CommandNotFound import CommandNotFound
 
-    command_not_found = CommandNotFound()
     enabled_by_default = apt_available
+
+    if isinstance(CommandNotFound, ModuleType):
+        # For ubuntu 18.04+
+        _get_packages = CommandNotFound.CommandNotFound().get_packages
+    else:
+        # For older versions
+        _get_packages = CommandNotFound().getPackages
 except ImportError:
     enabled_by_default = False
 
@@ -21,7 +28,7 @@ def _get_executable(command):
 @memoize
 def get_package(executable):
     try:
-        packages = command_not_found.getPackages(executable)
+        packages = _get_packages(executable)
         return packages[0][0]
     except IndexError:
         # IndexError is thrown when no matching package is found

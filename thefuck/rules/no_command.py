@@ -1,5 +1,4 @@
-from difflib import get_close_matches
-from thefuck.utils import get_all_executables, \
+from thefuck.utils import get_all_executables, get_close_matches, \
     get_valid_history_without_current, get_closest, which
 from thefuck.specific.sudo import sudo_support
 
@@ -7,7 +6,8 @@ from thefuck.specific.sudo import sudo_support
 @sudo_support
 def match(command):
     return (not which(command.script_parts[0])
-            and 'not found' in command.output
+            and ('not found' in command.output
+                 or 'is not recognized as' in command.output)
             and bool(get_close_matches(command.script_parts[0],
                                        get_all_executables())))
 

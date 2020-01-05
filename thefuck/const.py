@@ -42,6 +42,7 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                                       './gradlew', 'vagrant'],
                     'repeat': False,
                     'instant_mode': False,
+                    'num_close_matches': 3,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
@@ -56,7 +57,8 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_WAIT_SLOW_COMMAND': 'wait_slow_command',
                'THEFUCK_SLOW_COMMANDS': 'slow_commands',
                'THEFUCK_REPEAT': 'repeat',
-               'THEFUCK_INSTANT_MODE': 'instant_mode'}
+               'THEFUCK_INSTANT_MODE': 'instant_mode',
+               'THEFUCK_NUM_CLOSE_MATCHES': 'num_close_matches'}
 
 SETTINGS_HEADER = u"""# The Fuck settings file
 #
@@ -76,8 +78,12 @@ CONFIGURATION_TIMEOUT = 60
 
 USER_COMMAND_MARK = u'\u200B' * 10
 
-LOG_SIZE = 1000
-
 LOG_SIZE_IN_BYTES = 1024 * 1024
 
+LOG_SIZE_TO_CLEAN = 10 * 1024
+
 DIFF_WITH_ALIAS = 0.5
+
+SHELL_LOGGER_SOCKET_ENV = 'SHELL_LOGGER_SOCKET'
+
+SHELL_LOGGER_LIMIT = 5

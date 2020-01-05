@@ -1,5 +1,5 @@
 from ..conf import settings
-from . import read_log, rerun
+from . import read_log, rerun, shell_logger
 
 
 def get_output(script, expanded):
@@ -12,6 +12,8 @@ def get_output(script, expanded):
     :rtype: str
 
     """
+    if shell_logger.is_available():
+        return shell_logger.get_output(script)
     if settings.instant_mode:
         return read_log.get_output(script)
     else:

@@ -12,6 +12,11 @@ class TestZsh(object):
         return Zsh()
 
     @pytest.fixture(autouse=True)
+    def Popen(self, mocker):
+        mock = mocker.patch('thefuck.shells.zsh.Popen')
+        return mock
+
+    @pytest.fixture(autouse=True)
     def shell_aliases(self):
         os.environ['TF_SHELL_ALIASES'] = (
             'fuck=\'eval $(thefuck $(fc -ln -1 | tail -n 1))\'\n'
@@ -68,3 +73,13 @@ class TestZsh(object):
                                                     config_exists):
         config_exists.return_value = False
         assert not shell.how_to_configure().can_configure_automatically
+
+    def test_info(self, shell, Popen):
+        Popen.return_value.stdout.read.side_effect = [b'3.5.9']
+        assert shell.info() == 'ZSH 3.5.9'
+
+    def test_get_version_error(self, shell, Popen):
+        Popen.return_value.stdout.read.side_effect = OSError
+        with pytest.raises(OSError):
+            shell._get_version()
+        assert Popen.call_args[0][0] == ['zsh', '-c', 'echo $ZSH_VERSION']

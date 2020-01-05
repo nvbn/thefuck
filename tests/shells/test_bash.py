@@ -12,6 +12,11 @@ class TestBash(object):
         return Bash()
 
     @pytest.fixture(autouse=True)
+    def Popen(self, mocker):
+        mock = mocker.patch('thefuck.shells.bash.Popen')
+        return mock
+
+    @pytest.fixture(autouse=True)
     def shell_aliases(self):
         os.environ['TF_SHELL_ALIASES'] = (
             'alias fuck=\'eval $(thefuck $(fc -ln -1))\'\n'
@@ -73,3 +78,13 @@ class TestBash(object):
                                                     config_exists):
         config_exists.return_value = False
         assert not shell.how_to_configure().can_configure_automatically
+
+    def test_info(self, shell, Popen):
+        Popen.return_value.stdout.read.side_effect = [b'3.5.9']
+        assert shell.info() == 'Bash 3.5.9'
+
+    def test_get_version_error(self, shell, Popen):
+        Popen.return_value.stdout.read.side_effect = OSError
+        with pytest.raises(OSError):
+            shell._get_version()
+        assert Popen.call_args[0][0] == ['bash', '-c', 'echo $BASH_VERSION']

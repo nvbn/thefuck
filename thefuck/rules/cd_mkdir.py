@@ -8,10 +8,11 @@ from thefuck.shells import shell
 @for_app('cd')
 def match(command):
     return (
-        'no such file or directory' in command.output.lower()
-        or 'cd: can\'t cd to' in command.output.lower()
-        or 'the system cannot find the path specified.' in command.output.lower()
-    )
+        command.script.startswith('cd ') and any((
+            'no such file or directory' in command.output.lower(),
+            'cd: can\'t cd to' in command.output.lower(),
+            'does not exist' in command.output.lower()
+        )))
 
 
 @sudo_support

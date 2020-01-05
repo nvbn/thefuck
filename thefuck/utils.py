@@ -3,11 +3,12 @@ import os
 import pickle
 import re
 import shelve
+import sys
 import six
 from decorator import decorator
-from difflib import get_close_matches
+from difflib import get_close_matches as difflib_get_close_matches
 from functools import wraps
-from .logs import warn
+from .logs import warn, exception
 from .conf import settings
 from .system import Path
 
@@ -86,14 +87,21 @@ def default_settings(params):
     return decorator(_default_settings)
 
 
-def get_closest(word, possibilities, n=3, cutoff=0.6, fallback_to_first=True):
+def get_closest(word, possibilities, cutoff=0.6, fallback_to_first=True):
     """Returns closest match or just first from possibilities."""
     possibilities = list(possibilities)
     try:
-        return get_close_matches(word, possibilities, n, cutoff)[0]
+        return difflib_get_close_matches(word, possibilities, 1, cutoff)[0]
     except IndexError:
         if fallback_to_first:
             return possibilities[0]
+
+
+def get_close_matches(word, possibilities, n=None, cutoff=0.6):
+    """Overrides `difflib.get_close_match` to control argument `n`."""
+    if n is None:
+        n = settings.num_close_matches
+    return difflib_get_close_matches(word, possibilities, n, cutoff)
 
 
 @memoize
@@ -110,7 +118,7 @@ def get_all_executables():
     tf_entry_points = ['thefuck', 'fuck']
 
     bins = [exe.name.decode('utf8') if six.PY2 else exe.name
-            for path in os.environ.get('PATH', '').split(':')
+            for path in os.environ.get('PATH', '').split(os.pathsep)
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]
@@ -190,6 +198,13 @@ class Cache(object):
         self._db = None
 
     def _init_db(self):
+        try:
+            self._setup_db()
+        except Exception:
+            exception("Unable to init cache", sys.exc_info())
+            self._db = {}
+
+    def _setup_db(self):
         cache_dir = self._get_cache_dir()
         cache_path = Path(cache_dir).joinpath('thefuck').as_posix()
 

@@ -14,6 +14,8 @@ ShellConfiguration = namedtuple('ShellConfiguration', (
 
 
 class Generic(object):
+    friendly_name = 'Generic Shell'
+
     def get_aliases(self):
         return {}
 
@@ -34,8 +36,8 @@ class Generic(object):
         return command_script
 
     def app_alias(self, alias_name):
-        return "alias {0}='eval $(TF_ALIAS={0} PYTHONIOENCODING=utf-8 " \
-               "thefuck $(fc -ln -1))'".format(alias_name)
+        return """alias {0}='eval "$(TF_ALIAS={0} PYTHONIOENCODING=utf-8 """ \
+               """thefuck "$(fc -ln -1)")"'""".format(alias_name)
 
     def instant_mode_alias(self, alias_name):
         warn("Instant mode not supported by your shell")
@@ -82,7 +84,7 @@ class Generic(object):
         encoded = self.encode_utf8(command)
 
         try:
-            splitted = [s.replace("??", "\ ") for s in shlex.split(encoded.replace('\ ', '??'))]
+            splitted = [s.replace("??", "\\ ") for s in shlex.split(encoded.replace('\\ ', '??'))]
         except ValueError:
             splitted = encoded.split(' ')
 
@@ -130,6 +132,19 @@ class Generic(object):
                 'shift', 'shopt', 'source', 'suspend', 'test', 'times', 'trap',
                 'type', 'typeset', 'ulimit', 'umask', 'unalias', 'unset',
                 'until', 'wait', 'while']
+
+    def _get_version(self):
+        """Returns the version of the current shell"""
+        return ''
+
+    def info(self):
+        """Returns the name and version of the current shell"""
+        try:
+            version = self._get_version()
+        except Exception as e:
+            warn(u'Could not determine shell version: {}'.format(e))
+            version = ''
+        return u'{} {}'.format(self.friendly_name, version).rstrip()
 
     def _create_shell_configuration(self, content, path, reload):
         return ShellConfiguration(

@@ -4,7 +4,6 @@ from thefuck.rules.git_checkout import match, get_branches, get_new_command
 from thefuck.types import Command
 
 
-@pytest.fixture
 def did_not_match(target, did_you_forget=False):
     error = ("error: pathspec '{}' did not match any "
              "file(s) known to git.".format(target))
@@ -40,6 +39,11 @@ def test_not_match(command):
     (b'', []),
     (b'* master', ['master']),
     (b'  remotes/origin/master', ['master']),
+    (b'  remotes/origin/test/1', ['test/1']),
+    (b'  remotes/origin/test/1/2/3', ['test/1/2/3']),
+    (b'  test/1', ['test/1']),
+    (b'  test/1/2/3', ['test/1/2/3']),
+    (b'  remotes/origin/HEAD -> origin/master', []),
     (b'  just-another-branch', ['just-another-branch']),
     (b'* master\n  just-another-branch', ['master', 'just-another-branch']),
     (b'* master\n  remotes/origin/master\n  just-another-branch',

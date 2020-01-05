@@ -6,17 +6,14 @@ update The Fuck and see if the bug is still there. -->
 if not, just open an issue on [GitHub](https://github.com/nvbn/thefuck) with
 the following basic information: -->
 
-The output of `thefuck --version` (something like `The Fuck 3.1 using Python 3.5.0`):
-
-    FILL THIS IN
-
-Your shell and its version (`bash`, `zsh`, *Windows PowerShell*, etc.):
+The output of `thefuck --version` (something like `The Fuck 3.1 using Python
+3.5.0 and Bash 4.4.12(1)-release`):
 
     FILL THIS IN
 
 Your system (Debian 7, ArchLinux, Windows, etc.):
 
-<!-- FILL THIS IN -->
+    FILL THIS IN
 
 How to reproduce the bug:
 
@@ -32,6 +29,6 @@ If the bug only appears with a specific application, the output of that applicat
 
 Anything else you think is relevant:
 
-<!-- FILL THIS IN -->
+    FILL THIS IN
 
 <!-- It's only with enough information that we can do something to fix the problem. -->

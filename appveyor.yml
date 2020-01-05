@@ -3,9 +3,9 @@ build: false
 environment:
   matrix:
     - PYTHON: "C:/Python27"
-    - PYTHON: "C:/Python34"
     - PYTHON: "C:/Python35"
     - PYTHON: "C:/Python36"
+    - PYTHON: "C:/Python37"
 
 init:
   - "ECHO %PYTHON%"

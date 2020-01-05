@@ -3,6 +3,7 @@ from ..system import init_output
 
 init_output()
 
+import getpass  # noqa: E402
 import os  # noqa: E402
 import json  # noqa: E402
 from tempfile import gettempdir  # noqa: E402
@@ -27,7 +28,9 @@ def _get_shell_pid():
 
 def _get_not_configured_usage_tracker_path():
     """Returns path of special file where we store latest shell pid."""
-    return Path(gettempdir()).joinpath('thefuck.last_not_configured_run')
+    return Path(gettempdir()).joinpath(u'thefuck.last_not_configured_run_{}'.format(
+        getpass.getuser(),
+    ))
 
 
 def _record_first_run():
