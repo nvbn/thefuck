@@ -20,21 +20,8 @@ def _parse_apt_operations(help_text_lines):
         if is_commands_list and line:
             yield line.split()[0]
         elif line.startswith('Basic commands:') \
-                or line.startswith('Most used commands:'):
-            is_commands_list = True
-
-
-@eager
-def _parse_apt_get_and_cache_operations(help_text_lines):
-    is_commands_list = False
-    for line in help_text_lines:
-        line = line.decode().strip()
-        if is_commands_list:
-            if not line:
-                return
-
-            yield line.split()[0]
-        elif line.startswith('Commands:'):
+                or line.startswith('Most used commands:') \
+                or line.startswith('Commands:'):
             is_commands_list = True
 
 
@@ -44,10 +31,7 @@ def _get_operations(app):
                             stderr=subprocess.PIPE)
     lines = proc.stdout.readlines()
 
-    if app == 'apt':
-        return _parse_apt_operations(lines)
-    else:
-        return _parse_apt_get_and_cache_operations(lines)
+    return _parse_apt_operations(lines)
 
 
 @sudo_support

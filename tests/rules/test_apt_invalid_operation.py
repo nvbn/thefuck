@@ -76,6 +76,45 @@ apt_get_operations = ['update', 'upgrade', 'install', 'remove', 'autoremove',
                       'dselect-upgrade', 'clean', 'autoclean', 'check',
                       'changelog', 'download']
 
+new_apt_get_help = '''apt 1.6.12 (amd64)
+Usage: apt-get [options] command
+       apt-get [options] install|remove pkg1 [pkg2 ...]
+       apt-get [options] source pkg1 [pkg2 ...]
+
+apt-get is a command line interface for retrieval of packages
+and information about them from authenticated sources and
+for installation, upgrade and removal of packages together
+with their dependencies.
+
+Most used commands:
+  update - Retrieve new lists of packages
+  upgrade - Perform an upgrade
+  install - Install new packages (pkg is libc6 not libc6.deb)
+  remove - Remove packages
+  purge - Remove packages and config files
+  autoremove - Remove automatically all unused packages
+  dist-upgrade - Distribution upgrade, see apt-get(8)
+  dselect-upgrade - Follow dselect selections
+  build-dep - Configure build-dependencies for source packages
+  clean - Erase downloaded archive files
+  autoclean - Erase old downloaded archive files
+  check - Verify that there are no broken dependencies
+  source - Download source archives
+  download - Download the binary package into the current directory
+  changelog - Download and display the changelog for the given package
+
+See apt-get(8) for more information about the available commands.
+Configuration options and syntax is detailed in apt.conf(5).
+Information about how to configure sources can be found in sources.list(5).
+Package and version choices can be expressed via apt_preferences(5).
+Security details are available in apt-secure(8).
+                                        This APT has Super Cow Powers.
+'''
+new_apt_get_operations = ['update', 'upgrade', 'install', 'remove', 'autoremove',
+                          'purge', 'source', 'build-dep', 'dist-upgrade',
+                          'dselect-upgrade', 'clean', 'autoclean', 'check',
+                          'changelog', 'download']
+
 
 @pytest.mark.parametrize('script, output', [
     ('apt', invalid_operation('saerch')),
@@ -104,7 +143,8 @@ def set_help(mocker):
 
 @pytest.mark.parametrize('app, help_text, operations', [
     ('apt', apt_help, apt_operations),
-    ('apt-get', apt_get_help, apt_get_operations)
+    ('apt-get', apt_get_help, apt_get_operations),
+    ('apt-get', new_apt_get_help, new_apt_get_operations)
 ])
 def test_get_operations(set_help, app, help_text, operations):
     set_help(help_text)
