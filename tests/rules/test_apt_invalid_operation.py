@@ -110,10 +110,10 @@ Package and version choices can be expressed via apt_preferences(5).
 Security details are available in apt-secure(8).
                                         This APT has Super Cow Powers.
 '''
-new_apt_get_operations = ['update', 'upgrade', 'install', 'remove', 'autoremove',
-                          'purge', 'source', 'build-dep', 'dist-upgrade',
-                          'dselect-upgrade', 'clean', 'autoclean', 'check',
-                          'changelog', 'download']
+new_apt_get_operations = ['update', 'upgrade', 'install', 'remove', 'purge',
+                          'autoremove', 'dist-upgrade', 'dselect-upgrade',
+                          'build-dep', 'clean', 'autoclean', 'check',
+                          'source', 'download', 'changelog']
 
 
 @pytest.mark.parametrize('script, output', [
