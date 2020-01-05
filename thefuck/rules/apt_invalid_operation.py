@@ -34,7 +34,8 @@ def _parse_apt_get_and_cache_operations(help_text_lines):
                 return
 
             yield line.split()[0]
-        elif line.startswith('Commands:'):
+        elif line.startswith('Commands:') \
+                or line.startswith('Most used commands:'):
             is_commands_list = True
 
 
