@@ -56,18 +56,18 @@ def test_get_branches(branches, branch_list, git_branch):
 @pytest.mark.parametrize('branches, command, new_command', [
     (b'',
      Command('git checkout unknown', did_not_match('unknown')),
-     'git checkout -b unknown'),
+     ['git checkout -b unknown']),
     (b'',
      Command('git commit unknown', did_not_match('unknown')),
-     'git branch unknown && git commit unknown'),
+     ['git branch unknown && git commit unknown']),
     (b'  test-random-branch-123',
      Command('git checkout tst-rdm-brnch-123',
              did_not_match('tst-rdm-brnch-123')),
-     'git checkout test-random-branch-123'),
+     ['git checkout test-random-branch-123', 'git checkout -b tst-rdm-brnch-123']),
     (b'  test-random-branch-123',
      Command('git commit tst-rdm-brnch-123',
              did_not_match('tst-rdm-brnch-123')),
-     'git commit test-random-branch-123')])
+     ['git commit test-random-branch-123'])])
 def test_get_new_command(branches, command, new_command, git_branch):
     git_branch(branches)
     assert get_new_command(command) == new_command
