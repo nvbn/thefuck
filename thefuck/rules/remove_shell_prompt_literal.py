@@ -1,4 +1,5 @@
-"""Fixes error for commands containing the shell prompt symbol '$'.
+"""Fixes error for commands containing one or more occurrences of the shell
+prompt symbol '$'.
 
 This usually happens when commands are copied from documentations
 including them in their code blocks.
@@ -19,4 +20,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return command.script.replace("$", "", 1).strip()
+    return command.script.lstrip("$ ")

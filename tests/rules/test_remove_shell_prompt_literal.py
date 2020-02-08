@@ -8,7 +8,15 @@ def output():
     return "$: command not found"
 
 
-@pytest.mark.parametrize("script", ["$ cd newdir", " $ cd newdir"])
+@pytest.mark.parametrize(
+    "script",
+    [
+        "$ cd newdir",
+        " $ cd newdir",
+        "$ $ cd newdir"
+        " $ $ cd newdir",
+    ],
+)
 def test_match(script, output):
     assert match(Command(script, output))
 
@@ -31,7 +39,9 @@ def test_not_match(command):
     "script, new_command",
     [
         ("$ cd newdir", "cd newdir"),
+        ("$ $ cd newdir", "cd newdir"),
         ("$ python3 -m virtualenv env", "python3 -m virtualenv env"),
+        (" $ $ $ python3 -m virtualenv env", "python3 -m virtualenv env"),
     ],
 )
 def test_get_new_command(script, new_command, output):
