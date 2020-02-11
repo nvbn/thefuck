@@ -238,8 +238,8 @@ class CorrectedCommand(object):
                 '--debug ' if settings.debug else '',
                 shell.quote(self.script))
             return shell.or_(self.script, repeat_fuck)
-        else:
-            return self.script
+
+        return shell.commandline_wrap(self.script)
 
     def run(self, old_cmd):
         """Runs command from rule for passed command.
