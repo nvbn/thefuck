@@ -160,3 +160,7 @@ class Generic(object):
             path=path,
             reload=reload,
             can_configure_automatically=Path(path).expanduser().exists())
+
+    def commandline_wrap(self, command):
+        """Generic implementation of commandline wrapper"""
+        return command

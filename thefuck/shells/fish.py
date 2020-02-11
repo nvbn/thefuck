@@ -60,8 +60,7 @@ class Fish(Generic):
                 '  env TF_SHELL=fish TF_ALIAS={0} PYTHONIOENCODING=utf-8'
                 ' thefuck $fucked_up_command {2} $argv | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
-                '    commandline $unfucked_command\n'
-                '    commandline -f execute\n{1}'
+                '    eval $unfucked_command\n{1}'
                 '  end\n'
                 'end').format(alias_name, alter_history, ARGUMENT_PLACEHOLDER)
 
@@ -133,4 +132,8 @@ class Fish(Generic):
 
     def edit_command(self, command):
         """Return the shell editable command"""
-        return 'commandline -r "' + command + '"'
+        return ' commandline -r "' + command + '"'
+
+    def commandline_wrap(self, command):
+        """Return the commandline replace and execute commands"""
+        return u'commandline "{}";commandline -f execute'.format(command)

@@ -234,7 +234,7 @@ class CorrectedCommand(object):
 
         """
         if self.should_edit:
-            self.script = shell.edit_command(self.script)
+            return shell.edit_command(self.script)
 
         if settings.repeat:
             repeat_fuck = '{} --repeat {}--force-command {}'.format(
@@ -242,8 +242,8 @@ class CorrectedCommand(object):
                 '--debug ' if settings.debug else '',
                 shell.quote(self.script))
             return shell.or_(self.script, repeat_fuck)
-        else:
-            return self.script
+
+        return shell.commandline_wrap(self.script)
 
     def edit(self):
         self.should_edit = True
