@@ -213,6 +213,7 @@ following rules are enabled by default:
 * `git_fix_stash` &ndash; fixes `git stash` commands (misspelled subcommand and missing `save`);
 * `git_flag_after_filename` &ndash; fixes `fatal: bad flag '...' after filename`
 * `git_help_aliased` &ndash; fixes `git help <alias>` commands replacing <alias> with the aliased command;
+* `git_lfs_mistype` &ndash; fixes mistyped `git lfs <command>` commands;
 * `git_merge` &ndash; adds remote to branch names;
 * `git_merge_unrelated` &ndash; adds `--allow-unrelated-histories` when required
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
