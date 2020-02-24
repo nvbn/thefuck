@@ -7,8 +7,8 @@ def test_match():
 Error: unknown command "evn" for "git-lfs"
 
 Did you mean this?
-	env
-	ext
+        env
+        ext
 
 Run 'git-lfs --help' for usage.
     """
@@ -25,8 +25,8 @@ def test_not_git_command():
 Error: unknown command "evn" for "git-lfs"
 
 Did you mean this?
-	env
-	ext
+        env
+        ext
 
 Run 'git-lfs --help' for usage.
     """
@@ -38,8 +38,8 @@ def test_get_new_command():
 Error: unknown command "evn" for "git-lfs"
 
 Did you mean this?
-	env
-	ext
+        env
+        ext
 
 Run 'git-lfs --help' for usage.
     """
@@ -53,7 +53,7 @@ def test_get_another_new_command():
 Error: unknown command "chekout" for "git-lfs"
 
 Did you mean this?
-	checkout
+        checkout
 
 Run 'git-lfs --help' for usage.
     """
