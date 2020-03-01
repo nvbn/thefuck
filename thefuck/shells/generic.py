@@ -125,8 +125,24 @@ class Generic(object):
         return False
 
     def edit_command(self, command):
-        """Return the shell editable command"""
-        return command
+        """Spawn default editor (or `vi` if not set) and edit command in a buffer"""
+        # Create a temporary file and write some default text
+        # mktemp somewhere
+        file_path = "The Fuck: Command Edit"
+        with open(file_path, "w") as file_handle:
+            file_handle.write(command)
+
+        editor = os.getenv("EDITOR", "vi")
+
+        os.system(u"{} '{}' >/dev/tty".format(editor, file_path))
+
+        data = None
+        with open(file_path, "r") as file_handle:
+            data = file_handle.read()
+
+        os.remove(file_path)
+
+        return data
 
     def get_builtin_commands(self):
         """Returns shells builtin commands."""
