@@ -64,6 +64,9 @@ class Zsh(Generic):
             value = value[1:-1]
         return name, value
 
+    def can_edit(self):
+        return True
+
     @memoize
     def get_aliases(self):
         raw_aliases = os.environ.get('TF_SHELL_ALIASES', '').split('\n')

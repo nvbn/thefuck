@@ -124,10 +124,28 @@ class Generic(object):
     def can_edit(self):
         return False
 
-    # FIXME: this is just an attempt to make it work in bash or zsh
     def edit_command(self, command):
-        """Return the shell editable command"""
-        return 'export READLINE_LINE="' + command + '"'
+        """Spawn default editor (or `vi` if not set) and edit command in a buffer"""
+        # Create a temporary file and write some default text
+        file_path = "The Fuck: Command Edit"
+        file_handle = open(file_path, "w")
+        file_handle.write(command)
+        file_handle.close()
+
+        editor = os.getenv('EDITOR')
+        if editor is None:
+            editor = "vi"
+
+        os.system("{} '{}' >/dev/tty".format(editor, file_path))
+
+        file_handle = open(file_path, 'r')
+        data = file_handle.read()
+        file_handle.close()
+
+        os.remove(file_path)
+
+        return data
+
 
     def get_builtin_commands(self):
         """Returns shells builtin commands."""
