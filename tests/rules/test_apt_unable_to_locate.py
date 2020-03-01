@@ -1,11 +1,15 @@
 from io import BytesIO
 
 import pytest
-from thefuck.rules.apt_unable_to_locate import match, get_new_command, _get_search_results
+from thefuck.rules.apt_unable_to_locate import (
+    match,
+    get_new_command,
+    _get_search_results,
+)
 from thefuck.types import Command
 
-invalid_operation = 'E: Unable to locate package {}'.format
-apt_rabbitmq_search_results = b''' kamailio-rabbitmq-modules/bionic 5.1.2-1ubuntu2 amd64
+invalid_operation = "E: Unable to locate package {}".format
+apt_rabbitmq_search_results = b""" kamailio-rabbitmq-modules/bionic 5.1.2-1ubuntu2 amd64
   RabbitMQ and AMQP integration modules for the Kamailio SIP server
 
 libanyevent-rabbitmq-perl/bionic 1.19+dfsg-1 all
@@ -44,8 +48,8 @@ puppet-module-puppetlabs-rabbitmq/bionic 5.3.1-2 all
 rabbitmq-server/bionic 3.6.10-1 all
   AMQP server written in Erlang
 
-'''
-apt_get_rabbitmq_search_results = b'''
+"""
+apt_get_rabbitmq_search_results = b"""
 kamailio-rabbitmq-modules - RabbitMQ and AMQP integration modules for the Kamailio SIP server
 libanyevent-rabbitmq-perl - asynchronous and multi channel Perl AMQP client
 libmojo-rabbitmq-client-perl - Mojo::IOLoop based RabbitMQ client
@@ -59,61 +63,50 @@ nagios-plugins-rabbitmq - Set of Nagios checks useful for monitoring a RabbitMQ 
 opensips-rabbitmq-module - Interface module to interact with a RabbitMQ server
 puppet-module-puppetlabs-rabbitmq - Puppet module for rabbitmq, manage everything from vhosts to exchanges
 rabbitmq-server - AMQP server written in Erlang
-'''
+"""
 rabbitmq_search_search_results = [
-    'kamailio-rabbitmq-modules',
-    'libanyevent-rabbitmq-perl',
-    'libmojo-rabbitmq-client-perl',
-    'libmono-messaging-rabbitmq4.0-cil',
-    'libmono-rabbitmq4.0-cil',
-    'librabbitmq-client-java',
-    'librabbitmq-dbg',
-    'librabbitmq-dev',
-    'librabbitmq4',
-    'nagios-plugins-rabbitmq',
-    'opensips-rabbitmq-module',
-    'puppet-module-puppetlabs-rabbitmq',
-    'rabbitmq-server'
+    "kamailio-rabbitmq-modules",
+    "libanyevent-rabbitmq-perl",
+    "libmojo-rabbitmq-client-perl",
+    "libmono-messaging-rabbitmq4.0-cil",
+    "libmono-rabbitmq4.0-cil",
+    "librabbitmq-client-java",
+    "librabbitmq-dbg",
+    "librabbitmq-dev",
+    "librabbitmq4",
+    "nagios-plugins-rabbitmq",
+    "opensips-rabbitmq-module",
+    "puppet-module-puppetlabs-rabbitmq",
+    "rabbitmq-server",
 ]
 
 
 @pytest.mark.parametrize(
-    'command',
+    "command",
     [
-        (
-            Command('apt install rabbitmq', invalid_operation('rabbitmq'))
-        ),
-        (
-            Command('apt-get install rabbitmq', invalid_operation('rabbitmq'))
-        )
-    ]
+        (Command("apt install rabbitmq", invalid_operation("rabbitmq"))),
+        (Command("apt-get install rabbitmq", invalid_operation("rabbitmq"))),
+    ],
 )
 def test_match(command):
     assert match(command)
 
 
 @pytest.mark.parametrize(
-    'command',
+    "command",
     [
-        (
-            Command('yarn install reactjs', 'a_bad_cmd: command not found')
-        ),
-        (
-            Command('npm install reactjs', 'a_bad_cmd: command not found')
-        ),
-        (
-            Command('apt upgrade', 'a_bad_cmd: command not found')
-        )
-    ]
+        (Command("yarn install reactjs", "a_bad_cmd: command not found")),
+        (Command("npm install reactjs", "a_bad_cmd: command not found")),
+        (Command("apt upgrade", "a_bad_cmd: command not found")),
+    ],
 )
 def test_not_match(command):
-
     assert not match(command)
 
 
 @pytest.fixture
 def set_search(mocker):
-    mock = mocker.patch('subprocess.Popen')
+    mock = mocker.patch("subprocess.Popen")
 
     def _set_text(text):
         mock.return_value.stdout = BytesIO(text)
@@ -122,11 +115,21 @@ def set_search(mocker):
 
 
 @pytest.mark.parametrize(
-    'app, command, search_text, search_results',
+    "app, command, search_text, search_results",
     [
-        ('apt', 'rabbitmq', apt_rabbitmq_search_results, rabbitmq_search_search_results),
-        ('apt-get', 'rabbitmq', apt_get_rabbitmq_search_results, rabbitmq_search_search_results),
-    ]
+        (
+            "apt",
+            "rabbitmq",
+            apt_rabbitmq_search_results,
+            rabbitmq_search_search_results,
+        ),
+        (
+            "apt-get",
+            "rabbitmq",
+            apt_get_rabbitmq_search_results,
+            rabbitmq_search_search_results,
+        ),
+    ],
 )
 def test_get_search_results(set_search, app, command, search_text, search_results):
     set_search(search_text)
@@ -134,20 +137,19 @@ def test_get_search_results(set_search, app, command, search_text, search_result
 
 
 @pytest.mark.parametrize(
-    'command, expected_command, search_text',
+    "command, expected_command, search_text",
     [
         (
-            Command('sudo apt install rabbitmq', invalid_operation('rabbitmq')),
+            Command("sudo apt install rabbitmq", invalid_operation("rabbitmq")),
             [
-                'sudo apt install librabbitmq4',
-                'sudo apt install rabbitmq-server',
-                'sudo apt install librabbitmq-dev'
+                "sudo apt install librabbitmq4",
+                "sudo apt install rabbitmq-server",
+                "sudo apt install librabbitmq-dev",
             ],
             apt_rabbitmq_search_results,
         )
-    ]
+    ],
 )
 def test_get_new_command(set_search, command, expected_command, search_text):
     set_search(search_text)
-    actual_command = get_new_command(command)
-    assert actual_command == expected_command
+    assert get_new_command(command) == expected_command
