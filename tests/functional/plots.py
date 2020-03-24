@@ -83,3 +83,17 @@ def without_confirmation(proc, TIMEOUT):
 def how_to_configure(proc, TIMEOUT):
     proc.sendline(u'fuck')
     assert proc.expect([TIMEOUT, u"alias isn't configured"])
+
+
+def status_success(proc, TIMEOUT):
+    proc.sendline(u'git commit --allow-empty -m "Test"')
+
+    proc.sendline(u'fuck')
+    assert proc.expect([TIMEOUT, u'git commit --amend'])
+
+
+def status_failure(proc, TIMEOUT):
+    proc.sendline(u'git commit -m "Test"')
+
+    proc.sendline(u'fuck')
+    assert proc.expect([TIMEOUT, u'git reset HEAD~'])

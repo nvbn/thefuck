@@ -18,6 +18,7 @@ class Zsh(Generic):
             {name} () {{
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
                 export TF_SHELL=zsh;
+                export TF_STATUS=$?;
                 export TF_ALIAS={name};
                 TF_SHELL_ALIASES=$(alias);
                 export TF_SHELL_ALIASES;

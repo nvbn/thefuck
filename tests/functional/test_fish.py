@@ -1,6 +1,7 @@
 import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
-    refuse_with_confirmation, select_command_with_arrows
+    refuse_with_confirmation, select_command_with_arrows, status_success, \
+    status_failure
 
 containers = (('thefuck/python3-fish',
                u'''FROM python:3
@@ -48,5 +49,15 @@ def test_refuse_with_confirmation(proc, TIMEOUT):
 @pytest.mark.functional
 def test_without_confirmation(proc, TIMEOUT):
     without_confirmation(proc, TIMEOUT)
+
+
+@pytest.mark.functional
+def test_status_success(proc, TIMEOUT):
+    status_success(proc, TIMEOUT)
+
+
+@pytest.mark.functional
+def test_status_failure(proc, TIMEOUT):
+    status_failure(proc, TIMEOUT)
 
 # TODO: ensure that history changes.
