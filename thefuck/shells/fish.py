@@ -57,8 +57,9 @@ class Fish(Generic):
             alter_history = ''
         # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
+                '  env TF_STATUS=$status\n'
                 '  set -l fucked_up_command $history[1]\n'
-                '  env TF_SHELL=fish TF_ALIAS={0} TF_STATUS=$status PYTHONIOENCODING=utf-8'
+                '  env TF_SHELL=fish TF_ALIAS={0} PYTHONIOENCODING=utf-8'
                 ' thefuck $fucked_up_command {2} $argv | read -l unfucked_command\n'
                 '  if [ "$unfucked_command" != "" ]\n'
                 '    eval $unfucked_command\n{1}'

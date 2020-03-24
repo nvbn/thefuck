@@ -16,9 +16,9 @@ class Zsh(Generic):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
             {name} () {{
+                export TF_STATUS=$?;
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
                 export TF_SHELL=zsh;
-                export TF_STATUS=$?;
                 export TF_ALIAS={name};
                 TF_SHELL_ALIASES=$(alias);
                 export TF_SHELL_ALIASES;
