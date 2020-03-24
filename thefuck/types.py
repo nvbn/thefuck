@@ -25,7 +25,7 @@ class Command(object):
 
     @property
     def status_code(self):
-        return int(os.environ.get('TF_STATUS_CODE', 1))
+        return int(os.environ.get('TF_STATUS', 1))
 
     @property
     def stdout(self):
