@@ -2,6 +2,8 @@ import io
 import os
 import shlex
 import six
+import tempfile
+from subprocess import call
 from collections import namedtuple
 from ..logs import warn
 from ..utils import memoize
@@ -128,21 +130,16 @@ class Generic(object):
         """Spawn default editor (or `vi` if not set) and edit command in a buffer"""
         # Create a temporary file and write some default text
         # mktemp somewhere
-        file_path = "The Fuck: Command Edit"
-        with open(file_path, "w") as file_handle:
-            file_handle.write(command)
-
+        edited_command = None
         editor = os.getenv("EDITOR", "vi")
 
-        os.system(u"{} '{}' >/dev/tty".format(editor, file_path))
+        with tempfile.TemporaryFile(prefix="the_fuck/command_edit__") as fp:
+            # open named temp file in default editor
+            fp.write(b'{}'.format(command))
+            call([editor, fp.name])
+            edited_command = fp.read()
 
-        data = None
-        with open(file_path, "r") as file_handle:
-            data = file_handle.read()
-
-        os.remove(file_path)
-
-        return data
+        return edited_command
 
     def get_builtin_commands(self):
         """Returns shells builtin commands."""
