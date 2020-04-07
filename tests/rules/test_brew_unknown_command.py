@@ -1,6 +1,6 @@
 import pytest
 from thefuck.rules.brew_unknown_command import match, get_new_command
-from thefuck.rules.brew_unknown_command import _brew_commands
+from thefuck.specific.brew import all_brew_commands
 from thefuck.types import Command
 
 
@@ -16,7 +16,7 @@ def brew_unknown_cmd2():
 
 def test_match(brew_unknown_cmd):
     assert match(Command('brew inst', brew_unknown_cmd))
-    for command in _brew_commands():
+    for command in all_brew_commands():
         assert not match(Command('brew ' + command, ''))
 
 
