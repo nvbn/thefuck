@@ -51,7 +51,9 @@ class Fish(Generic):
     def app_alias(self, alias_name):
         if settings.alter_history:
             alter_history = ('    builtin history delete --exact'
-                             ' --case-sensitive -- $fucked_up_command\n')
+                             ' --case-sensitive -- $fucked_up_command\n'
+                             '    builtin history delete --exact'
+                             ' --case-sensitive -- {0}\n').format(alias_name)
         else:
             alter_history = ''
         # It is VERY important to have the variables declared WITHIN the alias
