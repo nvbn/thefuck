@@ -198,6 +198,7 @@ following rules are enabled by default:
 * `fab_command_not_found` &ndash; fix misspelled fabric commands;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `fix_file` &ndash; opens a file with an error in your `$EDITOR`;
+* `gcloud_cli` &ndash; fixes misspelled commands like `gcloud comute instance list`;
 * `gem_unknown_command` &ndash; fixes wrong `gem` commands;
 * `git_add` &ndash; fixes *"pathspec 'foo' did not match any file(s) known to git."*;
 * `git_add_force` &ndash; adds `--force` to `git add <pathspec>...` when paths are .gitignore'd;
