@@ -1,14 +1,13 @@
-import re
 
 from thefuck.utils import for_app, replace_argument
 
-INVALID_CHOICE = "(?<=Invalid choice: ')(.*)(?=', maybe you meant:)"
-OPTIONS = "^\\s*\\*\\s(.*)"
+INVALID_CHOICE = "(?<=Invalid choice: ')(.*)(?='.\nMaybe you meant:)"
+OPTIONS = "^\\s*(.*)"
 
 
 @for_app('gcloud')
 def match(command):
-    return "usage:" in command.output and "maybe you meant:" in command.output
+    return "ERROR:" in command.output and "Maybe you meant:" in command.output
 
 
 def get_new_command(command):
