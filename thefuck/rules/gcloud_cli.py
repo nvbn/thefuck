@@ -1,6 +1,6 @@
-import re 
+import re
 
-from thefuck.utils import for_app, replace_argument
+from thefuck.utils import for_app
 
 INVALID_CHOICE = "(?<=Invalid choice: ')(.*)(?='.)"
 OPTIONS = "t\\:\\n\\s\\s(.*)"
@@ -12,7 +12,5 @@ def match(command):
 
 
 def get_new_command(command):
-    mistake = re.search(INVALID_CHOICE, command.output).group(0)
     options = re.findall(OPTIONS, command.output, flags=re.MULTILINE)
     return options
-#[replace_argument(command.script, mistake, o) for o in options]
