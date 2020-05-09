@@ -3,11 +3,9 @@ import pytest
 from thefuck.rules.gcloud_cli import match, get_new_command
 from thefuck.types import Command
 
-
 no_suggestions = '''\
 ERROR: (gcloud) Command name argument expected.
 '''
-
 
 misspelled_command = '''\
 ERROR: (gcloud) Invalid choice: 'comute'.
@@ -27,7 +25,6 @@ For detailed information on this command and its flags, run:
   gcloud --help
 '''
 
-
 misspelled_subcommand = '''\
 ERROR: (gcloud.compute) Invalid choice: 'instance'.
 Maybe you meant:
@@ -40,19 +37,14 @@ To search the help text of gcloud commands, run:
   gcloud help -- SEARCH_TERMS
 '''
 
-
-
-
 @pytest.mark.parametrize('command', [
     Command('gcloud comute', misspelled_command),
     Command('gcloud compute instance list', misspelled_subcommand)])
 def test_match(command):
     assert match(command)
 
-
 def test_not_match():
     assert not match(Command('aws dynamodb invalid', no_suggestions))
-
 
 @pytest.mark.parametrize('command, result', [
     (Command('gcloud comute', misspelled_command),
