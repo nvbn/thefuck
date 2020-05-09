@@ -39,7 +39,7 @@ To search the help text of gcloud commands, run:
 
 
 @pytest.mark.parametrize('command', [
-#    Command('gcloud comute instances list', misspelled_command),
+    Command('gcloud comute instances list', misspelled_subcommand),
     Command('gcloud compute instance list', misspelled_subcommand)])
 def test_match(command):
     assert match(command)
@@ -50,8 +50,8 @@ def test_not_match():
 
 
 @pytest.mark.parametrize('command, result', [
-    (Command('gcloud comute instances list', misspelled_command),
-     ['gcloud compute instances']),
+    (Command('gcloud comute instances list', misspelled_subcommand),
+     ['gcloud compute instance-groups']),
     (Command('gcloud compute instance list', misspelled_subcommand),
      ['gcloud compute instance-groups'])])
 def test_get_new_command(command, result):
