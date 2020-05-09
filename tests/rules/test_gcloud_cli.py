@@ -37,14 +37,17 @@ To search the help text of gcloud commands, run:
   gcloud help -- SEARCH_TERMS
 '''
 
+
 @pytest.mark.parametrize('command', [
     Command('gcloud comute', misspelled_command),
     Command('gcloud compute instance list', misspelled_subcommand)])
 def test_match(command):
     assert match(command)
 
+
 def test_not_match():
     assert not match(Command('aws dynamodb invalid', no_suggestions))
+
 
 @pytest.mark.parametrize('command, result', [
     (Command('gcloud comute', misspelled_command),
