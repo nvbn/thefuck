@@ -49,10 +49,10 @@ def test_not_match():
     assert not match(Command('aws dynamodb invalid', no_suggestions))
 
 
-#@pytest.mark.parametrize('command, result', [
-#    (Command('gcloud comute', misspelled_command),
-#     ['gcloud compute instances list']),
-#    (Command('gcloud compute instance list', misspelled_subcommand),
-#     ['gcloud compute instances list'])])
-#def test_get_new_command(command, result):
-#    assert get_new_command(command) == result
+@pytest.mark.parametrize('command, result', [
+    (Command('gcloud comute instances list', misspelled_command),
+     ['gcloud compute instances']),
+    (Command('gcloud compute instance list', misspelled_subcommand),
+     ['gcloud compute instance-groups'])])
+def test_get_new_command(command, result):
+    assert get_new_command(command) == result
