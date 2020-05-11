@@ -41,7 +41,7 @@ class TestCorrectedCommand(object):
         settings.update(override_settings)
         CorrectedCommand(script, None, 1000).run(Command(script, ''))
         out, _ = capsys.readouterr()
-        assert out[:-1] == printed
+        assert out == printed
 
 
 class TestRule(object):
