@@ -26,7 +26,7 @@ class Zsh(Generic):
                 export PYTHONIOENCODING=utf-8;
                 TF_CMD=$(
                     thefuck {argument_placeholder} $@
-                ) && eval $TF_CMD;
+                ) && eval "${{TF_CMD}}";
                 unset TF_HISTORY;
                 export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
                 {alter_history}
