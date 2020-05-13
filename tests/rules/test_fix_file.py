@@ -284,7 +284,7 @@ E       NameError: name 'mocker' is not defined
 /home/thefuck/tests/rules/test_fix_file.py:218: NameError
 """,
     ),
-) 
+)
 
 
 @pytest.mark.parametrize('test', tests)
