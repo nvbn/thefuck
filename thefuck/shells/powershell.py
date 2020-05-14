@@ -12,6 +12,7 @@ class Powershell(Generic):
                '            else { iex "$fuck"; }\n' \
                '        }\n' \
                '    }\n' \
+               '    [Console]::ResetColor() \n' \
                '}\n'
 
     def and_(self, *commands):
