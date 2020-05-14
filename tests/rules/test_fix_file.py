@@ -6,7 +6,7 @@ from collections import namedtuple
 from thefuck.rules.fix_file import match, get_new_command
 from thefuck.types import Command
 
-FileFixTest = namedtuple('Test', ['script', 'file', 'line', 'col', 'output'])
+FileFixTest = namedtuple('FileFixTest', ['script', 'file', 'line', 'col', 'output'])
 
 tests = (
     FileFixTest('gcc a.c', 'a.c', 3, 1, """
