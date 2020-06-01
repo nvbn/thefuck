@@ -1,4 +1,3 @@
-import re
 from subprocess import PIPE, Popen
 from thefuck.utils import (for_app, replace_command)
 
