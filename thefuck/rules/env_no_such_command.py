@@ -1,34 +1,25 @@
 import re
 from subprocess import PIPE, Popen
+from thefuck.utils import (for_app, replace_command)
 
-from thefuck.utils import (cache, for_app, replace_argument, replace_command,
-                           which)
-
-COMMON_TYPOS = {
-    'list': ['versions', 'install --list'],
-    'remove': ['uninstall'],
-}
-
-
-@for_app('env')
+@for_app('pyenv', 'rbenv', 'goenv', 'nodenv')
 def match(command):
-    return ('env' in command.script and
-            'command not found' in command.output)
+    return ('env' in command.script and 'no such command' in command.output)
 
 
-def get_env_commands():
-    proc_env = Popen(['env', 'commands'], stdout=PIPE)
+def _get_operations(command):
+    if 'env' in command.script_parts[0]:
+        proc_env = Popen([str(command.script_parts[0]), 'commands'], stdout=PIPE)
+    else:
+        proc_env = Popen([str(command.script_parts[1]), 'commands'], stdout=PIPE)
     return [line.decode('utf-8').strip() for line in proc_env.stdout.readlines()]
 
 
-if which('env'):
-    get_env_commands = cache(which('env'))(get_env_commands)
-
-
-@for_app('env')
+@for_app('pyenv', 'rbenv', 'goenv', 'nodenv')
 def get_new_command(command):
-    broken = re.findall(r"command not found `([^']*)'", command.output)[0]
-    matched = [replace_argument(command.script, broken, common_typo)
-               for common_typo in COMMON_TYPOS.get(broken, [])]
-    matched.extend(replace_command(command, broken, get_env_commands()))     
-    return matched
+    if 'env' in command.script_parts[0]:
+        invalid_operation = command.script_parts[1]
+    else:
+        invalid_operation = command.script_parts[0]
+
+    return replace_command(command, invalid_operation, _get_operations(command))
