@@ -24,5 +24,4 @@ def get_new_command(command):
 
 
 priority = 900
-enabled_by_default = True
 requires_output = False
