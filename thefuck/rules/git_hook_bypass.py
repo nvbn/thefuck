@@ -1,17 +1,13 @@
 from thefuck.utils import replace_argument
 from thefuck.specific.git import git_support
 
-hooked_commands = ["am", "commit", "push"]
+hooked_commands = ("am", "commit", "push")
 
 
 @git_support
 def match(command):
-    has_hooked_command = any(
+    return any(
         hooked_command in command.script_parts for hooked_command in hooked_commands
-    )
-    return (
-        has_hooked_command
-        and "hook failed (add --no-verify to bypass)" in command.output
     )
 
 
@@ -25,3 +21,8 @@ def get_new_command(command):
     return replace_argument(
         command.script, hooked_command, hooked_command + " --no-verify"
     )
+
+
+priority = 900
+enabled_by_default = True
+requires_output = False
