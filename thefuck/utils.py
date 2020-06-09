@@ -167,15 +167,23 @@ def replace_command(command, broken, matched):
 
 
 @memoize
-def is_app(command, *app_names, **kwargs):
-    """Returns `True` if command is call to one of passed app names."""
+def is_app(command, *app_names, strict=False, **kwargs):
+    """Returns `True` if command is call to one of passed app names. If `strict=True`, skip checking for wrapped commands."""
 
     at_least = kwargs.pop('at_least', 0)
     if kwargs:
         raise TypeError("got an unexpected keyword argument '{}'".format(kwargs.keys()))
 
     if len(command.script_parts) > at_least:
-        return command.script_parts[0] in app_names
+        cmd = command.script_parts[0]
+        if cmd in app_names:
+            return True
+        if not strict:
+            # allow command to be wrapped as another command
+            wrapped_cmd = [settings['wraps_commands'].get(a, []) for a in app_names]
+            for wrapped in wrapped_cmd:
+                if cmd in wrapped:
+                    return True
 
     return False
 

@@ -11,5 +11,5 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    formatme = shell.and_('git stash', '{}')
+    formatme = shell.and_('{} stash'.format(command.script_parts[0]), '{}')
     return formatme.format(command.script)
