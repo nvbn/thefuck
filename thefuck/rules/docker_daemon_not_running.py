@@ -5,7 +5,7 @@ from thefuck.specific.sudo import sudo_support
 
 @for_app("docker")
 def match(command):
-    return ('docker: Cannot connect to the Docker daemon' in command.output and
+    return ('Cannot connect to the Docker daemon' in command.output and
             'Is the docker daemon running?' in command.output)
 
 
