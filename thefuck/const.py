@@ -20,6 +20,7 @@ KEY_MAPPING = {'\x0e': KEY_CTRL_N,
                '\x10': KEY_CTRL_P}
 
 ACTION_SELECT = _GenConst('select')
+ACTION_TO_BUFFER = _GenConst('to_buffer')
 ACTION_ABORT = _GenConst('abort')
 ACTION_PREVIOUS = _GenConst('previous')
 ACTION_NEXT = _GenConst('next')
