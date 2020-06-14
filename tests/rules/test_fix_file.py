@@ -2,98 +2,54 @@
 
 import pytest
 import os
+from collections import namedtuple
 from thefuck.rules.fix_file import match, get_new_command
 from thefuck.types import Command
 
+FixFileTest = namedtuple('FixFileTest', ['script', 'file', 'line', 'col', 'output'])
 
-# (script, file, line, col (or None), output)
 tests = (
-    (
-        "gcc a.c",
-        "a.c",
-        3,
-        1,
-        """
+    FixFileTest('gcc a.c', 'a.c', 3, 1, """
 a.c: In function 'main':
 a.c:3:1: error: expected expression before '}' token
  }
   ^
-""",
-    ),
-    (
-        "clang a.c",
-        "a.c",
-        3,
-        1,
-        """
+"""),
+
+    FixFileTest('clang a.c', 'a.c', 3, 1, """
 a.c:3:1: error: expected expression
 }
 ^
-""",
-    ),
-    (
-        "perl a.pl",
-        "a.pl",
-        3,
-        None,
-        """
+"""),
+
+    FixFileTest('perl a.pl', 'a.pl', 3, None, """
 syntax error at a.pl line 3, at EOF
 Execution of a.pl aborted due to compilation errors.
-""",
-    ),
-    (
-        "perl a.pl",
-        "a.pl",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('perl a.pl', 'a.pl', 2, None, """
 Search pattern not terminated at a.pl line 2.
-""",
-    ),
-    (
-        "sh a.sh",
-        "a.sh",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('sh a.sh', 'a.sh', 2, None, """
 a.sh: line 2: foo: command not found
-""",
-    ),
-    (
-        "zsh a.sh",
-        "a.sh",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('zsh a.sh', 'a.sh', 2, None, """
 a.sh:2: command not found: foo
-""",
-    ),
-    (
-        "bash a.sh",
-        "a.sh",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('bash a.sh', 'a.sh', 2, None, """
 a.sh: line 2: foo: command not found
-""",
-    ),
-    (
-        "rustc a.rs",
-        "a.rs",
-        2,
-        5,
-        """
+"""),
+
+    FixFileTest('rustc a.rs', 'a.rs', 2, 5, """
 a.rs:2:5: 2:6 error: unexpected token: `+`
 a.rs:2     +
            ^
-""",
-    ),
-    (
-        "cargo build",
-        "src/lib.rs",
-        3,
-        5,
-        """
+"""),
+
+    FixFileTest('cargo build', 'src/lib.rs', 3, 5, """
    Compiling test v0.1.0 (file:///tmp/fix-error/test)
    src/lib.rs:3:5: 3:6 error: unexpected token: `+`
    src/lib.rs:3     +
@@ -101,26 +57,16 @@ a.rs:2     +
 Could not compile `test`.
 
 To learn more, run the command again with --verbose.
-""",
-    ),
-    (
-        "python a.py",
-        "a.py",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('python a.py', 'a.py', 2, None, """
   File "a.py", line 2
       +
           ^
 SyntaxError: invalid syntax
-""",
-    ),
-    (
-        "python a.py",
-        "a.py",
-        8,
-        None,
-        """
+"""),
+
+    FixFileTest('python a.py', 'a.py', 8, None, """
 Traceback (most recent call last):
   File "a.py", line 8, in <module>
     match("foo")
@@ -131,14 +77,9 @@ Traceback (most recent call last):
   File "/usr/lib/python3.4/re.py", line 293, in _compile
     raise TypeError("first argument must be string or compiled pattern")
 TypeError: first argument must be string or compiled pattern
-""",
-    ),
-    (
-        u"python café.py",
-        u"café.py",
-        8,
-        None,
-        u"""
+"""),
+
+    FixFileTest(u'python café.py', u'café.py', 8, None, u"""
 Traceback (most recent call last):
   File "café.py", line 8, in <module>
     match("foo")
@@ -149,95 +90,50 @@ Traceback (most recent call last):
   File "/usr/lib/python3.4/re.py", line 293, in _compile
     raise TypeError("first argument must be string or compiled pattern")
 TypeError: first argument must be string or compiled pattern
-""",
-    ),
-    (
-        "ruby a.rb",
-        "a.rb",
-        3,
-        None,
-        """
+"""),
+
+    FixFileTest('ruby a.rb', 'a.rb', 3, None, """
 a.rb:3: syntax error, unexpected keyword_end
-""",
-    ),
-    (
-        "lua a.lua",
-        "a.lua",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('lua a.lua', 'a.lua', 2, None, """
 lua: a.lua:2: unexpected symbol near '+'
-""",
-    ),
-    (
-        "fish a.sh",
-        "/tmp/fix-error/a.sh",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('fish a.sh', '/tmp/fix-error/a.sh', 2, None, """
 fish: Unknown command 'foo'
 /tmp/fix-error/a.sh (line 2): foo
                               ^
-""",
-    ),
-    (
-        "./a",
-        "./a",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('./a', './a', 2, None, """
 awk: ./a:2: BEGIN { print "Hello, world!" + }
 awk: ./a:2:                                 ^ syntax error
-""",
-    ),
-    (
-        "llc a.ll",
-        "a.ll",
-        1,
-        2,
-        """
+"""),
+
+    FixFileTest('llc a.ll', 'a.ll', 1, 2, """
 llc: a.ll:1:2: error: expected top-level entity
 +
 ^
-""",
-    ),
-    (
-        "go build a.go",
-        "a.go",
-        1,
-        2,
-        """
+"""),
+
+    FixFileTest('go build a.go', 'a.go', 1, 2, """
 can't load package:
 a.go:1:2: expected 'package', found '+'
-""",
-    ),
-    (
-        "make",
-        "Makefile",
-        2,
-        None,
-        """
+"""),
+
+    FixFileTest('make', 'Makefile', 2, None, """
 bidule
 make: bidule: Command not found
 Makefile:2: recipe for target 'target' failed
 make: *** [target] Error 127
-""",
-    ),
-    (
-        "git st",
-        "/home/martin/.config/git/config",
-        1,
-        None,
-        """
+"""),
+
+    FixFileTest('git st', '/home/martin/.config/git/config', 1, None, """
 fatal: bad config file line 1 in /home/martin/.config/git/config
-""",
-    ),
-    (
-        "node fuck.js asdf qwer",
-        "/Users/pablo/Workspace/barebones/fuck.js",
-        "2",
-        5,
-        """
+"""),
+
+    FixFileTest('node fuck.js asdf qwer', '/Users/pablo/Workspace/barebones/fuck.js', '2', 5, """
 /Users/pablo/Workspace/barebones/fuck.js:2
 conole.log(arg);  // this should read console.log(arg);
 ^
@@ -252,26 +148,16 @@ ReferenceError: conole is not defined
     at Function.Module.runMain (module.js:501:10)
     at startup (node.js:129:16)
     at node.js:814:3
-""",
-    ),
-    (
-        "pep8",
-        "./tests/rules/test_systemctl.py",
-        17,
-        80,
-        """
+"""),
+
+    FixFileTest('pep8', './tests/rules/test_systemctl.py', 17, 80, """
 ./tests/rules/test_systemctl.py:17:80: E501 line too long (93 > 79 characters)
 ./tests/rules/test_systemctl.py:18:80: E501 line too long (103 > 79 characters)
 ./tests/rules/test_whois.py:20:80: E501 line too long (89 > 79 characters)
 ./tests/rules/test_whois.py:22:80: E501 line too long (83 > 79 characters)
-""",
-    ),
-    (
-        "py.test",
-        "/home/thefuck/tests/rules/test_fix_file.py",
-        218,
-        None,
-        """
+"""),
+
+    FixFileTest('py.test', '/home/thefuck/tests/rules/test_fix_file.py', 218, None, """
 monkeypatch = <_pytest.monkeypatch.monkeypatch object at 0x7fdb76a25b38>
 test = ('fish a.sh', '/tmp/fix-error/a.sh', 2, None, '', "\\nfish: Unknown command 'foo'\\n/tmp/fix-error/a.sh (line 2): foo\\n                              ^\\n")
 
@@ -282,8 +168,7 @@ test = ('fish a.sh', '/tmp/fix-error/a.sh', 2, None, '', "\\nfish: Unknown comma
 E       NameError: name 'mocker' is not defined
 
 /home/thefuck/tests/rules/test_fix_file.py:218: NameError
-""",
-    ),
+"""),
 )
 
 
@@ -292,7 +177,7 @@ E       NameError: name 'mocker' is not defined
 def test_match(mocker, monkeypatch, test):
     mocker.patch('os.path.isfile', return_value=True)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
-    assert match(Command('', test[4]))
+    assert match(Command('', test.output))
 
 
 @pytest.mark.parametrize('test', tests)
@@ -302,7 +187,7 @@ def test_no_editor(mocker, monkeypatch, test):
     if 'EDITOR' in os.environ:
         monkeypatch.delenv('EDITOR')
 
-    assert not match(Command('', test[4]))
+    assert not match(Command('', test.output))
 
 
 @pytest.mark.parametrize('test', tests)
@@ -311,7 +196,7 @@ def test_not_file(mocker, monkeypatch, test):
     mocker.patch('os.path.isfile', return_value=False)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
 
-    assert not match(Command('', test[4]))
+    assert not match(Command('', test.output))
 
 
 @pytest.mark.parametrize('test', tests)
@@ -327,12 +212,12 @@ def test_get_new_command_with_settings(mocker, monkeypatch, test, settings):
     mocker.patch('os.path.isfile', return_value=True)
     monkeypatch.setenv('EDITOR', 'dummy_editor')
 
-    cmd = Command(test[0], test[4])
+    cmd = Command(test.script, test.output)
     settings.fixcolcmd = '{editor} {file} +{line}:{col}'
 
-    if test[3]:
+    if test.col:
         assert (get_new_command(cmd) ==
-                u'dummy_editor {} +{}:{} && {}'.format(test[1], test[2], test[3], test[0]))
+                u'dummy_editor {} +{}:{} && {}'.format(test.file, test.line, test.col, test.script))
     else:
         assert (get_new_command(cmd) ==
-                u'dummy_editor {} +{} && {}'.format(test[1], test[2], test[0]))
+                u'dummy_editor {} +{} && {}'.format(test.file, test.line, test.script))
