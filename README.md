@@ -207,6 +207,7 @@ following rules are enabled by default:
 * `git_branch_exists` &ndash; offers `git branch -d foo`, `git branch -D foo` or `git checkout foo` when creating a branch that already exists;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
+* `git_clone_git_clone` &ndash; replaces `git clone git clone ...` with `git clone ...`
 * `git_commit_amend` &ndash; offers `git commit --amend` after previous commit;
 * `git_commit_reset` &ndash; offers `git reset HEAD~` after previous commit;
 * `git_diff_no_index` &ndash; adds `--no-index` to previous `git diff` on untracked files;
