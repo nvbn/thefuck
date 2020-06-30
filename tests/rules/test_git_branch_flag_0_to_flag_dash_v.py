@@ -1,5 +1,5 @@
 import pytest
-from thefuck.rules.git_branch_0v_to_dash_v import match, get_new_command
+from thefuck.rules.git_branch_flag_0_to_flag_dash_v import match, get_new_command
 from thefuck.types import Command
 
 
