@@ -16,4 +16,4 @@ def test_match(output):
 
 def test_get_new_command(output):
     assert get_new_command(Command('git branch 0v', output))\
-        == "git branch -D 0v && git branch -v"
+        == 'git branch -D 0v && git branch -v'
