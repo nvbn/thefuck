@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import for_app, replace_argument, replace_command
+from thefuck.utils import cache, for_app, replace_argument, replace_command, which
 from thefuck.specific.devenv import env_available, COMMON_TYPOS, get_commands
 
 enabled_by_default = env_available
@@ -8,6 +8,10 @@ enabled_by_default = env_available
 @for_app('rbenv')
 def match(command):
     return 'rbenv: no such command' in command.output
+
+
+if which('rbenv'):
+    get_commands = cache(which('rbenv'))(get_commands)
 
 
 @for_app('rbenv')
