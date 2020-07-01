@@ -1,5 +1,4 @@
 import re
-from subprocess import PIPE, Popen
 from thefuck.utils import for_app, replace_argument, replace_command
 from thefuck.specific.devenv import env_available, COMMON_TYPOS, get_commands
 
