@@ -25,13 +25,3 @@ def test_match(script, nodenv_cmd, output):
 ])
 def test_not_match(script, output):
     assert not match(Command(script, output=output))
-
-
-@pytest.mark.parametrize('script, nodenv_cmd, result', [
-    ('nodenv globe', 'globe', 'nodenv global'),
-    ('nodenv intall 3.8.0', 'intall', 'nodenv install 3.8.0'),
-    ('nodenv list', 'list', 'nodenv install --list'),
-    ('nodenv remove 3.8.0', 'remove', 'nodenv uninstall 3.8.0'),
-])
-def test_get_new_command(script, nodenv_cmd, output, result):
-    assert result in get_new_command(Command(script, output))
