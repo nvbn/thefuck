@@ -1,6 +1,6 @@
 import pytest
 
-from thefuck.rules.rbenv_no_such_command import get_new_command, match
+from thefuck.rules.rbenv_no_such_command import match
 from thefuck.types import Command
 
 
