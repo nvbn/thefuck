@@ -11,9 +11,14 @@ COMMON_TYPOS = {
 }
 
 
-def get_commands(command):
-    if 'env' in command.script_parts[0]:
-        proc = Popen([str(command.script_parts[0]), 'commands'], stdout=PIPE)
+def get_commands():
+    if which('pyenv'):
+        env = 'pyenv'
+    elif which('rbenv'):
+        env = 'rbenv'
+    elif which('goenv'):
+        env = 'goenv'
     else:
-        proc = Popen([str(command.script_parts[1]), 'commands'], stdout=PIPE)
+        env = 'nodenv'
+    proc = Popen([env, 'commands'], stdout=PIPE)
     return [line.decode('utf-8').strip() for line in proc.stdout.readlines()]
