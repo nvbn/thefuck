@@ -19,5 +19,5 @@ def get_new_command(command):
     broken = re.findall(r"rbenv: no such command `([^']*)'", command.output)[0]
     matched = [replace_argument(command.script, broken, common_typo)
                for common_typo in COMMON_TYPOS.get(broken, [])]
-    matched.extend(replace_command(command, broken, get_commands()))
+    matched.extend(replace_command(command, broken, get_commands(command.script_parts[0])))
     return matched
