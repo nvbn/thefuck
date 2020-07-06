@@ -11,7 +11,7 @@ def output(nodenv_cmd):
 
 @pytest.fixture(autouse=True)
 def Popen(mocker):
-    mock = mocker.patch('thefuck.rules.pyenv_no_such_command.Popen')
+    mock = mocker.patch('thefuck.rules.nodenv_no_such_command.Popen')
     mock.return_value.stdout.readlines.return_value = (
         b'--version\nactivate\ncommands\ncompletions\ndeactivate\nexec_\n'
         b'global\nhelp\nhooks\ninit\ninstall\nlocal\nprefix_\n'
