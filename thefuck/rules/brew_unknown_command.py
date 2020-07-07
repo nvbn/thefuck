@@ -62,7 +62,7 @@ def _brew_commands():
     # Failback commands for testing (Based on Homebrew 0.9.5)
     return ['info', 'home', 'options', 'install', 'uninstall',
             'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
-            'doctor', 'create', 'edit']
+            'doctor', 'create', 'edit', 'cask']
 
 
 def match(command):
