@@ -3,8 +3,8 @@ import re
 from thefuck.utils import get_closest, replace_command
 from thefuck.specific.brew import get_brew_path_prefix, brew_available
 
-BREW_CMD_PATH = '/Library/Homebrew/cmd'
-TAP_PATH = '/Library/Taps'
+BREW_CMD_PATH = '/Homebrew/Library/Homebrew/cmd'
+TAP_PATH = '/Homebrew/Library/Taps'
 TAP_CMD_PATH = '/%s/%s/cmd'
 
 enabled_by_default = brew_available
@@ -62,7 +62,7 @@ def _brew_commands():
     # Failback commands for testing (Based on Homebrew 0.9.5)
     return ['info', 'home', 'options', 'install', 'uninstall',
             'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
-            'doctor', 'create', 'edit']
+            'doctor', 'create', 'edit', 'cask']
 
 
 def match(command):
