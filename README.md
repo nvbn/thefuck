@@ -214,6 +214,7 @@ following rules are enabled by default:
 * `git_fix_stash` &ndash; fixes `git stash` commands (misspelled subcommand and missing `save`);
 * `git_flag_after_filename` &ndash; fixes `fatal: bad flag '...' after filename`
 * `git_help_aliased` &ndash; fixes `git help <alias>` commands replacing <alias> with the aliased command;
+* `git_hook_bypass` &ndash; adds `--no-verify` flag previous to `git am`, `git commit`, or `git push` command;
 * `git_lfs_mistype` &ndash; fixes mistyped `git lfs <command>` commands;
 * `git_merge` &ndash; adds remote to branch names;
 * `git_merge_unrelated` &ndash; adds `--allow-unrelated-histories` when required
