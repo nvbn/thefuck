@@ -255,4 +255,4 @@ class CorrectedCommand(object):
         logs.debug(u'PYTHONIOENCODING: {}'.format(
             os.environ.get('PYTHONIOENCODING', '!!not-set!!')))
 
-        print(self._get_script())
+        sys.stdout.write(self._get_script())
