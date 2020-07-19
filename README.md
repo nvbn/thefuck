@@ -270,6 +270,7 @@ following rules are enabled by default:
 * `npm_missing_script` &ndash; fixes `npm` custom script name in `npm run-script <script>`;
 * `npm_run_script` &ndash; adds missing `run-script` for custom `npm` scripts;
 * `npm_wrong_command` &ndash; fixes wrong npm commands like `npm urgrade`;
+* `npx_add_npx_to_command` &ndash; adds `npx` for running locally installed `npm` commands, also corrects misspelled commands `jest/npx jest`, `npx jeet/npx jest` and `jeet/npx jest`;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `open` &ndash; either prepends `http://` to address passed to `open` or create a new file or directory and passes it to `open`;
