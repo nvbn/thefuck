@@ -11,13 +11,17 @@ enabled_by_default = bool(which('npx'))
 def match(command):
     return \
         'not found' in command.output.lower() and \
-        bool(get_matching_npm_executables_in_cd())
+        bool(get_matching_npm_executables_in_cd(command))
 
 
 def get_new_command(command):
+    skip = 1
+    if command.script_parts[0] == 'npx':
+        skip += 1
+    script_parts = command.script_parts[skip:]
     return [
-        ' '.join(['npx', e, *command.script_parts[1:]])
-        for e in get_matching_npm_executables_in_cd()
+        ' '.join(['npx', e, *script_parts])
+        for e in get_matching_npm_executables_in_cd(command)
     ]
 
 
