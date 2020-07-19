@@ -20,7 +20,7 @@ def get_new_command(command):
         skip += 1
     script_parts = command.script_parts[skip:]
     return [
-        ' '.join(['npx', e, *script_parts])
+        ' '.join(['npx', e] + script_parts)
         for e in get_matching_npm_executables_in_cd(command)
     ]
 
