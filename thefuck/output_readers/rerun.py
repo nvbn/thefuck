@@ -1,9 +1,9 @@
 import os
-import shlex
 from subprocess import Popen, PIPE, STDOUT
 from psutil import AccessDenied, Process, TimeoutExpired
 from .. import logs
 from ..conf import settings
+from ..shells import shell
 
 
 def _kill_process(proc):
@@ -53,7 +53,7 @@ def get_output(script, expanded):
     env = dict(os.environ)
     env.update(settings.env)
 
-    split_expand = shlex.split(expanded)
+    split_expand = shell.split_command(expanded)
     is_slow = split_expand[0] in settings.slow_commands if split_expand else False
     with logs.debug_time(u'Call: {}; with env: {}; is slow: {}'.format(
             script, env, is_slow)):
