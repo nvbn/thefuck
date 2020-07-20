@@ -7,6 +7,10 @@ from thefuck.system import Path
 shells.shell = shells.Generic()
 
 
+def pytest_configure(config):
+    config.addinivalue_line("markers", "functional: mark test as functional")
+
+
 def pytest_addoption(parser):
     """Adds `--enable-functional` argument."""
     group = parser.getgroup("thefuck")
