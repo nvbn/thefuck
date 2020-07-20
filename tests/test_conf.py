@@ -43,7 +43,7 @@ class TestSettingsFromFile(object):
         assert settings.rules == const.DEFAULT_RULES + ['test']
 
 
-@pytest.mark.usefixture('load_source')
+@pytest.mark.usefixtures('load_source')
 class TestSettingsFromEnv(object):
     def test_from_env(self, os_environ, settings):
         os_environ.update({'THEFUCK_RULES': 'bash:lisp',
