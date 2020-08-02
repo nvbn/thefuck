@@ -1,7 +1,14 @@
+import sys
+
 from types import ModuleType
 from thefuck.specific.apt import apt_available
 from thefuck.utils import memoize, which
 from thefuck.shells import shell
+
+# Debian does not have a python{,3}-commandnotfound package
+# and the command-not-found package places the python module in another directory
+# To import it correctly append the path to the sys.path
+sys.path.append('/usr/share/command-not-found/')
 
 try:
     from CommandNotFound import CommandNotFound
