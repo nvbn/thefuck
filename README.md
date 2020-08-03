@@ -304,6 +304,7 @@ following rules are enabled by default:
 * `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command", for example adds missing '-' to the command on `hdfs dfs ls`;
 * `unsudo` &ndash; removes `sudo` from previous command if a process refuses to run on super user privilege.
 * `vagrant_up` &ndash; starts up the vagrant instance;
+* `version` &ndash; fixes wrong verion commands like `git -v` or `fuck -ver`;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
 * `yarn_alias` &ndash; fixes aliased `yarn` commands like `yarn ls`;
