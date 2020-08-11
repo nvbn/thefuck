@@ -136,6 +136,9 @@ class Rule(object):
 
         """
         name = path.name[:-3]
+        if name in settings.exclude_rules:
+            logs.debug(u'Ignoring excluded rule: {}'.format(name))
+            return
         with logs.debug_time(u'Importing rule: {};'.format(name)):
             rule_module = load_source(name, str(path))
             priority = getattr(rule_module, 'priority', DEFAULT_PRIORITY)
@@ -153,14 +156,11 @@ class Rule(object):
         :rtype: bool
 
         """
-        if self.name in settings.exclude_rules:
-            return False
-        elif self.name in settings.rules:
-            return True
-        elif self.enabled_by_default and ALL_ENABLED in settings.rules:
-            return True
-        else:
-            return False
+        return (
+            self.name in settings.rules
+            or self.enabled_by_default
+            and ALL_ENABLED in settings.rules
+        )
 
     def is_match(self, command):
         """Returns `True` if rule matches the command.
