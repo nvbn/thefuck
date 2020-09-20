@@ -5,7 +5,7 @@ from thefuck.utils import for_app, eager, replace_command
 regex = re.compile(r"Task '(.*)' (is ambiguous|not found)")
 
 
-@for_app('gradle', './gradlew')
+@for_app('gradle', 'gradlew')
 def match(command):
     return regex.findall(command.output)
 
