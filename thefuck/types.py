@@ -137,8 +137,12 @@ class Rule(object):
         """
         name = path.name[:-3]
         with logs.debug_time(u'Importing rule: {};'.format(name)):
-            rule_module = load_source(name, str(path))
-            priority = getattr(rule_module, 'priority', DEFAULT_PRIORITY)
+            try:
+                rule_module = load_source(name, str(path))
+            except Exception:
+                logs.exception(u"Rule {} failed to load".format(name), sys.exc_info())
+                return
+        priority = getattr(rule_module, 'priority', DEFAULT_PRIORITY)
         return cls(name, rule_module.match,
                    rule_module.get_new_command,
                    getattr(rule_module, 'enabled_by_default', True),
