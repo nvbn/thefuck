@@ -1,6 +1,7 @@
 import pytest
 from thefuck.rules.go_unknown_command import match, get_new_command
 from thefuck.types import Command
+from thefuck.utils import which
 
 
 @pytest.fixture
@@ -17,5 +18,6 @@ def test_not_match():
     assert not match(Command('go run', 'go run: no go files listed'))
 
 
+@pytest.mark.skipif(not which('go'), reason='Skip if go executable not found')
 def test_get_new_command(build_misspelled_output):
     assert get_new_command(Command('go bulid', build_misspelled_output)) == 'go build'
