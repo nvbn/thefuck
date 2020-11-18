@@ -139,6 +139,7 @@ class TestCommand(object):
                                       env=os_environ)
 
     @pytest.mark.parametrize('script, result', [
+        ([], None),
         ([''], None),
         (['', ''], None),
         (['ls', '-la'], 'ls -la'),
