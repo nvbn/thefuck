@@ -1,4 +1,5 @@
 from thefuck.utils import for_app
+from thefuck.shells import shell
 
 
 @for_app('docker')
@@ -9,4 +10,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return 'docker login && {}'.format(command.script)
+    return shell.and_('docker login', command.script)
