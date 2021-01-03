@@ -30,7 +30,7 @@ jobs:
       - name: Functional Test
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.pyversion == '3.8' }}
         run: |
-          python -m coverage run --source=thefuck,tests -m py.test -v --capture=sys tests -m functional
+          python -m coverage run --source=thefuck,tests -m py.test -v --capture=sys tests -m functional --enable-functional
       - name: Post Coverage to Coveralls
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.pyversion == '3.8' }}  
         run: |
