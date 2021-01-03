@@ -24,14 +24,15 @@ jobs:
       - name: Lint
         run: |
           flake8
-      - name: Test
+      - name: Run tests
+        if: ${{ matrix.os != 'ubuntu-latest' || matrix.pyversion != '3.8' }}
         run: |
           coverage run --source=thefuck,tests -m py.test -v --capture=sys tests
-      - name: Functional Test
+      - name: Run tests (with functional)
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.pyversion == '3.8' }}
         run: |
-          coverage run --source=thefuck,tests -m py.test -v --capture=sys tests -m functional --enable-functional
-      - name: Post Coverage to Coveralls
+          coverage run --source=thefuck,tests -m py.test -v --capture=sys tests --enable-functional
+      - name: Post coverage results
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.pyversion == '3.8' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
