@@ -18,7 +18,7 @@ jobs:
           python-version: ${{ matrix.pyversion }}
       - name: Install dependencies
         run: |
-          pip install -U pip coveralls
+          pip install -U pip coverage coveralls
           pip install -Ur requirements.txt
           python setup.py develop
       - name: Lint
