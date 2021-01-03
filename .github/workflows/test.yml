@@ -33,4 +33,5 @@ jobs:
           python -m coverage run --source=thefuck,tests -m py.test -v --capture=sys tests -m functional
       - name: Post Coverage to Coveralls
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.pyversion == '3.8' }}  
+        run: |
           python -m coveralls
