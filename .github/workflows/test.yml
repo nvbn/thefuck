@@ -1,0 +1,35 @@
+name: Integration Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        pyversion: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.pyversion }}
+      - name: Install dependencies
+        run: |
+          pip install -U pip coveralls
+          pip install -Ur requirements.txt
+          python setup.py develop
+      - name: Lint
+        run: |
+          flake8
+      - name: Test
+        if: ${{ matrix.os != 'ubuntu-latest' || matrix.pyversion != '3.8' }}
+        run: |
+          python -m coverage run --source=thefuck,tests -m py.test -v --capture=sys tests
+      - name: Test with Coverage
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.pyversion == '3.8' }}
+        run: |
+          python -m coverage run --source=thefuck,tests -m py.test -v --capture=sys tests --enable-functional
+          python -m coveralls
