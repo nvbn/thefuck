@@ -22,6 +22,7 @@ jobs:
           pip install -Ur requirements.txt
           python setup.py develop
       - name: Lint
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == '3.8' }}
         run: |
           flake8
       - name: Run tests
