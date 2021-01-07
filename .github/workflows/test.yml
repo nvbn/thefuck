@@ -18,7 +18,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Cache dependencies
         uses: actions/cache@v2
-        id: deps_cache
         with:
           path: |
             ${{ env.pythonLocation }}/lib/*/site-packages/*
