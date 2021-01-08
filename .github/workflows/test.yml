@@ -36,19 +36,19 @@ jobs:
           pip install -Ur requirements.txt
           python setup.py develop
       - name: Lint
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == PYTHON_LATEST }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST }}
         run: |
           flake8
       - name: Run tests
-        if: ${{ matrix.os != 'ubuntu-latest' || matrix.python-version != PYTHON_LATEST }}
+        if: ${{ matrix.os != 'ubuntu-latest' || matrix.python-version != env.PYTHON_LATEST }}
         run: |
           coverage run --source=thefuck,tests -m py.test -v --capture=sys tests
       - name: Run tests (including functional)
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == PYTHON_LATEST }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST }}
         run: |
           coverage run --source=thefuck,tests -m py.test -v --capture=sys tests --enable-functional
       - name: Post coverage results
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == PYTHON_LATEST }}
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
