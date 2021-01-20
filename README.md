@@ -506,10 +506,16 @@ if [ "$(command -v thefuck)" -nt "$thefuck_cache" -o ! -s "$thefuck_cache" ]; th
     cachegen="$(mktemp)"
     thefuck --alias      >  $cachegen
     thefuck --alias fk   >> $cachegen
-    # more >> lines if wanted...
+    thefuck --alias fcuk >> $cachegen
+    thefuck --alias fuc  >> $cachegen
+    thefuck --alias fcu  >> $cachegen
+    thefuck --alias fuck >> $cachegen
+    thefuck --alias fuk  >> $cachegen
+    #thefuck --alias --enable-experimental-instant-mode >> $cachegen
     cat "$cachegen" >| "$thefuck_cache"
     trap "rm $cachegen" 0 1 15
 fi
+source "$thefuck_cache"
 unset thefuck_cache
 ```
 ## Developing
