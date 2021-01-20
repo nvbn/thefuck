@@ -493,6 +493,25 @@ For example:
 eval $(thefuck --alias --enable-experimental-instant-mode)
 ```
 
+## Speeding up shell startup time
+The --alias command can be time consuming. It takes `0.16s` on my machine!
+```bash
+time thefuck --alias
+```
+If you have multiple aliases, this is an issue. So use a cache in the `.bashrc`!
+```bash
+[ -n "$XDG_RUNTIME_DIR" ] && thefuck_cache="$XDG_RUNTIME_DIR"/thefuck_cache
+[ -z "$XDG_RUNTIME_DIR" ] && thefuck_cache="$HOME"/.local/share/runtime/thefuck_cache
+if [ "$(command -v thefuck)" -nt "$thefuck_cache" -o ! -s "$thefuck_cache" ]; then
+    cachegen="$(mktemp)"
+    thefuck --alias      >  $cachegen
+    thefuck --alias fk   >> $cachegen
+    # more >> lines if wanted...
+    cat "$cachegen" >| "$thefuck_cache"
+    trap "rm $cachegen" 0 1 15
+fi
+unset thefuck_cache
+```
 ## Developing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
