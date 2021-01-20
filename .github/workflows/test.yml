@@ -20,6 +20,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Cache dependencies
+        id: cache-deps
         uses: actions/cache@v2
         with:
           path: |
@@ -31,6 +32,7 @@ jobs:
             ${{ runner.os }}-pip-
             ${{ runner.os }}-
       - name: Install dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
         run: |
           pip install -U wheel setuptools coveralls
           pip install -Ur requirements.txt
