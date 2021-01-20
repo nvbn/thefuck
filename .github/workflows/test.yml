@@ -35,8 +35,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache-deps.outputs.cache-hit != 'true'
         run: |
-          pip install -U wheel setuptools coveralls
-          pip install -Ur requirements.txt
+          pip install -Ur requirements.txt coveralls
           python setup.py develop
       - name: Lint
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
