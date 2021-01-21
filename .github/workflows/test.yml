@@ -28,7 +28,7 @@ jobs:
             ${{ env.pythonLocation }}/lib/*
             ${{ env.pythonLocation }}/scripts/*
           key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.py', 'requirements.txt') }}
-      - name: Install dependencies
+      - name: Install The Fuck with all dependencies
         if: steps.cache-deps.outputs.cache-hit != 'true'
         run: |
           pip install -Ur requirements.txt coveralls
