@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache-deps.outputs.cache-hit != 'true'
         run: |
-          pip install -Ur requirements.txt coveralls
+          pip install -Ur requirements.txt coverage
           python setup.py develop
       - name: Lint
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
@@ -44,6 +44,6 @@ jobs:
         run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests --enable-functional
       - name: Post coverage results
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
