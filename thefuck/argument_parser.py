@@ -1,7 +1,27 @@
 import sys
-from argparse import ArgumentParser, SUPPRESS
+from argparse import ArgumentParser, SUPPRESS, Action
 from .const import ARGUMENT_PLACEHOLDER
 from .utils import get_alias
+import os
+
+class Alias(Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+
+        if option_string:
+            if not values:
+                setattr(namespace, 'alias', [os.environ.get('TF_alias', 'fuck')])
+
+        if hasattr(namespace, 'alias'):
+            current_values = getattr(namespace, 'alias')
+            try:
+                current_values.extend(values)
+            except AttributeError:
+                current_values = values
+            finally:
+                setattr(namespace, 'alias', current_values)
+        else:
+            setattr(namespace, 'alias', values)
+
 
 
 class Parser(object):
@@ -22,8 +42,8 @@ class Parser(object):
             help="show program's version number and exit")
         self._parser.add_argument(
             '-a', '--alias',
-            nargs='?',
-            const=get_alias(),
+            nargs='*',
+            action=Alias,
             help='[custom-alias-name] prints alias for current shell')
         self._parser.add_argument(
             '-l', '--shell-logger',

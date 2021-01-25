@@ -298,7 +298,6 @@ def get_installation_info():
 def get_alias():
     return os.environ.get('TF_ALIAS', 'fuck')
 
-
 @memoize
 def get_valid_history_without_current(command):
     def _not_corrected(history, tf_alias):
