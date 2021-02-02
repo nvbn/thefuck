@@ -1,12 +1,13 @@
 import re
-from thefuck.utils import replace_command
+from thefuck.utils import replace_command, for_app
 
 
+@for_app("conda")
 def match(command):
-    '''
+    """
     Match a mistyped command
-    '''
-    return 'conda' in command.script and "Did you mean 'conda" in command.output
+    """
+    return "conda" in command.script and "Did you mean 'conda" in command.output
 
 
 def get_new_command(command):
