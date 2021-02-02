@@ -1,0 +1,49 @@
+name: Tests
+
+on: [push, pull_request]
+
+env:
+  PYTHON_LATEST: 3.9
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10-dev]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v2
+        with:
+          path: |
+            ${{ env.pythonLocation }}/bin/*
+            ${{ env.pythonLocation }}/lib/*
+            ${{ env.pythonLocation }}/scripts/*
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.py', 'requirements.txt') }}
+      - name: Install The Fuck with all dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: |
+          pip install -Ur requirements.txt coveralls
+          python setup.py develop
+      - name: Lint
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
+        run: flake8
+      - name: Run tests
+        if: matrix.os != 'ubuntu-latest' || matrix.python-version != env.PYTHON_LATEST
+        run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests
+      - name: Run tests (including functional)
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
+        run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests --enable-functional
+      - name: Post coverage results
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: coveralls --service=github

@@ -1,4 +1,4 @@
-# The Fuck [![Version][version-badge]][version-link] [![Build Status][travis-badge]][travis-link] [![Windows Build Status][appveyor-badge]][appveyor-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
+# The Fuck [![Version][version-badge]][version-link] [![Build Status][workflow-badge]][workflow-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
 
 *The Fuck* is a magnificent app, inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320),
@@ -282,6 +282,7 @@ following rules are enabled by default:
 * `pyenv_no_such_command` &ndash; fixes wrong pyenv commands like `pyenv isntall` or `pyenv list`;
 * `python_command` &ndash; prepends `python` when you try to run non-executable/without `./` python script;
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
+* `python_module_error` &ndash; fixes ModuleNotFoundError by trying to `pip install` that module;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
 * `path_from_history` &ndash; replaces not found path with similar absolute path from history;
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
@@ -503,10 +504,8 @@ Project License can be found [here](LICENSE.md).
 
 [version-badge]:   https://img.shields.io/pypi/v/thefuck.svg?label=version
 [version-link]:    https://pypi.python.org/pypi/thefuck/
-[travis-badge]:    https://travis-ci.org/nvbn/thefuck.svg?branch=master
-[travis-link]:     https://travis-ci.org/nvbn/thefuck
-[appveyor-badge]:  https://ci.appveyor.com/api/projects/status/1sskj4imj02um0gu/branch/master?svg=true
-[appveyor-link]:   https://ci.appveyor.com/project/nvbn/thefuck
+[workflow-badge]:  https://github.com/divykj/thefuck/workflows/Tests/badge.svg
+[workflow-link]:   https://github.com/divykj/thefuck/actions?query=workflow%3ATests
 [coverage-badge]:  https://img.shields.io/coveralls/nvbn/thefuck.svg
 [coverage-link]:   https://coveralls.io/github/nvbn/thefuck
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg

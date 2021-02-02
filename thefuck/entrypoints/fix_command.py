@@ -23,6 +23,7 @@ def _get_raw_command(known_args):
             diff = SequenceMatcher(a=alias, b=command).ratio()
             if diff < const.DIFF_WITH_ALIAS or command in executables:
                 return [command]
+    return []
 
 
 def fix_command(known_args):
