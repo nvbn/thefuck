@@ -94,6 +94,19 @@ def test_get_all_executables_pathsep(path, pathsep):
         Path_mock.assert_has_calls([call(p) for p in path.split(pathsep)], True)
 
 
+@pytest.mark.usefixtures('no_memoize', 'os_environ_pathsep')
+@pytest.mark.parametrize('path, pathsep, excluded', [
+    ('/foo:/bar:/baz:/foo/bar:/mnt/foo', ':', '/mnt/foo'),
+    (r'C:\\foo;C:\\bar;C:\\baz;C:\\foo\\bar;Z:\\foo', ';', r'Z:\\foo')])
+def test_get_all_executables_exclude_paths(path, pathsep, excluded, settings):
+    settings.init()
+    settings.excluded_search_path_prefixes = [excluded]
+    with patch('thefuck.utils.Path') as Path_mock:
+        get_all_executables()
+        assert call(excluded) not in Path_mock.mock_calls
+        assert call(path.split(pathsep)[0]) in Path_mock.mock_calls
+
+
 @pytest.mark.parametrize('args, result', [
     (('apt-get instol vim', 'instol', 'install'), 'apt-get install vim'),
     (('git brnch', 'brnch', 'branch'), 'git branch')])
