@@ -104,6 +104,13 @@ def get_close_matches(word, possibilities, n=None, cutoff=0.6):
     return difflib_get_close_matches(word, possibilities, n, cutoff)
 
 
+def include_path_in_search(path):
+    for exclude_path in settings.excluded_search_path_prefixes:
+        if path.startswith(exclude_path):
+            return False
+    return True
+
+
 @memoize
 def get_all_executables():
     from thefuck.shells import shell
@@ -118,7 +125,7 @@ def get_all_executables():
     tf_entry_points = ['thefuck', 'fuck']
 
     bins = [exe.name.decode('utf8') if six.PY2 else exe.name
-            for path in os.environ.get('PATH', '').split(os.pathsep)
+            for path in os.environ.get('PATH', '').split(os.pathsep) if include_path_in_search(path)
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]

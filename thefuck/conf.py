@@ -101,7 +101,7 @@ class Settings(dict):
         elif attr in ('require_confirmation', 'no_colors', 'debug',
                       'alter_history', 'instant_mode'):
             return val.lower() == 'true'
-        elif attr == 'slow_commands':
+        elif attr in ('slow_commands', 'excluded_search_path_prefixes'):
             return val.split(':')
         else:
             return val
