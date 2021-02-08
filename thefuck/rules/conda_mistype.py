@@ -7,7 +7,7 @@ def match(command):
     """
     Match a mistyped command
     """
-    return "conda" in command.script and "Did you mean 'conda" in command.output
+    return "Did you mean 'conda" in command.output
 
 
 def get_new_command(command):
