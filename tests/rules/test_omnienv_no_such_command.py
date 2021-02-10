@@ -35,7 +35,7 @@ def test_match(script, pyenv_cmd, output):
 
 def test_match_goenv_output_quote():
     """test goenv's specific output with quotes (')"""
-    assert match(Command('goenv list', output="pyenv: no such command 'list'"))
+    assert match(Command('goenv list', output="goenv: no such command 'list'"))
 
 
 @pytest.mark.parametrize('script, output', [
