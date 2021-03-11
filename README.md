@@ -91,6 +91,19 @@ Reading package lists... Done
 ...
 ```
 
+## Contents
+
+1. [Requirements](https://github.com/bhav09/thefuck#requirements)
+2. [Installations](https://github.com/bhav09/thefuck#installation)
+3. [Updating](https://github.com/bhav09/thefuck#updating)
+4. [How it works](https://github.com/bhav09/thefuck#how-it-works)
+5. [Creating your own rules](https://github.com/bhav09/thefuck#creating-your-own-rules)
+6. [Settings](https://github.com/bhav09/thefuck#settings)
+7. [Third party packages with rules](https://github.com/bhav09/thefuck#third-party-packages-with-rules)
+8. [Experimental instant mode](https://github.com/bhav09/thefuck#experimental-instant-mode)
+9. [Developing](https://github.com/bhav09/thefuck#developing)
+10. [License](https://github.com/bhav09/thefuck#license-mit)
+
 ## Requirements
 
 - python (3.4+)
