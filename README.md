@@ -97,7 +97,7 @@ Reading package lists... Done
 - pip
 - python-dev
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 ## Installation
 
@@ -158,7 +158,7 @@ To fix commands recursively until succeeding, use the `-r` option:
 ```bash
 fuck -r
 ```
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 ## Updating
 
@@ -316,7 +316,7 @@ following rules are enabled by default:
 * `yarn_command_replaced` &ndash; fixes replaced `yarn` commands;
 * `yarn_help` &ndash; makes it easier to open `yarn` documentation;
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 The following rules are enabled by default on specific platforms only:
 
@@ -345,7 +345,7 @@ default:
 * `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 ## Creating your own rules
 
@@ -400,7 +400,7 @@ requires_output = True
 [utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py),
 [app/os-specific helpers](https://github.com/nvbn/thefuck/tree/master/thefuck/specific/).
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 ## Settings
 
@@ -465,7 +465,7 @@ export THEFUCK_HISTORY_LIMIT='2000'
 export THEFUCK_NUM_CLOSE_MATCHES='5'
 ```
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 ## Third-party packages with rules
 
@@ -486,7 +486,7 @@ thefuck_contrib_foo
 
 *The Fuck* will find rules located in the `rules` module.
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 ## Experimental instant mode
 
@@ -507,7 +507,7 @@ For example:
 eval $(thefuck --alias --enable-experimental-instant-mode)
 ```
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
 
 ## Developing
 
@@ -529,4 +529,4 @@ Project License can be found [here](LICENSE.md).
 [homebrew]:        https://brew.sh/
 [linuxbrew]:       https://linuxbrew.sh/
 
-##### [Scroll to top](https://github.com/bhav09/thefuck#the-fuck----)
+##### [Warp to top](https://github.com/bhav09/thefuck#the-fuck----)
