@@ -171,6 +171,7 @@ To fix commands recursively until succeeding, use the `-r` option:
 ```bash
 fuck -r
 ```
+
 ##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
 
 ## Updating
