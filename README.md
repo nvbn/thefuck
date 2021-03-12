@@ -91,11 +91,26 @@ Reading package lists... Done
 ...
 ```
 
+## Contents
+
+1. [Requirements](https://github.com/bhav09/thefuck#requirements)
+2. [Installations](https://github.com/bhav09/thefuck#installation)
+3. [Updating](https://github.com/bhav09/thefuck#updating)
+4. [How it works](https://github.com/bhav09/thefuck#how-it-works)
+5. [Creating your own rules](https://github.com/bhav09/thefuck#creating-your-own-rules)
+6. [Settings](https://github.com/bhav09/thefuck#settings)
+7. [Third party packages with rules](https://github.com/bhav09/thefuck#third-party-packages-with-rules)
+8. [Experimental instant mode](https://github.com/bhav09/thefuck#experimental-instant-mode)
+9. [Developing](https://github.com/bhav09/thefuck#developing)
+10. [License](https://github.com/bhav09/thefuck#license-mit)
+
 ## Requirements
 
 - python (3.4+)
 - pip
 - python-dev
+
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
 
 ## Installation
 
@@ -156,6 +171,8 @@ To fix commands recursively until succeeding, use the `-r` option:
 ```bash
 fuck -r
 ```
+
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
 
 ## Updating
 
@@ -313,6 +330,8 @@ following rules are enabled by default:
 * `yarn_command_replaced` &ndash; fixes replaced `yarn` commands;
 * `yarn_help` &ndash; makes it easier to open `yarn` documentation;
 
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
+
 The following rules are enabled by default on specific platforms only:
 
 * `apt_get` &ndash; installs app from apt if it not installed (requires `python-commandnotfound` / `python3-commandnotfound`);
@@ -339,6 +358,8 @@ default:
 
 * `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
+
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
 
 ## Creating your own rules
 
@@ -392,6 +413,8 @@ requires_output = True
 [More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
 [utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py),
 [app/os-specific helpers](https://github.com/nvbn/thefuck/tree/master/thefuck/specific/).
+
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
 
 ## Settings
 
@@ -456,6 +479,8 @@ export THEFUCK_HISTORY_LIMIT='2000'
 export THEFUCK_NUM_CLOSE_MATCHES='5'
 ```
 
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
+
 ## Third-party packages with rules
 
 If you'd like to make a specific set of non-public rules, but would still like
@@ -474,6 +499,8 @@ thefuck_contrib_foo
 ```
 
 *The Fuck* will find rules located in the `rules` module.
+
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
 
 ## Experimental instant mode
 
@@ -494,6 +521,8 @@ For example:
 eval $(thefuck --alias --enable-experimental-instant-mode)
 ```
 
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
+
 ## Developing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -513,3 +542,5 @@ Project License can be found [here](LICENSE.md).
 [instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example_instant_mode.gif
 [homebrew]:        https://brew.sh/
 [linuxbrew]:       https://linuxbrew.sh/
+
+##### [Back to Contents](https://github.com/bhav09/thefuck#contents)
