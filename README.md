@@ -533,8 +533,8 @@ Project License can be found [here](LICENSE.md).
 
 [version-badge]:   https://img.shields.io/pypi/v/thefuck.svg?label=version
 [version-link]:    https://pypi.python.org/pypi/thefuck/
-[workflow-badge]:  https://github.com/divykj/thefuck/workflows/Tests/badge.svg
-[workflow-link]:   https://github.com/divykj/thefuck/actions?query=workflow%3ATests
+[workflow-badge]:  https://github.com/nvbn/thefuck/workflows/Tests/badge.svg
+[workflow-link]:   https://github.com/nvbn/thefuck/actions?query=workflow%3ATests
 [coverage-badge]:  https://img.shields.io/coveralls/nvbn/thefuck.svg
 [coverage-link]:   https://coveralls.io/github/nvbn/thefuck
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
