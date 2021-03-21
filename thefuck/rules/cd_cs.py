@@ -1,7 +1,10 @@
 # Redirects cs to cd when there is a typo
-# Due to the proximity of the keys - d and s, I found this to be a common problem for me
-# > cs /etc/
+# Due to the proximity of the keys — d and s — this seems like a common typo
+# ~ > cs /etc/
 # cs: command not found
+# ~ > fuck
+# cd /etc/ [enter/↑/↓/ctrl+c]
+# /etc >
 
 
 def match(command):
