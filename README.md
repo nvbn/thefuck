@@ -196,6 +196,7 @@ following rules are enabled by default:
 * `cargo_no_command` &ndash; fixes wrongs commands like `cargo buid`;
 * `cat_dir` &ndash; replaces `cat` with `ls` when you try to `cat` a directory;
 * `cd_correction` &ndash; spellchecks and correct failed cd commands;
+* `cd_cs` &ndash; changes `cs` to `cd`;
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
 * `chmod_x` &ndash; add execution bit;
