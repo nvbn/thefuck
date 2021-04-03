@@ -6,6 +6,7 @@ from .exceptions import NoRuleMatched
 from .system import get_key
 from .utils import get_alias
 from . import logs, const
+from .types import CorrectedCommand
 
 
 def read_actions():
@@ -93,3 +94,26 @@ def select_command(corrected_commands):
         elif action == const.ACTION_NEXT:
             selector.next()
             logs.confirm_text(selector.value)
+
+def confirm_command(confirmation_text):
+    """Returns:
+
+     - the first command when confirmation disabled;
+     - None when ctrl+c pressed;
+     - selected command.
+
+    :type corrected_commands: Iterable[thefuck.types.CorrectedCommand]
+    :rtype: thefuck.types.CorrectedCommand | None
+
+    """
+
+    logs.confirm_text(CorrectedCommand(confirmation_text,None,0))
+
+    action = read_actions()
+    for action in read_actions():
+        if action == const.ACTION_SELECT:
+            sys.stderr.write('\n')
+            return True
+        elif action == const.ACTION_ABORT:
+            logs.failed('\nAborted')
+            return False
