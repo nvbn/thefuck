@@ -41,12 +41,11 @@ def fix_command(known_args):
 
         corrected_commands = get_corrected_commands(command)
         selected_command = select_command(corrected_commands)
-        
 
         confirmation = True
         if selected_command.script == "reboot":
             confirmation = confirm_command("Reboot System?")
-        
+
         if selected_command and confirmation:
             selected_command.run(command)
         else:

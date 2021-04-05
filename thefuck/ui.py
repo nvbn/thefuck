@@ -95,6 +95,7 @@ def select_command(corrected_commands):
             selector.next()
             logs.confirm_text(selector.value)
 
+
 def confirm_command(confirmation_text):
     """Returns:
 
@@ -107,13 +108,13 @@ def confirm_command(confirmation_text):
 
     """
 
-    logs.confirm_text(CorrectedCommand(confirmation_text,None,0))
+    logs.confirm_text(CorrectedCommand(confirmation_text, None, 0))
 
     action = read_actions()
     for action in read_actions():
         if action == const.ACTION_SELECT:
-            sys.stderr.write('\n')
+            logs.confirmation(True)
             return True
         elif action == const.ACTION_ABORT:
-            logs.failed('\nAborted')
+            logs.confirmation(False)
             return False

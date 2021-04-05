@@ -139,3 +139,14 @@ def version(thefuck_version, python_version, shell_info):
         u'The Fuck {} using Python {} and {}\n'.format(thefuck_version,
                                                        python_version,
                                                        shell_info))
+
+
+def confirmation(confirm):
+    if confirm is True:
+        sys.stderr.write(u"\n{bold}System Rebooting!\n{reset}".format(
+            bold=color(colorama.Style.BRIGHT),
+            reset=color(colorama.Style.RESET_ALL)))
+    else:
+        sys.stderr.write(u"\n{bold}Reboot Cancelled{reset}\n".format(
+            bold=color(colorama.Style.BRIGHT),
+            reset=color(colorama.Style.RESET_ALL)))
