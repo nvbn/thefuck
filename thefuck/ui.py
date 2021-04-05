@@ -113,8 +113,8 @@ def confirm_command(confirmation_text):
     action = read_actions()
     for action in read_actions():
         if action == const.ACTION_SELECT:
-            logs.confirmation(True)
+            logs.confirmation(True, confirmation_text)
             return True
         elif action == const.ACTION_ABORT:
-            logs.confirmation(False)
+            logs.confirmation(False, confirmation_text)
             return False

@@ -29,6 +29,7 @@ def _get_raw_command(known_args):
 def fix_command(known_args):
     """Fixes previous command. Used when `thefuck` called without arguments."""
     settings.init(known_args)
+    double_check_commands = {"reboot": "reboot system?"}
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))
         raw_command = _get_raw_command(known_args)
@@ -43,8 +44,8 @@ def fix_command(known_args):
         selected_command = select_command(corrected_commands)
 
         confirmation = True
-        if selected_command.script == "reboot":
-            confirmation = confirm_command("Reboot System?")
+        if selected_command.script in double_check_commands:
+            confirmation = confirm_command(double_check_commands[selected_command.script])
 
         if selected_command and confirmation:
             selected_command.run(command)

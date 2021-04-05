@@ -57,20 +57,33 @@ def show_corrected_command(corrected_command):
 
 
 def confirm_text(corrected_command):
-    sys.stderr.write(
-        (u'{prefix}{clear}{bold}{script}{reset}{side_effect} '
-         u'[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
-         u'/{red}ctrl+c{reset}]').format(
-            prefix=const.USER_COMMAND_MARK,
-            script=corrected_command.script,
-            side_effect=' (+side effect)' if corrected_command.side_effect else '',
-            clear='\033[1K\r',
-            bold=color(colorama.Style.BRIGHT),
-            green=color(colorama.Fore.GREEN),
-            red=color(colorama.Fore.RED),
-            reset=color(colorama.Style.RESET_ALL),
-            blue=color(colorama.Fore.BLUE)))
-
+    if corrected_command.script != 'reboot system?':
+        sys.stderr.write(
+            (u'{prefix}{clear}{bold}{script}{reset}{side_effect} '
+            u'[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
+            u'/{red}ctrl+c{reset}]').format(
+                prefix=const.USER_COMMAND_MARK,
+                script=corrected_command.script,
+                side_effect=' (+side effect)' if corrected_command.side_effect else '',
+                clear='\033[1K\r',
+                bold=color(colorama.Style.BRIGHT),
+                green=color(colorama.Fore.GREEN),
+                red=color(colorama.Fore.RED),
+                reset=color(colorama.Style.RESET_ALL),
+                blue=color(colorama.Fore.BLUE)))
+    else:
+        sys.stderr.write(
+            (u'{prefix}{clear}{bold}{script}{reset}{side_effect} '
+             u'[{green}enter{reset}'
+             u'/{red}ctrl+c{reset}]').format(
+                prefix=const.USER_COMMAND_MARK,
+                script=corrected_command.script,
+                side_effect=' (+side effect)' if corrected_command.side_effect else '',
+                clear='\033[1K\r',
+                bold=color(colorama.Style.BRIGHT),
+                green=color(colorama.Fore.GREEN),
+                red=color(colorama.Fore.RED),
+                reset=color(colorama.Style.RESET_ALL)))
 
 def debug(msg):
     if settings.debug:
@@ -141,12 +154,14 @@ def version(thefuck_version, python_version, shell_info):
                                                        shell_info))
 
 
-def confirmation(confirm):
+def confirmation(confirm, msg):
     if confirm is True:
-        sys.stderr.write(u"\n{bold}System Rebooting!\n{reset}".format(
+        sys.stderr.write(u"\n{bold}System will now {message}\n{reset}".format(
             bold=color(colorama.Style.BRIGHT),
+            message=msg[:-1],
             reset=color(colorama.Style.RESET_ALL)))
     else:
-        sys.stderr.write(u"\n{bold}Reboot Cancelled{reset}\n".format(
+        sys.stderr.write(u"\n{bold}{message} cancelled{reset}\n".format(
             bold=color(colorama.Style.BRIGHT),
+            message=msg[:-1],
             reset=color(colorama.Style.RESET_ALL)))
