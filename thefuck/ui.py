@@ -6,7 +6,6 @@ from .exceptions import NoRuleMatched
 from .system import get_key
 from .utils import get_alias
 from . import logs, const
-from .types import CorrectedCommand
 
 
 def read_actions():
@@ -98,11 +97,11 @@ def select_command(corrected_commands):
             selector.next()
             logs.confirm_text(selector.value)
 
-    
-    if not (settings.require_double_confirmation and selector.value.script in const.DOUBLE_CONFIRMATION_SCRIPTS):
-        return selector.value
-        
-    confirmation_text = const.DOUBLE_CONFIRMATION_SCRIPTS[selector.value.script]
+    if settings.require_double_confirmation and selector.value.script in const.DOUBLE_CONFIRMATION_SCRIPTS:
+        selector.value = double_confirm(const.DOUBLE_CONFIRMATION_SCRIPTS[selector.value.script])
+
+
+def double_confirm(confirmation_text):
     logs.double_confirm_text(confirmation_text)
 
     for action in read_actions():

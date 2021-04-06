@@ -71,6 +71,7 @@ def confirm_text(corrected_command):
             reset=color(colorama.Style.RESET_ALL),
             blue=color(colorama.Fore.BLUE)))
 
+
 def double_confirm_text(confirmation_text):
     sys.stderr.write(
         (u'{prefix}{clear}{bold}{text}{reset} '
@@ -83,7 +84,7 @@ def double_confirm_text(confirmation_text):
             green=color(colorama.Fore.GREEN),
             red=color(colorama.Fore.RED),
             reset=color(colorama.Style.RESET_ALL),
-            ))
+        ))
 
 
 def debug(msg):

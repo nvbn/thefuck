@@ -6,7 +6,7 @@ from .. import logs, types, const
 from ..conf import settings
 from ..corrector import get_corrected_commands
 from ..exceptions import EmptyCommand
-from ..ui import select_command, confirm_command
+from ..ui import select_command
 from ..utils import get_alias, get_all_executables
 
 
@@ -41,7 +41,7 @@ def fix_command(known_args):
 
         corrected_commands = get_corrected_commands(command)
         selected_command = select_command(corrected_commands)
-        
+
         if selected_command:
             selected_command.run(command)
         else:
