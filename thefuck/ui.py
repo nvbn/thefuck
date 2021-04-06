@@ -98,7 +98,7 @@ def select_command(corrected_commands):
             logs.confirm_text(selector.value)
 
     if settings.require_double_confirmation and selector.value.script in const.DOUBLE_CONFIRMATION_SCRIPTS:
-        selector.value = double_confirm(selector)
+        return double_confirm(selector)
 
     return selector.value
 
