@@ -244,6 +244,7 @@ following rules are enabled by default:
 * `git_help_aliased` &ndash; fixes `git help <alias>` commands replacing <alias> with the aliased command;
 * `git_hook_bypass` &ndash; adds `--no-verify` flag previous to `git am`, `git commit`, or `git push` command;
 * `git_lfs_mistype` &ndash; fixes mistyped `git lfs <command>` commands;
+* `git_main_master` &ndash; fixes incorrect branch name between `main` and `master`
 * `git_merge` &ndash; adds remote to branch names;
 * `git_merge_unrelated` &ndash; adds `--allow-unrelated-histories` when required
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
