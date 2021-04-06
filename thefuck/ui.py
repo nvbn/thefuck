@@ -98,10 +98,11 @@ def select_command(corrected_commands):
             logs.confirm_text(selector.value)
 
     if settings.require_double_confirmation and selector.value.script in const.DOUBLE_CONFIRMATION_SCRIPTS:
-        selector.value = double_confirm(const.DOUBLE_CONFIRMATION_SCRIPTS[selector.value.script])
+        selector.value = double_confirm(selector)
 
 
-def double_confirm(confirmation_text):
+def double_confirm(selector):
+    confirmation_text = const.DOUBLE_CONFIRMATION_SCRIPTS[selector.value.script]
     logs.double_confirm_text(confirmation_text)
 
     for action in read_actions():
