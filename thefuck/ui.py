@@ -100,6 +100,8 @@ def select_command(corrected_commands):
     if settings.require_double_confirmation and selector.value.script in const.DOUBLE_CONFIRMATION_SCRIPTS:
         selector.value = double_confirm(selector)
 
+    return selector.value
+
 
 def double_confirm(selector):
     confirmation_text = const.DOUBLE_CONFIRMATION_SCRIPTS[selector.value.script]
