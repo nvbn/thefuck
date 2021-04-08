@@ -12,6 +12,7 @@ def patch_get_key(monkeypatch):
     def patch(vals):
         vals = iter(vals)
         monkeypatch.setattr('thefuck.ui.get_key', lambda: next(vals))
+        monkeypatch.setenv("THEFUCK_REQUIRE_DOUBLE_CONFIRMATION", 'True')
 
     return patch
 
@@ -62,6 +63,10 @@ class TestSelectCommand(object):
         return [CorrectedCommand('ls', None, 100),
                 CorrectedCommand('cd', None, 100)]
 
+    @pytest.fixture
+    def reboot_command(self):
+        return [CorrectedCommand('reboot', None, 100)]
+
     def test_without_commands(self, capsys):
         assert ui.select_command(iter([])) is None
         assert capsys.readouterr() == ('', 'No fucks given\n')
@@ -106,3 +111,12 @@ class TestSelectCommand(object):
             u'{mark}\x1b[1K\rcd [enter/↑/↓/ctrl+c]\n'
         ).format(mark=const.USER_COMMAND_MARK)
         assert capsys.readouterr() == ('', stderr)
+
+    def test_with_double_confirmation(self, capsys, patch_get_key, reboot_command):
+        patch_get_key(['\n'])
+        assert ui.select_command(iter(reboot_command)) == reboot_command[0]
+
+    def test_with_double_confirmation_abort(self, capsys, patch_get_key, reboot_command):
+        patch_get_key([const.KEY_CTRL_C])
+        assert ui.select_command(iter(reboot_command)) is None
+        assert capsys.readouterr() == ('', const.USER_COMMAND_MARK + u'\x1b[1K\rreboot [enter/↑/↓/ctrl+c]\nAborted\n')
