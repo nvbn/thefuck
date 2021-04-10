@@ -456,6 +456,7 @@ Or via environment variables:
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
 * `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`;
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
+* `THEFUCK_REQUIRE_DOUBLE_CONFIRMATION` &ndash; require double confirmation before running potentially volitile commands (eg. `reboot`), value of `true/false`;
 * `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
 * `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,

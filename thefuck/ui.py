@@ -80,10 +80,13 @@ def select_command(corrected_commands):
 
     logs.confirm_text(selector.value)
 
-    for action in read_actions():
+    selected = False
+    while not selected:
+        action = next(read_actions())
+
         if action == const.ACTION_SELECT:
             sys.stderr.write('\n')
-            return selector.value
+            selected = True
         elif action == const.ACTION_ABORT:
             logs.failed('\nAborted')
             return
@@ -93,3 +96,21 @@ def select_command(corrected_commands):
         elif action == const.ACTION_NEXT:
             selector.next()
             logs.confirm_text(selector.value)
+
+    if settings.require_double_confirmation and selector.value.script in const.DOUBLE_CONFIRMATION_SCRIPTS:
+        return double_confirm(selector)
+
+    return selector.value
+
+
+def double_confirm(selector):
+    confirmation_text = const.DOUBLE_CONFIRMATION_SCRIPTS[selector.value.script]
+    logs.double_confirm_text(confirmation_text)
+
+    for action in read_actions():
+        if action == const.ACTION_SELECT:
+            sys.stderr.write('\n')
+            return selector.value
+        elif action == const.ACTION_ABORT:
+            logs.failed('\nAborted')
+            return
