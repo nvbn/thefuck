@@ -28,10 +28,13 @@ ALL_ENABLED = _GenConst('All rules enabled')
 DEFAULT_RULES = [ALL_ENABLED]
 DEFAULT_PRIORITY = 1000
 
+DOUBLE_CONFIRMATION_SCRIPTS = {"reboot": "Are you sure you would like to reboot the system?"}
+
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'exclude_rules': [],
                     'wait_command': 3,
                     'require_confirmation': True,
+                    'require_double_confirmation': False,
                     'no_colors': False,
                     'debug': False,
                     'priority': {},
@@ -49,6 +52,7 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_EXCLUDE_RULES': 'exclude_rules',
                'THEFUCK_WAIT_COMMAND': 'wait_command',
                'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
+               'THEFUCK_REQUIRE_DOUBLE_CONFIRMATION': 'require_double_confirmation',
                'THEFUCK_NO_COLORS': 'no_colors',
                'THEFUCK_DEBUG': 'debug',
                'THEFUCK_PRIORITY': 'priority',
