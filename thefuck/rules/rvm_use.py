@@ -15,4 +15,4 @@ Please visit https://rvm.io/integration/gnome-terminal/ for an example."""
 
 def get_new_command(command):
     args = command.script_parts
-    return 'rvm install \"ruby-' + {args[2]} + '\"; rvm use {args[2]}'
+    return 'rvm install \"ruby-' + args[2] + '\"; rvm use ' + args[2]
