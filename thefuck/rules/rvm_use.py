@@ -4,7 +4,7 @@ from thefuck.utils import for_app
 @for_app('rvm', at_least=2)
 def match(command):
     args = command.script_parts
-    pattern = f"""RVM is not a function, selecting rubies with 'rvm use ...' will not work.
+    pattern = """RVM is not a function, selecting rubies with 'rvm use ...' will not work.
 
 You need to change your terminal emulator preferences to allow login shell.
 Sometimes it is required to use `/bin/bash --login` as the command.
