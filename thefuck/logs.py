@@ -8,7 +8,6 @@ import colorama
 from .conf import settings
 from . import const
 
-
 def color(color_):
     """Utility for ability to disabling colored output."""
     if settings.no_colors:
@@ -58,7 +57,7 @@ def show_corrected_command(corrected_command):
 
 def confirm_text(corrected_command):
     sys.stderr.write(
-        (u'{prefix}{clear}{bold}{script}{reset}{side_effect} '
+        (u'{prefix}{clear}{bold}{script}{reset}{side_effect}'
          u'[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
          u'/{red}ctrl+c{reset}]').format(
             prefix=const.USER_COMMAND_MARK,
