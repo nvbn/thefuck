@@ -1,4 +1,5 @@
 from thefuck.utils import for_app
+from thefuck.shells import shell
 
 
 @for_app('rvm', at_least=2)
@@ -15,4 +16,4 @@ Please visit https://rvm.io/integration/gnome-terminal/ for an example."""
 
 def get_new_command(command):
     args = command.script_parts
-    return 'rvm install \"ruby-' + args[2] + '\"; rvm use ' + args[2]
+    return shell.and_('rvm install \"ruby-{}\"'.format(args[2]), 'rvm use {}'.format(args[2]))

@@ -19,8 +19,8 @@ def test_match(command):
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command('rvm use 2.7.2', output), 'rvm install "ruby-2.7.2"; rvm use 2.7.2'),
-    (Command('rvm use 3.0.1', output), 'rvm install "ruby-3.0.1"; rvm use 3.0.1'),
-    (Command('rvm use 1.6.7', output), 'rvm install "ruby-1.6.7"; rvm use 1.6.7')])
+    (Command('rvm use 2.7.2', output), 'rvm install "ruby-2.7.2" && rvm use 2.7.2'),
+    (Command('rvm use 3.0.1', output), 'rvm install "ruby-3.0.1" && rvm use 3.0.1'),
+    (Command('rvm use 1.6.7', output), 'rvm install "ruby-1.6.7" && rvm use 1.6.7')])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command
