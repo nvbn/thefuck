@@ -307,6 +307,7 @@ following rules are enabled by default:
 * `remove_shell_prompt_literal` &ndash; remove leading shell prompt symbol `$`, common when copying commands from documentations;
 * `remove_trailing_cedilla` &ndash; remove trailing cedillas `ç`, a common typo for european keyboard layouts;
 * `rm_dir` &ndash; adds `-rf` when you try to remove a directory;
+* `rvm_use` &ndash; adds `rvm install` command infront of `rvm use` command when requested version is not installed;
 * `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
