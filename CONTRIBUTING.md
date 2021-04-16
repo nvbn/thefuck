@@ -3,7 +3,7 @@ If you have any issue with The Fuck, sorry about that, but we will do what we
 can to fix that. Actually, maybe we already have, so first thing to do is to
 update The Fuck and see if the bug is still there.
 
-If it is (sorry again), check if the problem hasn't already been reported and
+If it is (sorry again), check if the problem has not already been reported and
 if not, just open an issue on [GitHub](https://github.com/nvbn/thefuck) with
 the following basic information:
   - the output of `thefuck --version` (something like `The Fuck 3.1 using
