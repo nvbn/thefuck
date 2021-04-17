@@ -103,8 +103,9 @@ def test_get_all_executables_exclude_paths(path, pathsep, excluded, settings):
     settings.excluded_search_path_prefixes = [excluded]
     with patch('thefuck.utils.Path') as Path_mock:
         get_all_executables()
-        assert call(excluded) not in Path_mock.mock_calls
-        assert call(path.split(pathsep)[0]) in Path_mock.mock_calls
+        path_list = path.split(pathsep)
+        assert call(path_list[-1]) not in Path_mock.mock_calls
+        assert all(call(p) in Path_mock.mock_calls for p in path_list[:-1])
 
 
 @pytest.mark.parametrize('args, result', [

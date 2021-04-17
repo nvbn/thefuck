@@ -55,7 +55,7 @@ class TestSettingsFromEnv(object):
                            'THEFUCK_WAIT_SLOW_COMMAND': '999',
                            'THEFUCK_SLOW_COMMANDS': 'lein:react-native:./gradlew',
                            'THEFUCK_NUM_CLOSE_MATCHES': '359',
-                           'THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES': '/mnt/'})
+                           'THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES': '/media/:/mnt/'})
         settings.init()
         assert settings.rules == ['bash', 'lisp']
         assert settings.exclude_rules == ['git', 'vim']
@@ -66,7 +66,7 @@ class TestSettingsFromEnv(object):
         assert settings.wait_slow_command == 999
         assert settings.slow_commands == ['lein', 'react-native', './gradlew']
         assert settings.num_close_matches == 359
-        assert settings.excluded_search_path_prefixes == ['/mnt/']
+        assert settings.excluded_search_path_prefixes == ['/media/', '/mnt/']
 
     def test_from_env_with_DEFAULT(self, os_environ, settings):
         os_environ.update({'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'})
