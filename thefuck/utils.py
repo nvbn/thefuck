@@ -5,6 +5,7 @@ import re
 import shelve
 import sys
 import six
+import sys
 from decorator import decorator
 from difflib import get_close_matches as difflib_get_close_matches
 from functools import wraps
@@ -124,6 +125,10 @@ def get_all_executables():
             and exe.name not in tf_entry_points]
     aliases = [alias.decode('utf8') if six.PY2 else alias
                for alias in shell.get_aliases() if alias != tf_alias]
+
+    win32 = sys.platform.startswith('win')
+    if win32:
+        bins += [exe[:-4] for exe in bins if exe.endswith(".exe")]
 
     return bins + aliases
 
