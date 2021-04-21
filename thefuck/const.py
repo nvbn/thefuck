@@ -43,7 +43,8 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'repeat': False,
                     'instant_mode': False,
                     'num_close_matches': 3,
-                    'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'}}
+                    'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'},
+                    'excluded_search_path_prefixes': []}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_EXCLUDE_RULES': 'exclude_rules',
@@ -58,7 +59,8 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_SLOW_COMMANDS': 'slow_commands',
                'THEFUCK_REPEAT': 'repeat',
                'THEFUCK_INSTANT_MODE': 'instant_mode',
-               'THEFUCK_NUM_CLOSE_MATCHES': 'num_close_matches'}
+               'THEFUCK_NUM_CLOSE_MATCHES': 'num_close_matches',
+               'THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES': 'excluded_search_path_prefixes'}
 
 SETTINGS_HEADER = u"""# The Fuck settings file
 #

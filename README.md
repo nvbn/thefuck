@@ -434,6 +434,7 @@ Several *The Fuck* parameters can be changed in the file `$XDG_CONFIG_HOME/thefu
 * `wait_slow_command` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
 * `slow_commands` &ndash; list of slow commands;
 * `num_close_matches` &ndash; maximum number of close matches to suggest, by default `3`.
+* `excluded_search_path_prefixes` &ndash; path prefixes to ignore when searching for commands, by default `[]`.
 
 An example of `settings.py`:
 
@@ -466,6 +467,7 @@ rule with lower `priority` will be matched first;
 * `THEFUCK_WAIT_SLOW_COMMAND` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
 * `THEFUCK_SLOW_COMMANDS` &ndash; list of slow commands, like `lein:gradle`;
 * `THEFUCK_NUM_CLOSE_MATCHES` &ndash; maximum number of close matches to suggest, like `5`.
+* `THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES` &ndash; path prefixes to ignore when searching for commands, by default `[]`.
 
 For example:
 
