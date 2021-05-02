@@ -241,9 +241,9 @@ following rules are enabled by default:
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
-* `git_pull_uncommitted_changes` &ndash; stashes changes before pulling and pops them afterwards;
+* `git_pull_uncommitted_changes` &ndash; stashes changes before pulling and pops them afterward;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
-* `git_push_different_branch_names` &ndash; fixes pushes when local brach name does not match remote branch name;
+* `git_push_different_branch_names` &ndash; fixes pushes when local branch name does not match remote branch name;
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
 * `git_push_without_commits` &ndash; Creates an initial commit if you forget and only `git add .`, when setting up a new project;
 * `git_rebase_no_changes` &ndash; runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
@@ -268,7 +268,7 @@ following rules are enabled by default:
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
 * `heroku_multiple_apps` &ndash; add `--app <app>` to `heroku` commands like `heroku pg`;
 * `heroku_not_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
-* `history` &ndash; tries to replace command with most similar command from history;
+* `history` &ndash; tries to replace command with the most similar command from history;
 * `hostscli` &ndash; tries to fix `hostscli` usage;
 * `ifconfig_device_not_found` &ndash; fixes wrong device names like `wlan0` to `wlp2s0`;
 * `java` &ndash; removes `.java` extension when running Java programs;
@@ -283,7 +283,7 @@ following rules are enabled by default:
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
 * `missing_space_before_subcommand` &ndash; fixes command with missing space like `npminstall`;
-* `mkdir_p` &ndash; adds `-p` when you try to create a directory without parent;
+* `mkdir_p` &ndash; adds `-p` when you try to create a directory without a parent;
 * `mvn_no_command` &ndash; adds `clean package` to `mvn`;
 * `mvn_unknown_lifecycle_phase` &ndash; fixes misspelled life cycle phases with `mvn`;
 * `npm_missing_script` &ndash; fixes `npm` custom script name in `npm run-script <script>`;
@@ -302,16 +302,16 @@ following rules are enabled by default:
 * `python_execute` &ndash; appends missing `.py` when executing Python files;
 * `python_module_error` &ndash; fixes ModuleNotFoundError by trying to `pip install` that module;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
-* `path_from_history` &ndash; replaces not found path with similar absolute path from history;
+* `path_from_history` &ndash; replaces not found path with a similar absolute path from history;
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
 * `remove_shell_prompt_literal` &ndash; remove leading shell prompt symbol `$`, common when copying commands from documentations;
-* `remove_trailing_cedilla` &ndash; remove trailing cedillas `ç`, a common typo for european keyboard layouts;
+* `remove_trailing_cedilla` &ndash; remove trailing cedillas `ç`, a common typo for European keyboard layouts;
 * `rm_dir` &ndash; adds `-rf` when you try to remove a directory;
 * `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
 * `sl_ls` &ndash; changes `sl` to `ls`;
 * `ssh_known_hosts` &ndash; removes host from `known_hosts` on warning;
-* `sudo` &ndash; prepends `sudo` to previous command if it failed because of permissions;
+* `sudo` &ndash; prepends `sudo` to the previous command if it failed because of permissions;
 * `sudo_command_from_user_path` &ndash; runs commands from users `$PATH` with `sudo`;
 * `switch_lang` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
@@ -322,7 +322,7 @@ following rules are enabled by default:
 * `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
 * `tmux` &ndash; fixes `tmux` commands;
 * `unknown_command` &ndash; fixes hadoop hdfs-style "unknown command", for example adds missing '-' to the command on `hdfs dfs ls`;
-* `unsudo` &ndash; removes `sudo` from previous command if a process refuses to run on super user privilege.
+* `unsudo` &ndash; removes `sudo` from previous command if a process refuses to run on superuser privilege.
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
@@ -425,15 +425,15 @@ Several *The Fuck* parameters can be changed in the file `$XDG_CONFIG_HOME/thefu
 * `rules` &ndash; list of enabled rules, by default `thefuck.const.DEFAULT_RULES`;
 * `exclude_rules` &ndash; list of disabled rules, by default `[]`;
 * `require_confirmation` &ndash; requires confirmation before running new command, by default `True`;
-* `wait_command` &ndash; max amount of time in seconds for getting previous command output;
+* `wait_command` &ndash; the max amount of time in seconds for getting previous command output;
 * `no_colors` &ndash; disable colored output;
 * `priority` &ndash; dict with rules priorities, rule with lower `priority` will be matched first;
 * `debug` &ndash; enables debug output, by default `False`;
-* `history_limit` &ndash; numeric value of how many history commands will be scanned, like `2000`;
+* `history_limit` &ndash; the numeric value of how many history commands will be scanned, like `2000`;
 * `alter_history` &ndash; push fixed command to history, by default `True`;
 * `wait_slow_command` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
 * `slow_commands` &ndash; list of slow commands;
-* `num_close_matches` &ndash; maximum number of close matches to suggest, by default `3`.
+* `num_close_matches` &ndash; the maximum number of close matches to suggest, by default `3`.
 * `excluded_search_path_prefixes` &ndash; path prefixes to ignore when searching for commands, by default `[]`.
 
 An example of `settings.py`:
@@ -457,16 +457,16 @@ Or via environment variables:
 * `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
 * `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`;
 * `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
-* `THEFUCK_WAIT_COMMAND` &ndash; max amount of time in seconds for getting previous command output;
+* `THEFUCK_WAIT_COMMAND` &ndash; the max amount of time in seconds for getting previous command output;
 * `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
 * `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
 rule with lower `priority` will be matched first;
 * `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`;
 * `THEFUCK_HISTORY_LIMIT` &ndash; how many history commands will be scanned, like `2000`;
 * `THEFUCK_ALTER_HISTORY` &ndash; push fixed command to history `true/false`;
-* `THEFUCK_WAIT_SLOW_COMMAND` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
+* `THEFUCK_WAIT_SLOW_COMMAND` &ndash; the max amount of time in seconds for getting previous command output if it in `slow_commands` list;
 * `THEFUCK_SLOW_COMMANDS` &ndash; list of slow commands, like `lein:gradle`;
-* `THEFUCK_NUM_CLOSE_MATCHES` &ndash; maximum number of close matches to suggest, like `5`.
+* `THEFUCK_NUM_CLOSE_MATCHES` &ndash; the maximum number of close matches to suggest, like `5`.
 * `THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES` &ndash; path prefixes to ignore when searching for commands, by default `[]`.
 
 For example:
