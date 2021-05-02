@@ -8,6 +8,7 @@ import colorama
 from .conf import settings
 from . import const
 
+
 def color(color_):
     """Utility for ability to disabling colored output."""
     if settings.no_colors:
