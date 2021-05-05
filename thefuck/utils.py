@@ -294,10 +294,15 @@ def cache(*depends_on):
 cache.disabled = False
 
 
-def get_installation_info():
-    import pkg_resources
+def get_installation_version():
+    try:
+        from importlib.metadata import version
 
-    return pkg_resources.require('thefuck')[0]
+        return version('thefuck')
+    except ImportError:
+        import pkg_resources
+
+        return pkg_resources.require('thefuck')[0].version
 
 
 def get_alias():
