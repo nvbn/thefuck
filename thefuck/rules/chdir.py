@@ -17,5 +17,5 @@ def match(command):
 
 @sudo_support
 def get_new_command(command):
-    repl = shell.and_('mkdir -p \\1', 'chdir \\1')
+    repl = 'mkdir -p \\1; chdir \\1'
     return re.sub(r'^chdir(.*)', repl, command.script)
