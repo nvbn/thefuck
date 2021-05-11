@@ -54,7 +54,7 @@ def get_output(script, expanded):
     env.update(settings.env)
 
     split_expand = shlex.split(expanded)
-    is_slow = split_expand[0] in settings.slow_commands if split_expand else False
+    is_slow = not set(split_expand).isdisjoint(settings.slow_commands) if split_expand else False
     with logs.debug_time(u'Call: {}; with env: {}; is slow: {}'.format(
             script, env, is_slow)):
         result = Popen(expanded, shell=True, stdin=PIPE,
