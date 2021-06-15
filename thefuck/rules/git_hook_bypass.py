@@ -23,5 +23,5 @@ def get_new_command(command):
     )
 
 
-priority = 900
+priority = 1100
 requires_output = False
