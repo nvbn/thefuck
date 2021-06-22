@@ -241,7 +241,7 @@ following rules are enabled by default:
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
-* `git_pull_uncommitted_changes` &ndash; stashes changes before pulling and pops them afterward;
+* `git_pull_uncommitted_changes` &ndash; stashes changes before pulling and pops them afterwards;
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `git_push_different_branch_names` &ndash; fixes pushes when local branch name does not match remote branch name;
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
