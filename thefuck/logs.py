@@ -58,7 +58,7 @@ def show_corrected_command(corrected_command):
 
 def confirm_text(corrected_command):
     sys.stderr.write(
-        (u'{prefix}{clear}{bold}{script}{reset}{side_effect} '
+        (u'{prefix}{clear}{bold}{script}{reset}{side_effect}'
          u'[{green}enter{reset}/{blue}↑{reset}/{blue}↓{reset}'
          u'/{red}ctrl+c{reset}]').format(
             prefix=const.USER_COMMAND_MARK,
@@ -70,6 +70,21 @@ def confirm_text(corrected_command):
             red=color(colorama.Fore.RED),
             reset=color(colorama.Style.RESET_ALL),
             blue=color(colorama.Fore.BLUE)))
+
+
+def double_confirm_text(confirmation_text):
+    sys.stderr.write(
+        (u'{prefix}{clear}{bold}{text}{reset} '
+         u'[{green}enter{reset}'
+         u'/{red}ctrl+c{reset}]').format(
+            prefix=const.USER_COMMAND_MARK,
+            text=confirmation_text,
+            clear='\033[1K\r',
+            bold=color(colorama.Style.BRIGHT),
+            green=color(colorama.Fore.GREEN),
+            red=color(colorama.Fore.RED),
+            reset=color(colorama.Style.RESET_ALL),
+        ))
 
 
 def debug(msg):

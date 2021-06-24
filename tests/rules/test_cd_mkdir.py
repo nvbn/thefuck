@@ -20,7 +20,13 @@ def test_not_match(command):
 
 
 @pytest.mark.parametrize('command, new_command', [
-    (Command('cd foo', ''), 'mkdir -p foo && cd foo'),
-    (Command('cd foo/bar/baz', ''), 'mkdir -p foo/bar/baz && cd foo/bar/baz')])
+    (Command('cd foo', ''), 'mkdir -p foo; cd foo'),
+    (Command('cd foo/bar/baz', ''), 'mkdir -p foo/bar/baz; cd foo/bar/baz')])
 def test_get_new_command(command, new_command):
     assert get_new_command(command) == new_command
+
+
+@pytest.mark.parametrize('command', [
+    Command('cd <', ''), Command('cd \0', '')])
+def test_bad_dir_name(command):
+    assert not match(command)
