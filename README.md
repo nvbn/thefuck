@@ -303,6 +303,7 @@ following rules are enabled by default:
 * `python_module_error` &ndash; fixes ModuleNotFoundError by trying to `pip install` that module;
 * `quotation_marks` &ndash; fixes uneven usage of `'` and `"` when containing args';
 * `path_from_history` &ndash; replaces not found path with similar absolute path from history;
+* `rails_migrations_pending` &ndash; runs pending migrations;
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
 * `remove_shell_prompt_literal` &ndash; remove leading shell prompt symbol `$`, common when copying commands from documentations;
 * `remove_trailing_cedilla` &ndash; remove trailing cedillas `ç`, a common typo for european keyboard layouts;
