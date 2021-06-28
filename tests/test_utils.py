@@ -231,7 +231,7 @@ class TestCache(object):
 
 
 class TestGetValidHistoryWithoutCurrent(object):
-    @pytest.yield_fixture(autouse=True)
+    @pytest.fixture(autouse=True)
     def fail_on_warning(self):
         warnings.simplefilter('error')
         yield
