@@ -167,7 +167,7 @@ pip3 install thefuck --upgrade
 
 ## Uninstall
 
-To remove *The Fuck*, reverse the installation process :
+To remove *The Fuck*, reverse the installation process:
 - erase or comment *thefuck* alias line from your Bash, Zsh, Fish, Powershell, tcsh, ... shell config
 - use your package manager (brew, pip3, pkg, crew, pip) to uninstall the binaries
 
