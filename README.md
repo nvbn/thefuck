@@ -182,6 +182,12 @@ pip3 install thefuck --upgrade
 
 **Note: Alias functionality was changed in v1.34 of *The Fuck***
 
+## Uninstall
+
+To remove *The Fuck*, reverse the installation process:
+- erase or comment *thefuck* alias line from your Bash, Zsh, Fish, Powershell, tcsh, ... shell config
+- use your package manager (brew, pip3, pkg, crew, pip) to uninstall the binaries
+
 ## How it works
 
 *The Fuck* attempts to match the previous command with a rule. If a match is
