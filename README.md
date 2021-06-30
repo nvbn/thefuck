@@ -155,7 +155,6 @@ To fix commands recursively until succeeding, use the `-r` option:
 
 ```bash
 fuck -r
-
 ```
 
 ## Updating
