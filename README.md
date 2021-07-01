@@ -231,7 +231,7 @@ following rules are enabled by default:
 * `git_branch_delete_checked_out` &ndash; changes `git branch -d` to `git checkout master && git branch -D` when trying to delete a checked out branch;
 * `git_branch_exists` &ndash; offers `git branch -d foo`, `git branch -D foo` or `git checkout foo` when creating a branch that already exists;
 * `git_branch_list` &ndash; catches `git branch list` in place of `git branch` and removes created branch;
-* `git_branch_flag_0_to_flag_dash_v` &ndash; undoes `git branch 0v` and runs `git branch -v` in its place;
+* `git_branch_0flag` &ndash; fixes commands such as `git branch 0v` and `git branch 0r` removing the created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
 * `git_clone_git_clone` &ndash; replaces `git clone git clone ...` with `git clone ...`
 * `git_commit_amend` &ndash; offers `git commit --amend` after previous commit;
