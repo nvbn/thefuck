@@ -19,7 +19,7 @@ def _get_actual_scm():
             return scm
 
 
-@for_app(*wrong_scm_patterns.keys())
+@for_app(*wrong_scm_patterns.keys(), strict=True)
 def match(command):
     scm = command.script_parts[0]
     pattern = wrong_scm_patterns[scm]

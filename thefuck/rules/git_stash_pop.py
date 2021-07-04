@@ -11,7 +11,8 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return shell.and_('git add --update', 'git stash pop', 'git reset .')
+    cmd = command.script_parts[0]
+    return shell.and_('{} add --update'.format(cmd), '{} stash pop'.format(cmd), '{} reset .'.format(cmd))
 
 
 # make it come before the other applicable rules
