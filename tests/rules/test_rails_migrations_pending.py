@@ -38,8 +38,8 @@ def test_not_match(command):
 @pytest.mark.parametrize(
     "command, new_command",
     [
-        (Command("", output_env_development), "rails db:migrate RAILS_ENV=development"),
-        (Command("", output_env_test), "bin/rails db:migrate RAILS_ENV=test"),
+        (Command("bin/rspec", output_env_development), "rails db:migrate RAILS_ENV=development && bin/rspec"),
+        (Command("bin/rspec", output_env_test), "bin/rails db:migrate RAILS_ENV=test && bin/rspec"),
     ],
 )
 def test_get_new_command(command, new_command):
