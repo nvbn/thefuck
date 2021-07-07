@@ -180,7 +180,7 @@ def is_app(command, *app_names, **kwargs):
         raise TypeError("got an unexpected keyword argument '{}'".format(kwargs.keys()))
 
     if len(command.script_parts) > at_least:
-        return command.script_parts[0] in app_names
+        return os.path.basename(command.script_parts[0]) in app_names
 
     return False
 
