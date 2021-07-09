@@ -3,21 +3,45 @@ from thefuck.rules.git_main_master import match, get_new_command
 from thefuck.types import Command
 
 
-output = 'error: pathspec \'%s\' did not match any file(s) known to git'
+@pytest.fixture
+def output(branch_name):
+    if not branch_name:
+        return ""
+    output_str = u"error: pathspec '{}' did not match any file(s) known to git"
+    return output_str.format(branch_name)
 
 
-def test_match():
-    assert match(Command('git checkout main', output % ('main')))
-    assert match(Command('git checkout master', output % ('master')))
-    assert not match(Command('git checkout master', ''))
-    assert not match(Command('git checkout main', ''))
-    assert not match(Command('git checkout wibble', output % ('wibble')))
+@pytest.mark.parametrize(
+    "script, branch_name",
+    [
+        ("git checkout main", "main"),
+        ("git checkout master", "master"),
+        ("git show main", "main"),
+    ],
+)
+def test_match(script, branch_name, output):
+    assert match(Command(script, output))
 
 
-@pytest.mark.parametrize('command, new_command', [
-    (Command('git checkout main', output % ('main')),
-     'git checkout master'),
-    (Command('git checkout master', output % ('master')),
-     'git checkout main')])
-def test_get_new_command(command, new_command):
-    assert get_new_command(command) == new_command
+@pytest.mark.parametrize(
+    "script, branch_name",
+    [
+        ("git checkout master", ""),
+        ("git checkout main", ""),
+        ("git checkout wibble", "wibble"),
+    ],
+)
+def test_not_match(script, branch_name, output):
+    assert not match(Command(script, output))
+
+
+@pytest.mark.parametrize(
+    "script, branch_name, new_command",
+    [
+        ("git checkout main", "main", "git checkout master"),
+        ("git checkout master", "master", "git checkout main"),
+        ("git checkout wibble", "wibble", "git checkout wibble"),
+    ],
+)
+def test_get_new_command(script, branch_name, new_command, output):
+    assert get_new_command(Command(script, output)) == new_command
