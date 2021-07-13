@@ -25,7 +25,7 @@ def git_support(fn, command):
         # eg. 'git commit'
         expansion = ' '.join(shell.quote(part)
                              for part in shell.split_command(search.group(2)))
-        new_script = command.script.replace(alias, expansion)
+        new_script = re.sub(r"\b{}\b".format(alias), expansion, command.script)
 
         command = command.update(script=new_script)
 
