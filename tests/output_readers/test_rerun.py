@@ -22,6 +22,14 @@ class TestRerun(object):
         assert rerun.get_output('', '') is None
         wait_output_mock.assert_called_once()
 
+    @patch('thefuck.output_readers.rerun.Popen')
+    def test_get_output_invalid_continuation_byte(self, popen_mock):
+        output = b'ls: illegal option -- \xc3\nusage: ls [-@ABC...] [file ...]\n'
+        expected = u'ls: illegal option -- \ufffd\nusage: ls [-@ABC...] [file ...]\n'
+        popen_mock.return_value.stdout.read.return_value = output
+        actual = rerun.get_output('', '')
+        assert actual == expected
+
     def test_wait_output_is_slow(self, settings):
         assert rerun._wait_output(Mock(), True)
         self.proc_mock.wait.assert_called_once_with(settings.wait_slow_command)
