@@ -60,7 +60,7 @@ def get_output(script, expanded):
         result = Popen(expanded, shell=True, stdin=PIPE,
                        stdout=PIPE, stderr=STDOUT, env=env)
         if _wait_output(result, is_slow):
-            output = result.stdout.read().decode('utf-8')
+            output = result.stdout.read().decode('utf-8', errors='replace')
             logs.debug(u'Received output: {}'.format(output))
             return output
         else:
