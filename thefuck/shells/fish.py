@@ -52,7 +52,7 @@ class Fish(Generic):
         if settings.alter_history:
             alter_history = ('    builtin history delete --exact'
                              ' --case-sensitive -- $fucked_up_command\n'
-                             '    builtin history merge ^ /dev/null\n')
+                             '    builtin history merge\n')
         else:
             alter_history = ''
         # It is VERY important to have the variables declared WITHIN the alias
