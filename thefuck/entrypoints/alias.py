@@ -1,4 +1,5 @@
 import six
+from ..conf import settings
 from ..logs import warn
 from ..shells import shell
 from ..utils import which
@@ -23,4 +24,5 @@ def _get_alias(known_args):
 
 
 def print_alias(known_args):
+    settings.init(known_args)
     print(_get_alias(known_args))
