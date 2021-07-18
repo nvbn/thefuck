@@ -19,11 +19,6 @@ the following basic information:
 
 It's only with enough information that we can do something to fix the problem.
 
-# Make a pull request
-We gladly accept pull request on the [official
-repository](https://github.com/nvbn/thefuck) for new rules, new features, bug
-fixes, etc.
-
 # Developing
 
 [Create and activate a Python 3 virtual environment.](https://docs.python.org/3/tutorial/venv.html)
@@ -33,6 +28,20 @@ Install `The Fuck` for development:
 ```bash
 pip install -r requirements.txt
 python setup.py develop
+```
+
+
+Installing code coverage:
+
+```bash
+pip install -U coveralls
+```
+
+Run code coverage:
+
+```bash
+coverage run --source=thefuck,tests -m py.test -v --capture=sys tests
+coverage html
 ```
 
 Run code style checks:
@@ -59,3 +68,12 @@ For sending package to pypi:
 sudo apt-get install pandoc
 ./release.py
 ```
+
+
+# Make A Pull Request
+
+We gladly accept pull request on the [official
+repository](https://github.com/nvbn/thefuck) for new rules, new features, bug
+fixes, etc.
+
+**When making a PR, please make sure that your code has no errors in terms of unit tests, coverage, or linting errors.** This will save you and the reviewers a lot of time in the end.
