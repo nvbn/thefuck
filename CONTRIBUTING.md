@@ -26,6 +26,13 @@ fixes, etc.
 
 # Developing
 
+In order to develop locally, there are two options:
+
+- Develop using a local installation of Python 3 and setting up a virtual environment
+- Develop using an automated VSCode Dev Container.
+
+## Develop using local Python installation
+
 [Create and activate a Python 3 virtual environment.](https://docs.python.org/3/tutorial/venv.html)
 
 Install `The Fuck` for development:
@@ -59,3 +66,27 @@ For sending package to pypi:
 sudo apt-get install pandoc
 ./release.py
 ```
+
+## Develop using Dev Container
+
+To make local development easier a [VSCode Devcontainer](https://code.visualstudio.com/docs/remote/remote-overview) is included with this repository. This will allows you to spin up a Docker container with all the necessary prerequisites for this project pre-installed ready to go, no local Python install/setup required.
+
+### Prerequisites
+
+To use the container you require:
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [VSCode](https://code.visualstudio.com/)
+- [VSCode Remote Development Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
+- [Windows Users Only]: [Installation of WSL2 and configuration of Docker to use it](https://docs.docker.com/docker-for-windows/wsl/)
+
+Full notes about [installation are here](https://code.visualstudio.com/docs/remote/containers#_installation)
+
+### Running the container
+
+Assuming you have the prerequisites:
+
+1. Open VSCode
+1. Open command palette (CMD+SHIFT+P (mac) or CTRL+SHIFT+P (windows))
+1. Select `Remote-Containers: Reopen in Container`.
+1. Container will be built, install all pip requirements and your VSCode will mount into it automagically.
+1. Your VSCode and container now essentially become a throw away environment.
