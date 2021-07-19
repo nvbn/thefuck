@@ -30,5 +30,5 @@
 	],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install -r requirements.txt && python3 setup.py develop",
+	"postCreateCommand": "pip3 install -r requirements.txt && python3 setup.py develop"
 }
