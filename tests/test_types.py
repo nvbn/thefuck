@@ -143,7 +143,9 @@ class TestCommand(object):
         ([''], None),
         (['', ''], None),
         (['ls', '-la'], 'ls -la'),
-        (['ls'], 'ls')])
+        (['ls'], 'ls'),
+        (['echo \\ '], 'echo \\ '),
+        (['echo \\\n'], 'echo \\\n')])
     def test_from_script(self, script, result):
         if result:
             assert Command.from_raw_script(script).script == result

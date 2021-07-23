@@ -344,4 +344,4 @@ def format_raw_script(raw_script):
     else:
         script = ' '.join(raw_script)
 
-    return script.strip()
+    return script.lstrip()
