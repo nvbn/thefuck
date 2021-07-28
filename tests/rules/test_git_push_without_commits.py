@@ -1,27 +1,20 @@
-import pytest
-
 from thefuck.types import Command
-from thefuck.rules.git_push_without_commits import (
-    fix,
-    get_new_command,
-    match,
-)
-
-command = 'git push -u origin master'
-expected_error = '''
-error: src refspec master does not match any.
-error: failed to push some refs to 'git@github.com:User/repo.git'
-'''
+from thefuck.rules.git_push_without_commits import get_new_command, match
 
 
-@pytest.mark.parametrize('command', [Command(command, expected_error)])
-def test_match(command):
-    assert match(command)
+def test_match():
+    script = "git push -u origin master"
+    output = "error: src refspec master does not match any\nerror: failed to..."
+    assert match(Command(script, output))
 
 
-@pytest.mark.parametrize('command, result', [(
-    Command(command, expected_error),
-    fix.format(command=command),
-)])
-def test_get_new_command(command, result):
-    assert get_new_command(command) == result
+def test_not_match():
+    script = "git push -u origin master"
+    assert not match(Command(script, "Everything up-to-date"))
+
+
+def test_get_new_command():
+    script = "git push -u origin master"
+    output = "error: src refspec master does not match any\nerror: failed to..."
+    new_command = 'git commit -m "Initial commit" && git push -u origin master'
+    assert get_new_command(Command(script, output)) == new_command
