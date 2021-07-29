@@ -4,7 +4,7 @@ from thefuck.utils import get_all_executables, memoize
 @memoize
 def _get_executable(script_part):
     for executable in get_all_executables():
-        if script_part.startswith(executable):
+        if len(executable) > 1 and script_part.startswith(executable):
             return executable
 
 
