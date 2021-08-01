@@ -30,6 +30,11 @@ class TestRerun(object):
         actual = rerun.get_output('', '')
         assert actual == expected
 
+    @patch('thefuck.output_readers.rerun._wait_output')
+    def test_get_output_unicode_misspell(self, wait_output_mock):
+        rerun.get_output(u'pácman', u'pácman')
+        wait_output_mock.assert_called_once()
+
     def test_wait_output_is_slow(self, settings):
         assert rerun._wait_output(Mock(), True)
         self.proc_mock.wait.assert_called_once_with(settings.wait_slow_command)
