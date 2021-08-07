@@ -336,7 +336,7 @@ following rules are enabled by default:
 * `vagrant_up` &ndash; starts up the vagrant instance;
 * `whois` &ndash; fixes `whois` command;
 * `workon_doesnt_exists` &ndash; fixes `virtualenvwrapper` env name os suggests to create new.
-* `wrong_hyphen_before_subcommand` &ndash; adds or omits dashes improperly placed (`ls-la` -> `ls -la`, `git-log` -> `git log`, etc.)
+* `wrong_hyphen_before_subcommand` &ndash; removes an improperly placed hyphen (`apt-install` -> `apt install`, `git-log` -> `git log`, etc.)
 * `yarn_alias` &ndash; fixes aliased `yarn` commands like `yarn ls`;
 * `yarn_command_not_found` &ndash; fixes misspelled `yarn` commands;
 * `yarn_command_replaced` &ndash; fixes replaced `yarn` commands;
