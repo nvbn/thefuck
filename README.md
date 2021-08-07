@@ -554,6 +554,5 @@ Project License can be found [here](LICENSE.md).
 [examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
 [instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example_instant_mode.gif
 [homebrew]:        https://brew.sh/
-[linuxbrew]:       https://linuxbrew.sh/
 
 ##### [Back to Contents](#contents)
