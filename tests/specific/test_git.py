@@ -27,9 +27,10 @@ def test_git_support(called, command, output):
     ('ls', False),
     ('cat git', False),
     ('cat hub', False)])
-def test_git_support_match(command, is_git):
+@pytest.mark.parametrize('output', ['', None])
+def test_git_support_match(command, is_git, output):
     @git_support
     def fn(command):
         return True
 
-    assert fn(Command(command, '')) == is_git
+    assert fn(Command(command, output)) == is_git

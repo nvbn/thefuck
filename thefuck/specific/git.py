@@ -14,7 +14,7 @@ def git_support(fn, command):
         return False
 
     # perform git aliases expansion
-    if 'trace: alias expansion:' in command.output:
+    if command.output and 'trace: alias expansion:' in command.output:
         search = re.search("trace: alias expansion: ([^ ]*) => ([^\n]*)",
                            command.output)
         alias = search.group(1)
