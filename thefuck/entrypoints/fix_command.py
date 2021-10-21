@@ -12,7 +12,7 @@ from ..utils import get_alias, get_all_executables
 
 def _get_raw_command(known_args):
     if known_args.force_command:
-        return known_args.force_command
+        return [known_args.force_command]
     elif not os.environ.get('TF_HISTORY'):
         return known_args.command
     else:
