@@ -157,7 +157,7 @@ ReferenceError: conole is not defined
 ./tests/rules/test_whois.py:22:80: E501 line too long (83 > 79 characters)
 """),
 
-    FixFileTest('py.test', '/home/thefuck/tests/rules/test_fix_file.py', 218, None, """
+    FixFileTest('pytest', '/home/thefuck/tests/rules/test_fix_file.py', 218, None, """
 monkeypatch = <_pytest.monkeypatch.monkeypatch object at 0x7fdb76a25b38>
 test = ('fish a.sh', '/tmp/fix-error/a.sh', 2, None, '', "\\nfish: Unknown command 'foo'\\n/tmp/fix-error/a.sh (line 2): foo\\n                              ^\\n")
 

@@ -333,7 +333,7 @@ following rules are enabled by default:
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `terraform_init.py` &ndash; run `terraform init` before plan or apply;
 * `terraform_no_command.py` &ndash; fixes unrecognized `terraform` commands;
-* `test.py` &ndash; runs `py.test` instead of `test.py`;
+* `test.py` &ndash; runs `pytest` instead of `test.py`;
 * `touch` &ndash; creates missing directories before "touching";
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
 * `tsuru_not_command` &ndash; fixes wrong `tsuru` commands like `tsuru shell`;
