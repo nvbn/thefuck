@@ -7,7 +7,7 @@ If it is (sorry again), check if the problem has not already been reported and
 if not, just open an issue on [GitHub](https://github.com/nvbn/thefuck) with
 the following basic information:
   - the output of `thefuck --version` (something like `The Fuck 3.1 using
-    Python 3.5.0`);
+    Python 3.10.0`);
   - your shell and its version (`bash`, `zsh`, *Windows PowerShell*, etc.);
   - your system (Debian 7, ArchLinux, Windows, etc.);
   - how to reproduce the bug;
