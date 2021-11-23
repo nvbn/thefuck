@@ -51,13 +51,13 @@ flake8
 Run unit tests:
 
 ```bash
-py.test
+pytest
 ```
 
 Run unit and functional tests (requires docker):
 
 ```bash
-py.test --enable-functional
+pytest --enable-functional
 ```
 
 For sending package to pypi:
