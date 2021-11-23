@@ -106,7 +106,7 @@ Reading package lists... Done
 
 ## Requirements
 
-- python (3.4+)
+- python (3.5+)
 - pip
 - python-dev
 
