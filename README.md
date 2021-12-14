@@ -516,6 +516,48 @@ thefuck_contrib_foo
 
 ##### [Back to Contents](#contents)
 
+## Use in a Corporate Environment
+Installing thefuck is a lot easier when you have admin access to your machine,
+but many developers may be using computers owned by their employer.
+It is still possible to use thefuck without administrator access, but there 
+are some additional steps needed to install that only depend on you having a 
+python install.
+
+You might also like to take the opportunity to install it under an alternate
+name that is more acceptable to talk about out loud in the workplace such as
+Theph Oock, thefeck, or thedang.
+
+If pip is available, you can install thefuck as a user with the following
+command:
+```bash
+➜ pip3 install --user thefuck
+```
+If for some reaason you don't have pip, the python code can be copied from 
+this repository. Next, you'll need to create a script to fill the role of
+the executable `thefuck` and put it somewhere in your user `$PATH`. A simple
+example of this is:
+```python
+#!/usr/bin/env python3
+from thefuck.main import main
+main()
+```
+Lastly you need to configure your shell, follow the instructions to
+[configure for your choice of shell](https://github.com/nvbn/thefuck/wiki/Shell-aliases).
+If you have chosen an alternate name for the script you may need to use a
+tool like `sed` to modify the alias setup output to call the correct script. 
+As an example, here is how to configure fish to use run thefuck as `thedang` 
+with the `dang` alias:
+```
+⋊> ~ thedang --alias | sed 's/fuck/dang/g' > ~/.config/fish/functions/dang.fish
+⋊> ~ cat ~/.config/fish/functions/dang.fish | source
+⋊> ~ ehco foo
+fish: Unknown command: ehco
+⋊> ~ dang --yeah
+foo
+```
+
+##### [Back to Contents](#contents)
+
 ## Experimental instant mode
 
 The default behavior of *The Fuck* requires time to re-run previous commands.
