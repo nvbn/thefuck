@@ -543,17 +543,29 @@ main()
 ```
 Lastly you need to configure your shell, follow the instructions to
 [configure for your choice of shell](https://github.com/nvbn/thefuck/wiki/Shell-aliases).
+If you have kept the name `thefuck`, this is simply the same as a standard install.
+Add the aliasing to your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script
+```bash
+eval $(thefuck --alias)
+```
+
 If you have chosen an alternate name for the script you may need to use a
 tool like `sed` to modify the alias setup output to call the correct script. 
 As an example, here is how to configure fish to use run thefuck as `thedang` 
 with the `dang` alias:
 ```
 ⋊> ~ thedang --alias | sed 's/fuck/dang/g' > ~/.config/fish/functions/dang.fish
-⋊> ~ cat ~/.config/fish/functions/dang.fish | source
 ⋊> ~ ehco foo
 fish: Unknown command: ehco
 ⋊> ~ dang --yeah
 foo
+```
+
+Optionally, you may also want to edit the error message "No fucks given", as you have
+installed as a user the simplest way to do this would be to use to find the location 
+of the package and edit `ui.py`. eg:
+```bash
+sed -i 's/No fucks given/Oopsies!/' `pip3 show thefuck | grep 'Location: ' | sed 's/.* //'`/thefuck/ui.py
 ```
 
 ##### [Back to Contents](#contents)
