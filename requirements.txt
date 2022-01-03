@@ -9,4 +9,3 @@ pypandoc
 pytest-benchmark
 pytest-docker-pexpect
 twine
-xdg

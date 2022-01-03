@@ -6,9 +6,8 @@ import six
 from .. import logs
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER
-from ..utils import DEVNULL, cache
+from ..utils import DEVNULL, cache, data_dir
 from .generic import Generic
-from xdg import xdg_data_home
 
 
 @cache('~/.config/fish/config.fish', '~/.config/fish/functions')
@@ -84,7 +83,7 @@ class Fish(Generic):
             return command_script
 
     def _get_history_file_name(self):
-        return xdg_data_home().joinpath("fish").joinpath("fish_history")
+        return data_dir().joinpath("fish").joinpath("fish_history")
 
     def _get_history_line(self, command_script):
         return u'- cmd: {}\n   when: {}\n'.format(command_script, int(time()))
