@@ -219,13 +219,16 @@ def _xdg_dir(env, default):
 
     return dir
 
+
 def cache_dir():
     """Returns the user's XDG cache directory."""
     return Path(_xdg_dir("XDG_CACHE_HOME", "~/.cache"))
 
+
 def data_dir():
     """Returns the user's XDG data directory."""
     return Path(_xdg_dir("XDG_DATA_HOME", "~/.local/share"))
+
 
 class Cache(object):
     """Lazy read cache and save changes at exit."""
