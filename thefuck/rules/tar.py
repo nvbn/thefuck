@@ -5,9 +5,12 @@ patterns = ['tar :', 'exiting now',
             'Error is not recoverable: exiting now',
             'tar: option requires an argument',
             'option requires an argument',
-            'Try tar \'--help\' or \'tar --usage\' for more information',
+            'try tar \'--help\' or \'tar --usage\' for more information',
             'try \'tar --help\'', 'try \'tar usage\'',
-            'tar: Refusing to read archive contents from terminal (missing -f option?)',]
+            'tar: refusing to read archive contents from terminal (missing -f option?)',
+            'refusing to read archive contents from terminal', 'error is not recoverable',
+            '(missing -f option?)', 'you must specify one of the',
+            'you must specify one of the \'-Acdtrux\', \'--delete\' or \'--test-label\' options']
 
 options = ['-cf', '-tvf', '-xf', 'cvf', 'cvzf',
            'cvzfj', '-xvf', '-tvf', '-zvxf', '-jvxf',
