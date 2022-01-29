@@ -13,7 +13,7 @@ def output():
     [
         "$ cd newdir",
         " $ cd newdir",
-        "$ $ cd newdir"
+        "$ $ cd newdir",
         " $ $ cd newdir",
     ],
 )
