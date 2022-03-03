@@ -1,5 +1,6 @@
 # Initialize output before importing any module, that can use colorama.
 from ..system import init_output
+import sys
 
 init_output()
 
@@ -95,6 +96,7 @@ def main():
     It'll be only visible when user type fuck and when alias isn't configured.
 
     """
+    cmd = os.path.basename(sys.argv[0])
     settings.init()
     configuration_details = shell.how_to_configure()
     if (
@@ -102,13 +104,13 @@ def main():
         configuration_details.can_configure_automatically
     ):
         if _is_already_configured(configuration_details):
-            logs.already_configured(configuration_details)
+            logs.already_configured(configuration_details, cmd)
             return
         elif _is_second_run():
             _configure(configuration_details)
-            logs.configured_successfully(configuration_details)
+            logs.configured_successfully(configuration_details, cmd)
             return
         else:
             _record_first_run()
 
-    logs.how_to_configure_alias(configuration_details)
+    logs.how_to_configure_alias(configuration_details, cmd)

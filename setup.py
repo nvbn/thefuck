@@ -55,4 +55,5 @@ setup(name='thefuck',
       extras_require=extras_require,
       entry_points={'console_scripts': [
           'thefuck = thefuck.entrypoints.main:main',
-          'fuck = thefuck.entrypoints.not_configured:main']})
+          'fuck = thefuck.entrypoints.not_configured:main',
+          'please = thefuck.entrypoints.not_configured:main']})

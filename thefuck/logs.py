@@ -90,10 +90,11 @@ def debug_time(msg):
         debug(u'{} took: {}'.format(msg, datetime.now() - started))
 
 
-def how_to_configure_alias(configuration_details):
-    print(u"Seems like {bold}fuck{reset} alias isn't configured!".format(
+def how_to_configure_alias(configuration_details, command):
+    print(u"Seems like {bold}{cmd}{reset} alias isn't configured!".format(
         bold=color(colorama.Style.BRIGHT),
-        reset=color(colorama.Style.RESET_ALL)))
+        reset=color(colorama.Style.RESET_ALL),
+        cmd=command))
 
     if configuration_details:
         print(
@@ -106,32 +107,35 @@ def how_to_configure_alias(configuration_details):
 
         if configuration_details.can_configure_automatically:
             print(
-                u"Or run {bold}fuck{reset} a second time to configure"
+                u"Or run {bold}{cmd}{reset} a second time to configure"
                 u" it automatically.".format(
                     bold=color(colorama.Style.BRIGHT),
-                    reset=color(colorama.Style.RESET_ALL)))
+                    reset=color(colorama.Style.RESET_ALL),
+                    cmd=command))
 
     print(u'More details - https://github.com/nvbn/thefuck#manual-installation')
 
 
-def already_configured(configuration_details):
+def already_configured(configuration_details, command):
     print(
-        u"Seems like {bold}fuck{reset} alias already configured!\n"
+        u"Seems like {bold}{cmd}{reset} alias already configured!\n"
         u"For applying changes run {bold}{reload}{reset}"
         u" or restart your shell.".format(
             bold=color(colorama.Style.BRIGHT),
             reset=color(colorama.Style.RESET_ALL),
-            reload=configuration_details.reload))
+            reload=configuration_details.reload,
+            cmd=command))
 
 
-def configured_successfully(configuration_details):
+def configured_successfully(configuration_details, command):
     print(
-        u"{bold}fuck{reset} alias configured successfully!\n"
+        u"{bold}{cmd}{reset} alias configured successfully!\n"
         u"For applying changes run {bold}{reload}{reset}"
         u" or restart your shell.".format(
             bold=color(colorama.Style.BRIGHT),
             reset=color(colorama.Style.RESET_ALL),
-            reload=configuration_details.reload))
+            reload=configuration_details.reload,
+            cmd=command))
 
 
 def version(thefuck_version, python_version, shell_info):

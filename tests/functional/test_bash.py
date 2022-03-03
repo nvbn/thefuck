@@ -1,7 +1,7 @@
 import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation, history_changed, history_not_changed, \
-    select_command_with_arrows, how_to_configure
+    select_command_with_arrows, how_to_configure, how_to_configure_please
 
 
 python_3 = (u'thefuck/python3-bash',
@@ -66,3 +66,8 @@ def test_without_confirmation(proc, TIMEOUT):
 def test_how_to_configure_alias(proc, TIMEOUT):
     proc.sendline('unset -f fuck')
     how_to_configure(proc, TIMEOUT)
+
+@pytest.mark.functional
+def test_how_to_configure_please_alias(proc, TIMEOUT):
+    proc.sendline('unset -f please')
+    how_to_configure_please(proc, TIMEOUT)
