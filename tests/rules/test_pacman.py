@@ -4,17 +4,12 @@ from thefuck.rules import pacman
 from thefuck.rules.pacman import match, get_new_command
 from thefuck.types import Command
 
-
 pacman_cmd = getattr(pacman, 'pacman', 'pacman')
 
 PKGFILE_OUTPUT_SUDO = 'core/sudo 1.8.13-13/usr/bin/sudo'
 PKGFILE_OUTPUT_CONVERT = 'extra/imagemagick 6.9.1.0-1\t/usr/bin/convert'
-
 PKGFILE_OUTPUT_VIM = '''extra/gvim 7.4.712-1        \t/usr/bin/vim
-extra/gvim-python3 7.4.712-1\t/usr/bin/vim
-extra/vim 7.4.712-1         \t/usr/bin/vim
-extra/vim-minimal 7.4.712-1 \t/usr/bin/vim
-extra/vim-python3 7.4.712-1 \t/usr/bin/vim'''
+extra/vim 7.4.712-1         \t/usr/bin/vim'''
 
 
 @pytest.mark.skipif(not getattr(pacman, 'enabled_by_default', True),
@@ -43,18 +38,16 @@ def test_not_match(command):
     assert not match(command)
 
 
-sudo_vim_possibilities = ['{} -S extra/gvim && sudo vim',
-                          '{} -S extra/gvim-python3 && sudo vim',
-                          '{} -S extra/vim && sudo vim',
-                          '{} -S extra/vim-minimal && sudo vim',
-                          '{} -S extra/vim-python3 && sudo vim']
+sudo_vim_possibilities = [
+    '{} -S extra/gvim && sudo vim',
+    '{} -S extra/vim && sudo vim',
+]
 sudo_vim_possibilities = [s.format(pacman_cmd) for s in sudo_vim_possibilities]
 
-vim_possibilities = ['{} -S extra/gvim && vim',
-                     '{} -S extra/gvim-python3 && vim',
-                     '{} -S extra/vim && vim',
-                     '{} -S extra/vim-minimal && vim',
-                     '{} -S extra/vim-python3 && vim']
+vim_possibilities = [
+    '{} -S extra/gvim && vim',
+    '{} -S extra/vim && vim',
+]
 vim_possibilities = [s.format(pacman_cmd) for s in vim_possibilities]
 
 
