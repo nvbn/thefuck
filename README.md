@@ -360,9 +360,9 @@ The following rules are enabled by default on specific platforms only:
 * `brew_update_formula` &ndash; turns `brew update <formula>` into `brew upgrade <formula>`;
 * `dnf_no_such_command` &ndash; fixes mistyped DNF commands;
 * `nixos_cmd_not_found` &ndash; installs apps on NixOS;
-* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay` or `yaourt` if available);
+* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay`, `pikaur` or `yaourt` if available);
 * `pacman_invalid_option` &ndash; replaces lowercase `pacman` options with uppercase.
-* `pacman_not_found` &ndash; fixes package name with `pacman`, `yay` or `yaourt`.
+* `pacman_not_found` &ndash; fixes package name with `pacman`, `yay`, `pikaur` or `yaourt`.
 * `yum_invalid_operation` &ndash; fixes invalid `yum` calls, like `yum isntall vim`;
 
 The following commands are bundled with *The Fuck*, but are not enabled by
