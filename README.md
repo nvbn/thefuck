@@ -127,6 +127,14 @@ sudo apt install python3-dev python3-pip python3-setuptools
 pip3 install thefuck --user
 ```
 
+On WSL after installing, change the `~/.config/thefuck/settings.py` to include
+
+```
+excluded_search_path_prefixes = ['/mnt/']
+```
+
+to avoid slowness. For more info, see [this comment](https://github.com/nvbn/thefuck/issues/1036#issuecomment-773641630).
+
 On FreeBSD, install *The Fuck* with the following commands:
 ```bash
 pkg install thefuck
