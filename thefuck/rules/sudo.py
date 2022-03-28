@@ -22,7 +22,10 @@ patterns = ['permission denied',
             'you don\'t have write permissions',
             'use `sudo`',
             'sudorequirederror',
-            'error: insufficient privileges']
+            'error: insufficient privileges',
+            'error: this command has to be run with superuser privileges (under the root user on most systems)',
+            'this command has to be run with superuse privileges',
+            'superuser previliges']
 
 
 def match(command):
