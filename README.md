@@ -288,6 +288,7 @@ following rules are enabled by default:
 * `ln_s_order` &ndash; fixes `ln -s` arguments order;
 * `ls_all` &ndash; adds `-A` to `ls` when output is empty;
 * `ls_lah` &ndash; adds `-lah` to `ls`;
+* `ls_r` &ndash; changes `-r` to `-R`;
 * `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
