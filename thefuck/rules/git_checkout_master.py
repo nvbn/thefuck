@@ -5,7 +5,7 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('error: pathspec \'master\' did not match any file(s) known to git'
+    return ("error: pathspec 'master' did not match any file(s) known to git"
             in command.output
             and "Did you forget to 'git add'?" not in command.output)
 
