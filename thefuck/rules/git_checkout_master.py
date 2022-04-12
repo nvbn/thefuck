@@ -12,7 +12,7 @@ def match(command):
 
 def main_branch_exists():
     proc = subprocess.Popen(
-        ['git', 'branch', '-a', '--no-color', '--no-column'],
+        ['git', 'branch', '-a', '--list', 'main'],
         stdout=subprocess.PIPE)
     branches = [i.decode('utf-8').strip() for i in proc.stdout.readlines()]
     return 'remotes/origin/main' in branches
