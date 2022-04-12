@@ -15,7 +15,7 @@ def main_branch_exists():
         ['git', 'branch', '-a', '--list', 'main'],
         stdout=subprocess.PIPE)
     branches = [i.decode('utf-8').strip() for i in proc.stdout.readlines()]
-    return 'remotes/origin/main' in branches
+    return len(branches) > 0
 
 
 @git_support
