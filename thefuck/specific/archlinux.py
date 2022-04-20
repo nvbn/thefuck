@@ -34,6 +34,8 @@ def get_pkgfile(command):
 def archlinux_env():
     if utils.which('yay'):
         pacman = 'yay'
+    elif utils.which('pikaur'):
+        pacman = 'pikaur'
     elif utils.which('yaourt'):
         pacman = 'yaourt'
     elif utils.which('pacman'):
