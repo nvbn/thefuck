@@ -247,6 +247,7 @@ following rules are enabled by default:
 * `git_main_master` &ndash; fixes incorrect branch name between `main` and `master`
 * `git_merge` &ndash; adds remote to branch names;
 * `git_merge_unrelated` &ndash; adds `--allow-unrelated-histories` when required
+* `git_misspelled` &ndash; fixes typos on git command
 * `git_not_command` &ndash; fixes wrong git commands like `git brnch`;
 * `git_pull` &ndash; sets upstream before executing previous `git pull`;
 * `git_pull_clone` &ndash; clones instead of pulling when the repo does not exist;
