@@ -16,6 +16,17 @@ def test_match(script, output):
 
 
 @pytest.mark.parametrize(
+    "script, output",
+    [
+        ("cx thefuck", "cx: command not found"),
+        ("puthon release.py", "puthon: command not found"),
+    ],
+)
+def test_not_match(script, output):
+    assert not match(Command(script, output))
+
+
+@pytest.mark.parametrize(
     "script, output, new_command",
     [
         ('''gti commit -m "this is a message"''', "", '''git commit -m "this is a message"'''),
