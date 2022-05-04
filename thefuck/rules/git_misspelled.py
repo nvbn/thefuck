@@ -53,5 +53,7 @@ def match(command):
 # But if we type: gti commit -m "message", the function will return
 # git commit -m "message", which is the command that we wanted to type from the begining
 def get_new_command(command):
-    new_command = 'git' + str(command.script)[len(command.script_parts[0]):]
-    return new_command
+    return 'git' + str(command.script)[len(command.script_parts[0]):]
+
+
+priority = 1300
