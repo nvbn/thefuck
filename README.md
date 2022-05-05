@@ -325,6 +325,7 @@ following rules are enabled by default:
 * `sudo_command_from_user_path` &ndash; runs commands from users `$PATH` with `sudo`;
 * `switch_lang` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
+* `tar_missed_argument` &ndash; add arguments to the command tar if they do not exist (e.g -cvf or -xvf);
 * `terraform_init.py` &ndash; run `terraform init` before plan or apply;
 * `test.py` &ndash; runs `py.test` instead of `test.py`;
 * `touch` &ndash; creates missing directories before "touching";
