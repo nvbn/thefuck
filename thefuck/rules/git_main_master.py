@@ -13,4 +13,4 @@ def get_new_command(command):
     return command.script.replace("main", "master")
 
 
-priority = 1200
+priority = 800
