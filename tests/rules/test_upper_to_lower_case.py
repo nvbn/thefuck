@@ -10,13 +10,6 @@ from thefuck.types import Command
     [
         ("LS", "command not found"),
         ("LS -A", "command not found"),
-        ("CD TESTS", "command not found"),
-        ("CD tests", "command not found"),
-        ("CAT README.MD", "command not found"),
-        ("CAT README.md", "command not found"),
-        ("MV TESTS TESTING", "command not found"),
-        ("GIT ADD .", "command not found"),
-        ("GIT add .", "command not found"),
     ],
 )
 def test_match(script, output):
@@ -39,10 +32,12 @@ def test_not_match(script, output):
 @pytest.mark.parametrize(
     "script, output, new_command",
     [
-        ("LS", "command not found", ["ls"]),
-        ("CD TESTS", "command not found", ["cd tests", "cd TESTS"]),
-        ("CAT README.MD", "command not found", ["cat readme.md", "cat README.MD"]),
-        ("GIT ADD .", "command not found", ["git add ."]),
+        ("LS", "command not found", "ls"),
+        ("CD TESTS", "command not found", "cd tests"),
+        ("CAT README.MD", "command not found", "cat readme.md"),
+        ("GIT ADD .", "command not found", "git add ."),
+        ("GIT ADD .", "command not found", "git add ."),
+        ("MV TESTS TESTING", "command not found", "mv tests testing"),
     ],
 )
 def test_get_new_command(script, output, new_command):
