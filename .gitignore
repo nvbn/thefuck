@@ -57,7 +57,11 @@ docs/_build/
 target/
 
 .env
+.venv
+
+# IDE things
 .idea
+.vscode
 
 # vim temporary files
 .*.swp
