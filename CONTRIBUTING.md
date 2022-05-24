@@ -83,10 +83,8 @@ Full notes about [installation are here](https://code.visualstudio.com/docs/remo
 
 ### Running the container
 
-Assuming you have the prerequisites:
-
 1. Open VSCode
-1. Open command palette (CMD+SHIFT+P (mac) or CTRL+SHIFT+P (windows))
-1. Select `Remote-Containers: Reopen in Container`.
-1. Container will be built, install all pip requirements and your VSCode will mount into it automagically.
-1. Your VSCode and container now essentially become a throw away environment.
+2. Open command palette, for Mac (CMD+SHIFT+P), for Windows (CTRL+SHIFT+P)
+3. Select `Remote-Containers: Reopen in Container`.
+4. Container will be built, install all pip requirements and your VSCode will mount into it automagically.
+5. Your VSCode and container now essentially become a throw away environment.
