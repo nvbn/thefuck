@@ -8,13 +8,13 @@ ssh_url = 'git@github.com:nvbn/thefuck.git'
 
 # HELP WANTED: How can I make this independent of the shell?
 https_output = """
-bash: https://github.com/nvbn/thefuck.git: No such file or directory
+output=/bin/sh: 1: https://github.com/nvbn/thefuck.git: not found
 """
 http_output = """
-bash: https://github.com/nvbn/thefuck.git: No such file or directory
+output=/bin/sh: 1: http://github.com/nvbn/thefuck.git: not found
 """
 ssh_output = """
-bash: git@github.com:nvbn/thefuck.git: No such file or directory
+/bin/sh: 1: git@github.com:nvbn/thefuck.git: not found
 """
 
 @pytest.mark.parametrize(

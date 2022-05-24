@@ -1,6 +1,6 @@
 from thefuck.specific.git import git_support
 
-output_contains = 'No such file or directory'
+output_contains = ': not found'
 # Note: could probably use better checking for URLs
 
 
