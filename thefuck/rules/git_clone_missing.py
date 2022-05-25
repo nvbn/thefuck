@@ -1,26 +1,42 @@
-from thefuck.specific.git import git_support
+'''
+Rule: git_clone_missing
 
-output_contains = ': not found'
-# Note: could probably use better checking for URLs
+Correct missing `git clone` command when pasting a git URL
+
+```sh
+& https://github.com/nvbn/thefuck.git
+git clone https://github.com/nvbn/thefuck.git
+
+Author: Miguel Guthridge
+'''
+from urllib import parse
+
+output_contains = [
+    'not found',
+    'no such file or directory',
+    'is not recognized as',
+]
 
 
-# @git_support
 def match(command):
-    if not output_contains in command.output:
+    # Ignore capitalisation in output
+    output = command.output.lower()
+    script = command.script
+    # Check for a command not found error
+    if not any([search in output for search in output_contains]):
         return False
-    return command.script.endswith('.git') and (
-        (  # HTTP cloning
-            command.script.startswith('https://')
-            or command.script.startswith('http://')
-        )
-        or (  # SSH cloning: user[@]website.com[:]path/to/repo[.git]
-            command.script.find('@') < command.script.find(':')
-            and command.script.find('@') != -1
-            and command.script.find(':') != -1
-        )
-    )
+    # URLs can't have spaces
+    if ' ' in command.script:
+        return False
+    url = parse.urlparse(script, scheme='ssh')
+    # HTTP URLs need a network address
+    if not url.netloc and url.scheme != 'ssh':
+        return False
+    # SSH needs a username and a splitter between the path
+    if url.scheme == 'ssh' and not ('@' in script and ':' in script):
+        return False
+    return url.scheme in ['http', 'https', 'ssh']
 
 
-# @git_support
 def get_new_command(command):
     return 'git clone ' + command.script
