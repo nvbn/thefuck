@@ -44,7 +44,7 @@ def test_match(cmd):
 
 @pytest.mark.parametrize(
     'cmd',
-    [Command(c, e) for c, e in product(invalid_urls, shell_errors)]
+    [Command(c, shell_errors[0]) for c in invalid_urls]
 )
 def test_not_match(cmd):
     print(cmd)
@@ -53,7 +53,7 @@ def test_not_match(cmd):
 
 @pytest.mark.parametrize(
     'cmd',
-    [Command(c, e) for c, e in product(valid_urls, shell_errors)]
+    [Command(c, shell_errors[0]) for c in valid_urls]
 )
 def test_get_new_command(cmd):
     print(cmd)
