@@ -10,6 +10,7 @@ from thefuck.types import Command
     'requested operation requires superuser privilege',
     'need to be root',
     'need root',
+    'shutdown: NOT super-user'
     'must be root',
     'You don\'t have access to the history DB.',
     "error: [Errno 13] Permission denied: '/usr/local/lib/python2.7/dist-packages/ipaddr.py'"])
