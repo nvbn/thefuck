@@ -24,7 +24,8 @@ patterns = ['permission denied',
             'you don\'t have write permissions',
             'use `sudo`',
             'sudorequirederror',
-            'error: insufficient privileges']
+            'error: insufficient privileges',
+            'updatedb: can not open a temporary file']
 
 
 def match(command):
