@@ -4,29 +4,20 @@ Rule: git_clone_missing
 Correct missing `git clone` command when pasting a git URL
 
 ```sh
-& https://github.com/nvbn/thefuck.git
+>>> https://github.com/nvbn/thefuck.git
 git clone https://github.com/nvbn/thefuck.git
+```
 
 Author: Miguel Guthridge
 '''
-from urllib import parse
-
-output_contains = [
-    'not found',
-    'no such file or directory',
-    'is not recognized as',
-]
+from six.moves.urllib import parse
 
 
 def match(command):
-    # Ignore capitalisation in output
-    output = command.output.lower()
     script = command.script
-    # Check for a command not found error
-    if not any([search in output for search in output_contains]):
-        return False
-    # URLs can't have spaces
-    if ' ' in command.script:
+    parts = command.script_parts
+    # We want it to be a URL by itself
+    if len(parts) > 1:
         return False
     url = parse.urlparse(script, scheme='ssh')
     # HTTP URLs need a network address

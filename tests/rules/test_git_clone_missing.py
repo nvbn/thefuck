@@ -38,7 +38,6 @@ shell_errors = [
     [Command(c, e) for c, e in product(valid_urls, shell_errors)]
 )
 def test_match(cmd):
-    print(cmd)
     assert match(cmd)
 
 
@@ -47,7 +46,6 @@ def test_match(cmd):
     [Command(c, shell_errors[0]) for c in invalid_urls]
 )
 def test_not_match(cmd):
-    print(cmd)
     assert not match(cmd)
 
 
@@ -56,5 +54,4 @@ def test_not_match(cmd):
     [Command(c, shell_errors[0]) for c in valid_urls]
 )
 def test_get_new_command(cmd):
-    print(cmd)
     assert get_new_command(cmd) == 'git clone ' + cmd.script
