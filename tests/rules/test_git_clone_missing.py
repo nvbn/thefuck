@@ -22,20 +22,10 @@ invalid_urls = [
     'https:/github.com/nvbn/thefuck.git'  # Bad protocol
 ]
 
-# TODO: Powershell,
-shell_errors = [
-    'not found',  # sh
-    'command not found',  # fish
-    'No such file or directory',  # bash
-    'no such file or directory',  # zsh
-    'is not recognized as',  # cmd, powershell
-]
-
-
 
 @pytest.mark.parametrize(
     'cmd',
-    [Command(c, e) for c, e in product(valid_urls, shell_errors)]
+    [Command(c, 'not found') for c in valid_urls]
 )
 def test_match(cmd):
     assert match(cmd)
@@ -43,7 +33,7 @@ def test_match(cmd):
 
 @pytest.mark.parametrize(
     'cmd',
-    [Command(c, shell_errors[0]) for c in invalid_urls]
+    [Command(c, 'not found') for c in invalid_urls]
 )
 def test_not_match(cmd):
     assert not match(cmd)
@@ -51,7 +41,7 @@ def test_not_match(cmd):
 
 @pytest.mark.parametrize(
     'cmd',
-    [Command(c, shell_errors[0]) for c in valid_urls]
+    [Command(c, 'not found') for c in valid_urls]
 )
 def test_get_new_command(cmd):
     assert get_new_command(cmd) == 'git clone ' + cmd.script
