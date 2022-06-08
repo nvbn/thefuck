@@ -19,7 +19,7 @@ class Zsh(Generic):
                 TF_PYTHONIOENCODING=$PYTHONIOENCODING;
                 export TF_SHELL=zsh;
                 export TF_ALIAS={name};
-                TF_SHELL_ALIASES=$(alias);
+                TF_SHELL_ALIASES=$(builtin alias);
                 export TF_SHELL_ALIASES;
                 TF_HISTORY="$(fc -ln -10)";
                 export TF_HISTORY;
