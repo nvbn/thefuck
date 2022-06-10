@@ -1,5 +1,4 @@
 import pytest
-from itertools import product
 from thefuck.rules.git_clone_missing import match, get_new_command
 from thefuck.types import Command
 

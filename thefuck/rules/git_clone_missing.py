@@ -11,20 +11,28 @@ git clone https://github.com/nvbn/thefuck.git
 Author: Miguel Guthridge
 '''
 from six.moves.urllib import parse
+from thefuck.utils import which
 
 
 def match(command):
-    script = command.script
-    parts = command.script_parts
-    # We want it to be a URL by itself
-    if len(parts) > 1:
+    # Ensure we got the error we expected
+    if which(command.script_parts[0]) or not (
+        'not found' in command.output
+        or 'is not recognised as' in command.output
+    ):
         return False
-    url = parse.urlparse(script, scheme='ssh')
+    # We want it to be a URL by itself
+    if len(command.script_parts) > 1:
+        return False
+    url = parse.urlparse(command.script, scheme='ssh')
     # HTTP URLs need a network address
     if not url.netloc and url.scheme != 'ssh':
         return False
     # SSH needs a username and a splitter between the path
-    if url.scheme == 'ssh' and not ('@' in script and ':' in script):
+    if url.scheme == 'ssh' and not (
+        '@' in command.script
+        and ':' in command.script
+    ):
         return False
     return url.scheme in ['http', 'https', 'ssh']
 
