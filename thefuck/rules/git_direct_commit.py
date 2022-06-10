@@ -1,6 +1,7 @@
 def match(command):
-    return ('Untracked files' in command.output or '''use "git add"''' in command.output 
-            or 'Changes not staged for commit' in command.output)
+    return 'git commit ' in command.script and ('Untracked files' in command.output
+            or '''use "git add"''' in command.output or 'Changes not staged for commit'
+            in command.output)
 
 
 def get_new_command(command):
