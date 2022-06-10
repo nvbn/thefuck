@@ -23,20 +23,16 @@ invalid_urls = [
 ]
 
 
-@pytest.mark.parametrize(
-    'cmd',
-    [Command(c, 'not found') for c in valid_urls]
-)
+@pytest.mark.parametrize('cmd', valid_urls)
 def test_match(cmd):
-    assert match(cmd)
+    c = Command(cmd, 'not found')
+    assert match(c)
 
 
-@pytest.mark.parametrize(
-    'cmd',
-    [Command(c, 'not found') for c in invalid_urls]
-)
+@pytest.mark.parametrize('cmd', invalid_urls)
 def test_not_match(cmd):
-    assert not match(cmd)
+    c = Command(cmd, 'not found')
+    assert not match(c)
 
 
 @pytest.mark.parametrize('script', valid_urls)
