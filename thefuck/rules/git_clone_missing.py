@@ -15,14 +15,14 @@ from thefuck.utils import which
 
 
 def match(command):
+    # We want it to be a URL by itself
+    if len(command.script_parts) != 1:
+        return False
     # Ensure we got the error we expected
     if which(command.script_parts[0]) or not (
         'not found' in command.output
         or 'is not recognised as' in command.output
     ):
-        return False
-    # We want it to be a URL by itself
-    if len(command.script_parts) > 1:
         return False
     url = parse.urlparse(command.script, scheme='ssh')
     # HTTP URLs need a network address
