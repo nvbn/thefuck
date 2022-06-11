@@ -1,7 +1,6 @@
 from thefuck.utils import get_all_executables, get_close_matches, \
     get_valid_history_without_current, get_closest, which
 from thefuck.specific.sudo import sudo_support
-from thefuck.shells import shell
 
 
 @sudo_support
@@ -36,15 +35,7 @@ def get_new_command(command):
                                                   get_all_executables())
                  if cmd not in new_cmds]
 
-    # use quote for each element of the new command in order to re-quote the split command
-    new_commands = []
-    for new_command in new_cmds:
-        words = []
-        for i in [new_command] + command.script_parts[1:]:
-            words.append(shell.quote(i))
-        new_commands.append(' '.join(words))
-
-    return new_commands
+    return [command.script.replace(old_command, cmd, 1) for cmd in new_cmds]
 
 
 priority = 3000
