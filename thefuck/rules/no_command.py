@@ -35,8 +35,7 @@ def get_new_command(command):
                                                   get_all_executables())
                  if cmd not in new_cmds]
 
-    return [' '.join([new_command] + command.script_parts[1:])
-            for new_command in new_cmds]
+    return [command.script.replace(old_command, cmd, 1) for cmd in new_cmds]
 
 
 priority = 3000
