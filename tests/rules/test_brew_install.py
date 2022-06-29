@@ -18,8 +18,6 @@ def brew_already_installed():
     return '''Warning: git-2.3.5 already installed'''
 
 
-
-
 def test_match(brew_no_available_formula, brew_already_installed,
                brew_install_no_argument):
     assert match(Command('brew install gitt',

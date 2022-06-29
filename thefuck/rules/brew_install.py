@@ -14,8 +14,7 @@ def match(command):
 
 
 def get_new_command(command):
-    matcher = re.search('Warning: No available formula with the name "([^"]+)". Did you mean ([^, ?]+)',
-                         command.output)
+    matcher = re.search('Warning: No available formula with the name "([^"]+)". Did you mean ([^, ?]+)', command.output)
     not_exist_formula = matcher.group(1)
     exist_formula = matcher.group(2)
     return replace_argument(command.script, not_exist_formula, exist_formula)
