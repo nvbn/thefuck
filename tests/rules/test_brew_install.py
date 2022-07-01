@@ -1,5 +1,5 @@
 import pytest
-from thefuck.rules.brew_install import match, get_new_command, get_suggestions
+from thefuck.rules.brew_install import match, get_new_command, _get_suggestions
 from thefuck.types import Command
 
 
@@ -29,9 +29,9 @@ def brew_already_installed():
 
 
 def test_suggestions():
-    assert get_suggestions("one") == ['one']
-    assert get_suggestions("one or two") == ['one', 'two']
-    assert get_suggestions("one, two or three") == ['one', 'two', 'three']
+    assert _get_suggestions("one") == ['one']
+    assert _get_suggestions("one or two") == ['one', 'two']
+    assert _get_suggestions("one, two or three") == ['one', 'two', 'three']
 
 
 def test_match(brew_no_available_formula_one, brew_no_available_formula_two,

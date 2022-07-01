@@ -5,7 +5,7 @@ from thefuck.specific.brew import brew_available
 enabled_by_default = brew_available
 
 
-def get_suggestions(str):
+def _get_suggestions(str):
     suggestions = str.replace(" or ", ", ").split(", ")
     return suggestions
 
@@ -20,5 +20,5 @@ def match(command):
 
 def get_new_command(command):
     matcher = re.search('Warning: No available formula with the name "(?:[^"]+)". Did you mean (.+)\\?', command.output)
-    suggestions = get_suggestions(matcher.group(1))
+    suggestions = _get_suggestions(matcher.group(1))
     return ["brew install " + formula for formula in suggestions]
