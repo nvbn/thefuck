@@ -33,10 +33,11 @@ elif (3, 0) < version < (3, 5):
 
 VERSION = '3.32'
 
-install_requires = ['psutil', 'colorama', 'six', 'decorator', 'pyte']
+install_requires = ['psutil', 'colorama', 'six']
 extras_require = {':python_version<"3.4"': ['pathlib2'],
                   ':python_version<"3.3"': ['backports.shutil_get_terminal_size'],
-                  ':python_version<="2.7"': ['decorator<5'],
+                  ':python_version<="2.7"': ['decorator<5', 'pyte<0.8.1'],
+                  ':python_version>"2.7"': ['decorator', 'pyte'],
                   ":sys_platform=='win32'": ['win_unicode_console']}
 
 setup(name='thefuck',

@@ -21,7 +21,8 @@ def history_without_current(mocker):
     ('vom file.py', 'vom: not found'),
     ('fucck', 'fucck: not found'),
     ('puthon', "'puthon' is not recognized as an internal or external command"),
-    ('got commit', 'got: command not found')])
+    ('got commit', 'got: command not found'),
+    ('gti commit -m "new commit"', 'gti: command not found')])
 def test_match(mocker, script, output):
     mocker.patch('thefuck.rules.no_command.which', return_value=None)
 
@@ -43,6 +44,7 @@ def test_not_match(mocker, script, output, which):
 @pytest.mark.parametrize('script, result', [
     ('vom file.py', ['vim file.py']),
     ('fucck', ['fsck']),
-    ('got commit', ['git commit', 'go commit'])])
+    ('got commit', ['git commit', 'go commit']),
+    ('gti commit -m "new commit"', ['git commit -m "new commit"'])])
 def test_get_new_command(script, result):
     assert get_new_command(Command(script, '')) == result
