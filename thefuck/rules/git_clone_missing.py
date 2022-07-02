@@ -20,7 +20,8 @@ def match(command):
         return False
     # Ensure we got the error we expected
     if which(command.script_parts[0]) or not (
-        'not found' in command.output
+        'No such file or directory' in command.output
+        or 'not found' in command.output
         or 'is not recognised as' in command.output
     ):
         return False

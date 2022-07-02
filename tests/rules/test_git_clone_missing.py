@@ -21,22 +21,30 @@ invalid_urls = [
     'git clone git clone ssh://git@github.com:nvbn/thefrick.git',  # 2x clone
     'https:/github.com/nvbn/thefuck.git'  # Bad protocol
 ]
+outputs = [
+    'No such file or directory',
+    'not found',
+    'is not recognised as',
+]
 
 
 @pytest.mark.parametrize('cmd', valid_urls)
-def test_match(cmd):
-    c = Command(cmd, 'not found')
+@pytest.mark.parametrize('output', outputs)
+def test_match(cmd, output):
+    c = Command(cmd, output)
     assert match(c)
 
 
 @pytest.mark.parametrize('cmd', invalid_urls)
-def test_not_match(cmd):
-    c = Command(cmd, 'not found')
+@pytest.mark.parametrize('output', outputs)
+def test_not_match(cmd, output):
+    c = Command(cmd, output)
     assert not match(c)
 
 
 @pytest.mark.parametrize('script', valid_urls)
-def test_get_new_command(script):
-    command = Command(script, 'not found')
+@pytest.mark.parametrize('output', outputs)
+def test_get_new_command(script, output):
+    command = Command(script, output)
     new_command = 'git clone ' + script
     assert get_new_command(command) == new_command
