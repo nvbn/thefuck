@@ -36,7 +36,7 @@ def test_match(cmd, output):
 
 
 @pytest.mark.parametrize('cmd', invalid_urls)
-@pytest.mark.parametrize('output', outputs)
+@pytest.mark.parametrize('output', outputs + ["some other output"])
 def test_not_match(cmd, output):
     c = Command(cmd, output)
     assert not match(c)
