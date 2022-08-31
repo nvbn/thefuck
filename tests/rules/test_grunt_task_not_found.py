@@ -2,8 +2,8 @@
 
 from io import BytesIO
 import pytest
-from thefuck.types import Command
-from thefuck.rules.grunt_task_not_found import match, get_new_command
+from theheck.types import Command
+from theheck.rules.grunt_task_not_found import match, get_new_command
 
 output = '''
 Warning: Task "{}" not found. Use --force to continue.
@@ -101,7 +101,7 @@ For more information, see http://gruntjs.com/
 
 @pytest.fixture(autouse=True)
 def grunt_help(mocker):
-    patch = mocker.patch('thefuck.rules.grunt_task_not_found.Popen')
+    patch = mocker.patch('theheck.rules.grunt_task_not_found.Popen')
     patch.return_value.stdout = BytesIO(grunt_help_stdout)
     return patch
 

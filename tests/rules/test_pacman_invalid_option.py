@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.pacman_invalid_option import get_new_command, match
-from thefuck.types import Command
+from theheck.rules.pacman_invalid_option import get_new_command, match
+from theheck.types import Command
 
 good_output = """community/shared_meataxe 1.0-3
     A set of programs for working with matrix representations over finite fields

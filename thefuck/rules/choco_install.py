@@ -1,4 +1,4 @@
-from thefuck.utils import for_app, which
+from theheck.utils import for_app, which
 
 
 @for_app("choco", "cinst")

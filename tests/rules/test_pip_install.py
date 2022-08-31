@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-from thefuck.rules.pip_install import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.pip_install import match, get_new_command
+from theheck.types import Command
 
 
 def test_match():

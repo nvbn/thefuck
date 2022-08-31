@@ -1,6 +1,6 @@
 import re
 import subprocess
-from thefuck.utils import for_app, eager, replace_command, cache, which
+from theheck.utils import for_app, eager, replace_command, cache, which
 
 
 @for_app('gem')

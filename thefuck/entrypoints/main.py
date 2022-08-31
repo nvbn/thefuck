@@ -24,7 +24,7 @@ def main():
                      sys.version.split()[0], shell.info())
     # It's important to check if an alias is being requested before checking if
     # `TF_HISTORY` is in `os.environ`, otherwise it might mess with subshells.
-    # Check https://github.com/nvbn/thefuck/issues/921 for reference
+    # Check https://github.com/nvbn/theheck/issues/921 for reference
     elif known_args.alias:
         print_alias(known_args)
     elif known_args.command or 'TF_HISTORY' in os.environ:

@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import replace_argument, for_app
+from theheck.utils import replace_argument, for_app
 
 
 @for_app('yarn', at_least=1)

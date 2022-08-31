@@ -2,14 +2,14 @@ import pytest
 import json
 from six import StringIO
 from mock import MagicMock
-from thefuck.shells.generic import ShellConfiguration
-from thefuck.entrypoints.not_configured import main
+from theheck.shells.generic import ShellConfiguration
+from theheck.entrypoints.not_configured import main
 
 
 @pytest.fixture(autouse=True)
 def usage_tracker(mocker):
     return mocker.patch(
-        'thefuck.entrypoints.not_configured._get_not_configured_usage_tracker_path',
+        'theheck.entrypoints.not_configured._get_not_configured_usage_tracker_path',
         new_callable=MagicMock)
 
 
@@ -44,17 +44,17 @@ def _change_tracker(usage_tracker_io, pid):
 
 @pytest.fixture(autouse=True)
 def shell_pid(mocker):
-    return mocker.patch('thefuck.entrypoints.not_configured._get_shell_pid',
+    return mocker.patch('theheck.entrypoints.not_configured._get_shell_pid',
                         new_callable=MagicMock)
 
 
 @pytest.fixture(autouse=True)
 def shell(mocker):
-    shell = mocker.patch('thefuck.entrypoints.not_configured.shell',
+    shell = mocker.patch('theheck.entrypoints.not_configured.shell',
                          new_callable=MagicMock)
     shell.get_history.return_value = []
     shell.how_to_configure.return_value = ShellConfiguration(
-        content='eval $(thefuck --alias)',
+        content='eval $(theheck --alias)',
         path='/tmp/.bashrc',
         reload='bash',
         can_configure_automatically=True)
@@ -63,7 +63,7 @@ def shell(mocker):
 
 @pytest.fixture(autouse=True)
 def shell_config(mocker):
-    path_mock = mocker.patch('thefuck.entrypoints.not_configured.Path',
+    path_mock = mocker.patch('theheck.entrypoints.not_configured.Path',
                              new_callable=MagicMock)
     return path_mock.return_value \
         .expanduser.return_value \
@@ -73,7 +73,7 @@ def shell_config(mocker):
 
 @pytest.fixture(autouse=True)
 def logs(mocker):
-    return mocker.patch('thefuck.entrypoints.not_configured.logs',
+    return mocker.patch('theheck.entrypoints.not_configured.logs',
                         new_callable=MagicMock)
 
 
@@ -93,7 +93,7 @@ def test_on_first_run(usage_tracker_io, usage_tracker_exists, shell_pid, logs):
 
 def test_on_run_after_other_commands(usage_tracker_io, shell_pid, shell, logs):
     shell_pid.return_value = 12
-    shell.get_history.return_value = ['fuck', 'ls']
+    shell.get_history.return_value = ['heck', 'ls']
     _change_tracker(usage_tracker_io, 12)
     main()
     logs.how_to_configure_alias.assert_called_once()
@@ -101,7 +101,7 @@ def test_on_run_after_other_commands(usage_tracker_io, shell_pid, shell, logs):
 
 def test_on_first_run_from_current_shell(usage_tracker_io, shell_pid,
                                          shell, logs):
-    shell.get_history.return_value = ['fuck']
+    shell.get_history.return_value = ['heck']
     shell_pid.return_value = 12
     main()
     _assert_tracker_updated(usage_tracker_io, 12)
@@ -111,7 +111,7 @@ def test_on_first_run_from_current_shell(usage_tracker_io, shell_pid,
 def test_when_cant_configure_automatically(shell_pid, shell, logs):
     shell_pid.return_value = 12
     shell.how_to_configure.return_value = ShellConfiguration(
-        content='eval $(thefuck --alias)',
+        content='eval $(theheck --alias)',
         path='/tmp/.bashrc',
         reload='bash',
         can_configure_automatically=False)
@@ -121,20 +121,20 @@ def test_when_cant_configure_automatically(shell_pid, shell, logs):
 
 def test_when_already_configured(usage_tracker_io, shell_pid,
                                  shell, shell_config, logs):
-    shell.get_history.return_value = ['fuck']
+    shell.get_history.return_value = ['heck']
     shell_pid.return_value = 12
     _change_tracker(usage_tracker_io, 12)
-    shell_config.read.return_value = 'eval $(thefuck --alias)'
+    shell_config.read.return_value = 'eval $(theheck --alias)'
     main()
     logs.already_configured.assert_called_once()
 
 
 def test_when_successfully_configured(usage_tracker_io, shell_pid,
                                       shell, shell_config, logs):
-    shell.get_history.return_value = ['fuck']
+    shell.get_history.return_value = ['heck']
     shell_pid.return_value = 12
     _change_tracker(usage_tracker_io, 12)
     shell_config.read.return_value = ''
     main()
-    shell_config.write.assert_any_call('eval $(thefuck --alias)')
+    shell_config.write.assert_any_call('eval $(theheck --alias)')
     logs.configured_successfully.assert_called_once()

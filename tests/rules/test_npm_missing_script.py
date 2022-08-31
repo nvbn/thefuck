@@ -1,7 +1,7 @@
 import pytest
 from io import BytesIO
-from thefuck.types import Command
-from thefuck.rules.npm_missing_script import match, get_new_command
+from theheck.types import Command
+from theheck.rules.npm_missing_script import match, get_new_command
 
 output = '''
 npm ERR! Linux 4.4.0-31-generic
@@ -36,7 +36,7 @@ available via `npm run-script`:
 
 @pytest.fixture(autouse=True)
 def run_script(mocker):
-    patch = mocker.patch('thefuck.specific.npm.Popen')
+    patch = mocker.patch('theheck.specific.npm.Popen')
     patch.return_value.stdout = BytesIO(run_script_stdout)
     return patch.return_value
 

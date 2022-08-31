@@ -233,15 +233,15 @@ class CorrectedCommand(object):
         """Returns fixed commands script.
 
         If `settings.repeat` is `True`, appends command with second attempt
-        of running fuck in case fixed command fails again.
+        of running heck in case fixed command fails again.
 
         """
         if settings.repeat:
-            repeat_fuck = '{} --repeat {}--force-command {}'.format(
+            repeat_heck = '{} --repeat {}--force-command {}'.format(
                 get_alias(),
                 '--debug ' if settings.debug else '',
                 shell.quote(self.script))
-            return shell.or_(self.script, repeat_fuck)
+            return shell.or_(self.script, repeat_heck)
         else:
             return self.script
 

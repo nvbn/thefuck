@@ -41,7 +41,7 @@ class Fish(Generic):
     friendly_name = 'Fish Shell'
 
     def _get_overridden_aliases(self):
-        overridden = os.environ.get('THEFUCK_OVERRIDDEN_ALIASES',
+        overridden = os.environ.get('THEHECK_OVERRIDDEN_ALIASES',
                                     os.environ.get('TF_OVERRIDDEN_ALIASES', ''))
         default = {'cd', 'grep', 'ls', 'man', 'open'}
         for alias in overridden.split(','):
@@ -51,17 +51,17 @@ class Fish(Generic):
     def app_alias(self, alias_name):
         if settings.alter_history:
             alter_history = ('    builtin history delete --exact'
-                             ' --case-sensitive -- $fucked_up_command\n'
+                             ' --case-sensitive -- $hecked_up_command\n'
                              '    builtin history merge\n')
         else:
             alter_history = ''
         # It is VERY important to have the variables declared WITHIN the alias
         return ('function {0} -d "Correct your previous console command"\n'
-                '  set -l fucked_up_command $history[1]\n'
+                '  set -l hecked_up_command $history[1]\n'
                 '  env TF_SHELL=fish TF_ALIAS={0} PYTHONIOENCODING=utf-8'
-                ' thefuck $fucked_up_command {2} $argv | read -l unfucked_command\n'
-                '  if [ "$unfucked_command" != "" ]\n'
-                '    eval $unfucked_command\n{1}'
+                ' theheck $hecked_up_command {2} $argv | read -l unhecked_command\n'
+                '  if [ "$unhecked_command" != "" ]\n'
+                '    eval $unhecked_command\n{1}'
                 '  end\n'
                 'end').format(alias_name, alter_history, ARGUMENT_PLACEHOLDER)
 
@@ -102,7 +102,7 @@ class Fish(Generic):
 
     def how_to_configure(self):
         return self._create_shell_configuration(
-            content=u"thefuck --alias | source",
+            content=u"theheck --alias | source",
             path='~/.config/fish/config.fish',
             reload='fish')
 

@@ -1,7 +1,7 @@
 import pytest
 from six import BytesIO
-from thefuck.rules.ifconfig_device_not_found import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.ifconfig_device_not_found import match, get_new_command
+from theheck.types import Command
 
 
 output = '{}: error fetching interface information: Device not found'
@@ -21,7 +21,7 @@ wlp2s0    Link encap:Ethernet  HWaddr 5c:51:4f:7c:58:5d
 @pytest.fixture(autouse=True)
 def ifconfig(mocker):
     mock = mocker.patch(
-        'thefuck.rules.ifconfig_device_not_found.subprocess.Popen')
+        'theheck.rules.ifconfig_device_not_found.subprocess.Popen')
     mock.return_value.stdout = BytesIO(stdout)
     return mock
 

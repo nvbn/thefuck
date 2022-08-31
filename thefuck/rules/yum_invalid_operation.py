@@ -1,9 +1,9 @@
 import subprocess
 from itertools import dropwhile, islice, takewhile
 
-from thefuck.specific.sudo import sudo_support
-from thefuck.specific.yum import yum_available
-from thefuck.utils import for_app, replace_command, which, cache
+from theheck.specific.sudo import sudo_support
+from theheck.specific.yum import yum_available
+from theheck.utils import for_app, replace_command, which, cache
 
 enabled_by_default = yum_available
 

@@ -2,9 +2,9 @@
 
 import os
 import six
-from thefuck.specific.sudo import sudo_support
-from thefuck.rules import cd_mkdir
-from thefuck.utils import for_app, get_close_matches
+from theheck.specific.sudo import sudo_support
+from theheck.rules import cd_mkdir
+from theheck.utils import for_app, get_close_matches
 
 __author__ = "mmussomele"
 

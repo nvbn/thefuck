@@ -2,16 +2,16 @@
 
 import pytest
 from tests.utils import Rule, CorrectedCommand
-from thefuck import corrector, const
-from thefuck.system import Path
-from thefuck.types import Command
-from thefuck.corrector import get_corrected_commands, organize_commands
+from theheck import corrector, const
+from theheck.system import Path
+from theheck.types import Command
+from theheck.corrector import get_corrected_commands, organize_commands
 
 
 @pytest.fixture
 def glob(mocker):
     results = {}
-    mocker.patch('thefuck.system.Path.glob',
+    mocker.patch('theheck.system.Path.glob',
                  new_callable=lambda: lambda *_: results.pop('value', []))
     return lambda value: results.update({'value': value})
 
@@ -19,7 +19,7 @@ def glob(mocker):
 class TestGetRules(object):
     @pytest.fixture(autouse=True)
     def load_source(self, monkeypatch):
-        monkeypatch.setattr('thefuck.types.load_source',
+        monkeypatch.setattr('theheck.types.load_source',
                             lambda x, _: Rule(x))
 
     def _compare_names(self, rules, names):
@@ -41,7 +41,7 @@ class TestGetRules(object):
 
 
 def test_get_rules_rule_exception(mocker, glob):
-    load_source = mocker.patch('thefuck.types.load_source',
+    load_source = mocker.patch('theheck.types.load_source',
                                side_effect=ImportError("No module named foo..."))
     glob([Path('git.py')])
     assert not corrector.get_rules()
@@ -56,7 +56,7 @@ def test_get_corrected_commands(mocker):
              Rule(match=lambda _: True,
                   get_new_command=lambda x: [x.script + '@', x.script + ';'],
                   priority=60)]
-    mocker.patch('thefuck.corrector.get_rules', return_value=rules)
+    mocker.patch('theheck.corrector.get_rules', return_value=rules)
     assert ([cmd.script for cmd in get_corrected_commands(command)]
             == ['test!', 'test@', 'test;'])
 

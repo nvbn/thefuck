@@ -1,6 +1,6 @@
 import re
 
-from thefuck.utils import for_app, replace_argument
+from theheck.utils import for_app, replace_argument
 
 INVALID_CHOICE = "(?<=Invalid choice: ')(.*)(?=', maybe you meant:)"
 OPTIONS = "^\\s*\\*\\s(.*)"

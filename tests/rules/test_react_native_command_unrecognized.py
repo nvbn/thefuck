@@ -1,8 +1,8 @@
 import pytest
 from io import BytesIO
-from thefuck.rules.react_native_command_unrecognized import match, \
+from theheck.rules.react_native_command_unrecognized import match, \
     get_new_command
-from thefuck.types import Command
+from theheck.types import Command
 
 output = "Unrecognized command '{}'".format
 
@@ -58,6 +58,6 @@ def test_not_match(command):
      'react-native log-android -f')])
 def test_get_new_command(mocker, command, result):
     patch = mocker.patch(
-        'thefuck.rules.react_native_command_unrecognized.Popen')
+        'theheck.rules.react_native_command_unrecognized.Popen')
     patch.return_value.stdout = BytesIO(stdout)
     assert get_new_command(command)[0] == result

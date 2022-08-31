@@ -1,5 +1,5 @@
 import re
-from thefuck.shells import shell
+from theheck.shells import shell
 
 MISSING_MODULE = r"ModuleNotFoundError: No module named '([^']+)'"
 

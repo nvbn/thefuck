@@ -2,12 +2,12 @@ import pytest
 import six
 import os
 from mock import Mock
-from thefuck import const
+from theheck import const
 
 
 @pytest.fixture
 def load_source(mocker):
-    return mocker.patch('thefuck.conf.load_source')
+    return mocker.patch('theheck.conf.load_source')
 
 
 def test_settings_defaults(load_source, settings):
@@ -46,16 +46,16 @@ class TestSettingsFromFile(object):
 @pytest.mark.usefixtures('load_source')
 class TestSettingsFromEnv(object):
     def test_from_env(self, os_environ, settings):
-        os_environ.update({'THEFUCK_RULES': 'bash:lisp',
-                           'THEFUCK_EXCLUDE_RULES': 'git:vim',
-                           'THEFUCK_WAIT_COMMAND': '55',
-                           'THEFUCK_REQUIRE_CONFIRMATION': 'true',
-                           'THEFUCK_NO_COLORS': 'false',
-                           'THEFUCK_PRIORITY': 'bash=10:lisp=wrong:vim=15',
-                           'THEFUCK_WAIT_SLOW_COMMAND': '999',
-                           'THEFUCK_SLOW_COMMANDS': 'lein:react-native:./gradlew',
-                           'THEFUCK_NUM_CLOSE_MATCHES': '359',
-                           'THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES': '/media/:/mnt/'})
+        os_environ.update({'THEHECK_RULES': 'bash:lisp',
+                           'THEHECK_EXCLUDE_RULES': 'git:vim',
+                           'THEHECK_WAIT_COMMAND': '55',
+                           'THEHECK_REQUIRE_CONFIRMATION': 'true',
+                           'THEHECK_NO_COLORS': 'false',
+                           'THEHECK_PRIORITY': 'bash=10:lisp=wrong:vim=15',
+                           'THEHECK_WAIT_SLOW_COMMAND': '999',
+                           'THEHECK_SLOW_COMMANDS': 'lein:react-native:./gradlew',
+                           'THEHECK_NUM_CLOSE_MATCHES': '359',
+                           'THEHECK_EXCLUDED_SEARCH_PATH_PREFIXES': '/media/:/mnt/'})
         settings.init()
         assert settings.rules == ['bash', 'lisp']
         assert settings.exclude_rules == ['git', 'vim']
@@ -69,7 +69,7 @@ class TestSettingsFromEnv(object):
         assert settings.excluded_search_path_prefixes == ['/media/', '/mnt/']
 
     def test_from_env_with_DEFAULT(self, os_environ, settings):
-        os_environ.update({'THEFUCK_RULES': 'DEFAULT_RULES:bash:lisp'})
+        os_environ.update({'THEHECK_RULES': 'DEFAULT_RULES:bash:lisp'})
         settings.init()
         assert settings.rules == const.DEFAULT_RULES + ['bash', 'lisp']
 
@@ -107,13 +107,13 @@ class TestInitializeSettingsFile(object):
 
 
 @pytest.mark.parametrize('legacy_dir_exists, xdg_config_home, result', [
-    (False, '~/.config', '~/.config/thefuck'),
-    (False, '/user/test/config/', '/user/test/config/thefuck'),
-    (True, '~/.config', '~/.thefuck'),
-    (True, '/user/test/config/', '~/.thefuck')])
+    (False, '~/.config', '~/.config/theheck'),
+    (False, '/user/test/config/', '/user/test/config/theheck'),
+    (True, '~/.config', '~/.theheck'),
+    (True, '/user/test/config/', '~/.theheck')])
 def test_get_user_dir_path(mocker, os_environ, settings, legacy_dir_exists,
                            xdg_config_home, result):
-    mocker.patch('thefuck.conf.Path.is_dir',
+    mocker.patch('theheck.conf.Path.is_dir',
                  return_value=legacy_dir_exists)
 
     if xdg_config_home is not None:

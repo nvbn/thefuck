@@ -10,8 +10,8 @@ class Tcsh(Generic):
 
     def app_alias(self, alias_name):
         return ("alias {0} 'setenv TF_SHELL tcsh && setenv TF_ALIAS {0} && "
-                "set fucked_cmd=`history -h 2 | head -n 1` && "
-                "eval `thefuck ${{fucked_cmd}}`'").format(alias_name)
+                "set hecked_cmd=`history -h 2 | head -n 1` && "
+                "eval `theheck ${{hecked_cmd}}`'").format(alias_name)
 
     def _parse_alias(self, alias):
         name, value = alias.split("\t", 1)
@@ -34,7 +34,7 @@ class Tcsh(Generic):
 
     def how_to_configure(self):
         return self._create_shell_configuration(
-            content=u'eval `thefuck --alias`',
+            content=u'eval `theheck --alias`',
             path='~/.tcshrc',
             reload='tcsh')
 

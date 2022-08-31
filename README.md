@@ -1,11 +1,11 @@
-# The Fuck [![Version][version-badge]][version-link] [![Build Status][workflow-badge]][workflow-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
+# The Heck [![Version][version-badge]][version-link] [![Build Status][workflow-badge]][workflow-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
 
-*The Fuck* is a magnificent app, inspired by a [@liamosaur](https://twitter.com/liamosaur/)
+*The Heck* is a magnificent app, inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320),
 that corrects errors in previous console commands.
 
 
-Is *The Fuck* too slow? [Try the experimental instant mode!](#experimental-instant-mode)
+Is *The Heck* too slow? [Try the experimental instant mode!](#experimental-instant-mode)
 
 [![gif with examples][examples-link]][examples-link]
 
@@ -16,7 +16,7 @@ More examples:
 E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 
-➜ fuck
+➜ heck
 sudo apt-get install vim [enter/↑/↓/ctrl+c]
 [sudo] password for nvbn:
 Reading package lists... Done
@@ -31,7 +31,7 @@ To push the current branch and set the remote as upstream, use
     git push --set-upstream origin master
 
 
-➜ fuck
+➜ heck
 git push --set-upstream origin master [enter/↑/↓/ctrl+c]
 Counting objects: 9, done.
 ...
@@ -44,7 +44,7 @@ No command 'puthon' found, did you mean:
  Command 'python' from package 'python3' (main)
 zsh: command not found: puthon
 
-➜ fuck
+➜ heck
 python [enter/↑/↓/ctrl+c]
 Python 3.4.2 (default, Oct  8 2014, 13:08:17)
 ...
@@ -57,7 +57,7 @@ git: 'brnch' is not a git command. See 'git --help'.
 Did you mean this?
     branch
 
-➜ fuck
+➜ heck
 git branch [enter/↑/↓/ctrl+c]
 * master
 ```
@@ -69,7 +69,7 @@ git branch [enter/↑/↓/ctrl+c]
 Did you mean this?
          repl
 
-➜ fuck
+➜ heck
 lein repl [enter/↑/↓/ctrl+c]
 nREPL server started on port 54848 on host 127.0.0.1 - nrepl://127.0.0.1:54848
 REPL-y 0.3.1
@@ -84,7 +84,7 @@ If you're not afraid of blindly running corrected commands, the
 E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
 E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
 
-➜ fuck
+➜ heck
 sudo apt-get install vim
 [sudo] password for nvbn:
 Reading package lists... Done
@@ -114,48 +114,48 @@ Reading package lists... Done
 
 ## Installation
 
-On macOS or Linux, you can install *The Fuck* via [Homebrew][homebrew]:
+On macOS or Linux, you can install *The Heck* via [Homebrew][homebrew]:
 
 ```bash
-brew install thefuck
+brew install theheck
 ```
 
-On Ubuntu / Mint, install *The Fuck* with the following commands:
+On Ubuntu / Mint, install *The Heck* with the following commands:
 ```bash
 sudo apt update
 sudo apt install python3-dev python3-pip python3-setuptools
-pip3 install thefuck --user
+pip3 install theheck --user
 ```
 
-On FreeBSD, install *The Fuck* with the following commands:
+On FreeBSD, install *The Heck* with the following commands:
 ```bash
-pkg install thefuck
+pkg install theheck
 ```
 
-On ChromeOS, install *The Fuck* using [chromebrew](https://github.com/skycocker/chromebrew) with the following command:
+On ChromeOS, install *The Heck* using [chromebrew](https://github.com/skycocker/chromebrew) with the following command:
 ```bash
-crew install thefuck
+crew install theheck
 ```
 
-On other systems, install *The Fuck*  by using `pip`:
+On other systems, install *The Heck*  by using `pip`:
 
 ```bash
-pip install thefuck
+pip install theheck
 ```
 
-[Alternatively, you may use an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
+[Alternatively, you may use an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/theheck/wiki/Installation)
 
 <a href='#manual-installation' name='manual-installation'>#</a>
 It is recommended that you place this command in your `.bash_profile`,
 `.bashrc`, `.zshrc` or other startup script:
 
 ```bash
-eval $(thefuck --alias)
+eval $(theheck --alias)
 # You can use whatever you want as an alias, like for Mondays:
-eval $(thefuck --alias FUCK)
+eval $(theheck --alias HECK)
 ```
 
-[Or in your shell config (Bash, Zsh, Fish, Powershell, tcsh).](https://github.com/nvbn/thefuck/wiki/Shell-aliases)
+[Or in your shell config (Bash, Zsh, Fish, Powershell, tcsh).](https://github.com/nvbn/theheck/wiki/Shell-aliases)
 
 Changes are only available in a new shell session. To make changes immediately
 available, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
@@ -163,13 +163,13 @@ available, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
 To run fixed commands without confirmation, use the `--yeah` option (or just `-y` for short, or `--hard` if you're especially frustrated):
 
 ```bash
-fuck --yeah
+heck --yeah
 ```
 
 To fix commands recursively until succeeding, use the `-r` option:
 
 ```bash
-fuck -r
+heck -r
 ```
 
 ##### [Back to Contents](#contents)
@@ -177,20 +177,20 @@ fuck -r
 ## Updating
 
 ```bash
-pip3 install thefuck --upgrade
+pip3 install theheck --upgrade
 ```
 
-**Note: Alias functionality was changed in v1.34 of *The Fuck***
+**Note: Alias functionality was changed in v1.34 of *The Heck***
 
 ## Uninstall
 
-To remove *The Fuck*, reverse the installation process:
-- erase or comment *thefuck* alias line from your Bash, Zsh, Fish, Powershell, tcsh, ... shell config
+To remove *The Heck*, reverse the installation process:
+- erase or comment *theheck* alias line from your Bash, Zsh, Fish, Powershell, tcsh, ... shell config
 - use your package manager (brew, pip3, pkg, crew, pip) to uninstall the binaries
 
 ## How it works
 
-*The Fuck* attempts to match the previous command with a rule. If a match is
+*The Heck* attempts to match the previous command with a rule. If a match is
 found, a new command is created using the matched rule and executed. The
 following rules are enabled by default:
 
@@ -366,7 +366,7 @@ The following rules are enabled by default on specific platforms only:
 * `pacman_not_found` &ndash; fixes package name with `pacman`, `yay`, `pikaur` or `yaourt`.
 * `yum_invalid_operation` &ndash; fixes invalid `yum` calls, like `yum isntall vim`;
 
-The following commands are bundled with *The Fuck*, but are not enabled by
+The following commands are bundled with *The Heck*, but are not enabled by
 default:
 
 * `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
@@ -377,7 +377,7 @@ default:
 ## Creating your own rules
 
 To add your own rule, create a file named `your-rule-name.py`
-in `~/.config/thefuck/rules`. The rule file must contain two functions:
+in `~/.config/theheck/rules`. The rule file must contain two functions:
 
 ```python
 match(command: Command) -> bool
@@ -396,9 +396,9 @@ Your rule should not change `Command`.
 
 
 **Rules api changed in 3.0:** To access a rule's settings, import it with
- `from thefuck.conf import settings`
+ `from theheck.conf import settings`
 
-`settings` is a special object assembled from `~/.config/thefuck/settings.py`,
+`settings` is a special object assembled from `~/.config/theheck/settings.py`,
 and values from env ([see more below](#settings)).
 
 A simple example rule for running a script with `sudo`:
@@ -423,18 +423,18 @@ priority = 1000  # Lower first, default is 1000
 requires_output = True
 ```
 
-[More examples of rules](https://github.com/nvbn/thefuck/tree/master/thefuck/rules),
-[utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py),
-[app/os-specific helpers](https://github.com/nvbn/thefuck/tree/master/thefuck/specific/).
+[More examples of rules](https://github.com/nvbn/theheck/tree/master/theheck/rules),
+[utility functions for rules](https://github.com/nvbn/theheck/tree/master/theheck/utils.py),
+[app/os-specific helpers](https://github.com/nvbn/theheck/tree/master/theheck/specific/).
 
 ##### [Back to Contents](#contents)
 
 ## Settings
 
-Several *The Fuck* parameters can be changed in the file `$XDG_CONFIG_HOME/thefuck/settings.py`
+Several *The Heck* parameters can be changed in the file `$XDG_CONFIG_HOME/theheck/settings.py`
 (`$XDG_CONFIG_HOME` defaults to `~/.config`):
 
-* `rules` &ndash; list of enabled rules, by default `thefuck.const.DEFAULT_RULES`;
+* `rules` &ndash; list of enabled rules, by default `theheck.const.DEFAULT_RULES`;
 * `exclude_rules` &ndash; list of disabled rules, by default `[]`;
 * `require_confirmation` &ndash; requires confirmation before running new command, by default `True`;
 * `wait_command` &ndash; the max amount of time in seconds for getting previous command output;
@@ -466,32 +466,32 @@ num_close_matches = 5
 
 Or via environment variables:
 
-* `THEFUCK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
-* `THEFUCK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`;
-* `THEFUCK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
-* `THEFUCK_WAIT_COMMAND` &ndash; the max amount of time in seconds for getting previous command output;
-* `THEFUCK_NO_COLORS` &ndash; disable colored output, `true/false`;
-* `THEFUCK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
+* `THEHECK_RULES` &ndash; list of enabled rules, like `DEFAULT_RULES:rm_root` or `sudo:no_command`;
+* `THEHECK_EXCLUDE_RULES` &ndash; list of disabled rules, like `git_pull:git_push`;
+* `THEHECK_REQUIRE_CONFIRMATION` &ndash; require confirmation before running new command, `true/false`;
+* `THEHECK_WAIT_COMMAND` &ndash; the max amount of time in seconds for getting previous command output;
+* `THEHECK_NO_COLORS` &ndash; disable colored output, `true/false`;
+* `THEHECK_PRIORITY` &ndash; priority of the rules, like `no_command=9999:apt_get=100`,
 rule with lower `priority` will be matched first;
-* `THEFUCK_DEBUG` &ndash; enables debug output, `true/false`;
-* `THEFUCK_HISTORY_LIMIT` &ndash; how many history commands will be scanned, like `2000`;
-* `THEFUCK_ALTER_HISTORY` &ndash; push fixed command to history `true/false`;
-* `THEFUCK_WAIT_SLOW_COMMAND` &ndash; the max amount of time in seconds for getting previous command output if it in `slow_commands` list;
-* `THEFUCK_SLOW_COMMANDS` &ndash; list of slow commands, like `lein:gradle`;
-* `THEFUCK_NUM_CLOSE_MATCHES` &ndash; the maximum number of close matches to suggest, like `5`.
-* `THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES` &ndash; path prefixes to ignore when searching for commands, by default `[]`.
+* `THEHECK_DEBUG` &ndash; enables debug output, `true/false`;
+* `THEHECK_HISTORY_LIMIT` &ndash; how many history commands will be scanned, like `2000`;
+* `THEHECK_ALTER_HISTORY` &ndash; push fixed command to history `true/false`;
+* `THEHECK_WAIT_SLOW_COMMAND` &ndash; the max amount of time in seconds for getting previous command output if it in `slow_commands` list;
+* `THEHECK_SLOW_COMMANDS` &ndash; list of slow commands, like `lein:gradle`;
+* `THEHECK_NUM_CLOSE_MATCHES` &ndash; the maximum number of close matches to suggest, like `5`.
+* `THEHECK_EXCLUDED_SEARCH_PATH_PREFIXES` &ndash; path prefixes to ignore when searching for commands, by default `[]`.
 
 For example:
 
 ```bash
-export THEFUCK_RULES='sudo:no_command'
-export THEFUCK_EXCLUDE_RULES='git_pull:git_push'
-export THEFUCK_REQUIRE_CONFIRMATION='true'
-export THEFUCK_WAIT_COMMAND=10
-export THEFUCK_NO_COLORS='false'
-export THEFUCK_PRIORITY='no_command=9999:apt_get=100'
-export THEFUCK_HISTORY_LIMIT='2000'
-export THEFUCK_NUM_CLOSE_MATCHES='5'
+export THEHECK_RULES='sudo:no_command'
+export THEHECK_EXCLUDE_RULES='git_pull:git_push'
+export THEHECK_REQUIRE_CONFIRMATION='true'
+export THEHECK_WAIT_COMMAND=10
+export THEHECK_NO_COLORS='false'
+export THEHECK_PRIORITY='no_command=9999:apt_get=100'
+export THEHECK_HISTORY_LIMIT='2000'
+export THEHECK_NUM_CLOSE_MATCHES='5'
 ```
 
 ##### [Back to Contents](#contents)
@@ -499,12 +499,12 @@ export THEFUCK_NUM_CLOSE_MATCHES='5'
 ## Third-party packages with rules
 
 If you'd like to make a specific set of non-public rules, but would still like
-to share them with others, create a package named `thefuck_contrib_*` with
+to share them with others, create a package named `theheck_contrib_*` with
 the following structure:
 
 ```
-thefuck_contrib_foo
-  thefuck_contrib_foo
+theheck_contrib_foo
+  theheck_contrib_foo
     rules
       __init__.py
       *third-party rules*
@@ -513,19 +513,19 @@ thefuck_contrib_foo
   setup.py
 ```
 
-*The Fuck* will find rules located in the `rules` module.
+*The Heck* will find rules located in the `rules` module.
 
 ##### [Back to Contents](#contents)
 
 ## Experimental instant mode
 
-The default behavior of *The Fuck* requires time to re-run previous commands.
-When in instant mode, *The Fuck* saves time by logging output with [script](https://en.wikipedia.org/wiki/Script_(Unix)),
+The default behavior of *The Heck* requires time to re-run previous commands.
+When in instant mode, *The Heck* saves time by logging output with [script](https://en.wikipedia.org/wiki/Script_(Unix)),
 then reading the log.
 
 [![gif with instant mode][instant-mode-gif-link]][instant-mode-gif-link]
 
-Currently, instant mode only supports Python 3 with bash or zsh. zsh's autocorrect function also needs to be disabled in order for thefuck to work properly.
+Currently, instant mode only supports Python 3 with bash or zsh. zsh's autocorrect function also needs to be disabled in order for theheck to work properly.
 
 To enable instant mode, add `--enable-experimental-instant-mode`
 to the alias initialization in `.bashrc`, `.bash_profile` or `.zshrc`.
@@ -533,7 +533,7 @@ to the alias initialization in `.bashrc`, `.bash_profile` or `.zshrc`.
 For example:
 
 ```bash
-eval $(thefuck --alias --enable-experimental-instant-mode)
+eval $(theheck --alias --enable-experimental-instant-mode)
 ```
 
 ##### [Back to Contents](#contents)
@@ -546,15 +546,15 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 Project License can be found [here](LICENSE.md).
 
 
-[version-badge]:   https://img.shields.io/pypi/v/thefuck.svg?label=version
-[version-link]:    https://pypi.python.org/pypi/thefuck/
-[workflow-badge]:  https://github.com/nvbn/thefuck/workflows/Tests/badge.svg
-[workflow-link]:   https://github.com/nvbn/thefuck/actions?query=workflow%3ATests
-[coverage-badge]:  https://img.shields.io/coveralls/nvbn/thefuck.svg
-[coverage-link]:   https://coveralls.io/github/nvbn/thefuck
+[version-badge]:   https://img.shields.io/pypi/v/theheck.svg?label=version
+[version-link]:    https://pypi.python.org/pypi/theheck/
+[workflow-badge]:  https://github.com/nvbn/theheck/workflows/Tests/badge.svg
+[workflow-link]:   https://github.com/nvbn/theheck/actions?query=workflow%3ATests
+[coverage-badge]:  https://img.shields.io/coveralls/nvbn/theheck.svg
+[coverage-link]:   https://coveralls.io/github/nvbn/theheck
 [license-badge]:   https://img.shields.io/badge/license-MIT-007EC7.svg
-[examples-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example.gif
-[instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/thefuck/master/example_instant_mode.gif
+[examples-link]:   https://raw.githubusercontent.com/nvbn/theheck/master/example.gif
+[instant-mode-gif-link]:   https://raw.githubusercontent.com/nvbn/theheck/master/example_instant_mode.gif
 [homebrew]:        https://brew.sh/
 
 ##### [Back to Contents](#contents)

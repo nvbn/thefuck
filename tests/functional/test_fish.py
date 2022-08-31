@@ -2,7 +2,7 @@ import pytest
 from tests.functional.plots import with_confirmation, without_confirmation, \
     refuse_with_confirmation, select_command_with_arrows
 
-containers = (('thefuck/python3-fish',
+containers = (('theheck/python3-fish',
                u'''FROM python:3
                    # Use jessie-backports since it has the fish package. See here for details:
                    # https://github.com/tianon/docker-brew-debian/blob/88ae21052affd8a14553bb969f9d41c464032122/jessie/backports/Dockerfile
@@ -10,7 +10,7 @@ containers = (('thefuck/python3-fish',
                    RUN apt-get update
                    RUN apt-get install -yy fish''',
                u'fish'),
-              ('thefuck/python2-fish',
+              ('theheck/python2-fish',
                u'''FROM python:2
                    # Use jessie-backports since it has the fish package. See here for details:
                    # https://github.com/tianon/docker-brew-debian/blob/88ae21052affd8a14553bb969f9d41c464032122/jessie/backports/Dockerfile
@@ -25,7 +25,7 @@ def proc(request, spawnu, TIMEOUT):
     proc = spawnu(*request.param)
     proc.sendline(u"pip install /src")
     assert proc.expect([TIMEOUT, u'Successfully installed'])
-    proc.sendline(u'thefuck --alias > ~/.config/fish/config.fish')
+    proc.sendline(u'theheck --alias > ~/.config/fish/config.fish')
     proc.sendline(u'fish')
     return proc
 

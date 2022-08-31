@@ -1,5 +1,5 @@
-from thefuck.utils import get_all_executables
-from thefuck.specific.sudo import sudo_support
+from theheck.utils import get_all_executables
+from theheck.specific.sudo import sudo_support
 
 
 @sudo_support

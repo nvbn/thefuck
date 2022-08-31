@@ -1,6 +1,6 @@
 import re
-from thefuck.utils import for_app
-from thefuck.specific.brew import brew_available
+from theheck.utils import for_app
+from theheck.specific.brew import brew_available
 
 enabled_by_default = brew_available
 

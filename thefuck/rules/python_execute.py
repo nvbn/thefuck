@@ -3,7 +3,7 @@
 # Example:
 # > python foo
 # error: python: can't open file 'foo': [Errno 2] No such file or directory
-from thefuck.utils import for_app
+from theheck.utils import for_app
 
 
 @for_app('python')

@@ -1,5 +1,5 @@
 import os
-from thefuck.specific.sudo import sudo_support
+from theheck.specific.sudo import sudo_support
 
 
 def _get_destination(script_parts):

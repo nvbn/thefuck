@@ -31,7 +31,7 @@ def get_rules_import_paths():
     yield settings.user_dir.joinpath('rules')
     # Packages with third-party rules:
     for path in sys.path:
-        for contrib_module in Path(path).glob('thefuck_contrib_*'):
+        for contrib_module in Path(path).glob('theheck_contrib_*'):
             contrib_rules = contrib_module.joinpath('rules')
             if contrib_rules.is_dir():
                 yield contrib_rules
@@ -52,8 +52,8 @@ def get_rules():
 def organize_commands(corrected_commands):
     """Yields sorted commands without duplicates.
 
-    :type corrected_commands: Iterable[thefuck.types.CorrectedCommand]
-    :rtype: Iterable[thefuck.types.CorrectedCommand]
+    :type corrected_commands: Iterable[theheck.types.CorrectedCommand]
+    :rtype: Iterable[theheck.types.CorrectedCommand]
 
     """
     try:
@@ -81,8 +81,8 @@ def organize_commands(corrected_commands):
 def get_corrected_commands(command):
     """Returns generator with sorted and unique corrected commands.
 
-    :type command: thefuck.types.Command
-    :rtype: Iterable[thefuck.types.CorrectedCommand]
+    :type command: theheck.types.Command
+    :rtype: Iterable[theheck.types.CorrectedCommand]
 
     """
     corrected_commands = (

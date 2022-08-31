@@ -1,4 +1,4 @@
-from thefuck.specific.sudo import sudo_support
+from theheck.specific.sudo import sudo_support
 
 enabled_by_default = False
 

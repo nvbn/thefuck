@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import (cache, for_app, replace_argument, replace_command,
+from theheck.utils import (cache, for_app, replace_argument, replace_command,
                            which)
 from subprocess import PIPE, Popen
 

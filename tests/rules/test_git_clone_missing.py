@@ -1,25 +1,25 @@
 import pytest
-from thefuck.rules.git_clone_missing import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.git_clone_missing import match, get_new_command
+from theheck.types import Command
 
 valid_urls = [
-    'https://github.com/nvbn/thefuck.git',
-    'https://github.com/nvbn/thefuck',
-    'http://github.com/nvbn/thefuck.git',
-    'git@github.com:nvbn/thefuck.git',
-    'git@github.com:nvbn/thefuck',
-    'ssh://git@github.com:nvbn/thefuck.git',
+    'https://github.com/nvbn/theheck.git',
+    'https://github.com/nvbn/theheck',
+    'http://github.com/nvbn/theheck.git',
+    'git@github.com:nvbn/theheck.git',
+    'git@github.com:nvbn/theheck',
+    'ssh://git@github.com:nvbn/theheck.git',
 ]
 invalid_urls = [
     '',  # No command
     'notacommand',  # Command not found
     'ssh git@github.com:nvbn/thefrick.git',  # ssh command, not a git clone
     'git clone foo',  # Valid clone
-    'git clone https://github.com/nvbn/thefuck.git',  # Full command
-    'github.com/nvbn/thefuck.git',  # Missing protocol
-    'github.com:nvbn/thefuck.git',  # SSH missing username
+    'git clone https://github.com/nvbn/theheck.git',  # Full command
+    'github.com/nvbn/theheck.git',  # Missing protocol
+    'github.com:nvbn/theheck.git',  # SSH missing username
     'git clone git clone ssh://git@github.com:nvbn/thefrick.git',  # 2x clone
-    'https:/github.com/nvbn/thefuck.git'  # Bad protocol
+    'https:/github.com/nvbn/theheck.git'  # Bad protocol
 ]
 outputs = [
     'No such file or directory',

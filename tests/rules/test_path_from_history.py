@@ -1,18 +1,18 @@
 import pytest
-from thefuck.rules.path_from_history import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.path_from_history import match, get_new_command
+from theheck.types import Command
 
 
 @pytest.fixture(autouse=True)
 def history(mocker):
     return mocker.patch(
-        'thefuck.rules.path_from_history.get_valid_history_without_current',
+        'theheck.rules.path_from_history.get_valid_history_without_current',
         return_value=['cd /opt/java', 'ls ~/work/project/'])
 
 
 @pytest.fixture(autouse=True)
 def path_exists(mocker):
-    path_mock = mocker.patch('thefuck.rules.path_from_history.Path')
+    path_mock = mocker.patch('theheck.rules.path_from_history.Path')
     exists_mock = path_mock.return_value.expanduser.return_value.exists
     exists_mock.return_value = True
     return exists_mock

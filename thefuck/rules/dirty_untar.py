@@ -1,7 +1,7 @@
 import tarfile
 import os
-from thefuck.utils import for_app
-from thefuck.shells import shell
+from theheck.utils import for_app
+from theheck.shells import shell
 
 
 tar_extensions = ('.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',

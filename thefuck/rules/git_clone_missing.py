@@ -4,14 +4,14 @@ Rule: git_clone_missing
 Correct missing `git clone` command when pasting a git URL
 
 ```sh
->>> https://github.com/nvbn/thefuck.git
-git clone https://github.com/nvbn/thefuck.git
+>>> https://github.com/nvbn/theheck.git
+git clone https://github.com/nvbn/theheck.git
 ```
 
 Author: Miguel Guthridge
 '''
 from six.moves.urllib import parse
-from thefuck.utils import which
+from theheck.utils import which
 
 
 def match(command):

@@ -1,4 +1,4 @@
-from thefuck.utils import for_app, get_close_matches, replace_command
+from theheck.utils import for_app, get_close_matches, replace_command
 import re
 
 

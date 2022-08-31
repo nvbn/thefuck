@@ -1,4 +1,4 @@
-from thefuck.utils import for_app
+from theheck.utils import for_app
 
 
 @for_app('ls')

@@ -1,6 +1,6 @@
 from mock import Mock
 import pytest
-from thefuck.entrypoints.alias import _get_alias, print_alias
+from theheck.entrypoints.alias import _get_alias, print_alias
 
 
 @pytest.mark.parametrize(
@@ -17,11 +17,11 @@ def test_get_alias(monkeypatch, mocker, py2,
     monkeypatch.setattr('six.PY2', py2)
     args = Mock(
         enable_experimental_instant_mode=enable_experimental_instant_mode,
-        alias='fuck', )
-    mocker.patch('thefuck.entrypoints.alias.which', return_value=which)
+        alias='heck', )
+    mocker.patch('theheck.entrypoints.alias.which', return_value=which)
     shell = Mock(app_alias=lambda _: 'app_alias',
                  instant_mode_alias=lambda _: 'instant_mode_alias')
-    monkeypatch.setattr('thefuck.entrypoints.alias.shell', shell)
+    monkeypatch.setattr('theheck.entrypoints.alias.shell', shell)
 
     alias = _get_alias(args)
     if is_instant:
@@ -31,8 +31,8 @@ def test_get_alias(monkeypatch, mocker, py2,
 
 
 def test_print_alias(mocker):
-    settings_mock = mocker.patch('thefuck.entrypoints.alias.settings')
-    _get_alias_mock = mocker.patch('thefuck.entrypoints.alias._get_alias')
+    settings_mock = mocker.patch('theheck.entrypoints.alias.settings')
+    _get_alias_mock = mocker.patch('theheck.entrypoints.alias._get_alias')
     known_args = Mock()
     print_alias(known_args)
     settings_mock.init.assert_called_once_with(known_args)

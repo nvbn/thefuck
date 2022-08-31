@@ -2,7 +2,7 @@
 This happens way too often
 
 When typing really fast cause I'm a 1337 H4X0R,
-I often fuck up 'ls' and type 'sl'. No more!
+I often heck up 'ls' and type 'sl'. No more!
 """
 
 

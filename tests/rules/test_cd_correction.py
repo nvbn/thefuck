@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.cd_correction import match
-from thefuck.types import Command
+from theheck.rules.cd_correction import match
+from theheck.types import Command
 
 
 @pytest.mark.parametrize('command', [

@@ -9,7 +9,7 @@ ln: ‘barDir’: hard link not allowed for directory
 """
 
 import re
-from thefuck.specific.sudo import sudo_support
+from theheck.specific.sudo import sudo_support
 
 
 @sudo_support

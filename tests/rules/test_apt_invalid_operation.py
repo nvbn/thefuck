@@ -1,7 +1,7 @@
 from io import BytesIO
 import pytest
-from thefuck.types import Command
-from thefuck.rules.apt_invalid_operation import match, get_new_command, \
+from theheck.types import Command
+from theheck.rules.apt_invalid_operation import match, get_new_command, \
     _get_operations
 
 invalid_operation = 'E: Invalid operation {}'.format

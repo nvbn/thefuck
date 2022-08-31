@@ -1,5 +1,5 @@
 import re
-from thefuck.utils import for_app
+from theheck.utils import for_app
 
 
 warning_regex = re.compile(r'Warning: (?:.(?!is ))+ is already installed and '

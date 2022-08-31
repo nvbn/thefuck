@@ -1,6 +1,6 @@
 import re
 import subprocess
-from thefuck.utils import replace_command, for_app, cache
+from theheck.utils import replace_command, for_app, cache
 
 
 @for_app('gulp')

@@ -1,6 +1,6 @@
 import re
-from thefuck.utils import for_app
-from thefuck.system import open_command
+from theheck.utils import for_app
+from theheck.system import open_command
 
 
 @for_app('yarn', at_least=2)

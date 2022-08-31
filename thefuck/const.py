@@ -46,35 +46,35 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'},
                     'excluded_search_path_prefixes': []}
 
-ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
-               'THEFUCK_EXCLUDE_RULES': 'exclude_rules',
-               'THEFUCK_WAIT_COMMAND': 'wait_command',
-               'THEFUCK_REQUIRE_CONFIRMATION': 'require_confirmation',
-               'THEFUCK_NO_COLORS': 'no_colors',
-               'THEFUCK_DEBUG': 'debug',
-               'THEFUCK_PRIORITY': 'priority',
-               'THEFUCK_HISTORY_LIMIT': 'history_limit',
-               'THEFUCK_ALTER_HISTORY': 'alter_history',
-               'THEFUCK_WAIT_SLOW_COMMAND': 'wait_slow_command',
-               'THEFUCK_SLOW_COMMANDS': 'slow_commands',
-               'THEFUCK_REPEAT': 'repeat',
-               'THEFUCK_INSTANT_MODE': 'instant_mode',
-               'THEFUCK_NUM_CLOSE_MATCHES': 'num_close_matches',
-               'THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES': 'excluded_search_path_prefixes'}
+ENV_TO_ATTR = {'THEHECK_RULES': 'rules',
+               'THEHECK_EXCLUDE_RULES': 'exclude_rules',
+               'THEHECK_WAIT_COMMAND': 'wait_command',
+               'THEHECK_REQUIRE_CONFIRMATION': 'require_confirmation',
+               'THEHECK_NO_COLORS': 'no_colors',
+               'THEHECK_DEBUG': 'debug',
+               'THEHECK_PRIORITY': 'priority',
+               'THEHECK_HISTORY_LIMIT': 'history_limit',
+               'THEHECK_ALTER_HISTORY': 'alter_history',
+               'THEHECK_WAIT_SLOW_COMMAND': 'wait_slow_command',
+               'THEHECK_SLOW_COMMANDS': 'slow_commands',
+               'THEHECK_REPEAT': 'repeat',
+               'THEHECK_INSTANT_MODE': 'instant_mode',
+               'THEHECK_NUM_CLOSE_MATCHES': 'num_close_matches',
+               'THEHECK_EXCLUDED_SEARCH_PATH_PREFIXES': 'excluded_search_path_prefixes'}
 
-SETTINGS_HEADER = u"""# The Fuck settings file
+SETTINGS_HEADER = u"""# The Heck settings file
 #
 # The rules are defined as in the example bellow:
 #
 # rules = ['cd_parent', 'git_push', 'python_command', 'sudo']
 #
 # The default values are as follows. Uncomment and change to fit your needs.
-# See https://github.com/nvbn/thefuck#settings for more information.
+# See https://github.com/nvbn/theheck#settings for more information.
 #
 
 """
 
-ARGUMENT_PLACEHOLDER = 'THEFUCK_ARGUMENT_PLACEHOLDER'
+ARGUMENT_PLACEHOLDER = 'THEHECK_ARGUMENT_PLACEHOLDER'
 
 CONFIGURATION_TIMEOUT = 60
 

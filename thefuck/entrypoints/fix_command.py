@@ -27,7 +27,7 @@ def _get_raw_command(known_args):
 
 
 def fix_command(known_args):
-    """Fixes previous command. Used when `thefuck` called without arguments."""
+    """Fixes previous command. Used when `theheck` called without arguments."""
     settings.init(known_args)
     with logs.debug_time('Total'):
         logs.debug(u'Run with settings: {}'.format(pformat(settings)))

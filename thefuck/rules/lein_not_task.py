@@ -1,6 +1,6 @@
 import re
-from thefuck.utils import replace_command, get_all_matched_commands, for_app
-from thefuck.specific.sudo import sudo_support
+from theheck.utils import replace_command, get_all_matched_commands, for_app
+from theheck.specific.sudo import sudo_support
 
 
 @sudo_support

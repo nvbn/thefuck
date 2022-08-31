@@ -1,9 +1,9 @@
 from collections import Counter
 import re
-from thefuck.system import Path
-from thefuck.utils import (get_valid_history_without_current,
+from theheck.system import Path
+from theheck.utils import (get_valid_history_without_current,
                            memoize, replace_argument)
-from thefuck.shells import shell
+from theheck.shells import shell
 
 
 patterns = [r'no such file or directory: (.*)$',

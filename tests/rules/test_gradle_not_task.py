@@ -1,7 +1,7 @@
 import pytest
 from io import BytesIO
-from thefuck.rules.gradle_no_task import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.gradle_no_task import match, get_new_command
+from theheck.types import Command
 
 gradle_tasks = b'''
 :tasks
@@ -122,7 +122,7 @@ Run gradlew tasks to get a list of available tasks. Run with --stacktrace option
 
 @pytest.fixture(autouse=True)
 def tasks(mocker):
-    patch = mocker.patch('thefuck.rules.gradle_no_task.Popen')
+    patch = mocker.patch('theheck.rules.gradle_no_task.Popen')
     patch.return_value.stdout = BytesIO(gradle_tasks)
     return patch
 

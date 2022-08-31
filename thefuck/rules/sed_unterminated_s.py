@@ -1,6 +1,6 @@
 import shlex
-from thefuck.shells import shell
-from thefuck.utils import for_app
+from theheck.shells import shell
+from theheck.utils import for_app
 
 
 @for_app('sed')

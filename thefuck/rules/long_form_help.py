@@ -1,4 +1,4 @@
-from thefuck.utils import replace_argument
+from theheck.utils import replace_argument
 import re
 
 # regex to match a suggested help command from the tool output

@@ -1,4 +1,4 @@
-from thefuck.specific.sudo import sudo_support
+from theheck.specific.sudo import sudo_support
 # add 'python' suffix to the command if
 #  1) The script does not have execute permission or
 #  2) is interpreted as shell script

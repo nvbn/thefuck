@@ -1,9 +1,9 @@
 import os
 import pytest
 import tarfile
-from thefuck.rules.dirty_untar import match, get_new_command, side_effect, \
+from theheck.rules.dirty_untar import match, get_new_command, side_effect, \
                                       tar_extensions  # noqa: E126
-from thefuck.types import Command
+from theheck.types import Command
 
 
 @pytest.fixture

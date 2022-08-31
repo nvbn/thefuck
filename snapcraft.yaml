@@ -1,25 +1,25 @@
-name: thefuck
+name: theheck
 version: stable
-version-script: git -C parts/thefuck/build describe --abbrev=0 --tags
+version-script: git -C parts/theheck/build describe --abbrev=0 --tags
 summary: Magnificent app which corrects your previous console command.
 description: |
-  The Fuck tries to match a rule for the previous command,
+  The Heck tries to match a rule for the previous command,
   creates a new command using the matched rule and runs it.
 
 grade: stable
 confinement: classic
 
 apps:
-  thefuck:
-    command: bin/thefuck
+  theheck:
+    command: bin/theheck
     environment:
         PYTHONIOENCODING: utf-8
-  fuck:
-    command: bin/fuck
+  heck:
+    command: bin/heck
     environment:
         PYTHONIOENCODING: utf-8
 
 parts:
-  thefuck:
-    source: https://github.com/nvbn/thefuck.git
+  theheck:
+    source: https://github.com/nvbn/theheck.git
     plugin: python

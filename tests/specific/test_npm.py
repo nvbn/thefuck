@@ -1,7 +1,7 @@
 from io import BytesIO
 
 import pytest
-from thefuck.specific.npm import get_scripts
+from theheck.specific.npm import get_scripts
 
 run_script_stdout = b'''
 Lifecycle scripts included in code-view-web:
@@ -21,6 +21,6 @@ available via `npm run-script`:
 
 @pytest.mark.usefixtures('no_memoize')
 def test_get_scripts(mocker):
-    patch = mocker.patch('thefuck.specific.npm.Popen')
+    patch = mocker.patch('theheck.specific.npm.Popen')
     patch.return_value.stdout = BytesIO(run_script_stdout)
     assert get_scripts() == ['build', 'develop', 'watch-test']

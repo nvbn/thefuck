@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.npm_wrong_command import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.npm_wrong_command import match, get_new_command
+from theheck.types import Command
 
 output = '''
 Usage: npm <command>

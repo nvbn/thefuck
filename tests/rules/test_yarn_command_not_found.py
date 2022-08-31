@@ -2,8 +2,8 @@
 
 from io import BytesIO
 import pytest
-from thefuck.types import Command
-from thefuck.rules.yarn_command_not_found import match, get_new_command
+from theheck.types import Command
+from theheck.rules.yarn_command_not_found import match, get_new_command
 
 output = '''
 error Command "{}" not found.
@@ -87,7 +87,7 @@ yarn_help_stdout = b'''
 
 @pytest.fixture(autouse=True)
 def yarn_help(mocker):
-    patch = mocker.patch('thefuck.rules.yarn_command_not_found.Popen')
+    patch = mocker.patch('theheck.rules.yarn_command_not_found.Popen')
     patch.return_value.stdout = BytesIO(yarn_help_stdout)
     return patch
 

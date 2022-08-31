@@ -1,6 +1,6 @@
-from thefuck.rules.git_branch_list import match, get_new_command
-from thefuck.shells import shell
-from thefuck.types import Command
+from theheck.rules.git_branch_list import match, get_new_command
+from theheck.shells import shell
+from theheck.types import Command
 
 
 def test_match():

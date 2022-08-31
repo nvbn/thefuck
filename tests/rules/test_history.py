@@ -1,12 +1,12 @@
 import pytest
-from thefuck.rules.history import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.history import match, get_new_command
+from theheck.types import Command
 
 
 @pytest.fixture(autouse=True)
 def history_without_current(mocker):
     return mocker.patch(
-        'thefuck.rules.history.get_valid_history_without_current',
+        'theheck.rules.history.get_valid_history_without_current',
         return_value=['ls cat', 'diff x'])
 
 

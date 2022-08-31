@@ -1,5 +1,5 @@
-from thefuck.utils import for_app
-from thefuck.specific.sudo import sudo_support
+from theheck.utils import for_app
+from theheck.specific.sudo import sudo_support
 
 
 @sudo_support

@@ -1,4 +1,4 @@
-from thefuck.utils import get_close_matches, get_closest, \
+from theheck.utils import get_close_matches, get_closest, \
     get_valid_history_without_current
 
 

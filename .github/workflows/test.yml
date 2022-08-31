@@ -28,7 +28,7 @@ jobs:
             ${{ env.pythonLocation }}/lib/*
             ${{ env.pythonLocation }}/scripts/*
           key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.py', 'requirements.txt') }}
-      - name: Install The Fuck with all dependencies
+      - name: Install The Heck with all dependencies
         if: steps.cache-deps.outputs.cache-hit != 'true'
         run: |
           pip install -Ur requirements.txt coveralls
@@ -38,10 +38,10 @@ jobs:
         run: flake8
       - name: Run tests
         if: matrix.os != 'ubuntu-latest' || matrix.python-version != env.PYTHON_LATEST
-        run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests
+        run: coverage run --source=theheck,tests -m pytest -v --capture=sys tests
       - name: Run tests (including functional)
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
-        run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests --enable-functional
+        run: coverage run --source=theheck,tests -m pytest -v --capture=sys tests --enable-functional
       - name: Post coverage results
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
         env:

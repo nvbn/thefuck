@@ -1,7 +1,7 @@
 import pytest
-from thefuck.rules.yarn_help import match, get_new_command
-from thefuck.types import Command
-from thefuck.system import open_command
+from theheck.rules.yarn_help import match, get_new_command
+from theheck.types import Command
+from theheck.system import open_command
 
 
 output_clean = '''

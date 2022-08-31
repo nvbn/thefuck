@@ -1,6 +1,6 @@
 import pytest
-from thefuck.rules.remove_trailing_cedilla import match, get_new_command, CEDILLA
-from thefuck.types import Command
+from theheck.rules.remove_trailing_cedilla import match, get_new_command, CEDILLA
+from theheck.types import Command
 
 
 @pytest.mark.parametrize('command', [

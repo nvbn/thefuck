@@ -65,7 +65,7 @@ def _get_output_lines(script, log_file):
 
 
 def _skip_old_lines(log_file):
-    size = os.path.getsize(os.environ['THEFUCK_OUTPUT_LOG'])
+    size = os.path.getsize(os.environ['THEHECK_OUTPUT_LOG'])
     if size > const.LOG_SIZE_IN_BYTES:
         log_file.seek(size - const.LOG_SIZE_IN_BYTES)
 
@@ -81,19 +81,19 @@ def get_output(script):
         logs.warn('Experimental instant mode is Python 3+ only')
         return None
 
-    if 'THEFUCK_OUTPUT_LOG' not in os.environ:
+    if 'THEHECK_OUTPUT_LOG' not in os.environ:
         logs.warn("Output log isn't specified")
         return None
 
     if const.USER_COMMAND_MARK not in os.environ.get('PS1', ''):
         logs.warn(
             "PS1 doesn't contain user command mark, please ensure "
-            "that PS1 is not changed after The Fuck alias initialization")
+            "that PS1 is not changed after The Heck alias initialization")
         return None
 
     try:
         with logs.debug_time(u'Read output from log'):
-            fd = os.open(os.environ['THEFUCK_OUTPUT_LOG'], os.O_RDONLY)
+            fd = os.open(os.environ['THEHECK_OUTPUT_LOG'], os.O_RDONLY)
             buffer = mmap.mmap(fd, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_READ)
             _skip_old_lines(buffer)
             lines = _get_output_lines(script, buffer)

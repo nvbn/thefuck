@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pytest
-from thefuck.rules.ln_no_hard_link import match, get_new_command
-from thefuck.types import Command
+from theheck.rules.ln_no_hard_link import match, get_new_command
+from theheck.types import Command
 
 error = "hard link not allowed for directory"
 

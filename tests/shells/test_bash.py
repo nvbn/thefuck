@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from thefuck.shells import Bash
+from theheck.shells import Bash
 
 
 @pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
@@ -13,20 +13,20 @@ class TestBash(object):
 
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.bash.Popen')
+        mock = mocker.patch('theheck.shells.bash.Popen')
         return mock
 
     @pytest.fixture(autouse=True)
     def shell_aliases(self):
         os.environ['TF_SHELL_ALIASES'] = (
-            'alias fuck=\'eval $(thefuck $(fc -ln -1))\'\n'
+            'alias heck=\'eval $(theheck $(fc -ln -1))\'\n'
             'alias l=\'ls -CF\'\n'
             'alias la=\'ls -A\'\n'
             'alias ll=\'ls -alF\'')
 
     @pytest.mark.parametrize('before, after', [
         ('pwd', 'pwd'),
-        ('fuck', 'eval $(thefuck $(fc -ln -1))'),
+        ('heck', 'eval $(theheck $(fc -ln -1))'),
         ('awk', 'awk'),
         ('ll', 'ls -alF')])
     def test_from_shell(self, before, after, shell):
@@ -42,22 +42,22 @@ class TestBash(object):
         assert shell.or_('ls', 'cd') == 'ls || cd'
 
     def test_get_aliases(self, shell):
-        assert shell.get_aliases() == {'fuck': 'eval $(thefuck $(fc -ln -1))',
+        assert shell.get_aliases() == {'heck': 'eval $(theheck $(fc -ln -1))',
                                        'l': 'ls -CF',
                                        'la': 'ls -A',
                                        'll': 'ls -alF'}
 
     def test_app_alias(self, shell):
-        assert 'fuck () {' in shell.app_alias('fuck')
-        assert 'FUCK () {' in shell.app_alias('FUCK')
-        assert 'thefuck' in shell.app_alias('fuck')
-        assert 'PYTHONIOENCODING' in shell.app_alias('fuck')
+        assert 'heck () {' in shell.app_alias('heck')
+        assert 'HECK () {' in shell.app_alias('HECK')
+        assert 'theheck' in shell.app_alias('heck')
+        assert 'PYTHONIOENCODING' in shell.app_alias('heck')
 
     def test_app_alias_variables_correctly_set(self, shell):
-        alias = shell.app_alias('fuck')
-        assert "fuck () {" in alias
+        alias = shell.app_alias('heck')
+        assert "heck () {" in alias
         assert 'TF_SHELL=bash' in alias
-        assert "TF_ALIAS=fuck" in alias
+        assert "TF_ALIAS=heck" in alias
         assert 'PYTHONIOENCODING=utf-8' in alias
         assert 'TF_SHELL_ALIASES=$(alias)' in alias
 

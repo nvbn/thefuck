@@ -28,7 +28,7 @@ def _get_shell_pid():
 
 def _get_not_configured_usage_tracker_path():
     """Returns path of special file where we store latest shell pid."""
-    return Path(gettempdir()).joinpath(u'thefuck.last_not_configured_run_{}'.format(
+    return Path(gettempdir()).joinpath(u'theheck.last_not_configured_run_{}'.format(
         getpass.getuser(),
     ))
 
@@ -53,7 +53,7 @@ def _get_previous_command():
 
 
 def _is_second_run():
-    """Returns `True` when we know that `fuck` called second time."""
+    """Returns `True` when we know that `heck` called second time."""
     tracker_path = _get_not_configured_usage_tracker_path()
     if not tracker_path.exists():
         return False
@@ -68,7 +68,7 @@ def _is_second_run():
     if not (isinstance(info, dict) and info.get('pid') == current_pid):
         return False
 
-    return (_get_previous_command() == 'fuck' or
+    return (_get_previous_command() == 'heck' or
             time.time() - info.get('time', 0) < const.CONFIGURATION_TIMEOUT)
 
 
@@ -92,7 +92,7 @@ def main():
     """Shows useful information about how-to configure alias on a first run
     and configure automatically on a second.
 
-    It'll be only visible when user type fuck and when alias isn't configured.
+    It'll be only visible when user type heck and when alias isn't configured.
 
     """
     settings.init()

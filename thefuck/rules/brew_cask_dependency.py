@@ -1,6 +1,6 @@
-from thefuck.utils import for_app, eager
-from thefuck.shells import shell
-from thefuck.specific.brew import brew_available
+from theheck.utils import for_app, eager
+from theheck.shells import shell
+from theheck.specific.brew import brew_available
 
 
 @for_app('brew')

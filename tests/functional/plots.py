@@ -1,7 +1,7 @@
 def _set_confirmation(proc, require):
-    proc.sendline(u'mkdir -p ~/.thefuck')
+    proc.sendline(u'mkdir -p ~/.theheck')
     proc.sendline(
-        u'echo "require_confirmation = {}" > ~/.thefuck/settings.py'.format(
+        u'echo "require_confirmation = {}" > ~/.theheck/settings.py'.format(
             require))
 
 
@@ -11,7 +11,7 @@ def with_confirmation(proc, TIMEOUT):
 
     proc.sendline(u'ehco test')
 
-    proc.sendline(u'fuck')
+    proc.sendline(u'heck')
     assert proc.expect([TIMEOUT, u'echo test'])
     assert proc.expect([TIMEOUT, u'enter'])
     assert proc.expect_exact([TIMEOUT, u'ctrl+c'])
@@ -29,7 +29,7 @@ def history_changed(proc, TIMEOUT, to):
 def history_not_changed(proc, TIMEOUT):
     """Ensures that history not changed."""
     proc.send('\033[A')
-    assert proc.expect([TIMEOUT, u'fuck'])
+    assert proc.expect([TIMEOUT, u'heck'])
 
 
 def select_command_with_arrows(proc, TIMEOUT):
@@ -39,7 +39,7 @@ def select_command_with_arrows(proc, TIMEOUT):
     proc.sendline(u'git h')
     assert proc.expect([TIMEOUT, u"git: 'h' is not a git command."])
 
-    proc.sendline(u'fuck')
+    proc.sendline(u'heck')
     assert proc.expect([TIMEOUT, u'git show'])
     proc.send('\033[B')
     assert proc.expect([TIMEOUT, u'git push'])
@@ -60,7 +60,7 @@ def refuse_with_confirmation(proc, TIMEOUT):
 
     proc.sendline(u'ehco test')
 
-    proc.sendline(u'fuck')
+    proc.sendline(u'heck')
     assert proc.expect([TIMEOUT, u'echo test'])
     assert proc.expect([TIMEOUT, u'enter'])
     assert proc.expect_exact([TIMEOUT, u'ctrl+c'])
@@ -75,11 +75,11 @@ def without_confirmation(proc, TIMEOUT):
 
     proc.sendline(u'ehco test')
 
-    proc.sendline(u'fuck')
+    proc.sendline(u'heck')
     assert proc.expect([TIMEOUT, u'echo test'])
     assert proc.expect([TIMEOUT, u'test'])
 
 
 def how_to_configure(proc, TIMEOUT):
-    proc.sendline(u'fuck')
+    proc.sendline(u'heck')
     assert proc.expect([TIMEOUT, u"alias isn't configured"])

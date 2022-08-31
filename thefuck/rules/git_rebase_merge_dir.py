@@ -1,5 +1,5 @@
-from thefuck.utils import get_close_matches
-from thefuck.specific.git import git_support
+from theheck.utils import get_close_matches
+from theheck.specific.git import git_support
 
 
 @git_support

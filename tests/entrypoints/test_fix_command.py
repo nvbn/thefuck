@@ -1,6 +1,6 @@
 import pytest
 from mock import Mock
-from thefuck.entrypoints.fix_command import _get_raw_command
+from theheck.entrypoints.fix_command import _get_raw_command
 
 
 class TestGetRawCommand(object):
