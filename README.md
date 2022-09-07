@@ -137,6 +137,11 @@ On ChromeOS, install *The Fuck* using [chromebrew](https://github.com/skycocker/
 crew install thefuck
 ```
 
+On Arch based systems, install *The Fuck* with the following command:
+```
+sudo pacman -S thefuck
+```
+
 On other systems, install *The Fuck*  by using `pip`:
 
 ```bash
@@ -234,6 +239,7 @@ following rules are enabled by default:
 * `git_branch_0flag` &ndash; fixes commands such as `git branch 0v` and `git branch 0r` removing the created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
 * `git_clone_git_clone` &ndash; replaces `git clone git clone ...` with `git clone ...`
+* `git_clone_missing` &ndash; adds `git clone` to URLs that appear to link to a git repository.
 * `git_commit_add` &ndash; offers `git commit -a ...` or `git commit -p ...` after previous commit if it failed because nothing was staged;
 * `git_commit_amend` &ndash; offers `git commit --amend` after previous commit;
 * `git_commit_reset` &ndash; offers `git reset HEAD~` after previous commit;
