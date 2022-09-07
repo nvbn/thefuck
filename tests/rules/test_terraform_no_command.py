@@ -4,8 +4,8 @@ from thefuck.types import Command
 
 
 @pytest.mark.parametrize('script, output', [
-    ('terraform appyl', 'Terraform has no command named \"appyl\". Did you mean \"apply\"?)'),
-    ('terraform destory', 'Terraform has no command named \"destory\". Did you mean \"destroy\"?)')])
+    ('terraform appyl', 'Terraform has no command named "appyl". Did you mean "apply"?'),
+    ('terraform destory', 'Terraform has no command named "destory". Did you mean "destroy"?')])
 def test_match(script, output):
     assert match(Command(script, output))
 
@@ -16,12 +16,12 @@ def test_match(script, output):
     ('terraform apply', 'Apply complete! Resources: 0 added, 0 changed, 0 destroyed.'),
 ])
 def test_not_match(script, output):
-    assert not match(Command(script, output=output))
+    assert not match(Command(script, output))
 
 
-@pytest.mark.parametrize('command, new_command', [
-    (Command('terraform appyl', 'Terraform has no command named \"appyl\". Did you mean \"apply\"?)'), 'terraform apply'),
-    (Command('terraform destory --some-other-option', 'Terraform has no command named \"destory\". Did you mean \"destroy\"?)'), 'terraform destroy --some-other-option'),
+@pytest.mark.parametrize('script, output, new_command', [
+    ('terraform appyl', 'Terraform has no command named "appyl". Did you mean "apply"?', 'terraform apply',),
+    ('terraform destory --some-other-option', 'Terraform has no command named "destory". Did you mean "destroy"?', 'terraform destroy --some-other-option',),
 ])
-def test_get_new_command(command, new_command):
-    assert get_new_command(command) == new_command
+def test_get_new_command(script, output, new_command):
+    assert get_new_command(Command(script, output)) == new_command
