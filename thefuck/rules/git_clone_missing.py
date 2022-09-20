@@ -14,16 +14,22 @@ from six.moves.urllib import parse
 from thefuck.utils import which
 
 
-def match(command):
-    # We want it to be a URL by itself
-    if len(command.script_parts) != 1:
-        return False
-    # Ensure we got the error we expected
+def is_expected_error(command):
     if which(command.script_parts[0]) or not (
         'No such file or directory' in command.output
         or 'not found' in command.output
         or 'is not recognised as' in command.output
     ):
+        return False
+    return True
+
+
+def match(command):
+    # We want it to be a URL by itself
+    if len(command.script_parts) != 1:
+        return False
+    # Ensure we got the error we expected
+    if not is_expected_error(command):
         return False
     url = parse.urlparse(command.script, scheme='ssh')
     # HTTP URLs need a network address
