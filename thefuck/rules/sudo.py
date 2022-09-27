@@ -4,6 +4,8 @@ patterns = ['permission denied',
             'you cannot perform this operation unless you are root',
             'non-root users cannot',
             'operation not permitted',
+            'not super-user',
+            'superuser privilege',
             'root privilege',
             'this command has to be run under the root user.',
             'this operation requires root.',
@@ -22,7 +24,8 @@ patterns = ['permission denied',
             'you don\'t have write permissions',
             'use `sudo`',
             'sudorequirederror',
-            'error: insufficient privileges']
+            'error: insufficient privileges',
+            'updatedb: can not open a temporary file']
 
 
 def match(command):

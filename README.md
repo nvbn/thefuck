@@ -137,6 +137,11 @@ On ChromeOS, install *The Fuck* using [chromebrew](https://github.com/skycocker/
 crew install thefuck
 ```
 
+On Arch based systems, install *The Fuck* with the following command:
+```
+sudo pacman -S thefuck
+```
+
 On other systems, install *The Fuck*  by using `pip`:
 
 ```bash
@@ -234,6 +239,7 @@ following rules are enabled by default:
 * `git_branch_0flag` &ndash; fixes commands such as `git branch 0v` and `git branch 0r` removing the created branch;
 * `git_checkout` &ndash; fixes branch name or creates new branch;
 * `git_clone_git_clone` &ndash; replaces `git clone git clone ...` with `git clone ...`
+* `git_clone_missing` &ndash; adds `git clone` to URLs that appear to link to a git repository.
 * `git_commit_add` &ndash; offers `git commit -a ...` or `git commit -p ...` after previous commit if it failed because nothing was staged;
 * `git_commit_amend` &ndash; offers `git commit --amend` after previous commit;
 * `git_commit_reset` &ndash; offers `git reset HEAD~` after previous commit;
@@ -326,6 +332,7 @@ following rules are enabled by default:
 * `switch_lang` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
 * `terraform_init.py` &ndash; run `terraform init` before plan or apply;
+* `terraform_no_command.py` &ndash; fixes unrecognized `terraform` commands;
 * `test.py` &ndash; runs `pytest` instead of `test.py`;
 * `touch` &ndash; creates missing directories before "touching";
 * `tsuru_login` &ndash; runs `tsuru login` if not authenticated or session expired;
@@ -360,9 +367,9 @@ The following rules are enabled by default on specific platforms only:
 * `brew_update_formula` &ndash; turns `brew update <formula>` into `brew upgrade <formula>`;
 * `dnf_no_such_command` &ndash; fixes mistyped DNF commands;
 * `nixos_cmd_not_found` &ndash; installs apps on NixOS;
-* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay` or `yaourt` if available);
+* `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay`, `pikaur` or `yaourt` if available);
 * `pacman_invalid_option` &ndash; replaces lowercase `pacman` options with uppercase.
-* `pacman_not_found` &ndash; fixes package name with `pacman`, `yay` or `yaourt`.
+* `pacman_not_found` &ndash; fixes package name with `pacman`, `yay`, `pikaur` or `yaourt`.
 * `yum_invalid_operation` &ndash; fixes invalid `yum` calls, like `yum isntall vim`;
 
 The following commands are bundled with *The Fuck*, but are not enabled by

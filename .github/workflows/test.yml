@@ -1,6 +1,11 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches: master]
+  pull_request:
+    branches: [master]
+    types: [opened, reopened]
 
 env:
   PYTHON_LATEST: "3.10"
