@@ -288,6 +288,7 @@ following rules are enabled by default:
 * `ifconfig_device_not_found` &ndash; fixes wrong device names like `wlan0` to `wlp2s0`;
 * `java` &ndash; removes `.java` extension when running Java programs;
 * `javac` &ndash; appends missing `.java` when compiling Java files;
+* `kedro_no_such_command` &ndash; fixes wrong `kedro` commands like `kedro ne`;
 * `lein_not_task` &ndash; fixes wrong `lein` tasks like `lein rpl`;
 * `long_form_help` &ndash; changes `-h` to `--help` when the short form version is not supported
 * `ln_no_hard_link` &ndash; catches hard link creation on directories, suggest symbolic link;
