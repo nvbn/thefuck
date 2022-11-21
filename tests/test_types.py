@@ -2,7 +2,7 @@
 
 import os
 from subprocess import PIPE, STDOUT
-from mock import Mock
+from unittest.mock import Mock
 import pytest
 from tests.utils import CorrectedCommand, Rule
 from thefuck import const
