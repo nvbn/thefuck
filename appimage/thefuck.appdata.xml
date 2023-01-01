@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>thefuck</id>
+    <metadata_license>MIT</metadata_license>
+    <project_license>MIT</project_license>
+    <name>thefuck</name>
+    <summary>thefuck app running python {{ python-fullversion }}</summary>
+    <description>
+        <p>Magnificent app which corrects your previous console command.</p>
+    </description>
+    <launchable type="desktop-id">thefuck.desktop</launchable>
+    <url type="homepage">https://github.com/nvbn/thefuck</url>
+    <provides>
+        <binary>python{{ python-version }}</binary>
+    </provides>
+</component>
+
