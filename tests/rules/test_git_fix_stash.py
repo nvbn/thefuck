@@ -1,7 +1,7 @@
 import pytest
-from thefuck.rules.git_fix_stash import match, get_new_command
-from thefuck.types import Command
 
+from thefuck.rules.git_fix_stash import get_new_command, match
+from thefuck.types import Command
 
 git_stash_err = '''
 usage: git stash list [<options>]

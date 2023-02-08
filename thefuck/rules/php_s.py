@@ -1,4 +1,4 @@
-from thefuck.utils import replace_argument, for_app
+from thefuck.utils import for_app, replace_argument
 
 
 @for_app('php', at_least=2)

@@ -1,14 +1,16 @@
-import pytest
 from io import BytesIO
+
+import pytest
+
+from thefuck.rules.gulp_not_task import get_new_command, match
 from thefuck.types import Command
-from thefuck.rules.gulp_not_task import match, get_new_command
 
 
 def output(task):
-    return '''[00:41:11] Using gulpfile gulpfile.js
-[00:41:11] Task '{}' is not in your gulpfile
+    return f'''[00:41:11] Using gulpfile gulpfile.js
+[00:41:11] Task '{task}' is not in your gulpfile
 [00:41:11] Please check the documentation for proper gulpfile formatting
-'''.format(task)
+'''
 
 
 def test_match():

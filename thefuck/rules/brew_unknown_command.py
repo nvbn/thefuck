@@ -1,7 +1,8 @@
 import os
 import re
+
+from thefuck.specific.brew import brew_available, get_brew_path_prefix
 from thefuck.utils import get_closest, replace_command
-from thefuck.specific.brew import get_brew_path_prefix, brew_available
 
 BREW_CMD_PATH = '/Homebrew/Library/Homebrew/cmd'
 TAP_PATH = '/Homebrew/Library/Taps'
@@ -25,7 +26,7 @@ def _get_brew_tap_specific_commands(brew_path_prefix):
     brew_taps_path = brew_path_prefix + TAP_PATH
 
     for user in _get_directory_names_only(brew_taps_path):
-        taps = _get_directory_names_only(brew_taps_path + '/%s' % user)
+        taps = _get_directory_names_only(brew_taps_path + f'/{user}')
 
         # Brew Taps's naming rule
         # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/brew-tap.md#naming-conventions-and-limitations

@@ -6,7 +6,7 @@ from thefuck.types import Command
 
 @pytest.fixture
 def output(pyenv_cmd):
-    return "pyenv: no such command `{}'".format(pyenv_cmd)
+    return f"pyenv: no such command `{pyenv_cmd}'"
 
 
 @pytest.fixture(autouse=True)

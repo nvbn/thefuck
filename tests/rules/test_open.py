@@ -1,11 +1,12 @@
 import pytest
-from thefuck.rules.open import is_arg_url, match, get_new_command
+
+from thefuck.rules.open import get_new_command, is_arg_url, match
 from thefuck.types import Command
 
 
 @pytest.fixture
 def output(script):
-    return 'The file {} does not exist.\n'.format(script.split(' ', 1)[1])
+    return f"The file {script.split(' ', 1)[1]} does not exist.\n"
 
 
 @pytest.mark.parametrize('script', [

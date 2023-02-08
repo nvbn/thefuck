@@ -1,14 +1,15 @@
+import re
+
 from thefuck.specific.archlinux import archlinux_env
 from thefuck.specific.sudo import sudo_support
 from thefuck.utils import for_app
-import re
 
 
 @sudo_support
 @for_app("pacman")
 def match(command):
     return command.output.startswith("error: invalid option '-") and any(
-        " -{}".format(option) in command.script for option in "surqfdvt"
+        f" -{option}" in command.script for option in "surqfdvt"
     )
 
 

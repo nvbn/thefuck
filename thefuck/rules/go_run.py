@@ -1,4 +1,5 @@
 from thefuck.utils import for_app
+
 # Appends .go when compiling go files
 #
 # Example:

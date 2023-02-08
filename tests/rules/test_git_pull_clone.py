@@ -1,7 +1,7 @@
 import pytest
-from thefuck.rules.git_pull_clone import match, get_new_command
-from thefuck.types import Command
 
+from thefuck.rules.git_pull_clone import get_new_command, match
+from thefuck.types import Command
 
 git_err = '''
 fatal: Not a git repository (or any parent up to mount point /home)

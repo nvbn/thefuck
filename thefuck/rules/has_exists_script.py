@@ -1,4 +1,5 @@
 import os
+
 from thefuck.specific.sudo import sudo_support
 
 
@@ -10,4 +11,4 @@ def match(command):
 
 @sudo_support
 def get_new_command(command):
-    return u'./{}'.format(command.script)
+    return f'./{command.script}'

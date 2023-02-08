@@ -1,6 +1,5 @@
-from thefuck.rules.git_clone_git_clone import match, get_new_command
+from thefuck.rules.git_clone_git_clone import get_new_command, match
 from thefuck.types import Command
-
 
 output_clean = """
 fatal: Too many arguments.

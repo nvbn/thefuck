@@ -1,8 +1,9 @@
 import sys
-from .conf import settings
-from .types import Rule
-from .system import Path
+
 from . import logs
+from .conf import settings
+from .system import Path
+from .types import Rule
 
 
 def get_loaded_rules(rules_paths):
@@ -71,8 +72,8 @@ def organize_commands(corrected_commands):
         without_duplicates,
         key=lambda corrected_command: corrected_command.priority)
 
-    logs.debug(u'Corrected commands: {}'.format(
-        ', '.join(u'{}'.format(cmd) for cmd in [first_command] + sorted_commands)))
+    logs.debug('Corrected commands: {}'.format(
+        ', '.join('{}'.format(cmd) for cmd in [first_command] + sorted_commands)))
 
     for command in sorted_commands:
         yield command

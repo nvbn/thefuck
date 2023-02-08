@@ -1,10 +1,9 @@
-from collections import Counter
 import re
-from thefuck.system import Path
-from thefuck.utils import (get_valid_history_without_current,
-                           memoize, replace_argument)
-from thefuck.shells import shell
+from collections import Counter
 
+from thefuck.shells import shell
+from thefuck.system import Path
+from thefuck.utils import get_valid_history_without_current, memoize, replace_argument
 
 patterns = [r'no such file or directory: (.*)$',
             r"cannot access '(.*)': No such file or directory",

@@ -1,9 +1,9 @@
-import re
 import os
-from thefuck.utils import memoize, default_settings
+import re
+
 from thefuck.conf import settings
 from thefuck.shells import shell
-
+from thefuck.utils import default_settings, memoize
 
 # order is important: only the first match is considered
 patterns = (
@@ -60,7 +60,7 @@ def match(command):
     return _search(command.output)
 
 
-@default_settings({'fixlinecmd': u'{editor} {file} +{line}',
+@default_settings({'fixlinecmd': '{editor} {file} +{line}',
                    'fixcolcmd': None})
 def get_new_command(command):
     m = _search(command.output)

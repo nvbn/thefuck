@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+
 from thefuck.shells import Generic
 
 
-class TestGeneric(object):
+class TestGeneric():
     @pytest.fixture
     def shell(self):
         return Generic()
@@ -39,14 +40,14 @@ class TestGeneric(object):
 
     def test_split_command(self, shell):
         assert shell.split_command('ls') == ['ls']
-        assert shell.split_command(u'echo café') == [u'echo', u'café']
+        assert shell.split_command('echo café') == ['echo', 'café']
 
     def test_how_to_configure(self, shell):
         assert shell.how_to_configure() is None
 
     @pytest.mark.parametrize('side_effect, expected_info, warn', [
-        ([u'3.5.9'], u'Generic Shell 3.5.9', False),
-        ([OSError], u'Generic Shell', True),
+        (['3.5.9'], 'Generic Shell 3.5.9', False),
+        ([OSError], 'Generic Shell', True),
     ])
     def test_info(self, side_effect, expected_info, warn, shell, mocker):
         warn_mock = mocker.patch('thefuck.shells.generic.warn')

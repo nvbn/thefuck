@@ -1,6 +1,7 @@
 import re
-from thefuck.utils import replace_argument
+
 from thefuck.specific.git import git_support
+from thefuck.utils import replace_argument
 
 
 @git_support
@@ -41,4 +42,4 @@ def get_new_command(command):
 
     arguments = re.findall(r'git push (.*)', command.output)[-1].replace("'", r"\'").strip()
     return replace_argument(" ".join(command_parts), 'push',
-                            'push {}'.format(arguments))
+                            f'push {arguments}')

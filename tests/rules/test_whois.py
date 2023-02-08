@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.whois import match, get_new_command
+
+from thefuck.rules.whois import get_new_command, match
 from thefuck.types import Command
 
 

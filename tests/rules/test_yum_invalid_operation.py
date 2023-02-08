@@ -2,7 +2,7 @@ from io import BytesIO
 
 import pytest
 
-from thefuck.rules.yum_invalid_operation import match, get_new_command, _get_operations
+from thefuck.rules.yum_invalid_operation import _get_operations, get_new_command, match
 from thefuck.types import Command
 
 yum_help_text = '''Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
@@ -137,7 +137,7 @@ yum_operations = [
     'saerch', 'uninstall',
 ])
 def test_match(command):
-    assert match(Command('yum {}'.format(command), yum_invalid_op_text.format(command)))
+    assert match(Command(f'yum {command}', yum_invalid_op_text.format(command)))
 
 
 @pytest.mark.parametrize('command, output', [

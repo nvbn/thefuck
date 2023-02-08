@@ -1,6 +1,6 @@
 import pytest
 
-from thefuck.rules.conda_mistype import match, get_new_command
+from thefuck.rules.conda_mistype import get_new_command, match
 from thefuck.types import Command
 
 
@@ -21,4 +21,4 @@ def test_match(mistype_response):
 
 
 def test_get_new_command(mistype_response):
-    assert (get_new_command(Command('conda lst', mistype_response)) == ['conda list'])
+    assert get_new_command(Command('conda lst', mistype_response)) == ['conda list']

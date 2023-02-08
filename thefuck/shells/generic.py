@@ -1,19 +1,20 @@
 import io
 import os
 import shlex
-import six
 from collections import namedtuple
-from ..logs import warn
-from ..utils import memoize
-from ..conf import settings
-from ..system import Path
 
+import six
+
+from ..conf import settings
+from ..logs import warn
+from ..system import Path
+from ..utils import memoize
 
 ShellConfiguration = namedtuple('ShellConfiguration', (
     'content', 'path', 'reload', 'can_configure_automatically'))
 
 
-class Generic(object):
+class Generic():
     friendly_name = 'Generic Shell'
 
     def get_aliases(self):
@@ -71,10 +72,10 @@ class Generic(object):
                         yield prepared
 
     def and_(self, *commands):
-        return u' && '.join(commands)
+        return ' && '.join(commands)
 
     def or_(self, *commands):
-        return u' || '.join(commands)
+        return ' || '.join(commands)
 
     def how_to_configure(self):
         return
@@ -142,9 +143,9 @@ class Generic(object):
         try:
             version = self._get_version()
         except Exception as e:
-            warn(u'Could not determine shell version: {}'.format(e))
+            warn(f'Could not determine shell version: {e}')
             version = ''
-        return u'{} {}'.format(self.friendly_name, version).rstrip()
+        return f'{self.friendly_name} {version}'.rstrip()
 
     def _create_shell_configuration(self, content, path, reload):
         return ShellConfiguration(

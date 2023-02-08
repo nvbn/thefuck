@@ -1,23 +1,22 @@
 import pytest
-from tests.functional.plots import with_confirmation, without_confirmation, \
-    refuse_with_confirmation, history_changed, history_not_changed, \
-    select_command_with_arrows, how_to_configure
 
+from tests.functional.plots import (history_changed, history_not_changed, how_to_configure, refuse_with_confirmation,
+                                    select_command_with_arrows, with_confirmation, without_confirmation)
 
 python_3 = ('thefuck/python3-zsh',
-            u'''FROM python:3
+            '''FROM python:3
                 RUN apt-get update
                 RUN apt-get install -yy zsh''',
-            u'sh')
+            'sh')
 
 python_2 = ('thefuck/python2-zsh',
-            u'''FROM python:2
+            '''FROM python:2
                 RUN apt-get update
                 RUN apt-get install -yy zsh''',
-            u'sh')
+            'sh')
 
 
-init_zshrc = u'''echo '
+init_zshrc = '''echo '
 export SHELL=/usr/bin/zsh
 export HISTFILE=~/.zsh_history
 echo > $HISTFILE
@@ -35,26 +34,26 @@ echo "instant mode ready: $THEFUCK_INSTANT_MODE"
 def proc(request, spawnu, TIMEOUT):
     container, instant_mode = request.param
     proc = spawnu(*container)
-    proc.sendline(u'pip install /src')
-    assert proc.expect([TIMEOUT, u'Successfully installed'])
+    proc.sendline('pip install /src')
+    assert proc.expect([TIMEOUT, 'Successfully installed'])
     proc.sendline(init_zshrc.format(
-        u'--enable-experimental-instant-mode' if instant_mode else ''))
-    proc.sendline(u"zsh")
+        '--enable-experimental-instant-mode' if instant_mode else ''))
+    proc.sendline("zsh")
     if instant_mode:
-        assert proc.expect([TIMEOUT, u'instant mode ready: True'])
+        assert proc.expect([TIMEOUT, 'instant mode ready: True'])
     return proc
 
 
 @pytest.mark.functional
 def test_with_confirmation(proc, TIMEOUT):
     with_confirmation(proc, TIMEOUT)
-    history_changed(proc, TIMEOUT, u'echo test')
+    history_changed(proc, TIMEOUT, 'echo test')
 
 
 @pytest.mark.functional
 def test_select_command_with_arrows(proc, TIMEOUT):
     select_command_with_arrows(proc, TIMEOUT)
-    history_changed(proc, TIMEOUT, u'git help')
+    history_changed(proc, TIMEOUT, 'git help')
 
 
 @pytest.mark.functional
@@ -66,10 +65,10 @@ def test_refuse_with_confirmation(proc, TIMEOUT):
 @pytest.mark.functional
 def test_without_confirmation(proc, TIMEOUT):
     without_confirmation(proc, TIMEOUT)
-    history_changed(proc, TIMEOUT, u'echo test')
+    history_changed(proc, TIMEOUT, 'echo test')
 
 
 @pytest.mark.functional
 def test_how_to_configure_alias(proc, TIMEOUT):
-    proc.sendline(u'unfunction fuck')
+    proc.sendline('unfunction fuck')
     how_to_configure(proc, TIMEOUT)

@@ -1,8 +1,7 @@
 import pytest
 
-from thefuck.rules.az_cli import match, get_new_command
+from thefuck.rules.az_cli import get_new_command, match
 from thefuck.types import Command
-
 
 no_suggestions = '''\
 az provider: error: the following arguments are required: _subcommand

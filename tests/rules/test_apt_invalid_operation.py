@@ -1,8 +1,9 @@
 from io import BytesIO
+
 import pytest
+
+from thefuck.rules.apt_invalid_operation import _get_operations, get_new_command, match
 from thefuck.types import Command
-from thefuck.rules.apt_invalid_operation import match, get_new_command, \
-    _get_operations
 
 invalid_operation = 'E: Invalid operation {}'.format
 apt_help = b'''apt 1.0.10.2ubuntu1 for amd64 compiled on Oct  5 2015 15:55:05

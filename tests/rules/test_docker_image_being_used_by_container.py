@@ -1,4 +1,4 @@
-from thefuck.rules.docker_image_being_used_by_container import match, get_new_command
+from thefuck.rules.docker_image_being_used_by_container import get_new_command, match
 from thefuck.types import Command
 
 

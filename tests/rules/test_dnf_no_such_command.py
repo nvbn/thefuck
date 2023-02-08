@@ -1,8 +1,9 @@
 from io import BytesIO
-import pytest
-from thefuck.types import Command
-from thefuck.rules.dnf_no_such_command import match, get_new_command, _get_operations
 
+import pytest
+
+from thefuck.rules.dnf_no_such_command import _get_operations, get_new_command, match
+from thefuck.types import Command
 
 help_text = b'''usage: dnf [options] COMMAND
 

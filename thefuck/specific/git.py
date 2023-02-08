@@ -1,7 +1,9 @@
 import re
+
 from decorator import decorator
-from ..utils import is_app
+
 from ..shells import shell
+from ..utils import is_app
 
 
 @decorator

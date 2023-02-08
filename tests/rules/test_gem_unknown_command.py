@@ -1,6 +1,7 @@
 import pytest
 from six import BytesIO
-from thefuck.rules.gem_unknown_command import match, get_new_command
+
+from thefuck.rules.gem_unknown_command import get_new_command, match
 from thefuck.types import Command
 
 output = '''

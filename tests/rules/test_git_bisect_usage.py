@@ -1,6 +1,7 @@
 import pytest
+
+from thefuck.rules.git_bisect_usage import get_new_command, match
 from thefuck.types import Command
-from thefuck.rules.git_bisect_usage import match, get_new_command
 
 
 @pytest.fixture
@@ -26,5 +27,5 @@ def test_not_match(script):
     ('git bisect strt', ['start', 'terms', 'reset']),
     ('git bisect rset', ['reset', 'next', 'start'])])
 def test_get_new_command(output, script, new_cmd):
-    new_cmd = ['git bisect %s' % cmd for cmd in new_cmd]
+    new_cmd = [f'git bisect {cmd}' for cmd in new_cmd]
     assert get_new_command(Command(script, output)) == new_cmd

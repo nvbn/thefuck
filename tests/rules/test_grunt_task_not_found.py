@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 
 from io import BytesIO
+
 import pytest
+
+from thefuck.rules.grunt_task_not_found import get_new_command, match
 from thefuck.types import Command
-from thefuck.rules.grunt_task_not_found import match, get_new_command
 
 output = '''
 Warning: Task "{}" not found. Use --force to continue.

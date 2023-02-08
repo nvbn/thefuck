@@ -1,7 +1,7 @@
 import pytest
-from thefuck.types import Command
-from thefuck.rules.brew_reinstall import get_new_command, match
 
+from thefuck.rules.brew_reinstall import get_new_command, match
+from thefuck.types import Command
 
 output = ("Warning: thefuck 9.9 is already installed and up-to-date\nTo "
           "reinstall 9.9, run `brew reinstall thefuck`")
@@ -24,5 +24,5 @@ def test_not_match(script):
     ('brew install bar zap', 'bar zap')])
 def test_get_new_command(script, formula):
     command = Command(script, output)
-    new_command = 'brew reinstall {}'.format(formula)
+    new_command = f'brew reinstall {formula}'
     assert get_new_command(command) == new_command

@@ -6,7 +6,7 @@ from psutil import AccessDenied, TimeoutExpired
 from thefuck.output_readers import rerun
 
 
-class TestRerun(object):
+class TestRerun():
     def setup_method(self, test_method):
         self.patcher = patch('thefuck.output_readers.rerun.Process')
         process_mock = self.patcher.start()
@@ -25,14 +25,14 @@ class TestRerun(object):
     @patch('thefuck.output_readers.rerun.Popen')
     def test_get_output_invalid_continuation_byte(self, popen_mock):
         output = b'ls: illegal option -- \xc3\nusage: ls [-@ABC...] [file ...]\n'
-        expected = u'ls: illegal option -- \ufffd\nusage: ls [-@ABC...] [file ...]\n'
+        expected = 'ls: illegal option -- \ufffd\nusage: ls [-@ABC...] [file ...]\n'
         popen_mock.return_value.stdout.read.return_value = output
         actual = rerun.get_output('', '')
         assert actual == expected
 
     @patch('thefuck.output_readers.rerun._wait_output')
     def test_get_output_unicode_misspell(self, wait_output_mock):
-        rerun.get_output(u'pácman', u'pácman')
+        rerun.get_output('pácman', 'pácman')
         wait_output_mock.assert_called_once()
 
     def test_wait_output_is_slow(self, settings):

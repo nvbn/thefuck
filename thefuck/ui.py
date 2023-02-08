@@ -1,11 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 import sys
+
+from . import const, logs
 from .conf import settings
 from .exceptions import NoRuleMatched
 from .system import get_key
 from .utils import get_alias
-from . import logs, const
 
 
 def read_actions():
@@ -24,7 +25,7 @@ def read_actions():
             yield const.ACTION_SELECT
 
 
-class CommandSelector(object):
+class CommandSelector():
     """Helper for selecting rule from rules list."""
 
     def __init__(self, commands):

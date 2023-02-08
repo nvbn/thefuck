@@ -1,6 +1,6 @@
 from thefuck.specific.npm import npm_available
-from thefuck.utils import replace_argument, for_app, eager, get_closest
 from thefuck.specific.sudo import sudo_support
+from thefuck.utils import eager, for_app, get_closest, replace_argument
 
 enabled_by_default = npm_available
 

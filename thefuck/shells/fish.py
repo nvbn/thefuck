@@ -1,8 +1,10 @@
-from subprocess import Popen, PIPE
-from time import time
 import os
 import sys
+from subprocess import PIPE, Popen
+from time import time
+
 import six
+
 from .. import logs
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER
@@ -78,7 +80,7 @@ class Fish(Generic):
         if binary in aliases and aliases[binary] != binary:
             return command_script.replace(binary, aliases[binary], 1)
         elif binary in aliases:
-            return u'fish -ic "{}"'.format(command_script.replace('"', r'\"'))
+            return 'fish -ic "{}"'.format(command_script.replace('"', r'\"'))
         else:
             return command_script
 
@@ -86,7 +88,7 @@ class Fish(Generic):
         return os.path.expanduser('~/.config/fish/fish_history')
 
     def _get_history_line(self, command_script):
-        return u'- cmd: {}\n   when: {}\n'.format(command_script, int(time()))
+        return f'- cmd: {command_script}\n   when: {int(time())}\n'
 
     def _script_from_history(self, line):
         if '- cmd: ' in line:
@@ -95,14 +97,14 @@ class Fish(Generic):
             return ''
 
     def and_(self, *commands):
-        return u'; and '.join(commands)
+        return '; and '.join(commands)
 
     def or_(self, *commands):
-        return u'; or '.join(commands)
+        return '; or '.join(commands)
 
     def how_to_configure(self):
         return self._create_shell_configuration(
-            content=u"thefuck --alias | source",
+            content="thefuck --alias | source",
             path='~/.config/fish/config.fish',
             reload='fish')
 

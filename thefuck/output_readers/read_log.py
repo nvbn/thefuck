@@ -1,15 +1,18 @@
-import os
-import shlex
 import mmap
+import os
 import re
+import shlex
+
 try:
     from shutil import get_terminal_size
 except ImportError:
     from backports.shutil_get_terminal_size import get_terminal_size
-import six
+
 import pyte
-from ..exceptions import ScriptNotInLog
+import six
+
 from .. import const, logs
+from ..exceptions import ScriptNotInLog
 
 
 def _group_by_calls(log):
@@ -92,13 +95,13 @@ def get_output(script):
         return None
 
     try:
-        with logs.debug_time(u'Read output from log'):
+        with logs.debug_time('Read output from log'):
             fd = os.open(os.environ['THEFUCK_OUTPUT_LOG'], os.O_RDONLY)
             buffer = mmap.mmap(fd, const.LOG_SIZE_IN_BYTES, mmap.MAP_SHARED, mmap.PROT_READ)
             _skip_old_lines(buffer)
             lines = _get_output_lines(script, buffer)
             output = '\n'.join(lines).strip()
-            logs.debug(u'Received output: {}'.format(output))
+            logs.debug(f'Received output: {output}')
             return output
     except OSError:
         logs.warn("Can't read output log")

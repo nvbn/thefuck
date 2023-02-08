@@ -1,7 +1,8 @@
 import re
-from subprocess import Popen, PIPE
-from thefuck.utils import memoize, which
+from subprocess import PIPE, Popen
+
 from thefuck.shells import shell
+from thefuck.utils import memoize, which
 
 enabled_by_default = bool(which('lsof'))
 
@@ -13,7 +14,7 @@ patterns = [r"bind on address \('.*', (?P<port>\d+)\)",
 
 @memoize
 def _get_pid_by_port(port):
-    proc = Popen(['lsof', '-i', ':{}'.format(port)], stdout=PIPE)
+    proc = Popen(['lsof', '-i', f':{port}'], stdout=PIPE)
     lines = proc.stdout.read().decode().split('\n')
     if len(lines) > 1:
         return lines[1].split()[1]
@@ -37,4 +38,4 @@ def match(command):
 def get_new_command(command):
     port = _get_used_port(command)
     pid = _get_pid_by_port(port)
-    return shell.and_(u'kill {}'.format(pid), command.script)
+    return shell.and_(f'kill {pid}', command.script)

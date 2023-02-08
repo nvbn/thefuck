@@ -9,4 +9,4 @@ def test_readme(source_root):
         for rule in bundled:
             if rule.stem != '__init__':
                 assert rule.stem in readme,\
-                    'Missing rule "{}" in README.md'.format(rule.stem)
+                    f'Missing rule "{rule.stem}" in README.md'

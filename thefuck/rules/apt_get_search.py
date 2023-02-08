@@ -1,4 +1,5 @@
 import re
+
 from thefuck.specific.apt import apt_available
 from thefuck.utils import for_app
 

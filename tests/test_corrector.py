@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from tests.utils import Rule, CorrectedCommand
-from thefuck import corrector, const
+
+from tests.utils import CorrectedCommand, Rule
+from thefuck import const, corrector
+from thefuck.corrector import get_corrected_commands, organize_commands
 from thefuck.system import Path
 from thefuck.types import Command
-from thefuck.corrector import get_corrected_commands, organize_commands
 
 
 @pytest.fixture
@@ -16,7 +17,7 @@ def glob(mocker):
     return lambda value: results.update({'value': value})
 
 
-class TestGetRules(object):
+class TestGetRules():
     @pytest.fixture(autouse=True)
     def load_source(self, monkeypatch):
         monkeypatch.setattr('thefuck.types.load_source',
@@ -65,9 +66,9 @@ def test_organize_commands():
     """Ensures that the function removes duplicates and sorts commands."""
     commands = [CorrectedCommand('ls'), CorrectedCommand('ls -la', priority=9000),
                 CorrectedCommand('ls -lh', priority=100),
-                CorrectedCommand(u'echo café', priority=200),
+                CorrectedCommand('echo café', priority=200),
                 CorrectedCommand('ls -lh', priority=9999)]
     assert list(organize_commands(iter(commands))) \
         == [CorrectedCommand('ls'), CorrectedCommand('ls -lh', priority=100),
-            CorrectedCommand(u'echo café', priority=200),
+            CorrectedCommand('echo café', priority=200),
             CorrectedCommand('ls -la', priority=9000)]

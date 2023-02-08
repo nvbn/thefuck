@@ -1,6 +1,7 @@
 import pytest
-from thefuck.types import Command
+
 from thefuck.rules.brew_link import get_new_command, match
+from thefuck.types import Command
 
 
 @pytest.fixture
@@ -19,7 +20,7 @@ def output():
 
 @pytest.fixture
 def new_command(formula):
-    return 'brew link --overwrite --dry-run {}'.format(formula)
+    return f'brew link --overwrite --dry-run {formula}'
 
 
 @pytest.mark.parametrize('script', ['brew link coreutils', 'brew ln coreutils'])

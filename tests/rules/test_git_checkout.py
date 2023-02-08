@@ -1,14 +1,15 @@
-import pytest
 from io import BytesIO
-from thefuck.rules.git_checkout import match, get_branches, get_new_command
+
+import pytest
+
+from thefuck.rules.git_checkout import get_branches, get_new_command, match
 from thefuck.types import Command
 
 
 def did_not_match(target, did_you_forget=False):
-    error = ("error: pathspec '{}' did not match any "
-             "file(s) known to git.".format(target))
+    error = f"error: pathspec '{target}' did not match any file(s) known to git."
     if did_you_forget:
-        error = ("{}\nDid you forget to 'git add'?'".format(error))
+        error = f"{error}\nDid you forget to 'git add'?'"
     return error
 
 

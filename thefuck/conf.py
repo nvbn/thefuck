@@ -1,8 +1,10 @@
-from imp import load_source
 import os
 import sys
+from imp import load_source
 from warnings import warn
+
 from six import text_type
+
 from . import const
 from .system import Path
 
@@ -39,7 +41,7 @@ class Settings(dict):
             with settings_path.open(mode='w') as settings_file:
                 settings_file.write(const.SETTINGS_HEADER)
                 for setting in const.DEFAULT_SETTINGS.items():
-                    settings_file.write(u'# {} = {}\n'.format(*setting))
+                    settings_file.write('# {} = {}\n'.format(*setting))
 
     def _get_user_dir_path(self):
         """Returns Path object representing the user config resource"""
@@ -49,7 +51,7 @@ class Settings(dict):
 
         # For backward compatibility use legacy '~/.thefuck' if it exists:
         if legacy_user_dir.is_dir():
-            warn(u'Config path {} is deprecated. Please move to {}'.format(
+            warn('Config path {} is deprecated. Please move to {}'.format(
                 legacy_user_dir, user_dir))
             return legacy_user_dir
         else:

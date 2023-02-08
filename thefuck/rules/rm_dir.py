@@ -1,4 +1,5 @@
 import re
+
 from thefuck.specific.sudo import sudo_support
 
 

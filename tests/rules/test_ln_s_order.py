@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.ln_s_order import match, get_new_command
+
+from thefuck.rules.ln_s_order import get_new_command, match
 from thefuck.types import Command
 
 

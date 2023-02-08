@@ -1,5 +1,6 @@
 import re
-from thefuck.utils import get_closest, for_app
+
+from thefuck.utils import for_app, get_closest
 
 
 def extract_possibilities(command):

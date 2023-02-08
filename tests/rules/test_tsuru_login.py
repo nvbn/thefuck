@@ -1,7 +1,7 @@
 import pytest
-from thefuck.rules.tsuru_login import match, get_new_command
-from thefuck.types import Command
 
+from thefuck.rules.tsuru_login import get_new_command, match
+from thefuck.types import Command
 
 error_msg = (
     "Error: you're not authenticated or your session has expired.",
