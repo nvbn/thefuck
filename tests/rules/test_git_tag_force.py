@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.git_tag_force import match, get_new_command
+
+from thefuck.rules.git_tag_force import get_new_command, match
 from thefuck.types import Command
 
 

@@ -11,8 +11,8 @@ def sudo_support(fn, command):
     result = fn(command.update(script=command.script[5:]))
 
     if result and isinstance(result, six.string_types):
-        return u'sudo {}'.format(result)
+        return f'sudo {result}'
     elif isinstance(result, list):
-        return [u'sudo {}'.format(x) for x in result]
+        return [f'sudo {x}' for x in result]
     else:
         return result

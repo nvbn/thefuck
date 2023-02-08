@@ -1,6 +1,7 @@
 import re
-from subprocess import Popen, PIPE
-from thefuck.utils import for_app, replace_command, cache, eager
+from subprocess import PIPE, Popen
+
+from thefuck.utils import cache, eager, for_app, replace_command
 
 
 @for_app('react-native')

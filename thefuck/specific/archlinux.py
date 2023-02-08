@@ -1,5 +1,6 @@
 """ This file provide some utility functions for Arch Linux specific rules."""
 import subprocess
+
 from .. import utils
 
 

@@ -5,10 +5,11 @@ init_output()
 
 import os  # noqa: E402
 import sys  # noqa: E402
+
 from .. import logs  # noqa: E402
 from ..argument_parser import Parser  # noqa: E402
-from ..utils import get_installation_version  # noqa: E402
 from ..shells import shell  # noqa: E402
+from ..utils import get_installation_version  # noqa: E402
 from .alias import print_alias  # noqa: E402
 from .fix_command import fix_command  # noqa: E402
 

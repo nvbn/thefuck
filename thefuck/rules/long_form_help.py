@@ -1,5 +1,6 @@
-from thefuck.utils import replace_argument
 import re
+
+from thefuck.utils import replace_argument
 
 # regex to match a suggested help command from the tool output
 help_regex = r"(?:Run|Try) '([^']+)'(?: or '[^']+')? for (?:details|more information)."

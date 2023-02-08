@@ -1,8 +1,9 @@
-from time import time
 import os
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 from tempfile import gettempdir
+from time import time
 from uuid import uuid4
+
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER, USER_COMMAND_MARK
 from ..utils import DEVNULL, memoize
@@ -42,14 +43,13 @@ class Zsh(Generic):
             mark = ('%{' +
                     USER_COMMAND_MARK + '\b' * len(USER_COMMAND_MARK)
                     + '%}')
-            return '''
-                export PS1="{user_command_mark}$PS1";
-                {app_alias}
-            '''.format(user_command_mark=mark,
-                       app_alias=self.app_alias(alias_name))
+            return f'''
+                export PS1="{mark}$PS1";
+                {self.app_alias(alias_name)}
+            '''
         else:
             log_path = os.path.join(
-                gettempdir(), 'thefuck-script-log-{}'.format(uuid4().hex))
+                gettempdir(), f'thefuck-script-log-{uuid4().hex}')
             return '''
                 export THEFUCK_INSTANT_MODE=True;
                 export THEFUCK_OUTPUT_LOG={log};
@@ -75,7 +75,7 @@ class Zsh(Generic):
                               os.path.expanduser('~/.zsh_history'))
 
     def _get_history_line(self, command_script):
-        return u': {}:0;{}\n'.format(int(time()), command_script)
+        return f': {int(time())}:0;{command_script}\n'
 
     def _script_from_history(self, line):
         if ';' in line:
@@ -85,7 +85,7 @@ class Zsh(Generic):
 
     def how_to_configure(self):
         return self._create_shell_configuration(
-            content=u'eval $(thefuck --alias)',
+            content='eval $(thefuck --alias)',
             path='~/.zshrc',
             reload='source ~/.zshrc')
 

@@ -1,4 +1,5 @@
 import pytest
+
 from thefuck.rules.cd_correction import match
 from thefuck.types import Command
 

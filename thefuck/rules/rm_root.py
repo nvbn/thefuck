@@ -13,4 +13,4 @@ def match(command):
 
 @sudo_support
 def get_new_command(command):
-    return u'{} --no-preserve-root'.format(command.script)
+    return f'{command.script} --no-preserve-root'

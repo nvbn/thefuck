@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+
 from thefuck.const import ARGUMENT_PLACEHOLDER
 from thefuck.shells import Fish
 
 
 @pytest.mark.usefixtures('isfile', 'no_memoize', 'no_cache')
-class TestFish(object):
+class TestFish():
     @pytest.fixture
     def shell(self):
         return Fish()
@@ -103,7 +104,7 @@ class TestFish(object):
 
     @pytest.mark.parametrize('entry, entry_utf8', [
         ('ls', '- cmd: ls\n   when: 1430707243\n'),
-        (u'echo café', '- cmd: echo café\n   when: 1430707243\n')])
+        ('echo café', '- cmd: echo café\n   when: 1430707243\n')])
     def test_put_to_history(self, entry, entry_utf8, builtins_open, mocker, shell):
         mocker.patch('thefuck.shells.fish.time', return_value=1430707243.3517463)
         shell.put_to_history(entry)

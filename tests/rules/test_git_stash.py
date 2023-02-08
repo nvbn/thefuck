@@ -1,7 +1,7 @@
 import pytest
-from thefuck.rules.git_stash import match, get_new_command
-from thefuck.types import Command
 
+from thefuck.rules.git_stash import get_new_command, match
+from thefuck.types import Command
 
 cherry_pick_error = (
     'error: Your local changes would be overwritten by cherry-pick.\n'

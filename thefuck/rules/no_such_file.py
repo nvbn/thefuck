@@ -1,6 +1,6 @@
 import re
-from thefuck.shells import shell
 
+from thefuck.shells import shell
 
 patterns = (
     r"mv: cannot move '[^']*' to '([^']*)': No such file or directory",

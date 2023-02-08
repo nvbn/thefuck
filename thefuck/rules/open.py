@@ -37,4 +37,4 @@ def get_new_command(command):
     elif output.startswith('The file ') and output.endswith(' does not exist.'):
         arg = command.script.split(' ', 1)[1]
         for option in ['touch', 'mkdir']:
-            yield shell.and_(u'{} {}'.format(option, arg), command.script)
+            yield shell.and_(f'{option} {arg}', command.script)

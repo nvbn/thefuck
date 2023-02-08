@@ -1,4 +1,5 @@
 import pytest
+
 from thefuck.rules.apt_get_search import get_new_command, match
 from thefuck.types import Command
 

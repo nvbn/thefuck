@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.git_push import match, get_new_command
+
+from thefuck.rules.git_push import get_new_command, match
 from thefuck.types import Command
 
 
@@ -7,12 +8,12 @@ from thefuck.types import Command
 def output(branch_name):
     if not branch_name:
         return ''
-    return '''fatal: The current branch {} has no upstream branch.
+    return f'''fatal: The current branch {branch_name} has no upstream branch.
 To push the current branch and set the remote as upstream, use
 
-    git push --set-upstream origin {}
+    git push --set-upstream origin {branch_name}
 
-'''.format(branch_name, branch_name)
+'''
 
 
 @pytest.fixture

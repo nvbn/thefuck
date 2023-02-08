@@ -1,16 +1,17 @@
-from imp import load_source
 import os
 import sys
+from imp import load_source
+
 from . import logs
-from .shells import shell
 from .conf import settings
-from .const import DEFAULT_PRIORITY, ALL_ENABLED
+from .const import ALL_ENABLED, DEFAULT_PRIORITY
 from .exceptions import EmptyCommand
-from .utils import get_alias, format_raw_script
 from .output_readers import get_output
+from .shells import shell
+from .utils import format_raw_script, get_alias
 
 
-class Command(object):
+class Command():
     """Command that should be fixed."""
 
     def __init__(self, script, output):
@@ -39,7 +40,7 @@ class Command(object):
             try:
                 self._script_parts = shell.split_command(self.script)
             except Exception:
-                logs.debug(u"Can't split command script {} because:\n {}".format(
+                logs.debug("Can't split command script {} because:\n {}".format(
                     self, sys.exc_info()))
                 self._script_parts = []
 
@@ -52,8 +53,7 @@ class Command(object):
             return False
 
     def __repr__(self):
-        return u'Command(script={}, output={})'.format(
-            self.script, self.output)
+        return f'Command(script={self.script}, output={self.output})'
 
     def update(self, **kwargs):
         """Returns new command with replaced fields.
@@ -83,7 +83,7 @@ class Command(object):
         return cls(expanded, output)
 
 
-class Rule(object):
+class Rule():
     """Rule for fixing commands."""
 
     def __init__(self, name, match, get_new_command,
@@ -137,13 +137,13 @@ class Rule(object):
         """
         name = path.name[:-3]
         if name in settings.exclude_rules:
-            logs.debug(u'Ignoring excluded rule: {}'.format(name))
+            logs.debug(f'Ignoring excluded rule: {name}')
             return
-        with logs.debug_time(u'Importing rule: {};'.format(name)):
+        with logs.debug_time(f'Importing rule: {name};'):
             try:
                 rule_module = load_source(name, str(path))
             except Exception:
-                logs.exception(u"Rule {} failed to load".format(name), sys.exc_info())
+                logs.exception(f"Rule {name} failed to load", sys.exc_info())
                 return
         priority = getattr(rule_module, 'priority', DEFAULT_PRIORITY)
         return cls(name, rule_module.match,
@@ -177,7 +177,7 @@ class Rule(object):
             return False
 
         try:
-            with logs.debug_time(u'Trying rule: {};'.format(self.name)):
+            with logs.debug_time(f'Trying rule: {self.name};'):
                 if self.match(command):
                     return True
         except Exception:
@@ -199,7 +199,7 @@ class Rule(object):
                                    priority=(n + 1) * self.priority)
 
 
-class CorrectedCommand(object):
+class CorrectedCommand():
     """Corrected by rule command."""
 
     def __init__(self, script, side_effect, priority):
@@ -226,7 +226,7 @@ class CorrectedCommand(object):
         return (self.script, self.side_effect).__hash__()
 
     def __repr__(self):
-        return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
+        return 'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
             self.script, self.side_effect, self.priority)
 
     def _get_script(self):
@@ -256,7 +256,7 @@ class CorrectedCommand(object):
         if settings.alter_history:
             shell.put_to_history(self.script)
         # This depends on correct setting of PYTHONIOENCODING by the alias:
-        logs.debug(u'PYTHONIOENCODING: {}'.format(
+        logs.debug('PYTHONIOENCODING: {}'.format(
             os.environ.get('PYTHONIOENCODING', '!!not-set!!')))
 
         sys.stdout.write(self._get_script())

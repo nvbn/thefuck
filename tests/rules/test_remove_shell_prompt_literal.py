@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.remove_shell_prompt_literal import match, get_new_command
+
+from thefuck.rules.remove_shell_prompt_literal import get_new_command, match
 from thefuck.types import Command
 
 

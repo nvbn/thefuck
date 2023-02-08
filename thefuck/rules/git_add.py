@@ -1,4 +1,5 @@
 import re
+
 from thefuck.shells import shell
 from thefuck.specific.git import git_support
 from thefuck.system import Path

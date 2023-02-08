@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 
 from io import BytesIO
+
 import pytest
+
+from thefuck.rules.yarn_command_not_found import get_new_command, match
 from thefuck.types import Command
-from thefuck.rules.yarn_command_not_found import match, get_new_command
 
 output = '''
 error Command "{}" not found.

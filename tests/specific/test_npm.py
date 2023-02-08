@@ -1,6 +1,7 @@
 from io import BytesIO
 
 import pytest
+
 from thefuck.specific.npm import get_scripts
 
 run_script_stdout = b'''

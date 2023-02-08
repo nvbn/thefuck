@@ -1,4 +1,5 @@
 import pytest
+
 from thefuck.specific.git import git_support
 from thefuck.types import Command
 

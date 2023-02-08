@@ -1,4 +1,5 @@
 import re
+
 from thefuck.specific.git import git_support
 
 error_pattern = "fatal: bad flag '(.*?)' used after filename"
@@ -28,4 +29,4 @@ def get_new_command(command):
     command_parts[bad_flag_index], command_parts[filename_index] = \
     command_parts[filename_index], command_parts[bad_flag_index]  # noqa: E122
 
-    return u' '.join(command_parts)
+    return ' '.join(command_parts)

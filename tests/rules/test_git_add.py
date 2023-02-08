@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.git_add import match, get_new_command
+
+from thefuck.rules.git_add import get_new_command, match
 from thefuck.types import Command
 
 
@@ -11,8 +12,7 @@ def path_exists(mocker):
 
 @pytest.fixture
 def output(target):
-    return ("error: pathspec '{}' did not match any "
-            'file(s) known to git.'.format(target))
+    return f"error: pathspec '{target}' did not match any file(s) known to git."
 
 
 @pytest.mark.parametrize('script, target', [

@@ -1,8 +1,7 @@
 import pytest
 
-from thefuck.rules.aws_cli import match, get_new_command
+from thefuck.rules.aws_cli import get_new_command, match
 from thefuck.types import Command
-
 
 no_suggestions = '''\
 usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]

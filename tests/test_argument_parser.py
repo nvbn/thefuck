@@ -1,4 +1,5 @@
 import pytest
+
 from thefuck.argument_parser import Parser
 from thefuck.const import ARGUMENT_PLACEHOLDER
 

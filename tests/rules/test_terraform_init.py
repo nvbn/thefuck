@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.terraform_init import match, get_new_command
+
+from thefuck.rules.terraform_init import get_new_command, match
 from thefuck.types import Command
 
 

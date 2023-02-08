@@ -1,11 +1,12 @@
 import pytest
-from thefuck.rules.git_branch_exists import match, get_new_command
+
+from thefuck.rules.git_branch_exists import get_new_command, match
 from thefuck.types import Command
 
 
 @pytest.fixture
 def output(src_branch_name):
-    return "fatal: A branch named '{}' already exists.".format(src_branch_name)
+    return f"fatal: A branch named '{src_branch_name}' already exists."
 
 
 @pytest.fixture

@@ -1,7 +1,9 @@
+import os
+
 import pytest
 import six
-import os
 from mock import Mock
+
 from thefuck import const
 
 
@@ -17,7 +19,7 @@ def test_settings_defaults(load_source, settings):
         assert getattr(settings, key) == val
 
 
-class TestSettingsFromFile(object):
+class TestSettingsFromFile():
     def test_from_file(self, load_source, settings):
         load_source.return_value = Mock(rules=['test'],
                                         wait_command=10,
@@ -44,7 +46,7 @@ class TestSettingsFromFile(object):
 
 
 @pytest.mark.usefixtures('load_source')
-class TestSettingsFromEnv(object):
+class TestSettingsFromEnv():
     def test_from_env(self, os_environ, settings):
         os_environ.update({'THEFUCK_RULES': 'bash:lisp',
                            'THEFUCK_EXCLUDE_RULES': 'git:vim',
@@ -81,7 +83,7 @@ def test_settings_from_args(settings):
     assert settings.repeat
 
 
-class TestInitializeSettingsFile(object):
+class TestInitializeSettingsFile():
     def test_ignore_if_exists(self, settings):
         settings_path_mock = Mock(is_file=Mock(return_value=True), open=Mock())
         settings.user_dir = Mock(joinpath=Mock(return_value=settings_path_mock))

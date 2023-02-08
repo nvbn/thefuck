@@ -1,9 +1,11 @@
-import pytest
 import json
-from six import StringIO
+
+import pytest
 from mock import MagicMock
-from thefuck.shells.generic import ShellConfiguration
+from six import StringIO
+
 from thefuck.entrypoints.not_configured import main
+from thefuck.shells.generic import ShellConfiguration
 
 
 @pytest.fixture(autouse=True)

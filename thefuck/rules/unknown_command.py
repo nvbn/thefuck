@@ -1,4 +1,5 @@
 import re
+
 from thefuck.utils import replace_command
 
 

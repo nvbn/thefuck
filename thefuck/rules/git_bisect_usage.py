@@ -1,6 +1,7 @@
 import re
-from thefuck.utils import replace_command
+
 from thefuck.specific.git import git_support
+from thefuck.utils import replace_command
 
 
 @git_support

@@ -1,8 +1,9 @@
-from pprint import pformat
 import os
 import sys
 from difflib import SequenceMatcher
-from .. import logs, types, const
+from pprint import pformat
+
+from .. import const, logs, types
 from ..conf import settings
 from ..corrector import get_corrected_commands
 from ..exceptions import EmptyCommand
@@ -30,7 +31,7 @@ def fix_command(known_args):
     """Fixes previous command. Used when `thefuck` called without arguments."""
     settings.init(known_args)
     with logs.debug_time('Total'):
-        logs.debug(u'Run with settings: {}'.format(pformat(settings)))
+        logs.debug(f'Run with settings: {pformat(settings)}')
         raw_command = _get_raw_command(known_args)
 
         try:

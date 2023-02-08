@@ -1,5 +1,5 @@
-from thefuck.utils import for_app, memoize
 from thefuck.system import Path
+from thefuck.utils import for_app, memoize
 
 path_to_scm = {
     '.git': 'git',
@@ -29,4 +29,4 @@ def match(command):
 
 def get_new_command(command):
     scm = _get_actual_scm()
-    return u' '.join([scm] + command.script_parts[1:])
+    return ' '.join([scm] + command.script_parts[1:])

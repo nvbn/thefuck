@@ -1,6 +1,8 @@
-import os
 import msvcrt
+import os
+
 import win_unicode_console
+
 from .. import const
 
 

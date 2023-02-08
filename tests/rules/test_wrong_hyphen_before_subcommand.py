@@ -1,6 +1,6 @@
 import pytest
 
-from thefuck.rules.wrong_hyphen_before_subcommand import match, get_new_command
+from thefuck.rules.wrong_hyphen_before_subcommand import get_new_command, match
 from thefuck.types import Command
 
 

@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.path_from_history import match, get_new_command
+
+from thefuck.rules.path_from_history import get_new_command, match
 from thefuck.types import Command
 
 

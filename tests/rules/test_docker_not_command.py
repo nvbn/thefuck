@@ -1,8 +1,9 @@
-import pytest
 from io import BytesIO
-from thefuck.types import Command
-from thefuck.rules.docker_not_command import get_new_command, match
 
+import pytest
+
+from thefuck.rules.docker_not_command import get_new_command, match
+from thefuck.types import Command
 
 _DOCKER_SWARM_OUTPUT = '''
 Usage:	docker swarm COMMAND
@@ -233,8 +234,7 @@ Run 'docker COMMAND --help' for more information on a command.
 
 
 def output(cmd):
-    return "docker: '{}' is not a docker command.\n" \
-           "See 'docker --help'.".format(cmd)
+    return f"docker: '{cmd}' is not a docker command.\nSee 'docker --help'."
 
 
 def test_match():
@@ -271,8 +271,8 @@ def test_not_match(script, output):
     ('pes', ['ps', 'push', 'pause']),
     ('tags', ['tag', 'stats', 'images'])])
 def test_get_new_command(wrong, fixed):
-    command = Command('docker {}'.format(wrong), output(wrong))
-    assert get_new_command(command) == ['docker {}'.format(x) for x in fixed]
+    command = Command(f'docker {wrong}', output(wrong))
+    assert get_new_command(command) == [f'docker {x}' for x in fixed]
 
 
 @pytest.mark.usefixtures('no_memoize', 'docker_help_new')
@@ -280,8 +280,8 @@ def test_get_new_command(wrong, fixed):
     ('swarn', ['swarm', 'start', 'search']),
     ('inage', ['image', 'images', 'rename'])])
 def test_get_new_management_command(wrong, fixed):
-    command = Command('docker {}'.format(wrong), output(wrong))
-    assert get_new_command(command) == ['docker {}'.format(x) for x in fixed]
+    command = Command(f'docker {wrong}', output(wrong))
+    assert get_new_command(command) == [f'docker {x}' for x in fixed]
 
 
 @pytest.mark.usefixtures('no_memoize', 'docker_help_new')
@@ -289,5 +289,5 @@ def test_get_new_management_command(wrong, fixed):
     ('swarm int', ['swarm init', 'swarm join', 'swarm join-token'], _DOCKER_SWARM_OUTPUT),
     ('image la', ['image load', 'image ls', 'image tag'], _DOCKER_IMAGE_OUTPUT)])
 def test_get_new_management_command_subcommand(wrong, fixed, output):
-    command = Command('docker {}'.format(wrong), output)
-    assert get_new_command(command) == ['docker {}'.format(x) for x in fixed]
+    command = Command(f'docker {wrong}', output)
+    assert get_new_command(command) == [f'docker {x}' for x in fixed]

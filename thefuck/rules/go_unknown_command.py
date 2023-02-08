@@ -1,7 +1,7 @@
-from itertools import dropwhile, islice, takewhile
 import subprocess
+from itertools import dropwhile, islice, takewhile
 
-from thefuck.utils import get_closest, replace_argument, for_app, which, cache
+from thefuck.utils import cache, for_app, get_closest, replace_argument, which
 
 
 def get_golang_commands():

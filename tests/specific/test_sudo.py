@@ -1,4 +1,5 @@
 import pytest
+
 from thefuck.specific.sudo import sudo_support
 from thefuck.types import Command
 

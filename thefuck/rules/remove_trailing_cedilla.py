@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-CEDILLA = u"ç"
+CEDILLA = "ç"
 
 
 def match(command):

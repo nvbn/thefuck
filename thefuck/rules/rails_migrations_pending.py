@@ -1,6 +1,6 @@
 import re
-from thefuck.shells import shell
 
+from thefuck.shells import shell
 
 SUGGESTION_REGEX = r"To resolve this issue, run:\s+(.*?)\n"
 

@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.pip_unknown_command import match, get_new_command
+
+from thefuck.rules.pip_unknown_command import get_new_command, match
 from thefuck.types import Command
 
 
@@ -20,7 +21,7 @@ def suggested():
 
 @pytest.fixture
 def pip_unknown_cmd(broken, suggested):
-    return 'ERROR: unknown command "{}" - maybe you meant "{}"'.format(broken, suggested)
+    return f'ERROR: unknown command "{broken}" - maybe you meant "{suggested}"'
 
 
 def test_match(pip_unknown_cmd, pip_unknown_cmd_without_recommend):

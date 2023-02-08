@@ -1,7 +1,7 @@
 import pytest
-from thefuck.rules.choco_install import match, get_new_command
-from thefuck.types import Command
 
+from thefuck.rules.choco_install import get_new_command, match
+from thefuck.types import Command
 
 package_not_found_error = (
     'Chocolatey v0.10.15\n'
@@ -83,4 +83,4 @@ def not_test_match(command):
     ('choco install chocolatey -y', 'choco install chocolatey.install -y'),
     ('cinst chocolatey -y', 'cinst chocolatey.install -y'), ])
 def test_get_new_command(before, after):
-    assert (get_new_command(Command(before, '')) == after)
+    assert get_new_command(Command(before, '')) == after

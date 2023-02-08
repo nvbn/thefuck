@@ -1,6 +1,5 @@
-from thefuck.utils import get_all_executables, get_close_matches, \
-    get_valid_history_without_current, get_closest, which
 from thefuck.specific.sudo import sudo_support
+from thefuck.utils import get_all_executables, get_close_matches, get_closest, get_valid_history_without_current, which
 
 
 @sudo_support

@@ -3,13 +3,15 @@ implement `from_shell`, `to_shell`, `app_alias`, `put_to_history` and
 `get_aliases` methods.
 """
 import os
+
 from psutil import Process
+
 from .bash import Bash
 from .fish import Fish
 from .generic import Generic
+from .powershell import Powershell
 from .tcsh import Tcsh
 from .zsh import Zsh
-from .powershell import Powershell
 
 shells = {'bash': Bash,
           'fish': Fish,

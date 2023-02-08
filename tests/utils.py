@@ -9,12 +9,12 @@ class Rule(types.Rule):
                  side_effect=None,
                  priority=DEFAULT_PRIORITY,
                  requires_output=True):
-        super(Rule, self).__init__(name, match, get_new_command,
+        super().__init__(name, match, get_new_command,
                                    enabled_by_default, side_effect,
                                    priority, requires_output)
 
 
 class CorrectedCommand(types.CorrectedCommand):
     def __init__(self, script='', side_effect=None, priority=DEFAULT_PRIORITY):
-        super(CorrectedCommand, self).__init__(
+        super().__init__(
             script, side_effect, priority)

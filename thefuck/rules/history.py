@@ -1,5 +1,4 @@
-from thefuck.utils import get_close_matches, get_closest, \
-    get_valid_history_without_current
+from thefuck.utils import get_close_matches, get_closest, get_valid_history_without_current
 
 
 def match(command):

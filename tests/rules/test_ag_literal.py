@@ -1,4 +1,5 @@
 import pytest
+
 from thefuck.rules.ag_literal import get_new_command, match
 from thefuck.types import Command
 

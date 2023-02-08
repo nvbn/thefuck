@@ -1,6 +1,8 @@
-import pytest
 from io import BytesIO
-from thefuck.rules.npm_run_script import match, get_new_command
+
+import pytest
+
+from thefuck.rules.npm_run_script import get_new_command, match
 from thefuck.types import Command
 
 output = '''

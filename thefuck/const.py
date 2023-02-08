@@ -1,12 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 
-class _GenConst(object):
+class _GenConst():
     def __init__(self, name):
         self._name = name
 
     def __repr__(self):
-        return u'<const: {}>'.format(self._name)
+        return f'<const: {self._name}>'
 
 
 KEY_UP = _GenConst('↑')
@@ -62,7 +62,7 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_NUM_CLOSE_MATCHES': 'num_close_matches',
                'THEFUCK_EXCLUDED_SEARCH_PATH_PREFIXES': 'excluded_search_path_prefixes'}
 
-SETTINGS_HEADER = u"""# The Fuck settings file
+SETTINGS_HEADER = """# The Fuck settings file
 #
 # The rules are defined as in the example bellow:
 #
@@ -78,7 +78,7 @@ ARGUMENT_PLACEHOLDER = 'THEFUCK_ARGUMENT_PLACEHOLDER'
 
 CONFIGURATION_TIMEOUT = 60
 
-USER_COMMAND_MARK = u'\u200B' * 10
+USER_COMMAND_MARK = '\u200B' * 10
 
 LOG_SIZE_IN_BYTES = 1024 * 1024
 

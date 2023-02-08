@@ -5,4 +5,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return u'{} --merge'.format(command.script)
+    return f'{command.script} --merge'

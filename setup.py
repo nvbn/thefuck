@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
-import pkg_resources
-import sys
 import os
-import fastentrypoints
+import sys
 
+import pkg_resources
+from setuptools import find_packages, setup
 
 try:
     if int(pkg_resources.get_distribution("pip").version.split('.')[0]) < 6:

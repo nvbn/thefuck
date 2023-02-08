@@ -1,5 +1,5 @@
-from thefuck.utils import for_app, replace_command, eager, memoize
 from thefuck.system import Path
+from thefuck.utils import eager, for_app, memoize, replace_command
 
 
 @memoize
@@ -22,7 +22,7 @@ def match(command):
 
 def get_new_command(command):
     misspelled_env = command.script_parts[1]
-    create_new = u'mkvirtualenv {}'.format(misspelled_env)
+    create_new = f'mkvirtualenv {misspelled_env}'
 
     available = _get_all_environments()
     if available:

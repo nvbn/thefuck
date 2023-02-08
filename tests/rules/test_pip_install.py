@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from thefuck.rules.pip_install import match, get_new_command
+from thefuck.rules.pip_install import get_new_command, match
 from thefuck.types import Command
 
 

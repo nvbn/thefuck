@@ -1,9 +1,11 @@
 import os
 import sys
-import tty
 import termios
-import colorama
+import tty
 from distutils.spawn import find_executable
+
+import colorama
+
 from .. import const
 
 init_output = colorama.init

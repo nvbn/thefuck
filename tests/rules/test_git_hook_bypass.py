@@ -1,5 +1,6 @@
 import pytest
-from thefuck.rules.git_hook_bypass import match, get_new_command
+
+from thefuck.rules.git_hook_bypass import get_new_command, match
 from thefuck.types import Command
 
 

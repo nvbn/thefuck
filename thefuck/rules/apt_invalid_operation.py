@@ -1,7 +1,8 @@
 import subprocess
+
 from thefuck.specific.apt import apt_available
 from thefuck.specific.sudo import sudo_support
-from thefuck.utils import for_app, eager, replace_command
+from thefuck.utils import eager, for_app, replace_command
 
 enabled_by_default = apt_available
 
