@@ -311,6 +311,7 @@ following rules are enabled by default:
 * `pip_install` &ndash; fixes permission issues with `pip install` commands by adding `--user` or prepending `sudo` if necessary;
 * `pip_unknown_command` &ndash; fixes wrong `pip` commands, for example `pip instatl/pip install`;
 * `php_s` &ndash; replaces `-s` by `-S` when trying to run a local php server;
+* `poetry` &ndash; reads help hints to guess what you meant;
 * `port_already_in_use` &ndash; kills process that bound port;
 * `prove_recursively` &ndash; adds `-r` when called with directory;
 * `python_command` &ndash; prepends `python` when you try to run non-executable/without `./` python script;
