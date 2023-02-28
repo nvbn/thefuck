@@ -18,7 +18,7 @@ REGEX = r"(?m)(?<=Did you mean one of these\?\n)(\s+(.+)$)+"
 
 @for_app("poetry")
 def match(command):
-    return """Did you mean one of these?""" in command.output
+    return "Did you mean one of these?" in command.output
 
 
 def get_new_command(command) -> str | list[str]:
