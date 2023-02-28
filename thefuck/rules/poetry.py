@@ -22,7 +22,8 @@ def match(command):
 
 
 def get_new_command(command) -> str | list[str]:
-    if matches := re.search(REGEX, command.output):
+    matches = re.search(REGEX, command.output)
+    if matches:
         return [f"poetry {s.strip()}" for s in matches.group().split("\n")]
     else:
         return ""
