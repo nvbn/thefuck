@@ -37,6 +37,24 @@ class Parser(object):
             '-h', '--help',
             action='store_true',
             help='show this help message and exit')
+        self._parser.add_argument(
+            '-c', '--chatgpt',
+            type=int,
+            default=0,
+            help='number of ChatGPT suggestions. set to 0 to disable ChatGPT'
+        )
+        self._parser.add_argument(
+            '-t', '--chatgpt-token',
+            type=int,
+            default=100,
+            help='maximum ChatGPT tokens per query'
+        )
+        self._parser.add_argument(
+            '-m', '--chatgpt-model',
+            type=str,
+            default="gpt-3.5-turbo",
+            help='ChatGPT model'
+        )
         self._add_conflicting_arguments()
         self._parser.add_argument(
             '-d', '--debug',

@@ -75,7 +75,7 @@ class TestSettingsFromEnv(object):
 
 
 def test_settings_from_args(settings):
-    settings.init(Mock(yes=True, debug=True, repeat=True))
+    settings.init(Mock(yes=True, debug=True, repeat=True, chatgpt=0, chatgpt_token=100))
     assert not settings.require_confirmation
     assert settings.debug
     assert settings.repeat
