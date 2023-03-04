@@ -7,7 +7,7 @@ from thefuck.conf import settings
 
 
 def _check_chatgpt(api_key: str = None) -> bool:
-    openai.api_key = os.getenv("THEFUCK_OPENAI_TOKEN") or os.getenv("OPENAI_TOKEN")
+    openai.api_key = os.getenv("THEFUCK_OPENAI_TOKEN") or os.getenv("OPENAI_API_KEY")
     if settings["chatgpt"] > 0 and (api_key or openai.api_key):
         return True
     return False
