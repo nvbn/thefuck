@@ -40,21 +40,22 @@ class Parser(object):
         self._parser.add_argument(
             '-c', '--chatgpt',
             type=int,
-            default=0,
+            default=1,
             help='number of ChatGPT suggestions. set to 0 to disable ChatGPT'
         )
-        self._parser.add_argument(
-            '-t', '--chatgpt-token',
-            type=int,
-            default=100,
-            help='maximum ChatGPT tokens per query'
-        )
-        self._parser.add_argument(
-            '-m', '--chatgpt-model',
-            type=str,
-            default="gpt-3.5-turbo",
-            help='ChatGPT model'
-        )
+        # todo Secret parameters only revealed with `thefuck --help --chatgpt`
+        # self._parser.add_argument(
+        #     '-t', '--chatgpt-token',
+        #     type=int,
+        #     default=400,
+        #     help='maximum ChatGPT tokens per query'
+        # )
+        # self._parser.add_argument(
+        #     '-m', '--chatgpt-model',
+        #     type=str,
+        #     default="gpt-3.5-turbo",
+        #     help='ChatGPT model'
+        # )
         self._add_conflicting_arguments()
         self._parser.add_argument(
             '-d', '--debug',

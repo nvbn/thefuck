@@ -7,7 +7,7 @@ from thefuck.conf import settings
 
 
 def _check_chatgpt(api_key: str = None) -> bool:
-    openai.api_key = os.getenv("THEFUCK_OPENAI_TOKEN")
+    openai.api_key = os.getenv("THEFUCK_OPENAI_TOKEN") or os.getenv("OPENAI_TOKEN")
     if settings["chatgpt"] > 0 and (api_key or openai.api_key):
         return True
     return False
@@ -16,9 +16,9 @@ def _check_chatgpt(api_key: str = None) -> bool:
 enabled_by_default = _check_chatgpt()
 logs.debug(f"ChatGPT enabled: {enabled_by_default}")
 
-MAX_NUMBER = settings["chatgpt"]
-MAX_TOKENS = settings["chatgpt_token"]
-MODEL = settings["chatgpt_model"]  # by default: "gpt-3.5-turbo"
+MAX_NUMBER = settings["chatgpt"] or 1
+MAX_TOKENS = settings["chatgpt_token"] or 400
+MODEL = settings["chatgpt_model"] or "gpt-3.5-turbo"
 
 
 def match(command):

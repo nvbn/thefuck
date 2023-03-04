@@ -125,9 +125,9 @@ class Settings(dict):
         if args.repeat:
             from_args['repeat'] = args.repeat
 
-        from_args['chatgpt'] = args.chatgpt if args.chatgpt >= 0 else 0
-        from_args['chatgpt_token'] = args.chatgpt_token if args.chatgpt_token >= 0 else 0
-        from_args['chatgpt_model'] = args.chatgpt_model
+        from_args['chatgpt'] = args.chatgpt if args.chatgpt >= 0 else 1
+        from_args['chatgpt_token'] = args.chatgpt_token if args.chatgpt_token >= 0 else 400
+        from_args['chatgpt_model'] = args.chatgpt_model or "gpt-3.5-turbo"
         return from_args
 
 
