@@ -23,7 +23,7 @@ def match(command) -> bool:
     )
 
 
-def get_new_command(command) -> str | list[str]:
+def get_new_command(command) -> str:
     matches = re.search(REGEX, command.output)
     if matches:
         return f"""terraform {matches.groupdict().get("suggestion", "")}"""
