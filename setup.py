@@ -41,7 +41,7 @@ extras_require = {':python_version<"3.4"': ['pathlib2'],
                   ':python_version>"2.7"': ['decorator', 'pyte'],
                   ":sys_platform=='win32'": ['win_unicode_console']}
 
-if platform == "win32":
+if sys.platform == "win32":
     scripts = ['scripts\\fuck.bat', 'scripts\\fuck.ps1']
     entry_points = {'console_scripts': [
                   'thefuck = thefuck.entrypoints.main:main',
