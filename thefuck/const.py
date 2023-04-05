@@ -44,7 +44,8 @@ DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'instant_mode': False,
                     'num_close_matches': 3,
                     'env': {'LC_ALL': 'C', 'LANG': 'C', 'GIT_TRACE': '1'},
-                    'excluded_search_path_prefixes': []}
+                    'excluded_search_path_prefixes': [],
+                    'atuin_path': ''}
 
 ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
                'THEFUCK_EXCLUDE_RULES': 'exclude_rules',
