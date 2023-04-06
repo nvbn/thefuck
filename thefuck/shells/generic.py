@@ -3,11 +3,10 @@ import os
 import shlex
 import six
 from collections import namedtuple
-from ..logs import warn
+from ..logs import warn, debug
 from ..utils import memoize
 from ..conf import settings
 from ..system import Path
-
 
 ShellConfiguration = namedtuple('ShellConfiguration', (
     'content', 'path', 'reload', 'can_configure_automatically'))
@@ -56,20 +55,47 @@ class Generic(object):
     def _get_history_lines(self):
         """Returns list of history entries."""
         lines = []
+
+        # If atuin_path is provided, then that means
+        # we should use it over the normal shell history.
+        #
+        # TODO: Have some way to fallback to normal shell
+        # history if an exception occurs when dealing with the
+        # atuin database
         if settings.atuin_path != '':
+            # Import sqlite3 and connect to the database
             import sqlite3
 
-            # Connect to the database
+            # TODO: Make this connect as read-only
             conn = sqlite3.connect(settings.atuin_path)
             cur = conn.cursor()
 
-            # Get the commands
-            cur.execute("SELECT command FROM history")
-            rows = cur.fetchall()
-            lines = [row[0] for row in rows]
-            if settings.history_limit:
-                lines = lines[-settings.history_limit:]
-            conn.close()
+            # We use a try except loop here to absolutely make
+            # sure the connection is closed, even if there's an
+            # exception.
+            try:
+                # Select the command column, fetch all the
+                # rows, and get the command in each row
+                cur.execute("SELECT command FROM history")
+                rows = cur.fetchall()
+                lines = [row[0] for row in rows]
+                if settings.history_limit:
+                    lines = lines[-settings.history_limit:]
+
+                # Never a bad idea to have a debug statement
+                # when dealing with sqlite.
+                debug(str(lines))
+
+            # If any exception occurs, we should
+            # print the error
+            except Exception as e:
+                print(e)
+
+            # Close the connection. Finally is
+            # always executed regardless if there's
+            # an exception or not
+            finally:
+                conn.close()
         else:
             history_file_name = self._get_history_file_name()
             if os.path.isfile(history_file_name):
@@ -81,6 +107,9 @@ class Generic(object):
                     if settings.history_limit:
                         lines = lines[-settings.history_limit:]
 
+        # It doesn't matter if we use atuin or just
+        # the normal shell history, we'll still have
+        # lines to work with
         for line in lines:
             prepared = self._script_from_history(line) \
                 .strip()
