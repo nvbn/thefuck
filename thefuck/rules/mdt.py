@@ -9,9 +9,12 @@ def match(command):
 
 def get_new_command(command):
     corrections = ["help"]
+
+    """ Extract what the user typed in"""
     command = str(command)
     extracted_command = re.findall(r"'(.*?)'", command)[0]
 
+    """ Find possible matches in the case of typos"""
     if re.match('[shell]{2,}', extracted_command):
         corrections.insert(0, "shell")
     elif re.match('[devices]{3,}', extracted_command):
