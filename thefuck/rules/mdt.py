@@ -1,7 +1,5 @@
 import re
-from thefuck.shells import shell
 from thefuck.utils import for_app
-from thefuck.utils import which
 
 
 @for_app('mdt')
