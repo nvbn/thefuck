@@ -10,5 +10,11 @@ def match(command):
 
 
 def get_new_command(command):
-    #mdt_commands = []
-    return "mdt" + "shell"
+    corrections = ["help"]
+    command = str(command)
+    extracted_command = re.findall(r"'(.*?)'", command)[0]
+
+    if re.match('[shell]{2,}', extracted_command):
+        corrections.insert(0, "shell")
+
+    return ["mdt " + correction for correction in corrections]
