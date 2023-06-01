@@ -21,5 +21,7 @@ def get_new_command(command):
         corrections.insert(1, "reboot-bootloader")
     elif re.match('[version]{3,}', extracted_command):
         corrections.insert(0, "version")
+    elif re.match('[wait\-for\-device]{3,}', extracted_command):
+        corrections.insert(0, "wait-for-device")
 
     return ["mdt " + correction for correction in corrections]
