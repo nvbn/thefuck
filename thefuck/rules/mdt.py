@@ -14,12 +14,12 @@ def get_new_command(command):
 
     if re.match('[shell]{2,}', extracted_command):
         corrections.insert(0, "shell")
-    elif re.match('[devices]{2,}', extracted_command):
+    elif re.match('[devices]{3,}', extracted_command):
         corrections.insert(0, "devices")
     elif re.match('[reboot]{2,}', extracted_command):
         corrections.insert(0, "reboot")
         corrections.insert(1, "reboot-bootloader")
-    elif re.match('[version]{2,}', extracted_command):
+    elif re.match('[version]{3,}', extracted_command):
         corrections.insert(0, "version")
 
     return ["mdt " + correction for correction in corrections]
