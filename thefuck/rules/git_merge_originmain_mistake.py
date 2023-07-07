@@ -1,4 +1,3 @@
-
 def match(command):
     return (
         command.script == 'git merge originmain'
