@@ -1,7 +1,7 @@
-from thefuck.logs import debug
-###
+
+
 def match(command):
-    debug('{}'.format(command.script))
+    
     return (
         command.script == "git push origin/main"
     )
