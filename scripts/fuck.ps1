@@ -6,7 +6,7 @@ if ((Get-Command "fuck").CommandType -eq "Function") {
 
 "First time use of thefuck detected. "
 
-if ((Get-Content $PROFILE -Raw -ErrorAction Ignore) -like "*thefuck*") { 
+if ((Get-Content $PROFILE -Raw -ErrorAction Ignore) -like "*thefuck*") {
 } else {
 	"  - Adding thefuck intialization to user `$PROFILE"
 	$script = "`n`$env:PYTHONIOENCODING='utf-8' `niex `"`$(thefuck --alias)`"";

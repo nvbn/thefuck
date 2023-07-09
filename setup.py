@@ -50,7 +50,7 @@ else:
     entry_points = {'console_scripts': [
                   'thefuck = thefuck.entrypoints.main:main',
                   'fuck = thefuck.entrypoints.not_configured:main']}
-                  
+
 setup(name='thefuck',
       version=VERSION,
       description="Magnificent app which corrects your previous console command",
