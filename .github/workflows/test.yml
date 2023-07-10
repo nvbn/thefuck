@@ -41,7 +41,10 @@ jobs:
         run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests
       - name: Run tests (including functional)
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
-        run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests --enable-functional
+        run: |
+          docker build -t thefuck/python3 -f tests/Dockerfile --build-arg PYTHON_VERSION=3 .
+          docker build -t thefuck/python2 -f tests/Dockerfile --build-arg PYTHON_VERSION=2 .
+          coverage run --source=thefuck,tests -m pytest -v --capture=sys tests --enable-functional
       - name: Post coverage results
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == env.PYTHON_LATEST
         env:

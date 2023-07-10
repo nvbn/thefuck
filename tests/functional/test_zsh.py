@@ -4,17 +4,8 @@ from tests.functional.plots import with_confirmation, without_confirmation, \
     select_command_with_arrows, how_to_configure
 
 
-python_3 = ('thefuck/python3-zsh',
-            u'''FROM python:3
-                RUN apt-get update
-                RUN apt-get install -yy zsh''',
-            u'sh')
-
-python_2 = ('thefuck/python2-zsh',
-            u'''FROM python:2
-                RUN apt-get update
-                RUN apt-get install -yy zsh''',
-            u'sh')
+python_3 = (u'thefuck/python3', u'', u'sh')
+python_2 = (u'thefuck/python2', u'', u'sh')
 
 
 init_zshrc = u'''echo '
@@ -35,8 +26,6 @@ echo "instant mode ready: $THEFUCK_INSTANT_MODE"
 def proc(request, spawnu, TIMEOUT):
     container, instant_mode = request.param
     proc = spawnu(*container)
-    proc.sendline(u'pip install /src')
-    assert proc.expect([TIMEOUT, u'Successfully installed'])
     proc.sendline(init_zshrc.format(
         u'--enable-experimental-instant-mode' if instant_mode else ''))
     proc.sendline(u"zsh")
