@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 
+import pytest
+import sys
 from mock import Mock, patch
 from psutil import AccessDenied, TimeoutExpired
 
@@ -30,6 +32,7 @@ class TestRerun(object):
         actual = rerun.get_output('', '')
         assert actual == expected
 
+    @pytest.mark.skipif(sys.platform == 'win32', reason="skip when running on Windows")
     @patch('thefuck.output_readers.rerun._wait_output')
     def test_get_output_unicode_misspell(self, wait_output_mock):
         rerun.get_output(u'pácman', u'pácman')
