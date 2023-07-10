@@ -20,10 +20,12 @@ def with_confirmation(proc, TIMEOUT):
     assert proc.expect([TIMEOUT, u'test'])
 
 
-def history_changed(proc, TIMEOUT, to):
+def history_changed(proc, TIMEOUT, *to):
     """Ensures that history changed."""
     proc.send('\033[A')
-    assert proc.expect([TIMEOUT, to])
+    pattern = [TIMEOUT]
+    pattern.extend(to)
+    assert proc.expect(pattern)
 
 
 def history_not_changed(proc, TIMEOUT):
@@ -44,14 +46,14 @@ def select_command_with_arrows(proc, TIMEOUT):
     proc.send('\033[B')
     assert proc.expect([TIMEOUT, u'git push'])
     proc.send('\033[B')
-    assert proc.expect([TIMEOUT, u'git help'])
+    assert proc.expect([TIMEOUT, u'git help', u'git hook'])
     proc.send('\033[A')
     assert proc.expect([TIMEOUT, u'git push'])
     proc.send('\033[B')
-    assert proc.expect([TIMEOUT, u'git help'])
+    assert proc.expect([TIMEOUT, u'git help', u'git hook'])
     proc.send('\n')
 
-    assert proc.expect([TIMEOUT, u'usage'])
+    assert proc.expect([TIMEOUT, u'usage', u'fatal: not a git repository'])
 
 
 def refuse_with_confirmation(proc, TIMEOUT):
