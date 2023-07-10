@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=thefuck
+Exec=thefuck
+Comment=Magnificent app which corrects your previous console command.
+Icon=python
+Categories=System;Utility;
+Terminal=true
