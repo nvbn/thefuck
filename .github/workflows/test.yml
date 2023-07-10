@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
@@ -47,3 +47,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: coveralls --service=github
+  test-deprecated:
+    strategy:
+      matrix:
+        python-version: ["2.7", "3.6"]
+    runs-on: ubuntu-latest
+    container: python:${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install The Fuck with all dependencies
+        run: |
+          pip install -Ur requirements.txt coveralls
+          python setup.py develop
+      - name: Lint
+        run: flake8
+      - name: Run tests
+        run: coverage run --source=thefuck,tests -m pytest -v --capture=sys tests
