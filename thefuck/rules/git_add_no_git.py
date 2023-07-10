@@ -8,4 +8,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return (command.script.replace("add","git add .",1))
+    return (command.script.replace("add .","git add .",1))
