@@ -26,7 +26,7 @@ def Popen(mocker):
 
 @pytest.mark.parametrize('script, pyenv_cmd', [
     ('pyenv globe', 'globe'),
-    ('pyenv intall 3.8.0', 'intall'),
+    ('pyenv install 3.8.0', 'install'),
     ('pyenv list', 'list'),
 ])
 def test_match(script, pyenv_cmd, output):
@@ -49,7 +49,7 @@ def test_not_match(script, output):
 
 @pytest.mark.parametrize('script, pyenv_cmd, result', [
     ('pyenv globe', 'globe', 'pyenv global'),
-    ('pyenv intall 3.8.0', 'intall', 'pyenv install 3.8.0'),
+    ('pyenv install 3.8.0', 'install', 'pyenv install 3.8.0'),
     ('pyenv list', 'list', 'pyenv install --list'),
     ('pyenv remove 3.8.0', 'remove', 'pyenv uninstall 3.8.0'),
 ])
