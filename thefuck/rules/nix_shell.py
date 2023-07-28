@@ -8,19 +8,11 @@ enabled_by_default = nix_available
 priority = 999
 
 
-nixpkgs_name = ""
-
-
 def get_nixpkgs_name(bin):
     """
     Returns the name of the Nix package that provides the given binary. It uses the
     `command-not-found` binary to do so, which is how nix-shell generates it's own suggestions.
     """
-
-    # Avoid getting the nixpkgs_name twice
-    global nixpkgs_name
-    if nixpkgs_name:
-        return nixpkgs_name
 
     result = subprocess.run(
         ["command-not-found", bin], stderr=subprocess.PIPE, universal_newlines=True
