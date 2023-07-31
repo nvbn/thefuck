@@ -29,9 +29,9 @@ def get_nixpkgs_name(bin):
 def match(command):
     bin = command.script_parts[0]
     return (
-        "nix-shell" not in command.script
-        and "command not found" in command.output
-        and get_nixpkgs_name(bin)
+        "nix-shell" not in command.script          # avoid recursion                                                # noqa: E501
+        and "command not found" in command.output  # only match commands which had exit code: 127                   # noqa: E501
+        and get_nixpkgs_name(bin)                  # only match commands which could be made available through nix  # noqa: E501
     )
 
 
