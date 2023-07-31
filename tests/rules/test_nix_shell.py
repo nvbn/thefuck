@@ -22,7 +22,6 @@ def test_get_nixpkgs_name(command, output):
         assert get_nixpkgs_name(command) == output
 
 
-# check that flags and params are preserved for the new command
 @pytest.mark.parametrize(
     "command_script, new_command",
     [
