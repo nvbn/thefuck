@@ -210,6 +210,7 @@ following rules are enabled by default:
 * `cd_cs` &ndash; changes `cs` to `cd`;
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
+* `cd_quotes` &ndash; adds quotes around directories with spaces in filenames when cd'ing into them;
 * `chmod_x` &ndash; add execution bit;
 * `choco_install` &ndash; append common suffixes for chocolatey packages;
 * `composer_not_command` &ndash; fixes composer command name;
