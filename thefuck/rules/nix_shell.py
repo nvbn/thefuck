@@ -8,7 +8,7 @@ enabled_by_default = nix_available
 priority = 999
 
 
-def get_nixpkgs_name(bin):
+def get_nixpkgs_names(bin):
     """
     Returns the name of the Nix package that provides the given binary. It uses the
     `command-not-found` binary to do so, which is how nix-shell generates it's own suggestions.
@@ -23,20 +23,29 @@ def get_nixpkgs_name(bin):
 
     # return early if binary is not available through nix
     if "nix-shell" not in text:
-        return ""
+        return []
 
-    nixpkgs_name = text.split()[-1] if text.split() else ""
-    return nixpkgs_name
+    nixpkgs_names = [
+        line.split()[-1] for line in text.splitlines() if "nix-shell -p" in line
+    ]
+    return nixpkgs_names
 
 
 def match(command):
     bin = command.script_parts[0]
     return (
         "command not found" in command.output  # only match commands which had exit code: 127                   # noqa: E501
-        and get_nixpkgs_name(bin)              # only match commands which could be made available through nix  # noqa: E501
+        and get_nixpkgs_names(bin)             # only match commands which could be made available through nix  # noqa: E501
     )
 
 
 def get_new_command(command):
     bin = command.script_parts[0]
-    return 'nix-shell -p {0} --run "{1}"'.format(get_nixpkgs_name(bin), command.script)
+    nixpkgs_names = get_nixpkgs_names(bin)
+
+    # Construct a command for each package name
+    commands = [
+        'nix-shell -p {} --run "{}"'.format(name, command.script)
+        for name in nixpkgs_names
+    ]
+    return commands

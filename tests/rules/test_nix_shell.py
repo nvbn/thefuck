@@ -1,50 +1,65 @@
 import pytest
-from thefuck.rules.nix_shell import get_nixpkgs_name, match, get_new_command
+from thefuck.rules.nix_shell import get_nixpkgs_names, match, get_new_command
 from thefuck.types import Command
 from unittest.mock import patch, MagicMock
 
 
 @pytest.mark.parametrize(
-    "script,output,nixpkgs_name",
+    "script,output,nixpkgs_names",
     [
         # output can be retrived by running `THEFUCK_DEBUG=true thefuck lsof`
-        ("lsof", "/nix/store/p6dlr3skfhxpyphipg2bqnj52999banh-bash-5.2-p15/bin/sh: line 1: lsof: command not found", "lsof"),
+        (
+            "lsof",
+            "/nix/store/p6dlr3skfhxpyphipg2bqnj52999banh-bash-5.2-p15/bin/sh: line 1: lsof: command not found",
+            ["lsof"],
+        ),
     ],
 )
-def test_match(script, output, nixpkgs_name):
-    with patch("thefuck.rules.nix_shell.get_nixpkgs_name") as mocked_get_nixpkgs_name:
-        mocked_get_nixpkgs_name.return_value = nixpkgs_name
+def test_match(script, output, nixpkgs_names):
+    with patch("thefuck.rules.nix_shell.get_nixpkgs_names") as mocked_get_nixpkgs_names:
+        mocked_get_nixpkgs_names.return_value = nixpkgs_names
         command = Command(script, output)
         assert match(command)
 
 
 @pytest.mark.parametrize(
-    "script,output,nixpkgs_name",
+    "script,output,nixpkgs_names",
     [
         # output can be retrived by running `THEFUCK_DEBUG=true thefuck foo`
-        ("foo", "/nix/store/p6dlr3skfhxpyphipg2bqnj52999banh-bash-5.2-p15/bin/sh: line 1: foo: command not found", ""),
+        (
+            "foo",
+            "/nix/store/p6dlr3skfhxpyphipg2bqnj52999banh-bash-5.2-p15/bin/sh: line 1: foo: command not found",
+            [],
+        ),
     ],
 )
-def test_not_match(script, output, nixpkgs_name):
-    with patch("thefuck.rules.nix_shell.get_nixpkgs_name") as mocked_get_nixpkgs_name:
-        mocked_get_nixpkgs_name.return_value = nixpkgs_name
+def test_not_match(script, output, nixpkgs_names):
+    with patch("thefuck.rules.nix_shell.get_nixpkgs_names") as mocked_get_nixpkgs_names:
+        mocked_get_nixpkgs_names.return_value = nixpkgs_names
         command = Command(script, output)
         assert not match(command)
 
 
 @pytest.mark.parametrize(
-    "script,nixpkgs_name,new_command",
+    "script,nixpkgs_names,new_command",
     [
-        ("lsof -i :3000", "lsof", 'nix-shell -p lsof --run "lsof -i :3000"'),
-        ("xev", "xorg.xev", 'nix-shell -p xorg.xev --run "xev"'),
+        (
+            "lsof -i :3000",
+            ["busybox", "lsof"],
+            [
+                'nix-shell -p busybox --run "lsof -i :3000"',
+                'nix-shell -p lsof --run "lsof -i :3000"',
+            ],
+        ),
+        ("xev", ["xorg.xev"], ['nix-shell -p xorg.xev --run "xev"']),
     ],
 )
-def test_get_new_command(script, nixpkgs_name, new_command):
+def test_get_new_command(script, nixpkgs_names, new_command):
     """Check that flags and params are preserved in the new command"""
 
     command = Command(script, "")
-    with patch("thefuck.rules.nix_shell.get_nixpkgs_name") as mocked_get_nixpkgs_name:
-        mocked_get_nixpkgs_name.return_value = nixpkgs_name
+    with patch("thefuck.rules.nix_shell.get_nixpkgs_names") as mocked_get_nixpkgs_names:
+        mocked_get_nixpkgs_names.return_value = nixpkgs_names
         assert get_new_command(command) == new_command
 
 
@@ -58,18 +73,18 @@ mocked_cnf_stderr = {
 
 
 @pytest.mark.parametrize(
-    "bin,expected_nixpkgs_name,cnf_stderr",
+    "bin,expected_nixpkgs_names,cnf_stderr",
     [
-        ("lsof", "lsof", mocked_cnf_stderr["lsof"]),
-        ("xev", "xorg.xev", mocked_cnf_stderr["xev"]),
-        ("foo", "", mocked_cnf_stderr["foo"]),
+        ("lsof", ["busybox", "lsof"], mocked_cnf_stderr["lsof"]),
+        ("xev", ["xorg.xev"], mocked_cnf_stderr["xev"]),
+        ("foo", [], mocked_cnf_stderr["foo"]),
     ],
 )
-def test_get_nixpkgs_name(bin, expected_nixpkgs_name, cnf_stderr):
-    """Check that `get_nixpkgs_name` returns the correct name"""
+def test_get_nixpkgs_names(bin, expected_nixpkgs_names, cnf_stderr):
+    """Check that `get_nixpkgs_names` returns the correct names"""
 
     with patch("subprocess.run") as mocked_run:
         result = MagicMock()
         result.stderr = cnf_stderr
         mocked_run.return_value = result
-        assert get_nixpkgs_name(bin) == expected_nixpkgs_name
+        assert get_nixpkgs_names(bin) == expected_nixpkgs_names
