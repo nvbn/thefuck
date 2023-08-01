@@ -18,20 +18,22 @@ def get_nixpkgs_name(bin):
         ["command-not-found", bin], stderr=subprocess.PIPE, universal_newlines=True
     )
 
-    # return early if package is not available through nix
-    if "nix-shell" not in result.stderr:
+    # The suggestion, if any, will be found in stderr. Upstream definition: https://github.com/NixOS/nixpkgs/blob/b6fbd87328f8eabd82d65cc8f75dfb74341b0ace/nixos/modules/programs/command-not-found/command-not-found.nix#L48-L90
+    text = result.stderr
+
+    # return early if binary is not available through nix
+    if "nix-shell" not in text:
         return ""
 
-    nixpkgs_name = result.stderr.split()[-1] if result.stderr.split() else ""
+    nixpkgs_name = text.split()[-1] if text.split() else ""
     return nixpkgs_name
 
 
 def match(command):
     bin = command.script_parts[0]
     return (
-        "nix-shell" not in command.script          # avoid recursion                                                # noqa: E501
-        and "command not found" in command.output  # only match commands which had exit code: 127                   # noqa: E501
-        and get_nixpkgs_name(bin)                  # only match commands which could be made available through nix  # noqa: E501
+        "command not found" in command.output  # only match commands which had exit code: 127                   # noqa: E501
+        and get_nixpkgs_name(bin)              # only match commands which could be made available through nix  # noqa: E501
     )
 
 
