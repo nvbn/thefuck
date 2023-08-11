@@ -245,6 +245,7 @@ following rules are enabled by default:
 * `git_commit_reset` &ndash; offers `git reset HEAD~` after previous commit;
 * `git_diff_no_index` &ndash; adds `--no-index` to previous `git diff` on untracked files;
 * `git_diff_staged` &ndash; adds `--staged` to previous `git diff` with unexpected output;
+* `git_direct_commit` &ndash; adds the files to the staged level, in case that the user tries to commit some changes but has forgotten this step;
 * `git_fix_stash` &ndash; fixes `git stash` commands (misspelled subcommand and missing `save`);
 * `git_flag_after_filename` &ndash; fixes `fatal: bad flag '...' after filename`
 * `git_help_aliased` &ndash; fixes `git help <alias>` commands replacing <alias> with the aliased command;
