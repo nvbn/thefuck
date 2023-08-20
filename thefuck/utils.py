@@ -327,9 +327,11 @@ def get_valid_history_without_current(command):
     executables = set(get_all_executables())\
         .union(shell.get_builtin_commands())
 
-    return [line for line in _not_corrected(history, tf_alias)
-            if not line.startswith(tf_alias) and not line == command.script
-            and line.split(' ')[0] in executables]
+    return [
+        line for line in _not_corrected(history, tf_alias)
+        if not line.startswith(tf_alias) and not line == command.script
+        and line.split(' ')[0] in executables
+    ]
 
 
 def format_raw_script(raw_script):
