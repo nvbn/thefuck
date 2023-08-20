@@ -43,10 +43,16 @@ def get_rules():
     :rtype: [Rule]
 
     """
-    paths = [rule_path for path in get_rules_import_paths()
-             for rule_path in sorted(path.glob('*.py'))]
-    return sorted(get_loaded_rules(paths),
-                  key=lambda rule: rule.priority)
+    paths = [
+        rule_path for path in get_rules_import_paths()
+        for rule_path in sorted(path.glob('*.py'))
+    ]
+    return (
+        sorted(
+            get_loaded_rules(paths),
+            key=lambda rule: rule.priority
+        )
+    )
 
 
 def organize_commands(corrected_commands):
@@ -88,5 +94,6 @@ def get_corrected_commands(command):
     corrected_commands = (
         corrected for rule in get_rules()
         if rule.is_match(command)
-        for corrected in rule.get_corrected_commands(command))
+        for corrected in rule.get_corrected_commands(command)
+    )
     return organize_commands(corrected_commands)
