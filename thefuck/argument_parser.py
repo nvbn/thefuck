@@ -19,37 +19,45 @@ class Parser(object):
         self._parser.add_argument(
             '-v', '--version',
             action='store_true',
-            help="show program's version number and exit")
+            help="show program's version number and exit"
+        )
         self._parser.add_argument(
             '-a', '--alias',
             nargs='?',
             const=get_alias(),
-            help='[custom-alias-name] prints alias for current shell')
+            help='[custom-alias-name] prints alias for current shell'
+        )
         self._parser.add_argument(
             '-l', '--shell-logger',
             action='store',
-            help='log shell output to the file')
+            help='log shell output to the file'
+        )
         self._parser.add_argument(
             '--enable-experimental-instant-mode',
             action='store_true',
-            help='enable experimental instant mode, use on your own risk')
+            help='enable experimental instant mode, use on your own risk'
+        )
         self._parser.add_argument(
             '-h', '--help',
             action='store_true',
-            help='show this help message and exit')
+            help='show this help message and exit'
+        )
         self._add_conflicting_arguments()
         self._parser.add_argument(
             '-d', '--debug',
             action='store_true',
-            help='enable debug output')
+            help='enable debug output'
+        )
         self._parser.add_argument(
             '--force-command',
             action='store',
-            help=SUPPRESS)
+            help=SUPPRESS
+        )
         self._parser.add_argument(
             'command',
             nargs='*',
-            help='command that should be fixed')
+            help='command that should be fixed'
+        )
 
     def _add_conflicting_arguments(self):
         """It's too dangerous to use `-y` and `-r` together."""
@@ -57,11 +65,13 @@ class Parser(object):
         group.add_argument(
             '-y', '--yes', '--yeah', '--hard',
             action='store_true',
-            help='execute fixed command without confirmation')
+            help='execute fixed command without confirmation'
+        )
         group.add_argument(
             '-r', '--repeat',
             action='store_true',
-            help='repeat on failure')
+            help='repeat on failure'
+        )
 
     def _prepare_arguments(self, argv):
         """Prepares arguments by:
