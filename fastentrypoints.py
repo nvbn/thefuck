@@ -23,6 +23,7 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 '''
 Monkey patch setuptools to write faster console_scripts with this format:
 
@@ -35,8 +36,11 @@ This is better.
 (c) 2016, Aaron Christianson
 http://github.com/ninjaaron/fast-entry_points
 '''
+
 from setuptools.command import easy_install
 import re
+
+
 TEMPLATE = r'''\
 # -*- coding: utf-8 -*-
 # EASY-INSTALL-ENTRY-SCRIPT: '{3}','{4}','{5}'
@@ -60,15 +64,20 @@ def get_args(cls, dist, header=None):
     if header is None:
         header = cls.get_header()
     spec = str(dist.as_requirement())
-    for type_ in 'console', 'gui':
+    for type_ in ['console', 'gui']:
         group = type_ + '_scripts'
         for name, ep in dist.get_entry_map(group).items():
             # ensure_safe_name
             if re.search(r'[\\/]', name):
                 raise ValueError("Path separators not allowed in script names")
             script_text = TEMPLATE.format(
-                          ep.module_name, ep.attrs[0], '.'.join(ep.attrs),
-                          spec, group, name)
+                ep.module_name,
+                ep.attrs[0],
+                '.'.join(ep.attrs),
+                spec,
+                group,
+                name
+            )
             args = cls._get_script_args(type_, name, header, script_text)
             for res in args:
                 yield res
