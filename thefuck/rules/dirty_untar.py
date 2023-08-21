@@ -4,9 +4,11 @@ from thefuck.utils import for_app
 from thefuck.shells import shell
 
 
-tar_extensions = ('.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',
-                  '.tar.lzma', '.tar.xz', '.taz', '.tb2', '.tbz', '.tbz2',
-                  '.tgz', '.tlz', '.txz', '.tz')
+tar_extensions = (
+    '.tar', '.tar.Z', '.tar.bz2', '.tar.gz', '.tar.lz',
+    '.tar.lzma', '.tar.xz', '.taz', '.tb2', '.tbz', '.tbz2',
+    '.tgz', '.tlz', '.txz', '.tz'
+)
 
 
 def _is_tar_extract(cmd):
@@ -27,9 +29,11 @@ def _tar_file(cmd):
 
 @for_app('tar')
 def match(command):
-    return ('-C' not in command.script
-            and _is_tar_extract(command.script)
-            and _tar_file(command.script_parts) is not None)
+    return (
+        '-C' not in command.script
+        and _is_tar_extract(command.script)
+        and _tar_file(command.script_parts) is not None
+    )
 
 
 def get_new_command(command):

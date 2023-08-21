@@ -2,10 +2,14 @@ import re
 from thefuck.utils import for_app
 
 
-warning_regex = re.compile(r'Warning: (?:.(?!is ))+ is already installed and '
-                           r'up-to-date')
-message_regex = re.compile(r'To reinstall (?:(?!, ).)+, run `brew reinstall '
-                           r'[^`]+`')
+warning_regex = re.compile(
+    r'Warning: (?:.(?!is ))+ is already installed and '
+    r'up-to-date'
+)
+message_regex = re.compile(
+    r'To reinstall (?:(?!, ).)+, run `brew reinstall '
+    r'[^`]+`'
+)
 
 
 @for_app('brew', at_least=2)

@@ -5,8 +5,10 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('bisect' in command.script_parts and
-            'usage: git bisect' in command.output)
+    return (
+        'bisect' in command.script_parts and
+        'usage: git bisect' in command.output
+    )
 
 
 @git_support

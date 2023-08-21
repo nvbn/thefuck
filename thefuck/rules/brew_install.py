@@ -12,9 +12,11 @@ def _get_suggestions(str):
 
 @for_app('brew', at_least=2)
 def match(command):
-    is_proper_command = ('install' in command.script and
-                         'No available formula' in command.output and
-                         'Did you mean' in command.output)
+    is_proper_command = (
+        'install' in command.script and
+        'No available formula' in command.output and
+        'Did you mean' in command.output
+    )
     return is_proper_command
 
 

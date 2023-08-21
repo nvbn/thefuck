@@ -5,9 +5,11 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('merge' in command.script
-            and ' - not something we can merge' in command.output
-            and 'Did you mean this?' in command.output)
+    return (
+        'merge' in command.script
+        and ' - not something we can merge' in command.output
+        and 'Did you mean this?' in command.output
+    )
 
 
 @git_support
