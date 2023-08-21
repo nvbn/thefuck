@@ -20,7 +20,8 @@ def get_pkgfile(command):
 
         packages = subprocess.check_output(
             ['pkgfile', '-b', '-v', command],
-            universal_newlines=True, stderr=utils.DEVNULL
+            universal_newlines=True,
+            stderr=utils.DEVNULL
         ).splitlines()
 
         return [package.split()[0] for package in packages]
