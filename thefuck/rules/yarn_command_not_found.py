@@ -1,7 +1,9 @@
 import re
 from subprocess import Popen, PIPE
-from thefuck.utils import (for_app, eager, replace_command, replace_argument,
-                           cache, which)
+from thefuck.utils import (
+    for_app, eager, replace_command, replace_argument,
+    cache, which
+)
 
 regex = re.compile(r'error Command "(.*)" not found.')
 
