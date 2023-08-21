@@ -20,8 +20,10 @@ def main():
     if known_args.help:
         parser.print_help()
     elif known_args.version:
-        logs.version(get_installation_version(),
-                     sys.version.split()[0], shell.info())
+        logs.version(
+            get_installation_version(),
+            sys.version.split()[0], shell.info()
+        )
     # It's important to check if an alias is being requested before checking if
     # `TF_HISTORY` is in `os.environ`, otherwise it might mess with subshells.
     # Check https://github.com/nvbn/thefuck/issues/921 for reference
