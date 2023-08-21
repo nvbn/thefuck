@@ -5,8 +5,10 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('push' in command.script_parts
-            and 'git push --set-upstream' in command.output)
+    return (
+        'push' in command.script_parts
+            and 'git push --set-upstream' in command.output
+    )
 
 
 def _get_upstream_option_index(command_parts):
@@ -40,5 +42,7 @@ def get_new_command(command):
             command_parts.pop(len(command_parts) - 1)
 
     arguments = re.findall(r'git push (.*)', command.output)[-1].replace("'", r"\'").strip()
-    return replace_argument(" ".join(command_parts), 'push',
-                            'push {}'.format(arguments))
+    return replace_argument(
+        " ".join(command_parts), 'push',
+        'push {}'.format(arguments)
+    )
