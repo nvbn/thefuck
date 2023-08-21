@@ -433,6 +433,8 @@ requires_output = True
 [utility functions for rules](https://github.com/nvbn/thefuck/tree/master/thefuck/utils.py),
 [app/os-specific helpers](https://github.com/nvbn/thefuck/tree/master/thefuck/specific/).
 
+It is very important to write some Unit tests in file tests/rules, in order to reduce or prevent production bugs. It is also mandatory to add the new created rule in README.md file, in [How it works](#how-it-works) section, so all the users can understand what this rule does.
+
 ##### [Back to Contents](#contents)
 
 ## Settings
