@@ -196,6 +196,40 @@ def for_app(*app_names, **kwargs):
     return decorator(_for_app)
 
 
+def _xdg_dir(env, default):
+    """
+    Returns the XDG user directory by first checking the given environment variable
+    and then resulting to the default filepath.
+
+    # Note
+
+    The directory gets created if it doesn't exist.
+    """
+
+    default_xdg_dir = os.path.expanduser(default)
+    dir = os.getenv(env, default_xdg_dir)
+
+    # Ensure the cache_path exists, Python 2 does not have the exist_ok
+    # parameter
+    try:
+        os.makedirs(dir)
+    except OSError:
+        if not os.path.isdir(dir):
+            raise
+
+    return dir
+
+
+def cache_dir():
+    """Returns the user's XDG cache directory."""
+    return Path(_xdg_dir("XDG_CACHE_HOME", "~/.cache"))
+
+
+def data_dir():
+    """Returns the user's XDG data directory."""
+    return Path(_xdg_dir("XDG_DATA_HOME", "~/.local/share"))
+
+
 class Cache(object):
     """Lazy read cache and save changes at exit."""
 
@@ -210,8 +244,7 @@ class Cache(object):
             self._db = {}
 
     def _setup_db(self):
-        cache_dir = self._get_cache_dir()
-        cache_path = Path(cache_dir).joinpath('thefuck').as_posix()
+        cache_path = cache_dir().joinpath('thefuck').as_posix()
 
         try:
             self._db = shelve.open(cache_path)
@@ -222,20 +255,6 @@ class Cache(object):
             self._db = shelve.open(cache_path)
 
         atexit.register(self._db.close)
-
-    def _get_cache_dir(self):
-        default_xdg_cache_dir = os.path.expanduser("~/.cache")
-        cache_dir = os.getenv("XDG_CACHE_HOME", default_xdg_cache_dir)
-
-        # Ensure the cache_path exists, Python 2 does not have the exist_ok
-        # parameter
-        try:
-            os.makedirs(cache_dir)
-        except OSError:
-            if not os.path.isdir(cache_dir):
-                raise
-
-        return cache_dir
 
     def _get_mtime(self, path):
         try:

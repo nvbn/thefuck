@@ -6,7 +6,7 @@ import six
 from .. import logs
 from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER
-from ..utils import DEVNULL, cache
+from ..utils import DEVNULL, cache, data_dir
 from .generic import Generic
 
 
@@ -83,7 +83,7 @@ class Fish(Generic):
             return command_script
 
     def _get_history_file_name(self):
-        return os.path.expanduser('~/.config/fish/fish_history')
+        return data_dir().joinpath("fish").joinpath("fish_history")
 
     def _get_history_line(self, command_script):
         return u'- cmd: {}\n   when: {}\n'.format(command_script, int(time()))
