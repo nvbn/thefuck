@@ -1,5 +1,22 @@
 # The Fuck [![Version][version-badge]][version-link] [![Build Status][workflow-badge]][workflow-link] [![Coverage][coverage-badge]][coverage-link] [![MIT License][license-badge]](LICENSE.md)
 
+
+## Contents
+1. [Introduction](#introduction)
+1. [Requirements](#requirements)
+2. [Installations](#installation)
+3. [Updating](#updating)
+4. [How it works](#how-it-works)
+5. [Creating your own rules](#creating-your-own-rules)
+6. [Settings](#settings)
+7. [Third party packages with rules](#third-party-packages-with-rules)
+8. [Experimental instant mode](#experimental-instant-mode)
+9. [Developing](#developing)
+10. [License](#license-mit)
+
+
+## Introduction
+<hr>  
 *The Fuck* is a magnificent app, inspired by a [@liamosaur](https://twitter.com/liamosaur/)
 [tweet](https://twitter.com/liamosaur/status/506975850596536320),
 that corrects errors in previous console commands.
@@ -91,18 +108,7 @@ Reading package lists... Done
 ...
 ```
 
-## Contents
 
-1. [Requirements](#requirements)
-2. [Installations](#installation)
-3. [Updating](#updating)
-4. [How it works](#how-it-works)
-5. [Creating your own rules](#creating-your-own-rules)
-6. [Settings](#settings)
-7. [Third party packages with rules](#third-party-packages-with-rules)
-8. [Experimental instant mode](#experimental-instant-mode)
-9. [Developing](#developing)
-10. [License](#license-mit)
 
 ## Requirements
 
