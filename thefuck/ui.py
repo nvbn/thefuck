@@ -6,6 +6,7 @@ from .exceptions import NoRuleMatched
 from .system import get_key
 from .utils import get_alias
 from . import logs, const
+from .statistics import CommandRecords
 
 
 def read_actions():
@@ -67,21 +68,41 @@ def select_command(corrected_commands):
     :rtype: thefuck.types.CorrectedCommand | None
 
     """
+    records = CommandRecords()
     try:
         selector = CommandSelector(corrected_commands)
+        records.add_records(
+            command_list = [command for command in corrected_commands],
+            category =  const.APPLIED_RULES
+            )
+            records.save()
     except NoRuleMatched:
         logs.failed('No fucks given' if get_alias() == 'fuck'
                     else 'Nothing found')
+        records.add_records(
+            category = const.NO_FUCKS_GIVEN
+        )
+        records.save()
         return
 
     if not settings.require_confirmation:
         logs.show_corrected_command(selector.value)
+        records.add_records(
+            command_single = selector.value,
+            category = const.SELECTED_RULES
+        )
+        records.save()
         return selector.value
 
     logs.confirm_text(selector.value)
 
     for action in read_actions():
         if action == const.ACTION_SELECT:
+            records.add_records(
+                command_single = selector.value,
+                category = const.SELECTED_RULES
+            )
+            records.save()
             sys.stderr.write('\n')
             return selector.value
         elif action == const.ACTION_ABORT:
@@ -93,3 +114,4 @@ def select_command(corrected_commands):
         elif action == const.ACTION_NEXT:
             selector.next()
             logs.confirm_text(selector.value)
+    
