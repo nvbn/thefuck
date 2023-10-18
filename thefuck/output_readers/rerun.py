@@ -53,6 +53,7 @@ def get_output(script, expanded):
     """
     env = dict(os.environ)
     env.update(settings.env)
+    log_env = {key: env[key] for key in ['TF_SHELL', 'TF_ALIAS', 'TF_SHELL_ALIASES'] if key in env}
 
     if six.PY2:
         expanded = expanded.encode('utf-8')
@@ -60,7 +61,7 @@ def get_output(script, expanded):
     split_expand = shlex.split(expanded)
     is_slow = split_expand[0] in settings.slow_commands if split_expand else False
     with logs.debug_time(u'Call: {}; with env: {}; is slow: {}'.format(
-            script, env, is_slow)):
+            script, log_env, is_slow)):
         result = Popen(expanded, shell=True, stdin=PIPE,
                        stdout=PIPE, stderr=STDOUT, env=env)
         if _wait_output(result, is_slow):
