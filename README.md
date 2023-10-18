@@ -148,7 +148,7 @@ On other systems, install *The Fuck*  by using `pip`:
 pip install thefuck
 ```
 
-[Alternatively, you may use an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
+[Alternatively, you may use an OS package manager (OS X, Ubuntu, Arch, Fedora).](https://github.com/nvbn/thefuck/wiki/Installation)
 
 <a href='#manual-installation' name='manual-installation'>#</a>
 It is recommended that you place this command in your `.bash_profile`,
