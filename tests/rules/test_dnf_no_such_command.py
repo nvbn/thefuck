@@ -184,6 +184,8 @@ def test_get_operations(set_help):
      'dnf install vim'),
     ('dnf saerch vim', invalid_command('saerch'),
      'dnf search vim'),
+    ('dnf uninstall vim', invalid_command('uninstall'),
+     'dnf remove vim'),
 ])
 def test_get_new_command(set_help, output, script, result):
     set_help(help_text)
