@@ -322,6 +322,7 @@ following rules are enabled by default:
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
 * `remove_shell_prompt_literal` &ndash; remove leading shell prompt symbol `$`, common when copying commands from documentations;
 * `remove_trailing_cedilla` &ndash; remove trailing cedillas `ç`, a common typo for European keyboard layouts;
+* `restic` &ndash; fixes restic commands;
 * `rm_dir` &ndash; adds `-rf` when you try to remove a directory;
 * `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
