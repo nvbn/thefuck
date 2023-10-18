@@ -212,6 +212,7 @@ class CorrectedCommand(object):
         self.script = script
         self.side_effect = side_effect
         self.priority = priority
+        self.should_edit = False
 
     def __eq__(self, other):
         """Ignores `priority` field."""
@@ -235,6 +236,9 @@ class CorrectedCommand(object):
         of running fuck in case fixed command fails again.
 
         """
+        if self.should_edit:
+            self.script = shell.edit_command(self.script)
+
         if settings.repeat:
             repeat_fuck = '{} --repeat {}--force-command {}'.format(
                 get_alias(),
@@ -243,6 +247,10 @@ class CorrectedCommand(object):
             return shell.or_(self.script, repeat_fuck)
         else:
             return self.script
+
+    def edit(self):
+        self.should_edit = True
+        return self
 
     def run(self, old_cmd):
         """Runs command from rule for passed command.

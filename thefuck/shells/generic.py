@@ -2,6 +2,7 @@ import io
 import os
 import shlex
 import six
+import tempfile
 from collections import namedtuple
 from ..logs import warn
 from ..utils import memoize
@@ -120,6 +121,33 @@ class Generic(object):
         all shells support it (Fish).
 
         """
+
+    def can_edit(self):
+        return False
+
+    def edit_command(self, command):
+        """Spawn default editor (or `vi` if not set) and edit command in a buffer"""
+        # Create a temporary file and write some default text
+        # mktemp somewhere
+
+        editor = os.getenv("EDITOR", "vi")
+
+        tf = tempfile.NamedTemporaryFile(
+            prefix="the_fuck-command_edit__",
+            suffix=".tmp",
+            delete=False)
+        tf.write(command.encode('utf8'))
+        tf.close()
+
+        os.system(u"{} '{}' >/dev/tty".format(editor, tf.name))
+
+        tf = open(tf.name, 'r')
+        edited_message = tf.read()
+        tf.close()
+
+        os.unlink(tf.name)
+
+        return edited_message
 
     def get_builtin_commands(self):
         """Returns shells builtin commands."""

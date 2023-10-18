@@ -65,6 +65,9 @@ class Bash(Generic):
         return dict(self._parse_alias(alias)
                     for alias in raw_aliases if alias and '=' in alias)
 
+    def can_edit(self):
+        return True
+
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",
                               os.path.expanduser('~/.bash_history'))

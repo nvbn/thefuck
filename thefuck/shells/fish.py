@@ -127,3 +127,10 @@ class Fish(Generic):
                     history.write(entry.encode('utf-8'))
                 else:
                     history.write(entry)
+
+    def can_edit(self):
+        return True
+
+    def edit_command(self, command):
+        """Return the shell editable command"""
+        return u'commandline -r "{}"'.format(command)

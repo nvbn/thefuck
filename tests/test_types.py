@@ -43,6 +43,18 @@ class TestCorrectedCommand(object):
         out, _ = capsys.readouterr()
         assert out == printed
 
+    def test_run_with_edit(self, capsys, monkeypatch, mocker):
+        script = "git branch"
+        edit_tpl = 'editor "{}"'
+        monkeypatch.setattr(
+            'thefuck.types.shell.edit_command',
+            lambda script: edit_tpl.format(script),
+        )
+        command = CorrectedCommand(script, None, 1000).edit()
+        command.run(Command(script, ''))
+        out, _ = capsys.readouterr()
+        assert out[:-1] == edit_tpl.format(script)
+
 
 class TestRule(object):
     def test_from_path_rule_exception(self, mocker):
