@@ -4,8 +4,8 @@ from thefuck.types import Command
 
 
 @pytest.fixture
-def pip_unknown_cmd_without_recommend():
-    return '''ERROR: unknown command "i"'''
+def synonym():
+    return 'remove'
 
 
 @pytest.fixture
@@ -19,14 +19,18 @@ def suggested():
 
 
 @pytest.fixture
+def pip_unknown_cmd_without_recommend(synonym):
+    return 'ERROR: unknown command "{}"'.format(synonym)
+
+
+@pytest.fixture
 def pip_unknown_cmd(broken, suggested):
     return 'ERROR: unknown command "{}" - maybe you meant "{}"'.format(broken, suggested)
 
 
 def test_match(pip_unknown_cmd, pip_unknown_cmd_without_recommend):
     assert match(Command('pip instatl', pip_unknown_cmd))
-    assert not match(Command('pip i',
-                             pip_unknown_cmd_without_recommend))
+    assert match(Command('pip remove', pip_unknown_cmd_without_recommend))
 
 
 @pytest.mark.parametrize('script, broken, suggested, new_cmd', [
@@ -35,3 +39,11 @@ def test_match(pip_unknown_cmd, pip_unknown_cmd_without_recommend):
 def test_get_new_command(script, new_cmd, pip_unknown_cmd):
     assert get_new_command(Command(script,
                                    pip_unknown_cmd)) == new_cmd
+
+
+@pytest.mark.parametrize('script, synonym, new_cmd', [
+    ('pip delete thefuck', 'delete', 'pip uninstall thefuck'),
+    ('pip remove thefuck', 'remove', 'pip uninstall thefuck')
+])
+def test_get_new_command_without_recommended(script, new_cmd, pip_unknown_cmd_without_recommend):
+    assert get_new_command(Command(script, pip_unknown_cmd_without_recommend)) == new_cmd
