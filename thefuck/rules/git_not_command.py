@@ -22,9 +22,6 @@ def match(command):
 def get_new_command(command):
     broken_cmd = re.findall(r"git: '([^']*)' is not a git command",
                             command.output)[0]
-    # check if the broken_cmd exists in COMMON_TYPOS
-    if broken_cmd in COMMON_TYPOS:
-        matched = COMMON_TYPOS[broken_cmd]
-    else:
-        matched = get_all_matched_commands(command.output, ['The most similar command', 'Did you mean'])
+    matched = COMMON_TYPOS.get(broken_cmd, [])
+    matched.extend(get_all_matched_commands(command.output, ['The most similar command', 'Did you mean']))
     return replace_command(command, broken_cmd, matched)
