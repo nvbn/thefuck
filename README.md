@@ -204,17 +204,17 @@ following rules are enabled by default:
 * `aws_cli` &ndash; fixes misspelled commands like `aws dynamdb scan`;
 * `az_cli` &ndash; fixes misspelled commands like `az providers`;
 * `cargo` &ndash; runs `cargo build` instead of `cargo`;
-* `cargo_no_command` &ndash; fixes wrongs commands like `cargo buid`;
+* `cargo_no_command` &ndash; fixes wrong commands like `cargo buid`;
 * `cat_dir` &ndash; replaces `cat` with `ls` when you try to `cat` a directory;
-* `cd_correction` &ndash; spellchecks and correct failed cd commands;
+* `cd_correction` &ndash; spellchecks and corrects failed cd commands;
 * `cd_cs` &ndash; changes `cs` to `cd`;
 * `cd_mkdir` &ndash; creates directories before cd'ing into them;
 * `cd_parent` &ndash; changes `cd..` to `cd ..`;
-* `chmod_x` &ndash; add execution bit;
-* `choco_install` &ndash; append common suffixes for chocolatey packages;
+* `chmod_x` &ndash; adds execution bit;
+* `choco_install` &ndash; appends common suffixes for chocolatey packages;
 * `composer_not_command` &ndash; fixes composer command name;
 * `conda_mistype` &ndash; fixes conda commands;
-* `cp_create_destination` &ndash; creates a new directory when you attempt to `cp` or `mv` to a non existent one
+* `cp_create_destination` &ndash; creates a new directory when you attempt to `cp` or `mv` to a non-existent one
 * `cp_omitting_directory` &ndash; adds `-a` when you `cp` directory;
 * `cpp11` &ndash; adds missing `-std=c++11` to `g++` or `clang++`;
 * `dirty_untar` &ndash; fixes `tar x` command that untarred in the current directory;
@@ -225,7 +225,7 @@ following rules are enabled by default:
 * `docker_not_command` &ndash; fixes wrong docker commands like `docker tags`;
 * `docker_image_being_used_by_container` &dash; removes the container that is using the image before removing the image;
 * `dry` &ndash; fixes repetitions like `git git push`;
-* `fab_command_not_found` &ndash; fix misspelled fabric commands;
+* `fab_command_not_found` &ndash; fixes misspelled fabric commands;
 * `fix_alt_space` &ndash; replaces Alt+Space with Space character;
 * `fix_file` &ndash; opens a file with an error in your `$EDITOR`;
 * `gem_unknown_command` &ndash; fixes wrong `gem` commands;
@@ -260,10 +260,10 @@ following rules are enabled by default:
 * `git_push` &ndash; adds `--set-upstream origin $branch` to previous failed `git push`;
 * `git_push_different_branch_names` &ndash; fixes pushes when local branch name does not match remote branch name;
 * `git_push_pull` &ndash; runs `git pull` when `push` was rejected;
-* `git_push_without_commits` &ndash; Creates an initial commit if you forget and only `git add .`, when setting up a new project;
+* `git_push_without_commits` &ndash; creates an initial commit if you forget and only `git add .`, when setting up a new project;
 * `git_rebase_no_changes` &ndash; runs `git rebase --skip` instead of `git rebase --continue` when there are no changes;
 * `git_remote_delete` &ndash; replaces `git remote delete remote_name` with `git remote remove remote_name`;
-* `git_rm_local_modifications` &ndash;  adds `-f` or `--cached` when you try to `rm` a locally modified file;
+* `git_rm_local_modifications` &ndash; adds `-f` or `--cached` when you try to `rm` a locally modified file;
 * `git_rm_recursive` &ndash; adds `-r` when you try to `rm` a directory;
 * `git_rm_staged` &ndash;  adds `-f` or `--cached` when you try to `rm` a file with staged changes
 * `git_rebase_merge_dir` &ndash; offers `git rebase (--continue | --abort | --skip)` or removing the `.git/rebase-merge` dir when a rebase is in progress;
@@ -281,7 +281,7 @@ following rules are enabled by default:
 * `grunt_task_not_found` &ndash; fixes misspelled `grunt` commands;
 * `gulp_not_task` &ndash; fixes misspelled `gulp` tasks;
 * `has_exists_script` &ndash; prepends `./` when script/binary exists;
-* `heroku_multiple_apps` &ndash; add `--app <app>` to `heroku` commands like `heroku pg`;
+* `heroku_multiple_apps` &ndash; adds `--app <app>` to `heroku` commands like `heroku pg`;
 * `heroku_not_command` &ndash; fixes wrong `heroku` commands like `heroku log`;
 * `history` &ndash; tries to replace command with the most similar command from history;
 * `hostscli` &ndash; tries to fix `hostscli` usage;
@@ -307,7 +307,7 @@ following rules are enabled by default:
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `omnienv_no_such_command` &ndash; fixes wrong commands for `goenv`, `nodenv`, `pyenv` and `rbenv` (eg.: `pyenv isntall` or `goenv list`);
-* `open` &ndash; either prepends `http://` to address passed to `open` or create a new file or directory and passes it to `open`;
+* `open` &ndash; either prepends `http://` to address passed to `open` or creates a new file or directory and passes it to `open`;
 * `pip_install` &ndash; fixes permission issues with `pip install` commands by adding `--user` or prepending `sudo` if necessary;
 * `pip_unknown_command` &ndash; fixes wrong `pip` commands, for example `pip instatl/pip install`;
 * `php_s` &ndash; replaces `-s` by `-S` when trying to run a local php server;
@@ -320,8 +320,8 @@ following rules are enabled by default:
 * `path_from_history` &ndash; replaces not found path with a similar absolute path from history;
 * `rails_migrations_pending` &ndash; runs pending migrations;
 * `react_native_command_unrecognized` &ndash; fixes unrecognized `react-native` commands;
-* `remove_shell_prompt_literal` &ndash; remove leading shell prompt symbol `$`, common when copying commands from documentations;
-* `remove_trailing_cedilla` &ndash; remove trailing cedillas `ç`, a common typo for European keyboard layouts;
+* `remove_shell_prompt_literal` &ndash; removes leading shell prompt symbol `$`, common when copying commands from documentations;
+* `remove_trailing_cedilla` &ndash; removes trailing cedillas `ç`, a common typo for European keyboard layouts;
 * `rm_dir` &ndash; adds `-rf` when you try to remove a directory;
 * `scm_correction` &ndash; corrects wrong scm like `hg log` to `git log`;
 * `sed_unterminated_s` &ndash; adds missing '/' to `sed`'s `s` commands;
@@ -331,7 +331,7 @@ following rules are enabled by default:
 * `sudo_command_from_user_path` &ndash; runs commands from users `$PATH` with `sudo`;
 * `switch_lang` &ndash; switches command from your local layout to en;
 * `systemctl` &ndash; correctly orders parameters of confusing `systemctl`;
-* `terraform_init.py` &ndash; run `terraform init` before plan or apply;
+* `terraform_init.py` &ndash; runs `terraform init` before plan or apply;
 * `terraform_no_command.py` &ndash; fixes unrecognized `terraform` commands;
 * `test.py` &ndash; runs `pytest` instead of `test.py`;
 * `touch` &ndash; creates missing directories before "touching";
