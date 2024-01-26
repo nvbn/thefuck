@@ -50,7 +50,6 @@ def which(program):
     """Returns `program` path or `None`."""
     try:
         from shutil import which
-
         return which(program)
     except ImportError:
         def is_exe(fpath):
@@ -62,12 +61,16 @@ def which(program):
                 return program
         else:
             for path in os.environ["PATH"].split(os.pathsep):
-                path = path.strip('"')
+                # Strip only the whitespace by default
+                path = path.strip()
+                # Remove only the surrounding double quotes, if any
+                if path.startswith('"') and path.endswith('"'):
+                    path = path[1:-1]
                 exe_file = os.path.join(path, program)
                 if is_exe(exe_file):
                     return exe_file
-
         return None
+
 
 
 def default_settings(params):
