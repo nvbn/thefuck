@@ -378,6 +378,10 @@ default:
 * `git_push_force` &ndash; adds `--force-with-lease` to a `git push` (may conflict with `git_push_pull`);
 * `rm_root` &ndash; adds `--no-preserve-root` to `rm -rf /` command.
 
+The following rule uses OpenAI ChatGPT. To enable it, you need to set the environment variable `THEFUCK_OPENAI_TOKEN=<OpenAI Token>` and pass in `--chatgpt [No. SUGGESTIONS >= 1]`:
+
+- `chatgpt` &ndash; queries ChatGPT for suggestions. Arguments: `--chatgpt [No. SUGGESTIONS, default=0] --chatgpt-token [default=100] --chatgpt-model [default="gpt-3.5-turbo"]`.
+
 ##### [Back to Contents](#contents)
 
 ## Creating your own rules
