@@ -8,7 +8,9 @@ def _args(**override):
             'help': False, 'version': False, 'debug': False,
             'force_command': None, 'repeat': False,
             'enable_experimental_instant_mode': False,
-            'shell_logger': None}
+            'shell_logger': None, 'chatgpt': 0,
+            'chatgpt_token': 100,
+            'chatgpt_model': 'gpt-3.5-turbo'}
     args.update(override)
     return args
 
