@@ -14,8 +14,10 @@ def _get_brew_commands(brew_path_prefix):
     """To get brew default commands on local environment"""
     brew_cmd_path = brew_path_prefix + BREW_CMD_PATH
 
-    return [name[:-3] for name in os.listdir(brew_cmd_path)
-            if name.endswith(('.rb', '.sh'))]
+    return [
+        name[:-3] for name in os.listdir(brew_cmd_path)
+        if name.endswith(('.rb', '.sh'))
+    ]
 
 
 def _get_brew_tap_specific_commands(brew_path_prefix):
@@ -34,9 +36,11 @@ def _get_brew_tap_specific_commands(brew_path_prefix):
             tap_cmd_path = brew_taps_path + TAP_CMD_PATH % (user, tap)
 
             if os.path.isdir(tap_cmd_path):
-                commands += (name.replace('brew-', '').replace('.rb', '')
-                             for name in os.listdir(tap_cmd_path)
-                             if _is_brew_tap_cmd_naming(name))
+                commands += (
+                    name.replace('brew-', '').replace('.rb', '')
+                    for name in os.listdir(tap_cmd_path)
+                    if _is_brew_tap_cmd_naming(name)
+                )
 
     return commands
 
@@ -46,23 +50,29 @@ def _is_brew_tap_cmd_naming(name):
 
 
 def _get_directory_names_only(path):
-    return [d for d in os.listdir(path)
-            if os.path.isdir(os.path.join(path, d))]
+    return [
+        d for d in os.listdir(path)
+        if os.path.isdir(os.path.join(path, d))
+    ]
 
 
 def _brew_commands():
     brew_path_prefix = get_brew_path_prefix()
     if brew_path_prefix:
         try:
-            return (_get_brew_commands(brew_path_prefix)
-                    + _get_brew_tap_specific_commands(brew_path_prefix))
+            return (
+                _get_brew_commands(brew_path_prefix)
+                    + _get_brew_tap_specific_commands(brew_path_prefix)
+            )
         except OSError:
             pass
 
     # Failback commands for testing (Based on Homebrew 0.9.5)
-    return ['info', 'home', 'options', 'install', 'uninstall',
-            'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
-            'doctor', 'create', 'edit', 'cask']
+    return [
+        'info', 'home', 'options', 'install', 'uninstall',
+        'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
+        'doctor', 'create', 'edit', 'cask'
+    ]
 
 
 def match(command):

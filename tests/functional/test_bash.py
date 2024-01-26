@@ -4,13 +4,17 @@ from tests.functional.plots import with_confirmation, without_confirmation, \
     select_command_with_arrows, how_to_configure
 
 
-python_3 = (u'thefuck/python3',
-            u'',
-            u'sh')
+python_3 = (
+    u'thefuck/python3',
+    u'',
+    u'sh'
+)
 
-python_2 = (u'thefuck/python2',
-            u'',
-            u'sh')
+python_2 = (
+    u'thefuck/python2',
+    u'',
+    u'sh'
+)
 
 
 init_bashrc = u'''echo '
@@ -29,7 +33,9 @@ def proc(request, spawnu, TIMEOUT):
     container, instant_mode = request.param
     proc = spawnu(*container)
     proc.sendline(init_bashrc.format(
-        u'--enable-experimental-instant-mode' if instant_mode else ''))
+            u'--enable-experimental-instant-mode' if instant_mode else ''
+        )
+    )
     proc.sendline(u"bash")
     if instant_mode:
         assert proc.expect([TIMEOUT, u'instant mode ready: True'])

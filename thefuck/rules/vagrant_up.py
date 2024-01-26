@@ -17,5 +17,7 @@ def get_new_command(command):
     if machine is None:
         return start_all_instances
     else:
-        return [shell.and_(u"vagrant up {}".format(machine), command.script),
-                start_all_instances]
+        return [
+            shell.and_(u"vagrant up {}".format(machine), command.script),
+            start_all_instances
+        ]

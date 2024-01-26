@@ -4,8 +4,10 @@ from thefuck.specific.sudo import sudo_support
 
 @sudo_support
 def match(command):
-    return ('mkdir' in command.script
-            and 'No such file or directory' in command.output)
+    return (
+        'mkdir' in command.script
+            and 'No such file or directory' in command.output
+    )
 
 
 @sudo_support

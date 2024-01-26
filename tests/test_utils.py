@@ -10,10 +10,18 @@ from thefuck.utils import default_settings, \
 from thefuck.types import Command
 
 
-@pytest.mark.parametrize('override, old, new', [
-    ({'key': 'val'}, {}, {'key': 'val'}),
-    ({'key': 'new-val'}, {'key': 'val'}, {'key': 'val'}),
-    ({'key': 'new-val', 'unset': 'unset'}, {'key': 'val'}, {'key': 'val', 'unset': 'unset'})])
+@pytest.mark.parametrize(
+    'override, old, new',
+    [
+        ({'key': 'val'}, {}, {'key': 'val'}),
+        ({'key': 'new-val'}, {'key': 'val'}, {'key': 'val'}),
+        (
+            {'key': 'new-val', 'unset': 'unset'},
+            {'key': 'val'},
+            {'key': 'val', 'unset': 'unset'}
+        )
+    ]
+)
 def test_default_settings(settings, override, old, new):
     settings.clear()
     settings.update(old)
@@ -46,7 +54,8 @@ class TestGetClosest(object):
         assert 'status' == get_closest('st', ['status', 'reset'])
 
     def test_without_fallback(self):
-        assert get_closest('st', ['status', 'reset'],
+        assert get_closest('st',
+                           ['status', 'reset'],
                            fallback_to_first=False) is None
 
 
@@ -115,31 +124,55 @@ def test_replace_argument(args, result):
     assert replace_argument(*args) == result
 
 
-@pytest.mark.parametrize('stderr, result', [
-    (("git: 'cone' is not a git command. See 'git --help'.\n"
-      '\n'
-      'Did you mean one of these?\n'
-      '\tclone'), ['clone']),
-    (("git: 're' is not a git command. See 'git --help'.\n"
-      '\n'
-      'Did you mean one of these?\n'
-      '\trebase\n'
-      '\treset\n'
-      '\tgrep\n'
-      '\trm'), ['rebase', 'reset', 'grep', 'rm']),
-    (('tsuru: "target" is not a tsuru command. See "tsuru help".\n'
-      '\n'
-      'Did you mean one of these?\n'
-      '\tservice-add\n'
-      '\tservice-bind\n'
-      '\tservice-doc\n'
-      '\tservice-info\n'
-      '\tservice-list\n'
-      '\tservice-remove\n'
-      '\tservice-status\n'
-      '\tservice-unbind'), ['service-add', 'service-bind', 'service-doc',
-                            'service-info', 'service-list', 'service-remove',
-                            'service-status', 'service-unbind'])])
+@pytest.mark.parametrize(
+    'stderr, result',
+    [
+        (
+            (
+                "git: 'cone' is not a git command. See 'git --help'.\n"
+                '\n'
+                'Did you mean one of these?\n'
+                '\tclone'
+            ),
+            ['clone']
+        ),
+        (
+            (
+                "git: 're' is not a git command. See 'git --help'.\n"
+                '\n'
+                'Did you mean one of these?\n'
+                '\trebase\n'
+                '\treset\n'
+                '\tgrep\n'
+                '\trm'
+            ),
+            [
+                'rebase', 'reset',
+                'grep', 'rm'
+            ]
+        ),
+        (
+            (
+                'tsuru: "target" is not a tsuru command. See "tsuru help".\n'
+                '\n'
+                'Did you mean one of these?\n'
+                '\tservice-add\n'
+                '\tservice-bind\n'
+                '\tservice-doc\n'
+                '\tservice-info\n'
+                '\tservice-list\n'
+                '\tservice-remove\n'
+                '\tservice-status\n'
+                '\tservice-unbind'
+            ),
+            [
+                'service-add', 'service-bind', 'service-doc',
+                'service-info', 'service-list', 'service-remove',
+                'service-status', 'service-unbind'
+            ]
+        )
+    ]
+)
 def test_get_all_matched_commands(stderr, result):
     assert list(get_all_matched_commands(stderr)) == result
 
@@ -265,12 +298,14 @@ class TestGetValidHistoryWithoutCurrent(object):
         path_mock = mocker.Mock(iterdir=mocker.Mock(return_value=callables))
         return mocker.patch('thefuck.utils.Path', return_value=path_mock)
 
-    @pytest.mark.parametrize('script, result', [
-        ('le cat', ['ls cat', 'diff x', u'café ô']),
-        ('diff x', ['ls cat', u'café ô']),
-        ('fuck', ['ls cat', 'diff x', u'café ô']),
-        (u'cafe ô', ['ls cat', 'diff x', u'café ô']),
-    ])
+    @pytest.mark.parametrize(
+        'script, result', [
+            ('le cat', ['ls cat', 'diff x', u'café ô']),
+            ('diff x', ['ls cat', u'café ô']),
+            ('fuck', ['ls cat', 'diff x', u'café ô']),
+            (u'cafe ô', ['ls cat', 'diff x', u'café ô']),
+        ]
+    )
     def test_get_valid_history_without_current(self, script, result):
         command = Command(script, '')
         assert get_valid_history_without_current(command) == result

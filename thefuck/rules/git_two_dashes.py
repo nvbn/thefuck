@@ -4,8 +4,10 @@ from thefuck.specific.git import git_support
 
 @git_support
 def match(command):
-    return ('error: did you mean `' in command.output
-            and '` (with two dashes ?)' in command.output)
+    return (
+        'error: did you mean `' in command.output
+        and '` (with two dashes ?)' in command.output
+    )
 
 
 @git_support

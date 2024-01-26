@@ -11,13 +11,15 @@ from .tcsh import Tcsh
 from .zsh import Zsh
 from .powershell import Powershell
 
-shells = {'bash': Bash,
-          'fish': Fish,
-          'zsh': Zsh,
-          'csh': Tcsh,
-          'tcsh': Tcsh,
-          'powershell': Powershell,
-          'pwsh': Powershell}
+shells = {
+    'bash': Bash,
+    'fish': Fish,
+    'zsh': Zsh,
+    'csh': Tcsh,
+    'tcsh': Tcsh,
+    'powershell': Powershell,
+    'pwsh': Powershell
+}
 
 
 def _get_shell_from_env():

@@ -28,9 +28,13 @@ def _get_shell_pid():
 
 def _get_not_configured_usage_tracker_path():
     """Returns path of special file where we store latest shell pid."""
-    return Path(gettempdir()).joinpath(u'thefuck.last_not_configured_run_{}'.format(
-        getpass.getuser(),
-    ))
+    return (
+        Path(gettempdir()).joinpath(
+            u'thefuck.last_not_configured_run_{}'.format(
+                getpass.getuser(),
+            )
+        )
+    )
 
 
 def _record_first_run():
@@ -68,8 +72,10 @@ def _is_second_run():
     if not (isinstance(info, dict) and info.get('pid') == current_pid):
         return False
 
-    return (_get_previous_command() == 'fuck' or
-            time.time() - info.get('time', 0) < const.CONFIGURATION_TIMEOUT)
+    return (
+        _get_previous_command() == 'fuck' or
+        time.time() - info.get('time', 0) < const.CONFIGURATION_TIMEOUT
+    )
 
 
 def _is_already_configured(configuration_details):

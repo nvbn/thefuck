@@ -5,10 +5,12 @@ from thefuck.shells import shell
 
 enabled_by_default = bool(which('lsof'))
 
-patterns = [r"bind on address \('.*', (?P<port>\d+)\)",
-            r'Unable to bind [^ ]*:(?P<port>\d+)',
-            r"can't listen on port (?P<port>\d+)",
-            r'listen EADDRINUSE [^ ]*:(?P<port>\d+)']
+patterns = [
+    r"bind on address \('.*', (?P<port>\d+)\)",
+    r'Unable to bind [^ ]*:(?P<port>\d+)',
+    r"can't listen on port (?P<port>\d+)",
+    r'listen EADDRINUSE [^ ]*:(?P<port>\d+)'
+]
 
 
 @memoize

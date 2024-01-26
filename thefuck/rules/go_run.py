@@ -8,8 +8,10 @@ from thefuck.utils import for_app
 
 @for_app('go')
 def match(command):
-    return (command.script.startswith('go run ')
-            and not command.script.endswith('.go'))
+    return (
+        command.script.startswith('go run ')
+            and not command.script.endswith('.go')
+    )
 
 
 def get_new_command(command):

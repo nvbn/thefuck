@@ -3,8 +3,10 @@ from thefuck.utils import for_app, which
 
 @for_app("choco", "cinst")
 def match(command):
-    return ((command.script.startswith('choco install') or 'cinst' in command.script_parts)
-            and 'Installing the following packages' in command.output)
+    return (
+        (command.script.startswith('choco install') or 'cinst' in command.script_parts)
+            and 'Installing the following packages' in command.output
+    )
 
 
 def get_new_command(command):

@@ -59,8 +59,11 @@ class Settings(dict):
 
         # For backward compatibility use legacy '~/.thefuck' if it exists:
         if legacy_user_dir.is_dir():
-            warn(u'Config path {} is deprecated. Please move to {}'.format(
-                legacy_user_dir, user_dir))
+            warn(
+                u'Config path {} is deprecated. Please move to {}'.format(
+                    legacy_user_dir, user_dir
+                )
+            )
             return legacy_user_dir
         else:
             return user_dir
@@ -78,9 +81,11 @@ class Settings(dict):
         """Loads settings from file."""
         settings = load_source(
             'settings', text_type(self.user_dir.joinpath('settings.py')))
-        return {key: getattr(settings, key)
-                for key in const.DEFAULT_SETTINGS.keys()
-                if hasattr(settings, key)}
+        return {
+            key: getattr(settings, key)
+            for key in const.DEFAULT_SETTINGS.keys()
+            if hasattr(settings, key)
+        }
 
     def _rules_from_env(self, val):
         """Transforms rules list from env-string to python."""
@@ -118,9 +123,11 @@ class Settings(dict):
 
     def _settings_from_env(self):
         """Loads settings from env."""
-        return {attr: self._val_from_env(env, attr)
-                for env, attr in const.ENV_TO_ATTR.items()
-                if env in os.environ}
+        return {
+            attr: self._val_from_env(env, attr)
+            for env, attr in const.ENV_TO_ATTR.items()
+            if env in os.environ
+        }
 
     def _settings_from_args(self, args):
         """Loads settings from args."""

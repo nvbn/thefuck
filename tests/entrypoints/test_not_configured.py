@@ -10,7 +10,8 @@ from thefuck.entrypoints.not_configured import main
 def usage_tracker(mocker):
     return mocker.patch(
         'thefuck.entrypoints.not_configured._get_not_configured_usage_tracker_path',
-        new_callable=MagicMock)
+        new_callable=MagicMock
+    )
 
 
 @pytest.fixture(autouse=True)
@@ -44,27 +45,34 @@ def _change_tracker(usage_tracker_io, pid):
 
 @pytest.fixture(autouse=True)
 def shell_pid(mocker):
-    return mocker.patch('thefuck.entrypoints.not_configured._get_shell_pid',
-                        new_callable=MagicMock)
+    return mocker.patch(
+        'thefuck.entrypoints.not_configured._get_shell_pid',
+        new_callable=MagicMock
+    )
 
 
 @pytest.fixture(autouse=True)
 def shell(mocker):
-    shell = mocker.patch('thefuck.entrypoints.not_configured.shell',
-                         new_callable=MagicMock)
+    shell = mocker.patch(
+        'thefuck.entrypoints.not_configured.shell',
+        new_callable=MagicMock
+    )
     shell.get_history.return_value = []
     shell.how_to_configure.return_value = ShellConfiguration(
         content='eval $(thefuck --alias)',
         path='/tmp/.bashrc',
         reload='bash',
-        can_configure_automatically=True)
+        can_configure_automatically=True
+    )
     return shell
 
 
 @pytest.fixture(autouse=True)
 def shell_config(mocker):
-    path_mock = mocker.patch('thefuck.entrypoints.not_configured.Path',
-                             new_callable=MagicMock)
+    path_mock = mocker.patch(
+        'thefuck.entrypoints.not_configured.Path',
+        new_callable=MagicMock
+    )
     return path_mock.return_value \
         .expanduser.return_value \
         .open.return_value \
@@ -73,8 +81,10 @@ def shell_config(mocker):
 
 @pytest.fixture(autouse=True)
 def logs(mocker):
-    return mocker.patch('thefuck.entrypoints.not_configured.logs',
-                        new_callable=MagicMock)
+    return mocker.patch(
+        'thefuck.entrypoints.not_configured.logs',
+        new_callable=MagicMock
+    )
 
 
 def test_for_generic_shell(shell, logs):
@@ -114,7 +124,8 @@ def test_when_cant_configure_automatically(shell_pid, shell, logs):
         content='eval $(thefuck --alias)',
         path='/tmp/.bashrc',
         reload='bash',
-        can_configure_automatically=False)
+        can_configure_automatically=False
+    )
     main()
     logs.how_to_configure_alias.assert_called_once()
 

@@ -40,9 +40,11 @@ def _parse_apt_get_and_cache_operations(help_text_lines):
 
 
 def _get_operations(app):
-    proc = subprocess.Popen([app, '--help'],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+    proc = subprocess.Popen(
+        [app, '--help'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
     lines = proc.stdout.readlines()
 
     if app == 'apt':
