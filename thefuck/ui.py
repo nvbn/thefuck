@@ -5,6 +5,7 @@ from .conf import settings
 from .exceptions import NoRuleMatched
 from .system import get_key
 from .utils import get_alias
+from .types import CorrectedCommand
 from . import logs, const
 
 
@@ -20,6 +21,8 @@ def read_actions():
             yield const.ACTION_NEXT
         elif key in (const.KEY_CTRL_C, 'q'):
             yield const.ACTION_ABORT
+        elif key in ('\t'):
+            yield const.ACTION_TO_BUFFER
         elif key in ('\n', '\r'):
             yield const.ACTION_SELECT
 
@@ -84,6 +87,20 @@ def select_command(corrected_commands):
         if action == const.ACTION_SELECT:
             sys.stderr.write('\n')
             return selector.value
+        elif action == const.ACTION_TO_BUFFER:
+            sys.stderr.write('\n')
+            # use a perl trick to pipe selection to terminal input buffer
+            # see fzf's example: https://github.com/junegunn/fzf/wiki/examples#with-write-to-terminal-capabilities
+            # the fork and the delay is to avoid messing up the shell's prompt
+            # i.e. we fork it to run the script in background (rather than within python's process),
+            # and only output the buffer to the terminal after the python process had exited, and shell's prompt has printed.
+            # see https://unix.stackexchange.com/questions/391679/how-to-automatically-insert-a-string-after-the-prompt/391698#391698
+            cmd_to_buffer = CorrectedCommand(
+                    "echo -- '{}' | {}".format(
+                        selector.value._get_script(),
+                        "perl -e 'unless(fork) { select undef, undef, undef, 0.15; ioctl STDOUT, 0x5412, $_ for split //, do{ chomp($_ = <>); $_ } }'"),
+                    None, selector.value.priority)
+            return cmd_to_buffer
         elif action == const.ACTION_ABORT:
             logs.failed('\nAborted')
             return
