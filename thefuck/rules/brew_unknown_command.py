@@ -59,10 +59,24 @@ def _brew_commands():
         except OSError:
             pass
 
-    # Failback commands for testing (Based on Homebrew 0.9.5)
-    return ['info', 'home', 'options', 'install', 'uninstall',
-            'search', 'list', 'update', 'upgrade', 'pin', 'unpin',
-            'doctor', 'create', 'edit', 'cask']
+    # https://docs.brew.sh/Manpage
+    return [
+        'abv', 'analytics', 'autoremove', 'casks', 'cleanup', 'commands', 'completions',
+        'config', 'deps', 'desc', 'developer', 'docs', 'doctor', 'dr', 'fetch', 'formulae',
+        'gist-logs', 'help', 'home', 'homepage', 'info', 'install', 'leaves', 'link',
+        'ln', 'list', 'log', 'migrate', 'missing', 'nodenv-sync', 'options', 'outdated', 'pin',
+        'postinstall', 'pyenv-sync', 'rbenv-sync', 'readall', 'reinstall', 'remove', 'rm',
+        'search', 'setup-ruby', 'shellenv', 'tap-info', 'tap', 'uninstall', 'unlink',
+        'unpin', 'untap', 'update', 'update-reset', 'upgrade', 'uses',
+        # Developer Commands
+        'audit', 'bottle', 'bump', 'bump-cask-pr', 'bump-formula-pr', 'bump-revision',
+        'bump-unversioned-casks', 'cat', 'command', 'contributions', 'create', 'determine-test-runners',
+        'dispatch-build-bottle', 'edit', 'extract', 'formula', 'generate-cask-api', 'generate-formula-api',
+        'generate-man-completions', 'install-bundler-gems', 'irb', 'linkage', 'livecheck', 'lc',
+        'pr-automerge', 'pr-publish', 'pr-pull', 'pr-upload', 'prof', 'release', 'rubocop', 'ruby', 'sh',
+        'style', 'tap-new', 'test', 'tests', 'typecheck', 'tc', 'unbottled', 'unpack', 'update-license-data',
+        'update-maintainers', 'update-python-resources', 'update-sponsors', 'update-test', 'vendor-gems',
+    ]
 
 
 def match(command):
@@ -70,13 +84,13 @@ def match(command):
                          'Unknown command' in command.output)
 
     if is_proper_command:
-        broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
+        broken_cmd = re.findall(r'Error: Unknown command: ([a-z-]+)',
                                 command.output)[0]
         return bool(get_closest(broken_cmd, _brew_commands()))
     return False
 
 
 def get_new_command(command):
-    broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
+    broken_cmd = re.findall(r'Error: Unknown command: ([a-z-]+)',
                             command.output)[0]
     return replace_command(command, broken_cmd, _brew_commands())
