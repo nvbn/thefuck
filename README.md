@@ -348,6 +348,7 @@ following rules are enabled by default:
 * `yarn_command_not_found` &ndash; fixes misspelled `yarn` commands;
 * `yarn_command_replaced` &ndash; fixes replaced `yarn` commands;
 * `yarn_help` &ndash; makes it easier to open `yarn` documentation;
+* `git_merge_mistake` &ndash; fixes slash mistake in git merge;
 
 ##### [Back to Contents](#contents)
 
