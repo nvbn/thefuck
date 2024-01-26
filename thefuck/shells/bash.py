@@ -15,7 +15,7 @@ class Bash(Generic):
         # It is VERY important to have the variables declared WITHIN the function
         return '''
             function {name} () {{
-                TF_PYTHONIOENCODING=$PYTHONIOENCODING;
+                TF_PYTHONIOENCODING=${{PYTHONIOENCODING:-}};
                 export TF_SHELL=bash;
                 export TF_ALIAS={name};
                 export TF_SHELL_ALIASES=$(alias);
