@@ -301,6 +301,7 @@ following rules are enabled by default:
 * `mkdir_p` &ndash; adds `-p` when you try to create a directory without a parent;
 * `mvn_no_command` &ndash; adds `clean package` to `mvn`;
 * `mvn_unknown_lifecycle_phase` &ndash; fixes misspelled life cycle phases with `mvn`;
+* `ninja` &ndash; fixes wrong targest passed to the `ninja` build tool;
 * `npm_missing_script` &ndash; fixes `npm` custom script name in `npm run-script <script>`;
 * `npm_run_script` &ndash; adds missing `run-script` for custom `npm` scripts;
 * `npm_wrong_command` &ndash; fixes wrong npm commands like `npm urgrade`;
