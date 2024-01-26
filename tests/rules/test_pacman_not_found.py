@@ -32,6 +32,18 @@ def test_match_mocked(subp_mock, command):
     assert match(command)
 
 
+@pytest.mark.parametrize('command', [
+    Command('zaz -S llc', 'sh: zaz: command not found'),
+    Command('pikachu -S llc', 'sh: pikachu: command not found'),
+    Command('yogurt -S llc', 'sh: yogurt: command not found'),
+    Command('batman llc', 'sh: batman: command not found'),
+    Command('sudo batman llc', 'sudo: batman: command not found')])
+@patch('thefuck.specific.archlinux.subprocess')
+def test_not_match_mocked(subp_mock, command):
+    subp_mock.check_output.return_value = ""
+    assert not match(command)
+
+
 @pytest.mark.skipif(not getattr(pacman_not_found, 'enabled_by_default', True),
                     reason='Skip if pacman is not available')
 @pytest.mark.parametrize('command, fixed', [
