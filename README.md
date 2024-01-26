@@ -296,6 +296,7 @@ following rules are enabled by default:
 * `ls_lah` &ndash; adds `-lah` to `ls`;
 * `man` &ndash; changes manual section;
 * `man_no_space` &ndash; fixes man commands without spaces, for example `mandiff`;
+* `mdt` &ndash; fixes misspellings in mdt commands like `mdt shll`;
 * `mercurial` &ndash; fixes wrong `hg` commands;
 * `missing_space_before_subcommand` &ndash; fixes command with missing space like `npminstall`;
 * `mkdir_p` &ndash; adds `-p` when you try to create a directory without a parent;
