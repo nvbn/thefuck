@@ -137,8 +137,13 @@ On ChromeOS, install *The Fuck* using [chromebrew](https://github.com/skycocker/
 crew install thefuck
 ```
 
-On Arch based systems, install *The Fuck* with the following command:
+On Fedora, install *The Fuck* with the following command:
+```bash
+sudo dnf install thefuck
 ```
+
+On Arch based systems, install *The Fuck* with the following command:
+```bash
 sudo pacman -S thefuck
 ```
 
