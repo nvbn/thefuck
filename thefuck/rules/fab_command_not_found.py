@@ -6,7 +6,7 @@ def match(command):
     return 'Warning: Command(s) not found:' in command.output
 
 
-# We need different behavior then in get_all_matched_commands.
+# We need different behavior than in get_all_matched_commands.
 @eager
 def _get_between(content, start, end=None):
     should_yield = False

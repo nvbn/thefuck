@@ -6,25 +6,25 @@ from thefuck.rules.tsuru_not_command import match, get_new_command
 
 @pytest.mark.parametrize('command', [
     Command('tsuru log', (
-        'tsuru: "tchururu" is not a tsuru command. See "tsuru help".\n'
+        'tsuru: "log" is not a tsuru command. See "tsuru help".\n'
         '\nDid you mean?\n'
         '\tapp-log\n'
         '\tlogin\n'
         '\tlogout\n'
     )),
     Command('tsuru app-l', (
-        'tsuru: "tchururu" is not a tsuru command. See "tsuru help".\n'
+        'tsuru: "app-l" is not a tsuru command. See "tsuru help".\n'
         '\nDid you mean?\n'
         '\tapp-list\n'
         '\tapp-log\n'
     )),
     Command('tsuru user-list', (
-        'tsuru: "tchururu" is not a tsuru command. See "tsuru help".\n'
+        'tsuru: "user-list" is not a tsuru command. See "tsuru help".\n'
         '\nDid you mean?\n'
         '\tteam-user-list\n'
     )),
     Command('tsuru targetlist', (
-        'tsuru: "tchururu" is not a tsuru command. See "tsuru help".\n'
+        'tsuru: "targetlist" is not a tsuru command. See "tsuru help".\n'
         '\nDid you mean?\n'
         '\ttarget-list\n'
     )),
