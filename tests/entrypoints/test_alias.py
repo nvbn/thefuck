@@ -1,4 +1,4 @@
-from mock import Mock
+from unittest.mock import Mock
 import pytest
 from thefuck.entrypoints.alias import _get_alias, print_alias
 

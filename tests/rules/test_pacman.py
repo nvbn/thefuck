@@ -1,5 +1,5 @@
 import pytest
-from mock import patch
+from unittest.mock import patch
 from thefuck.rules import pacman
 from thefuck.rules.pacman import match, get_new_command
 from thefuck.types import Command
