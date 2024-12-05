@@ -8,7 +8,6 @@ import os  # noqa: E402
 import json  # noqa: E402
 from tempfile import gettempdir  # noqa: E402
 import time  # noqa: E402
-import six  # noqa: E402
 from psutil import Process  # noqa: E402
 from .. import logs, const  # noqa: E402
 from ..shells import shell  # noqa: E402
@@ -38,8 +37,7 @@ def _record_first_run():
     info = {'pid': _get_shell_pid(),
             'time': time.time()}
 
-    mode = 'wb' if six.PY2 else 'w'
-    with _get_not_configured_usage_tracker_path().open(mode) as tracker:
+    with _get_not_configured_usage_tracker_path().open('w') as tracker:
         json.dump(info, tracker)
 
 

@@ -4,7 +4,6 @@ import pickle
 import re
 import shelve
 import sys
-import six
 from decorator import decorator
 from difflib import get_close_matches as difflib_get_close_matches
 from functools import wraps
@@ -14,12 +13,8 @@ from .system import Path
 
 DEVNULL = open(os.devnull, 'w')
 
-if six.PY2:
-    import anydbm
-    shelve_open_error = anydbm.error
-else:
-    import dbm
-    shelve_open_error = dbm.error
+import dbm
+shelve_open_error = dbm.error
 
 
 def memoize(fn):
@@ -121,13 +116,13 @@ def get_all_executables():
     tf_alias = get_alias()
     tf_entry_points = ['thefuck', 'fuck']
 
-    bins = [exe.name.decode('utf8') if six.PY2 else exe.name
+    bins = [exe.name
             for path in os.environ.get('PATH', '').split(os.pathsep)
             if include_path_in_search(path)
             for exe in _safe(lambda: list(Path(path).iterdir()), [])
             if not _safe(exe.is_dir, True)
             and exe.name not in tf_entry_points]
-    aliases = [alias.decode('utf8') if six.PY2 else alias
+    aliases = [alias
                for alias in shell.get_aliases() if alias != tf_alias]
 
     return bins + aliases
@@ -339,9 +334,6 @@ def format_raw_script(raw_script):
     :rtype: basestring
 
     """
-    if six.PY2:
-        script = ' '.join(arg.decode('utf-8') for arg in raw_script)
-    else:
-        script = ' '.join(raw_script)
+    script = ' '.join(raw_script)
 
     return script.lstrip()

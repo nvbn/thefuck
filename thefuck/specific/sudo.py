@@ -1,4 +1,3 @@
-import six
 from decorator import decorator
 
 
@@ -10,7 +9,7 @@ def sudo_support(fn, command):
 
     result = fn(command.update(script=command.script[5:]))
 
-    if result and isinstance(result, six.string_types):
+    if result and isinstance(result, str):
         return u'sudo {}'.format(result)
     elif isinstance(result, list):
         return [u'sudo {}'.format(x) for x in result]

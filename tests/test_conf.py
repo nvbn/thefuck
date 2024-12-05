@@ -1,5 +1,5 @@
+import io
 import pytest
-import six
 import os
 from mock import Mock
 from thefuck import const
@@ -90,7 +90,7 @@ class TestInitializeSettingsFile(object):
         assert not settings_path_mock.open.called
 
     def test_create_if_doesnt_exists(self, settings):
-        settings_file = six.StringIO()
+        settings_file = io.StringIO()
         settings_path_mock = Mock(
             is_file=Mock(return_value=False),
             open=Mock(return_value=Mock(

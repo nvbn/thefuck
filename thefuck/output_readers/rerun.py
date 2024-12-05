@@ -1,6 +1,5 @@
 import os
 import shlex
-import six
 from subprocess import Popen, PIPE, STDOUT
 from psutil import AccessDenied, Process, TimeoutExpired
 from .. import logs
@@ -53,9 +52,6 @@ def get_output(script, expanded):
     """
     env = dict(os.environ)
     env.update(settings.env)
-
-    if six.PY2:
-        expanded = expanded.encode('utf-8')
 
     split_expand = shlex.split(expanded)
     is_slow = split_expand[0] in settings.slow_commands if split_expand else False
