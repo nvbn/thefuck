@@ -142,13 +142,27 @@ On Arch based systems, install *The Fuck* with the following command:
 sudo pacman -S thefuck
 ```
 
-On other systems, install *The Fuck*  by using `pip`:
+On other systems (including Windows), install *The Fuck*  by using `pip`:
 
 ```bash
 pip install thefuck
 ```
 
+On Windows, if you encounter the error "ModuleNotFoundError: No module named 'imp'" when running *The Fuck*, please try the following:
+```bash
+pip uninstall thefuck
+pip install https://github.com/nvbn/thefuck/archive/master.zip
+```
 [Alternatively, you may use an OS package manager (OS X, Ubuntu, Arch).](https://github.com/nvbn/thefuck/wiki/Installation)
+
+---
+
+**Note for Windows users:** Also, on Windows, in order to run the command *fuck* on PowerShell/Terminal, you need to change the default ExecutionPolicy after running the PowerShell/Terminal as administrator as PowerShell does not allow remotely signed apps to be run by default (See [PowerShell Execution Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.4)):
+```bash
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+```
+
+---
 
 <a href='#manual-installation' name='manual-installation'>#</a>
 It is recommended that you place this command in your `.bash_profile`,
@@ -164,6 +178,8 @@ eval $(thefuck --alias FUCK)
 
 Changes are only available in a new shell session. To make changes immediately
 available, run `source ~/.bashrc` (or your shell config file like `.zshrc`).
+
+---
 
 To run fixed commands without confirmation, use the `--yeah` option (or just `-y` for short, or `--hard` if you're especially frustrated):
 
