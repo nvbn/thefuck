@@ -1,0 +1,185 @@
+The Fuck Version Build Status Coverage MIT License
+
+The Fuck is a magnificent app, inspired by a @liamosaur tweet, that corrects errors in previous console commands.
+
+Is The Fuck too slow? Trythe experimental instant mode !
+
+## Examples:
+
+### Example 1:
+```
+➜ apt-get install vim
+E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
+E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+
+➜ fuck
+sudo apt-get install vim [enter/↑/↓/ctrl+c]
+[sudo] password for nvbn:
+Reading package lists... Done
+...
+```
+
+### Example 2:
+```
+➜ git push
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
+    git push --set-upstream origin master
+
+➜ fuck
+git push --set-upstream origin master [enter/↑/↓/ctrl+c]
+Counting objects: 9, done.
+...
+```
+
+### Example 3:
+```
+➜ puthon
+No command 'puthon' found, did you mean:
+ Command 'python' from package 'python-minimal' (main)
+ Command 'python' from package 'python3' (main)
+zsh: command not found: puthon
+
+➜ fuck
+python [enter/↑/↓/ctrl+c]
+Python 3.4.2 (default, Oct  8 2014, 13:08:17)
+...
+```
+
+### Example 4:
+```
+➜ git brnch
+git: 'brnch' is not a git command. See 'git --help'.
+
+Did you mean this?
+    branch
+
+➜ fuck
+git branch [enter/↑/↓/ctrl+c]
+* master
+```
+
+If you're not afraid of blindly running corrected commands, the `require_confirmation` settings option can be disabled:
+
+```➜ apt-get install vim
+E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)
+E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?
+
+➜ fuck
+sudo apt-get install vim
+[sudo] password for nvbn:
+Reading package lists... Done
+...
+```
+
+## Contents
+1. Requirements
+2. Installations
+3. Updating
+4. How it works
+5. Creating your own rules
+6. Settings
+7. Third-party packages with rules
+8. Experimental instant mode
+9. Developing
+10. License
+
+---
+
+## Requirements
+- python (3.5+)
+- pip
+- python-dev
+
+---
+
+## Installation
+
+### macOS or Linux
+Install The Fuck via Homebrew:
+```
+brew install thefuck
+```
+
+### Ubuntu / Mint
+```
+sudo apt update
+sudo apt install python3-dev python3-pip python3-setuptools
+pip3 install thefuck --user
+```
+
+### FreeBSD
+```
+pkg install thefuck
+```
+
+### ChromeOS
+Install The Fuck using chromebrew:
+```
+crew install thefuck
+```
+
+### Arch-based systems
+```
+sudo pacman -S thefuck
+```
+
+### Other systems
+Use pip:
+```
+pip install thefuck
+```
+
+Add this command in your `.bash_profile`, `.bashrc`, `.zshrc` or other startup script:
+```
+eval $(thefuck --alias)
+```
+Customize alias:
+```
+eval $(thefuck --alias FUCK)
+```
+Apply changes immediately:
+```
+source ~/.bashrc
+```
+Run fixed commands without confirmation:
+```
+fuck --yeah
+```
+Run recursively until succeeding:
+```
+fuck -r
+```
+
+---
+
+## Updating
+Update via pip:
+```
+pip3 install thefuck --upgrade
+```
+
+---
+
+## Uninstallation
+1. Remove or comment out the `thefuck` alias line from your shell configuration file.
+2. Uninstall thefuck binaries using your package manager:
+   - Homebrew: `brew uninstall thefuck`
+   - Pip: `pip uninstall thefuck`
+
+---
+
+## How it works
+The Fuck matches previous commands with rules. When a match is found, a new command is created and executed. Rules are predefined or user-created, for example:
+- **adb_unknown_command**: Fixes misspelled commands like `adb logcta`
+- **chmod_x**: Adds execution bit
+- **git_add**: Fixes "pathspec did not match any file(s)"
+- **npm_wrong_command**: Corrects commands like `npm urgrade`
+
+Rules are highly customizable. Add your own by creating a `.py` file in `~/.config/thefuck/rules`.
+
+---
+
+## License
+The Fuck is open source software released under the MIT License.
+
