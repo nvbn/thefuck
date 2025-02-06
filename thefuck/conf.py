@@ -14,7 +14,13 @@ try:
         module_spec.loader.exec_module(module)
         return module
 except ImportError:
-    from imp import load_source
+    py_version = sys.version_info
+    major = py_version.major
+    minor = py_version.minor
+    if major == 3 and minor < 12:
+        from imp import load_source
+    else:
+        from importlib import load_source
 
 
 class Settings(dict):
