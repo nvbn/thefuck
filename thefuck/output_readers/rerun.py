@@ -70,3 +70,5 @@ def get_output(script, expanded):
         else:
             logs.debug(u'Execution timed out!')
             return None
+
+# Automated edit: [Edited] Add docstring to improve documentation
