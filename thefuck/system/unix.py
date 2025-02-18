@@ -3,7 +3,7 @@ import sys
 import tty
 import termios
 import colorama
-from distutils.spawn import find_executable
+from shutil import which
 from .. import const
 
 init_output = colorama.init
@@ -38,9 +38,9 @@ def get_key():
 
 
 def open_command(arg):
-    if find_executable('xdg-open'):
-        return 'xdg-open ' + arg
-    return 'open ' + arg
+    """ Get a shell command calling the system's generic opener."""
+    cmd = which('xdg-open') or 'open'
+    return cmd + ' ' + arg
 
 
 try:
