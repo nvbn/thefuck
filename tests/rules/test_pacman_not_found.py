@@ -14,6 +14,7 @@ extra/llvm35 3.5.2-13/usr/bin/llc'''
     Command('yay -S llc', 'error: target not found: llc'),
     Command('pikaur -S llc', 'error: target not found: llc'),
     Command('yaourt -S llc', 'error: target not found: llc'),
+    Command('paru -S llc', 'error: target not found: llc'),
     Command('pacman llc', 'error: target not found: llc'),
     Command('sudo pacman llc', 'error: target not found: llc')])
 def test_match(command):
@@ -24,6 +25,7 @@ def test_match(command):
     Command('yay -S llc', 'error: target not found: llc'),
     Command('pikaur -S llc', 'error: target not found: llc'),
     Command('yaourt -S llc', 'error: target not found: llc'),
+    Command('paru -S llc', 'error: target not found: llc'),
     Command('pacman llc', 'error: target not found: llc'),
     Command('sudo pacman llc', 'error: target not found: llc')])
 @patch('thefuck.specific.archlinux.subprocess')
@@ -38,6 +40,7 @@ def test_match_mocked(subp_mock, command):
     (Command('yay -S llc', 'error: target not found: llc'), ['yay -S extra/llvm', 'yay -S extra/llvm35']),
     (Command('pikaur -S llc', 'error: target not found: llc'), ['pikaur -S extra/llvm', 'pikaur -S extra/llvm35']),
     (Command('yaourt -S llc', 'error: target not found: llc'), ['yaourt -S extra/llvm', 'yaourt -S extra/llvm35']),
+    (Command('paru -S llc', 'error: target not found: llc'), ['paru -S extra/llvm', 'paru -S extra/llvm35']),
     (Command('pacman -S llc', 'error: target not found: llc'), ['pacman -S extra/llvm', 'pacman -S extra/llvm35']),
     (Command('sudo pacman -S llc', 'error: target not found: llc'), ['sudo pacman -S extra/llvm', 'sudo pacman -S extra/llvm35'])])
 def test_get_new_command(command, fixed):
@@ -48,6 +51,7 @@ def test_get_new_command(command, fixed):
     (Command('yay -S llc', 'error: target not found: llc'), ['yay -S extra/llvm', 'yay -S extra/llvm35']),
     (Command('pikaur -S llc', 'error: target not found: llc'), ['pikaur -S extra/llvm', 'pikaur -S extra/llvm35']),
     (Command('yaourt -S llc', 'error: target not found: llc'), ['yaourt -S extra/llvm', 'yaourt -S extra/llvm35']),
+    (Command('paru -S llc', 'error: target not found: llc'), ['paru -S extra/llvm', 'paru -S extra/llvm35']),
     (Command('pacman -S llc', 'error: target not found: llc'), ['pacman -S extra/llvm', 'pacman -S extra/llvm35']),
     (Command('sudo pacman -S llc', 'error: target not found: llc'), ['sudo pacman -S extra/llvm', 'sudo pacman -S extra/llvm35'])])
 @patch('thefuck.specific.archlinux.subprocess')
