@@ -38,6 +38,8 @@ def archlinux_env():
         pacman = 'pikaur'
     elif utils.which('yaourt'):
         pacman = 'yaourt'
+    elif utils.which('paru'):
+        pacman = 'paru'
     elif utils.which('pacman'):
         pacman = 'sudo pacman'
     else:
