@@ -1,8 +1,18 @@
+import importlib.util
+import sys
+import os
+
+def load_source(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
 import os
 import sys
 from . import logs
 from .shells import shell
-from .conf import settings, load_source
+from .conf import settings
 from .const import DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
 from .utils import get_alias, format_raw_script
