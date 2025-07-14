@@ -452,7 +452,7 @@ Several *The Fuck* parameters can be changed in the file `$XDG_CONFIG_HOME/thefu
 * `wait_slow_command` &ndash; max amount of time in seconds for getting previous command output if it in `slow_commands` list;
 * `slow_commands` &ndash; list of slow commands;
 * `num_close_matches` &ndash; the maximum number of close matches to suggest, by default `3`.
-* `excluded_search_path_prefixes` &ndash; path prefixes to ignore when searching for commands, by default `[]`.
+* `excluded_search_path_prefixes` &ndash; path prefixes to ignore when searching for commands, by default `[]`. For Windows Subsystem for Linux (WSL) users, consider adding `['/mnt/']` or `['/mnt/c/']` to this list to avoid searching for commands in Windows paths as this can cause significant slow-down when running `fuck` on WSL.
 
 An example of `settings.py`:
 
