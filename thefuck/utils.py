@@ -15,8 +15,8 @@ from .system import Path
 DEVNULL = open(os.devnull, 'w')
 
 if six.PY2:
-    import anydbm
-    shelve_open_error = anydbm.error
+    import dbm
+    shelve_open_error = dbm.error
 else:
     import dbm
     shelve_open_error = dbm.error
