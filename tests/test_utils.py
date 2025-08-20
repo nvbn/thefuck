@@ -234,6 +234,7 @@ class TestCache(object):
         assert shelve == {key: {'etag': '0', 'value': 'test'}}
 
 
+@pytest.mark.usefixtures('no_memoize')
 class TestGetValidHistoryWithoutCurrent(object):
     @pytest.fixture(autouse=True)
     def fail_on_warning(self):
