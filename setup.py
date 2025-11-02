@@ -38,6 +38,7 @@ extras_require = {':python_version<"3.4"': ['pathlib2'],
                   ':python_version<"3.3"': ['backports.shutil_get_terminal_size'],
                   ':python_version<="2.7"': ['decorator<5', 'pyte<0.8.1'],
                   ':python_version>"2.7"': ['decorator', 'pyte'],
+                  ':python_version>"3.11"': ['setuptools'],
                   ":sys_platform=='win32'": ['win_unicode_console']}
 
 if sys.platform == "win32":
