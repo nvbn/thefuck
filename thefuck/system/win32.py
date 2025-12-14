@@ -1,12 +1,23 @@
 import os
 import msvcrt
+import warnings
 import win_unicode_console
 from .. import const
 
 
 def init_output():
     import colorama
-    win_unicode_console.enable()
+    # Suppress RuntimeWarning from win_unicode_console when stdin/stdout
+    # encodings differ (common on Windows with non-English locales).
+    # See: https://github.com/nvbn/thefuck/issues/514
+    #      https://github.com/nvbn/thefuck/issues/673
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message=r"sys\.stdin\.encoding",
+            category=RuntimeWarning
+        )
+        win_unicode_console.enable()
     colorama.init()
 
 
