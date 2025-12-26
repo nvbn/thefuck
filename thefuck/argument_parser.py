@@ -30,6 +30,10 @@ class Parser(object):
             action='store',
             help='log shell output to the file')
         self._parser.add_argument(
+            '--shell',
+            action='store',
+            help='custom shell: bash, fish, zsh, powershell, tcsh')
+        self._parser.add_argument(
             '--enable-experimental-instant-mode',
             action='store_true',
             help='enable experimental instant mode, use on your own risk')

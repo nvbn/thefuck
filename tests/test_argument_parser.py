@@ -8,7 +8,7 @@ def _args(**override):
             'help': False, 'version': False, 'debug': False,
             'force_command': None, 'repeat': False,
             'enable_experimental_instant_mode': False,
-            'shell_logger': None}
+            'shell_logger': None, 'shell': None}
     args.update(override)
     return args
 
@@ -31,6 +31,7 @@ def _args(**override):
      _args(command=['git', 'branch', '-a'], repeat=True, debug=True)),
     (['thefuck', '-l', '/tmp/log'], _args(shell_logger='/tmp/log')),
     (['thefuck', '--shell-logger', '/tmp/log'],
-     _args(shell_logger='/tmp/log'))])
+     _args(shell_logger='/tmp/log')),
+    (['thefuck', '--shell', 'fish'], _args(shell='fish'))])
 def test_parse(argv, result):
     assert vars(Parser().parse(argv)) == result
