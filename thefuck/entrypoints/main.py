@@ -5,17 +5,21 @@ init_output()
 
 import os  # noqa: E402
 import sys  # noqa: E402
-from .. import logs  # noqa: E402
 from ..argument_parser import Parser  # noqa: E402
-from ..utils import get_installation_version  # noqa: E402
-from ..shells import shell  # noqa: E402
-from .alias import print_alias  # noqa: E402
-from .fix_command import fix_command  # noqa: E402
 
 
 def main():
     parser = Parser()
     known_args = parser.parse(sys.argv)
+
+    if known_args.shell:
+        os.environ['TF_SHELL'] = known_args.shell
+
+    from .. import logs  # noqa: E402
+    from ..utils import get_installation_version  # noqa: E402
+    from ..shells import shell  # noqa: E402
+    from .alias import print_alias  # noqa: E402
+    from .fix_command import fix_command  # noqa: E402
 
     if known_args.help:
         parser.print_help()
