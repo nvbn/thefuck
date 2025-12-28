@@ -13,7 +13,7 @@ from .alias import print_alias  # noqa: E402
 from .fix_command import fix_command  # noqa: E402
 
 
-def main():
+def _main():
     parser = Parser()
     known_args = parser.parse(sys.argv)
 
@@ -38,3 +38,14 @@ def main():
             shell_logger(known_args.shell_logger)
     else:
         parser.print_usage()
+
+
+def main():
+    try:
+        _main()
+    except BrokenPipeError:
+        # Handle broken pipe gracefully (e.g., when terminal is closed)
+        # Redirect remaining output to devnull to avoid additional errors
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+        sys.exit(0)
