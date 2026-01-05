@@ -71,12 +71,15 @@ def match(command):
 
     if is_proper_command:
         broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
-                                command.output)[0]
-        return bool(get_closest(broken_cmd, _brew_commands()))
+                                command.output)
+        if broken_cmd:
+            return bool(get_closest(broken_cmd[0], _brew_commands()))
     return False
 
 
 def get_new_command(command):
     broken_cmd = re.findall(r'Error: Unknown command: ([a-z]+)',
-                            command.output)[0]
-    return replace_command(command, broken_cmd, _brew_commands())
+                            command.output)
+    if broken_cmd:
+        return replace_command(command, broken_cmd[0], _brew_commands())
+    return command.script
