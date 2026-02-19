@@ -94,7 +94,7 @@ Reading package lists... Done
 ## Contents
 
 1. [Requirements](#requirements)
-2. [Installations](#installation)
+2. [Installation](#installation)
 3. [Updating](#updating)
 4. [How it works](#how-it-works)
 5. [Creating your own rules](#creating-your-own-rules)
