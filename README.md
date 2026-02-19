@@ -142,7 +142,7 @@ On Arch based systems, install *The Fuck* with the following command:
 sudo pacman -S thefuck
 ```
 
-On other systems, install *The Fuck*  by using `pip`:
+On other systems, install *The Fuck* by using `pip`:
 
 ```bash
 pip install thefuck
