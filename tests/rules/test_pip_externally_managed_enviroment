@@ -1,0 +1,27 @@
+import pytest
+from thefuck.rules.pip_externally_managed import match, get_new_command
+from thefuck.types import Command
+
+EXTERNALLY_MANAGED_ERROR = """
+    error: externally-managed-environment\r\n
+    --break-system-packages"""
+"""
+
+@pytest.mark.parametrize('command', [
+    Command('pip install requests', EXTERNALLY_MANAGED_ERROR),
+    Command('pip3 install requests', EXTERNALLY_MANAGED_ERROR),
+    Command('python -m pip install requests', EXTERNALLY_MANAGED_ERROR),
+])
+def test_match(command):
+    assert match(command) is True
+
+@pytest.mark.parametrize('command', [
+    Command('pip install requests', ''),
+    Command('ls', EXTERNALLY_MANAGED_ERROR),
+])
+def test_not_match(command):
+    assert match(command) is False
+
+def test_get_new_command():
+    cmd = Command('pip install requests', EXTERNALLY_MANAGED_ERROR)
+    assert get_new_command(cmd) == 'pip install requests --break-system-packages'
