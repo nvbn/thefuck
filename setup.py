@@ -1,17 +1,20 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-import pkg_resources
 import sys
 import os
 import fastentrypoints
 
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ImportError:
+    from importlib_metadata import version, PackageNotFoundError
 
 try:
-    if int(pkg_resources.get_distribution("pip").version.split('.')[0]) < 6:
+    if int(version("pip").split('.')[0]) < 6:
         print('pip older than 6.0 not supported, please upgrade pip with:\n\n'
               '    pip install -U pip')
         sys.exit(-1)
-except pkg_resources.DistributionNotFound:
+except PackageNotFoundError:
     pass
 
 if os.environ.get('CONVERT_README'):
