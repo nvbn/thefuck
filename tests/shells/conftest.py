@@ -12,7 +12,6 @@ def isfile(mocker):
 
 
 @pytest.fixture
-@pytest.mark.usefixtures('isfile')
 def history_lines(mocker):
     def aux(lines):
         mock = mocker.patch('io.open')
