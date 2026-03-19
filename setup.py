@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-import pkg_resources
+from importlib.metadata import version as get_version, PackageNotFoundError
 import sys
 import os
 import fastentrypoints
 
 
 try:
-    if int(pkg_resources.get_distribution("pip").version.split('.')[0]) < 6:
-        print('pip older than 6.0 not supported, please upgrade pip with:\n\n'
+    if int(get_version("pip").split('.')[0]) < 6:
+        print('pip older than 6.0 not supported, please upgrade pip with:
+
+'
               '    pip install -U pip')
         sys.exit(-1)
-except pkg_resources.DistributionNotFound:
+except PackageNotFoundError:
     pass
 
 if os.environ.get('CONVERT_README'):
@@ -41,7 +43,7 @@ extras_require = {':python_version<"3.4"': ['pathlib2'],
                   ":sys_platform=='win32'": ['win_unicode_console']}
 
 if sys.platform == "win32":
-    scripts = ['scripts\\fuck.bat', 'scripts\\fuck.ps1']
+    scripts = ['scripts\fuck.bat', 'scripts\fuck.ps1']
     entry_points = {'console_scripts': [
                   'thefuck = thefuck.entrypoints.main:main',
                   'thefuck_firstuse = thefuck.entrypoints.not_configured:main']}
