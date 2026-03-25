@@ -11,7 +11,12 @@ init_output = colorama.init
 
 def getch():
     fd = sys.stdin.fileno()
-    old = termios.tcgetattr(fd)
+    try:
+        old = termios.tcgetattr(fd)
+    except termios.error:
+        # Not a TTY (e.g. piped input, subprocess capture, CI).
+        # Return newline to auto-select the first suggestion.
+        return '\n'
     try:
         tty.setraw(fd)
         return sys.stdin.read(1)

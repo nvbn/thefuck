@@ -1,11 +1,20 @@
 # -*- encoding: utf-8 -*-
 
+import os
 import sys
 from .conf import settings
 from .exceptions import NoRuleMatched
 from .system import get_key
 from .utils import get_alias
 from . import logs, const
+
+
+def _is_interactive():
+    """Check if stdin is a TTY (interactive terminal)."""
+    try:
+        return os.isatty(sys.stdin.fileno())
+    except (AttributeError, ValueError):
+        return False
 
 
 def read_actions():
@@ -74,7 +83,7 @@ def select_command(corrected_commands):
                     else 'Nothing found')
         return
 
-    if not settings.require_confirmation:
+    if not settings.require_confirmation or not _is_interactive():
         logs.show_corrected_command(selector.value)
         return selector.value
 
