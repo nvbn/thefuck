@@ -9,7 +9,7 @@
 
 
 def match(command):
-    return command.script == 'cd..'
+    return command.script.strip().replace(" ","") == 'cd..'
 
 
 def get_new_command(command):
