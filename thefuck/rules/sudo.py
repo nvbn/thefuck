@@ -1,3 +1,5 @@
+from thefuck.shells import shell
+
 patterns = ['permission denied',
             'eacces',
             'pkg: insufficient privileges',
@@ -27,9 +29,13 @@ patterns = ['permission denied',
             'error: insufficient privileges',
             'updatedb: can not open a temporary file']
 
+# The 'and' operator differs between shells: bash/zsh use '&&' while
+# fish v2 uses '; and '.  Use shell.and_() for a portable check.
+_and_operator = shell.and_('', '').strip()
+
 
 def match(command):
-    if command.script_parts and '&&' not in command.script_parts and command.script_parts[0] == 'sudo':
+    if command.script_parts and _and_operator not in command.script and command.script_parts[0] == 'sudo':
         return False
 
     for pattern in patterns:
@@ -39,7 +45,7 @@ def match(command):
 
 
 def get_new_command(command):
-    if '&&' in command.script:
+    if _and_operator in command.script:
         return u'sudo sh -c "{}"'.format(" ".join([part for part in command.script_parts if part != "sudo"]))
     elif '>' in command.script:
         return u'sudo sh -c "{}"'.format(command.script.replace('"', '\\"'))
