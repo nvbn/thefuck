@@ -1,8 +1,12 @@
+try:
+    from importlib.util import spec_from_file_location, module_from_spec
+except ImportError:
+    from imp import load_source
 import os
 import sys
 from . import logs
 from .shells import shell
-from .conf import settings, load_source
+from .conf import settings
 from .const import DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
 from .utils import get_alias, format_raw_script
@@ -140,7 +144,9 @@ class Rule(object):
             return
         with logs.debug_time(u'Importing rule: {};'.format(name)):
             try:
-                rule_module = load_source(name, str(path))
+                spec = spec_from_file_location(name, str(path))
+                rule_module = module_from_spec(spec)
+                spec.loader.exec_module(rule_module)
             except Exception:
                 logs.exception(u"Rule {} failed to load".format(name), sys.exc_info())
                 return

@@ -1,22 +1,13 @@
+try:
+    from importlib.util import spec_from_file_location, module_from_spec
+except ImportError:
+    from imp import load_source
 import os
 import sys
 from warnings import warn
 from six import text_type
 from . import const
 from .system import Path
-
-try:
-    import importlib.util
-
-    def load_source(name, pathname, _file=None):
-        module_spec = importlib.util.spec_from_file_location(name, pathname)
-        module = importlib.util.module_from_spec(module_spec)
-        module_spec.loader.exec_module(module)
-        return module
-except ImportError:
-    from imp import load_source
-
-
 class Settings(dict):
     def __getattr__(self, item):
         return self.get(item)
@@ -76,11 +67,16 @@ class Settings(dict):
 
     def _settings_from_file(self):
         """Loads settings from file."""
-        settings = load_source(
-            'settings', text_type(self.user_dir.joinpath('settings.py')))
+        settings_path = self.user_dir.joinpath('settings.py')
+        try:
+            spec = spec_from_file_location('settings', text_type(settings_path))
+            settings = module_from_spec(spec)
+            spec.loader.exec_module(settings)
+        except Exception:
+            settings = None
         return {key: getattr(settings, key)
                 for key in const.DEFAULT_SETTINGS.keys()
-                if hasattr(settings, key)}
+                if settings is not None and hasattr(settings, key)}
 
     def _rules_from_env(self, val):
         """Transforms rules list from env-string to python."""
