@@ -64,7 +64,7 @@ ENV_TO_ATTR = {'THEFUCK_RULES': 'rules',
 
 SETTINGS_HEADER = u"""# The Fuck settings file
 #
-# The rules are defined as in the example bellow:
+# The rules are defined as in the example below:
 #
 # rules = ['cd_parent', 'git_push', 'python_command', 'sudo']
 #
