@@ -1,4 +1,5 @@
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from .conf import settings
 from .types import Rule
 from .system import Path
@@ -6,16 +7,25 @@ from . import logs
 
 
 def get_loaded_rules(rules_paths):
-    """Yields all available rules.
+    """Yields all available rules, loading them in parallel.
 
     :type rules_paths: [Path]
     :rtype: Iterable[Rule]
 
     """
-    for path in rules_paths:
-        if path.name != '__init__.py':
-            rule = Rule.from_path(path)
-            if rule and rule.is_enabled:
+    paths = [p for p in rules_paths if p.name != '__init__.py']
+    if not paths:
+        return
+
+    def _load(path):
+        rule = Rule.from_path(path)
+        if rule and rule.is_enabled:
+            return rule
+        return None
+
+    with ThreadPoolExecutor(max_workers=min(16, len(paths))) as executor:
+        for rule in executor.map(_load, paths):
+            if rule is not None:
                 yield rule
 
 
@@ -81,12 +91,22 @@ def organize_commands(corrected_commands):
 def get_corrected_commands(command):
     """Returns generator with sorted and unique corrected commands.
 
+    Runs rule matching in parallel using a thread pool for lower latency.
+
     :type command: thefuck.types.Command
     :rtype: Iterable[thefuck.types.CorrectedCommand]
 
     """
-    corrected_commands = (
-        corrected for rule in get_rules()
-        if rule.is_match(command)
-        for corrected in rule.get_corrected_commands(command))
-    return organize_commands(corrected_commands)
+    rules = list(get_rules())
+
+    def _check_rule(rule):
+        if rule.is_match(command):
+            return list(rule.get_corrected_commands(command))
+        return []
+
+    corrected = []
+    with ThreadPoolExecutor(max_workers=min(16, len(rules) or 1)) as executor:
+        for results in executor.map(_check_rule, rules):
+            corrected.extend(results)
+
+    return organize_commands(iter(corrected))
