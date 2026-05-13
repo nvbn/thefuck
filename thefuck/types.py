@@ -1,6 +1,17 @@
-try:
-    from importlib.util import spec_from_file_location, module_from_spec
-except ImportError:
+import sys
+
+# Modern Python (3.4 and higher)
+if sys.version_info >= (3, 4):
+    import importlib.util
+
+    def load_source(name, pathname):
+        spec = importlib.util.spec_from_file_location(name, pathname)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        spec.loader.exec_module(module)
+        return module
+# Ancient Python (2.7, 3.3)
+else:
     from imp import load_source
 import os
 import sys
@@ -144,9 +155,7 @@ class Rule(object):
             return
         with logs.debug_time(u'Importing rule: {};'.format(name)):
             try:
-                spec = spec_from_file_location(name, str(path))
-                rule_module = module_from_spec(spec)
-                spec.loader.exec_module(rule_module)
+                rule_module = load_source(name, str(path))
             except Exception:
                 logs.exception(u"Rule {} failed to load".format(name), sys.exc_info())
                 return

@@ -1,13 +1,25 @@
-try:
-    from importlib.util import spec_from_file_location, module_from_spec
-except ImportError:
+import sys
+
+# Modern Python (3.4 and higher)
+if sys.version_info >= (3, 4):
+    import importlib.util
+
+    def load_source(name, pathname):
+        spec = importlib.util.spec_from_file_location(name, pathname)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        spec.loader.exec_module(module)
+        return module
+# Ancient Python (2.7, 3.3)
+else:
     from imp import load_source
 import os
 import sys
 from warnings import warn
-from six import text_type
 from . import const
 from .system import Path
+
+
 class Settings(dict):
     def __getattr__(self, item):
         return self.get(item)
@@ -69,9 +81,7 @@ class Settings(dict):
         """Loads settings from file."""
         settings_path = self.user_dir.joinpath('settings.py')
         try:
-            spec = spec_from_file_location('settings', text_type(settings_path))
-            settings = module_from_spec(spec)
-            spec.loader.exec_module(settings)
+            settings = load_source('settings', str(settings_path))
         except Exception:
             settings = None
         return {key: getattr(settings, key)

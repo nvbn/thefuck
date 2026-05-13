@@ -111,6 +111,7 @@ def include_path_in_search(path):
 @memoize
 def get_all_executables():
     from thefuck.shells import shell
+    import sys
 
     def _safe(fn, fallback):
         try:
@@ -120,13 +121,24 @@ def get_all_executables():
 
     tf_alias = get_alias()
     tf_entry_points = ['thefuck', 'fuck']
+    win_exts = ('.exe', '.bat', '.cmd', '.py', '.ps1') if sys.platform == 'win32' else ()
 
-    bins = [exe.name.decode('utf8') if six.PY2 else exe.name
-            for path in os.environ.get('PATH', '').split(os.pathsep)
-            if include_path_in_search(path)
-            for exe in _safe(lambda: list(Path(path).iterdir()), [])
-            if not _safe(exe.is_dir, True)
-            and exe.name not in tf_entry_points]
+    bins = []
+    for path in os.environ.get('PATH', '').split(os.pathsep):
+        if not include_path_in_search(path):
+            continue
+        for exe in _safe(lambda: list(Path(path).iterdir()), []):
+            if _safe(exe.is_dir, True) or exe.name in tf_entry_points:
+                continue
+            name = exe.name.decode('utf8') if six.PY2 else exe.name
+            if sys.platform == 'win32':
+                lower_name = name.lower()
+                for ext in win_exts:
+                    if lower_name.endswith(ext):
+                        name = name[:-len(ext)]
+                        break
+            if name not in tf_entry_points:
+                bins.append(name)
     aliases = [alias.decode('utf8') if six.PY2 else alias
                for alias in shell.get_aliases() if alias != tf_alias]
 
