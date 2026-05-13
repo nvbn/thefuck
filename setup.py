@@ -1,18 +1,9 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-import pkg_resources
+#import pkg_resources
 import sys
 import os
-import fastentrypoints
-
-
-try:
-    if int(pkg_resources.get_distribution("pip").version.split('.')[0]) < 6:
-        print('pip older than 6.0 not supported, please upgrade pip with:\n\n'
-              '    pip install -U pip')
-        sys.exit(-1)
-except pkg_resources.DistributionNotFound:
-    pass
+#import fastentrypoints
 
 if os.environ.get('CONVERT_README'):
     import pypandoc
@@ -31,7 +22,7 @@ elif (3, 0) < version < (3, 5):
           ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
 
-VERSION = '3.32'
+VERSION = '3.33'
 
 install_requires = ['psutil', 'colorama', 'six']
 extras_require = {':python_version<"3.4"': ['pathlib2'],

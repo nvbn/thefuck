@@ -2,7 +2,7 @@
 
 import pytest
 import warnings
-from mock import Mock, call, patch
+from unittest.mock import Mock, call, patch, MagicMock
 from thefuck.utils import default_settings, \
     memoize, get_closest, get_all_executables, replace_argument, \
     get_all_matched_commands, is_app, for_app, cache, \
@@ -271,6 +271,8 @@ class TestGetValidHistoryWithoutCurrent(object):
         ('fuck', ['ls cat', 'diff x', u'café ô']),
         (u'cafe ô', ['ls cat', 'diff x', u'café ô']),
     ])
-    def test_get_valid_history_without_current(self, script, result):
+    def test_get_valid_history_without_current(self, script, result, mocker):
+        mocker.patch('thefuck.utils.get_all_executables', 
+                 return_value=['ls', 'diff', 'café', 'le', 'cat'])
         command = Command(script, '')
         assert get_valid_history_without_current(command) == result

@@ -1,7 +1,7 @@
 import pytest
 import json
 from six import StringIO
-from mock import MagicMock
+from unittest.mock import MagicMock
 from thefuck.shells.generic import ShellConfiguration
 from thefuck.entrypoints.not_configured import main
 

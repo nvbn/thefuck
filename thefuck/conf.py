@@ -1,20 +1,23 @@
+import sys
+
+# Modern Python (3.4 and higher)
+if sys.version_info >= (3, 4):
+    import importlib.util
+
+    def load_source(name, pathname):
+        spec = importlib.util.spec_from_file_location(name, pathname)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        spec.loader.exec_module(module)
+        return module
+# Ancient Python (2.7, 3.3)
+else:
+    from imp import load_source
 import os
 import sys
 from warnings import warn
-from six import text_type
 from . import const
 from .system import Path
-
-try:
-    import importlib.util
-
-    def load_source(name, pathname, _file=None):
-        module_spec = importlib.util.spec_from_file_location(name, pathname)
-        module = importlib.util.module_from_spec(module_spec)
-        module_spec.loader.exec_module(module)
-        return module
-except ImportError:
-    from imp import load_source
 
 
 class Settings(dict):
@@ -76,11 +79,14 @@ class Settings(dict):
 
     def _settings_from_file(self):
         """Loads settings from file."""
-        settings = load_source(
-            'settings', text_type(self.user_dir.joinpath('settings.py')))
+        settings_path = self.user_dir.joinpath('settings.py')
+        try:
+            settings = load_source('settings', str(settings_path))
+        except Exception:
+            settings = None
         return {key: getattr(settings, key)
                 for key in const.DEFAULT_SETTINGS.keys()
-                if hasattr(settings, key)}
+                if settings is not None and hasattr(settings, key)}
 
     def _rules_from_env(self, val):
         """Transforms rules list from env-string to python."""

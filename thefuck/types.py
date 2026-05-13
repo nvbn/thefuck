@@ -1,8 +1,23 @@
+import sys
+
+# Modern Python (3.4 and higher)
+if sys.version_info >= (3, 4):
+    import importlib.util
+
+    def load_source(name, pathname):
+        spec = importlib.util.spec_from_file_location(name, pathname)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[name] = module
+        spec.loader.exec_module(module)
+        return module
+# Ancient Python (2.7, 3.3)
+else:
+    from imp import load_source
 import os
 import sys
 from . import logs
 from .shells import shell
-from .conf import settings, load_source
+from .conf import settings
 from .const import DEFAULT_PRIORITY, ALL_ENABLED
 from .exceptions import EmptyCommand
 from .utils import get_alias, format_raw_script

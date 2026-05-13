@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "thefuck"
+dynamic = [
+    "version",
+    "description",
+    "authors",
+    "license",
+    "requires-python",
+    "dependencies",
+    "optional-dependencies",
+    "scripts"
+]
