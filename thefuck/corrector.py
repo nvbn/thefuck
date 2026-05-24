@@ -47,14 +47,51 @@ def get_rules_import_paths():
                 yield contrib_rules
 
 
-def get_rules():
-    """Returns all enabled rules.
+def _filter_paths_for_command(paths, command):
+    """Filters rule paths to those relevant for the given command.
 
+    Rules whose filename prefix is a known executable that doesn't match
+    the current command are skipped entirely, avoiding both the import
+    cost and any subprocess calls in their match() functions.
+    """
+    from .utils import get_all_executables
+    if not command.script_parts:
+        return paths
+    cmd_name = command.script_parts[0]
+    try:
+        executables = set(get_all_executables())
+    except Exception:
+        return paths
+
+    filtered = []
+    for path in paths:
+        stem = path.stem
+        if '_' not in stem:
+            # Single-word rule (e.g. sudo.py) — no app prefix, always relevant
+            filtered.append(path)
+            continue
+        prefix = stem.split('_')[0]
+        if prefix not in executables:
+            # Prefix is descriptive, not an app name (e.g. "missing" in missing_space_before_subcommand)
+            filtered.append(path)
+        elif prefix == cmd_name:
+            # App-specific rule whose prefix matches the current command
+            filtered.append(path)
+        # else: app-specific rule for a different command, skip to avoid loading it
+    return filtered
+
+
+def get_rules(command=None):
+    """Returns all enabled rules, optionally filtered for a specific command.
+
+    :type command: thefuck.types.Command | None
     :rtype: [Rule]
 
     """
     paths = [rule_path for path in get_rules_import_paths()
              for rule_path in sorted(path.glob('*.py'))]
+    if command is not None:
+        paths = _filter_paths_for_command(paths, command)
     return sorted(get_loaded_rules(paths),
                   key=lambda rule: rule.priority)
 
@@ -97,7 +134,7 @@ def get_corrected_commands(command):
     :rtype: Iterable[thefuck.types.CorrectedCommand]
 
     """
-    rules = list(get_rules())
+    rules = list(get_rules(command))
 
     def _check_rule(rule):
         if rule.is_match(command):

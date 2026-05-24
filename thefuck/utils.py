@@ -109,7 +109,12 @@ def include_path_in_search(path):
     return not any(path.startswith(x) for x in settings.excluded_search_path_prefixes)
 
 
-_EXECUTABLES_CACHE_TTL = 3600  # seconds
+def _is_wsl():
+    # WSL_DISTRO_NAME (WSL2) and WSL_INTEROP are set automatically by WSL, no file I/O needed
+    return bool(os.environ.get('WSL_DISTRO_NAME') or os.environ.get('WSL_INTEROP'))
+
+
+_EXECUTABLES_CACHE_TTL = 86400 if _is_wsl() else 3600  # 24h on WSL, 1h elsewhere
 
 
 def _get_executables_cache_path():
