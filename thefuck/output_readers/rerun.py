@@ -17,8 +17,13 @@ def _kill_process(proc):
     try:
         proc.kill()
     except AccessDenied:
+        try:
+            executable = proc.exe()
+        except AccessDenied:
+            executable = 'unknown executable'
+
         logs.debug(u'Rerun: process PID {} ({}) could not be terminated'.format(
-            proc.pid, proc.exe()))
+            proc.pid, executable))
 
 
 def _wait_output(popen, is_slow):
