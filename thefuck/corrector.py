@@ -1,4 +1,5 @@
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from .conf import settings
 from .types import Rule
 from .system import Path
@@ -6,16 +7,25 @@ from . import logs
 
 
 def get_loaded_rules(rules_paths):
-    """Yields all available rules.
+    """Yields all available rules, loading them in parallel.
 
     :type rules_paths: [Path]
     :rtype: Iterable[Rule]
 
     """
-    for path in rules_paths:
-        if path.name != '__init__.py':
-            rule = Rule.from_path(path)
-            if rule and rule.is_enabled:
+    paths = [p for p in rules_paths if p.name != '__init__.py']
+    if not paths:
+        return
+
+    def _load(path):
+        rule = Rule.from_path(path)
+        if rule and rule.is_enabled:
+            return rule
+        return None
+
+    with ThreadPoolExecutor(max_workers=min(16, len(paths))) as executor:
+        for rule in executor.map(_load, paths):
+            if rule is not None:
                 yield rule
 
 
@@ -37,14 +47,51 @@ def get_rules_import_paths():
                 yield contrib_rules
 
 
-def get_rules():
-    """Returns all enabled rules.
+def _filter_paths_for_command(paths, command):
+    """Filters rule paths to those relevant for the given command.
 
+    Rules whose filename prefix is a known executable that doesn't match
+    the current command are skipped entirely, avoiding both the import
+    cost and any subprocess calls in their match() functions.
+    """
+    from .utils import get_all_executables
+    if not command.script_parts:
+        return paths
+    cmd_name = command.script_parts[0]
+    try:
+        executables = set(get_all_executables())
+    except Exception:
+        return paths
+
+    filtered = []
+    for path in paths:
+        stem = path.stem
+        if '_' not in stem:
+            # Single-word rule (e.g. sudo.py) — no app prefix, always relevant
+            filtered.append(path)
+            continue
+        prefix = stem.split('_')[0]
+        if prefix not in executables:
+            # Prefix is descriptive, not an app name (e.g. "missing" in missing_space_before_subcommand)
+            filtered.append(path)
+        elif prefix == cmd_name:
+            # App-specific rule whose prefix matches the current command
+            filtered.append(path)
+        # else: app-specific rule for a different command, skip to avoid loading it
+    return filtered
+
+
+def get_rules(command=None):
+    """Returns all enabled rules, optionally filtered for a specific command.
+
+    :type command: thefuck.types.Command | None
     :rtype: [Rule]
 
     """
     paths = [rule_path for path in get_rules_import_paths()
              for rule_path in sorted(path.glob('*.py'))]
+    if command is not None:
+        paths = _filter_paths_for_command(paths, command)
     return sorted(get_loaded_rules(paths),
                   key=lambda rule: rule.priority)
 
@@ -81,12 +128,22 @@ def organize_commands(corrected_commands):
 def get_corrected_commands(command):
     """Returns generator with sorted and unique corrected commands.
 
+    Runs rule matching in parallel using a thread pool for lower latency.
+
     :type command: thefuck.types.Command
     :rtype: Iterable[thefuck.types.CorrectedCommand]
 
     """
-    corrected_commands = (
-        corrected for rule in get_rules()
-        if rule.is_match(command)
-        for corrected in rule.get_corrected_commands(command))
-    return organize_commands(corrected_commands)
+    rules = list(get_rules(command))
+
+    def _check_rule(rule):
+        if rule.is_match(command):
+            return list(rule.get_corrected_commands(command))
+        return []
+
+    corrected = []
+    with ThreadPoolExecutor(max_workers=min(16, len(rules) or 1)) as executor:
+        for results in executor.map(_check_rule, rules):
+            corrected.extend(results)
+
+    return organize_commands(iter(corrected))

@@ -4,6 +4,7 @@ import pickle
 import re
 import shelve
 import sys
+import time
 import six
 from decorator import decorator
 from difflib import get_close_matches as difflib_get_close_matches
@@ -108,9 +109,36 @@ def include_path_in_search(path):
     return not any(path.startswith(x) for x in settings.excluded_search_path_prefixes)
 
 
+def _is_wsl():
+    # WSL_DISTRO_NAME (WSL2) and WSL_INTEROP are set automatically by WSL, no file I/O needed
+    return bool(os.environ.get('WSL_DISTRO_NAME') or os.environ.get('WSL_INTEROP'))
+
+
+_EXECUTABLES_CACHE_TTL = 86400 if _is_wsl() else 3600  # 24h on WSL, 1h elsewhere
+
+
+def _get_executables_cache_path():
+    default_xdg_cache_dir = os.path.expanduser('~/.cache')
+    cache_dir = os.getenv('XDG_CACHE_HOME', default_xdg_cache_dir)
+    try:
+        os.makedirs(cache_dir)
+    except OSError:
+        pass
+    return os.path.join(cache_dir, 'thefuck_executables.pickle')
+
+
 @memoize
 def get_all_executables():
     from thefuck.shells import shell
+
+    cache_path = _get_executables_cache_path()
+    try:
+        with open(cache_path, 'rb') as f:
+            cached = pickle.load(f)
+        if time.time() - cached.get('ts', 0) < _EXECUTABLES_CACHE_TTL:
+            return cached['value']
+    except Exception:
+        pass
 
     def _safe(fn, fallback):
         try:
@@ -130,7 +158,14 @@ def get_all_executables():
     aliases = [alias.decode('utf8') if six.PY2 else alias
                for alias in shell.get_aliases() if alias != tf_alias]
 
-    return bins + aliases
+    result = bins + aliases
+    try:
+        with open(cache_path, 'wb') as f:
+            pickle.dump({'ts': time.time(), 'value': result}, f)
+    except Exception:
+        pass
+
+    return result
 
 
 def replace_argument(script, from_, to):
