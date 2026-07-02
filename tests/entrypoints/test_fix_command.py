@@ -1,5 +1,5 @@
 import pytest
-from mock import Mock
+from unittest.mock import Mock
 from thefuck.entrypoints.fix_command import _get_raw_command
 
 

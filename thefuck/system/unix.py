@@ -3,7 +3,7 @@ import sys
 import tty
 import termios
 import colorama
-from distutils.spawn import find_executable
+from shutil import which as find_executable
 from .. import const
 
 init_output = colorama.init
