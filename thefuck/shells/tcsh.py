@@ -3,6 +3,7 @@ from time import time
 import os
 from ..utils import DEVNULL, memoize
 from .generic import Generic
+import io
 
 
 class Tcsh(Generic):
@@ -24,6 +25,20 @@ class Tcsh(Generic):
             self._parse_alias(alias)
             for alias in proc.stdout.read().decode('utf-8').split('\n')
             if alias and '\t' in alias)
+
+    def get_history(self):
+        history_file_name = self._get_history_file_name()
+        if not os.path.isfile(history_file_name):
+            return
+
+        try:
+            with io.open(history_file_name, 'r') as history:
+                for line in history.readlines():
+                    line = line.strip()
+                    if line and not line.startswith('#+'):
+                        yield line
+        except (OSError, IOError):
+            return
 
     def _get_history_file_name(self):
         return os.environ.get("HISTFILE",

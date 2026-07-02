@@ -8,6 +8,7 @@ from ..conf import settings
 from ..const import ARGUMENT_PLACEHOLDER
 from ..utils import DEVNULL, cache
 from .generic import Generic
+import io
 
 
 @cache('~/.config/fish/config.fish', '~/.config/fish/functions')
@@ -71,6 +72,22 @@ class Fish(Generic):
         raw_aliases = _get_aliases(overridden)
         functions.update(raw_aliases)
         return functions
+
+    def get_history(self):
+        history_file_name = self._get_history_file_name()
+        if not os.path.isfile(history_file_name):
+            return
+
+        try:
+            with io.open(history_file_name, 'r') as history:
+                for line in history.readlines():
+                    line = line.strip()
+                    if line.startswith('- cmd:'):
+                        cmd = line[len('- cmd:'):].strip()
+                        if cmd:
+                            yield cmd
+        except (OSError, IOError):
+            return
 
     def _expand_aliases(self, command_script):
         aliases = self.get_aliases()
