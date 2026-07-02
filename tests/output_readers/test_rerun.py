@@ -2,7 +2,7 @@
 
 import pytest
 import sys
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from psutil import AccessDenied, TimeoutExpired
 
 from thefuck.output_readers import rerun
