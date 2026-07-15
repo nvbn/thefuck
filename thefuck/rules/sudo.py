@@ -28,8 +28,11 @@ patterns = ['permission denied',
             'updatedb: can not open a temporary file']
 
 
+_SHELL_METACHARS = ("&&", ";", "|", "&")
+
+
 def match(command):
-    if command.script_parts and '&&' not in command.script_parts and command.script_parts[0] == 'sudo':
+    if command.script_parts and command.script_parts[0] == "sudo":
         return False
 
     for pattern in patterns:
@@ -38,10 +41,17 @@ def match(command):
     return False
 
 
+def _needs_shell_wrapping(script: str) -> bool:
+    """Check if *script* contains shell metacharacters (&&, ;, |, &, >, <)
+    that require wrapping with ``sh -c`` under sudo."""
+    for c in _SHELL_METACHARS:
+        if c in script:
+            return True
+    return ">" in script or "<" in script
+
+
 def get_new_command(command):
-    if '&&' in command.script:
-        return u'sudo sh -c "{}"'.format(" ".join([part for part in command.script_parts if part != "sudo"]))
-    elif '>' in command.script:
+    if _needs_shell_wrapping(command.script):
         return u'sudo sh -c "{}"'.format(command.script.replace('"', '\\"'))
     else:
         return u'sudo {}'.format(command.script)
