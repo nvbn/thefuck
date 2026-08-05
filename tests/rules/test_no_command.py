@@ -48,3 +48,16 @@ def test_not_match(mocker, script, output, which):
     ('gti commit -m "new commit"', ['git commit -m "new commit"'])])
 def test_get_new_command(script, result):
     assert get_new_command(Command(script, '')) == result
+
+
+@pytest.mark.usefixtures('no_memoize')
+def test_get_new_command_prefers_git_over_gitk_on_windows(mocker):
+    mocker.patch(
+        'thefuck.rules.no_command.get_all_executables',
+        return_value=['git.exe', 'gitk.exe']
+    )
+
+    assert get_new_command(Command('gitr commit', ''))[0] == 'git commit'
+    
+    
+    
