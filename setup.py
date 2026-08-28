@@ -31,13 +31,10 @@ elif (3, 0) < version < (3, 5):
           ' ({}.{} detected).'.format(*version))
     sys.exit(-1)
 
-VERSION = '3.32'
+VERSION = '3.33.0-revival'
 
-install_requires = ['psutil', 'colorama', 'six']
-extras_require = {':python_version<"3.4"': ['pathlib2'],
-                  ':python_version<"3.3"': ['backports.shutil_get_terminal_size'],
-                  ':python_version<="2.7"': ['decorator<5', 'pyte<0.8.1'],
-                  ':python_version>"2.7"': ['decorator', 'pyte'],
+install_requires = ['psutil>=5.0', 'colorama>=0.4', 'decorator>=4.0', 'pyte>=0.8.0']
+extras_require = {
                   ":sys_platform=='win32'": ['win_unicode_console']}
 
 if sys.platform == "win32":
@@ -63,7 +60,7 @@ setup(name='thefuck',
                                       'tests', 'tests.*', 'release']),
       include_package_data=True,
       zip_safe=False,
-      python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
+      python_requires='>=3.8',
       install_requires=install_requires,
       extras_require=extras_require,
       scripts=scripts,
