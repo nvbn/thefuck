@@ -370,6 +370,7 @@ The following rules are enabled by default on specific platforms only:
 * `pacman` &ndash; installs app with `pacman` if it is not installed (uses `yay`, `pikaur` or `yaourt` if available);
 * `pacman_invalid_option` &ndash; replaces lowercase `pacman` options with uppercase.
 * `pacman_not_found` &ndash; fixes package name with `pacman`, `yay`, `pikaur` or `yaourt`.
+* `xcode_license` &ndash; accepts the Xcode license with `sudo xcodebuild -license` and reruns the previous command;
 * `yum_invalid_operation` &ndash; fixes invalid `yum` calls, like `yum isntall vim`;
 
 The following commands are bundled with *The Fuck*, but are not enabled by
