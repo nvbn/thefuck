@@ -305,6 +305,7 @@ following rules are enabled by default:
 * `npm_run_script` &ndash; adds missing `run-script` for custom `npm` scripts;
 * `npm_wrong_command` &ndash; fixes wrong npm commands like `npm urgrade`;
 * `no_command` &ndash; fixes wrong console commands, for example `vom/vim`;
+* `smart_command_suggestion` &ndash; suggests likely commands for unrecognized commands, including less obvious typos;
 * `no_such_file` &ndash; creates missing directories with `mv` and `cp` commands;
 * `omnienv_no_such_command` &ndash; fixes wrong commands for `goenv`, `nodenv`, `pyenv` and `rbenv` (eg.: `pyenv isntall` or `goenv list`);
 * `open` &ndash; either prepends `http://` to address passed to `open` or creates a new file or directory and passes it to `open`;
