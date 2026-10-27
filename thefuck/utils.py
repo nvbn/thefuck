@@ -119,7 +119,12 @@ def get_all_executables():
             return fallback
 
     tf_alias = get_alias()
-    tf_entry_points = ['thefuck', 'fuck']
+    try:
+        from . import const as _const
+        tf_entry_points = (['thefuck', tf_alias]
+                           + list(_const.DEFAULT_EXTRA_ALIASES))
+    except Exception:
+        tf_entry_points = ['thefuck', tf_alias]
 
     bins = [exe.name.decode('utf8') if six.PY2 else exe.name
             for path in os.environ.get('PATH', '').split(os.pathsep)
@@ -299,23 +304,55 @@ def get_installation_version():
         from importlib.metadata import version
 
         return version('thefuck')
-    except ImportError:
-        import pkg_resources
+    except Exception:
+        try:
+            import pkg_resources
 
-        return pkg_resources.require('thefuck')[0].version
+            return pkg_resources.require('thefuck')[0].version
+        except Exception:
+            return '3.32-local'
 
 
 def get_alias():
     return os.environ.get('TF_ALIAS', 'fuck')
 
 
+def get_extra_aliases():
+    """Returns extra trigger aliases (MY + EN swearing).
+
+    Defaults to `const.DEFAULT_EXTRA_ALIASES`, overridable with
+    `THEFUCK_EXTRA_ALIASES` / `TF_EXTRA_ALIASES` (colon- or
+    comma-separated, empty string disables).
+    """
+    from . import const
+    for env in ('THEFUCK_EXTRA_ALIASES', 'TF_EXTRA_ALIASES'):
+        if env in os.environ:
+            val = os.environ[env].strip()
+            if not val:
+                return []
+            return [a.strip() for a in
+                    val.replace(',', ':').split(':') if a.strip()]
+    return list(const.DEFAULT_EXTRA_ALIASES)
+
+
+def get_all_aliases():
+    """Returns primary alias plus all extra trigger aliases."""
+    seen = set()
+    result = []
+    for alias in [get_alias()] + get_extra_aliases():
+        if alias not in seen:
+            seen.add(alias)
+            result.append(alias)
+    return result
+
+
 @memoize
 def get_valid_history_without_current(command):
-    def _not_corrected(history, tf_alias):
+    def _not_corrected(history, tf_aliases):
         """Returns all lines from history except that comes before `fuck`."""
         previous = None
         for line in history:
-            if previous is not None and line != tf_alias:
+            if previous is not None and line not in tf_aliases:
                 yield previous
             previous = line
         if history:
@@ -323,12 +360,14 @@ def get_valid_history_without_current(command):
 
     from thefuck.shells import shell
     history = shell.get_history()
-    tf_alias = get_alias()
+    tf_aliases = set(get_all_aliases())
     executables = set(get_all_executables())\
         .union(shell.get_builtin_commands())
 
-    return [line for line in _not_corrected(history, tf_alias)
-            if not line.startswith(tf_alias) and not line == command.script
+    return [line for line in _not_corrected(history, tf_aliases)
+            if not any(line == a or line.startswith(a + ' ')
+                       for a in tf_aliases)
+            and not line == command.script
             and line.split(' ')[0] in executables]
 
 

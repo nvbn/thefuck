@@ -7,7 +7,7 @@ from ..conf import settings
 from ..corrector import get_corrected_commands
 from ..exceptions import EmptyCommand
 from ..ui import select_command
-from ..utils import get_alias, get_all_executables
+from ..utils import get_alias, get_all_aliases, get_all_executables
 
 
 def _get_raw_command(known_args):
@@ -18,8 +18,11 @@ def _get_raw_command(known_args):
     else:
         history = os.environ['TF_HISTORY'].split('\n')[::-1]
         alias = get_alias()
+        all_aliases = set(get_all_aliases())
         executables = get_all_executables()
         for command in history:
+            if command in all_aliases:
+                continue
             diff = SequenceMatcher(a=alias, b=command).ratio()
             if diff < const.DIFF_WITH_ALIAS or command in executables:
                 return [command]

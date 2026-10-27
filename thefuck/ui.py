@@ -70,8 +70,13 @@ def select_command(corrected_commands):
     try:
         selector = CommandSelector(corrected_commands)
     except NoRuleMatched:
-        logs.failed('No fucks given' if get_alias() == 'fuck'
-                    else 'Nothing found')
+        alias = get_alias()
+        if alias == 'fuck':
+            logs.failed('No fucks given')
+        elif alias in const.DEFAULT_EXTRA_ALIASES:
+            logs.failed('No {} given'.format(alias))
+        else:
+            logs.failed('Nothing found')
         return
 
     if not settings.require_confirmation:

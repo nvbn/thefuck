@@ -28,6 +28,13 @@ ALL_ENABLED = _GenConst('All rules enabled')
 DEFAULT_RULES = [ALL_ENABLED]
 DEFAULT_PRIORITY = 1000
 
+# Alternative trigger words for `fuck`, including Malaysian
+# swear words and common English exclamations.
+# Can be overridden with THEFUCK_EXTRA_ALIASES / TF_EXTRA_ALIASES
+# (colon- or comma-separated, empty disables).
+DEFAULT_EXTRA_ALIASES = ['babi', 'batak', 'jimbet', 'anjir', 'kimak',
+                         'puki', 'pantat', 'shit', 'damn', 'wtf']
+
 DEFAULT_SETTINGS = {'rules': DEFAULT_RULES,
                     'exclude_rules': [],
                     'wait_command': 3,

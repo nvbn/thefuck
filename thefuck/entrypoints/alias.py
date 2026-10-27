@@ -10,17 +10,28 @@ def _get_alias(known_args):
         warn("The Fuck will drop Python 2 support soon, more details "
              "https://github.com/nvbn/thefuck/issues/685")
 
-    alias = shell.app_alias(known_args.alias)
-
     if known_args.enable_experimental_instant_mode:
         if six.PY2:
             warn("Instant mode requires Python 3")
         elif not which('script'):
             warn("Instant mode requires `script` app")
         else:
-            return shell.instant_mode_alias(known_args.alias)
+            instant = shell.instant_mode_alias(known_args.alias)
+            # Append extras unless this is first-stage logger setup:
+            if '--shell-logger' not in instant \
+                    and hasattr(shell, 'instant_mode_aliases'):
+                try:
+                    return shell.instant_mode_aliases(known_args.alias)
+                except Exception:
+                    return instant
+            return instant
 
-    return alias
+    if hasattr(shell, 'app_aliases'):
+        try:
+            return shell.app_aliases(known_args.alias)
+        except Exception:
+            pass
+    return shell.app_alias(known_args.alias)
 
 
 def print_alias(known_args):
