@@ -5,6 +5,7 @@ from thefuck.rules.apt_invalid_operation import match, get_new_command, \
     _get_operations
 
 invalid_operation = 'E: Invalid operation {}'.format
+invalid_operation_apt3 = 'Error: Invalid operation {}'.format
 apt_help = b'''apt 1.0.10.2ubuntu1 for amd64 compiled on Oct  5 2015 15:55:05
 Usage: apt [options] command
 
@@ -118,6 +119,8 @@ new_apt_get_operations = ['update', 'upgrade', 'install', 'remove', 'purge',
 
 @pytest.mark.parametrize('script, output', [
     ('apt', invalid_operation('saerch')),
+    ('apt', invalid_operation_apt3('saerch')),
+    ('apt', 'WARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\nError: Invalid operation saerch\n'),
     ('apt-get', invalid_operation('isntall')),
     ('apt-cache', invalid_operation('rumove'))])
 def test_match(script, output):
@@ -156,7 +159,13 @@ def test_get_operations(set_help, app, help_text, operations):
      apt_get_help, 'apt-get install vim'),
     ('apt saerch vim', invalid_operation('saerch'),
      apt_help, 'apt search vim'),
+    ('apt saerch vim', invalid_operation_apt3('saerch'),
+     apt_help, 'apt search vim'),
+    ('apt saerch vim', 'WARNING: apt does not have a stable CLI interface. Use with caution in scripts.\n\nError: Invalid operation saerch\n',
+     apt_help, 'apt search vim'),
     ('apt uninstall vim', invalid_operation('uninstall'),
+     apt_help, 'apt remove vim'),
+    ('apt uninstall vim', invalid_operation_apt3('uninstall'),
      apt_help, 'apt remove vim'),
 ])
 def test_get_new_command(set_help, output, script, help_text, result):
