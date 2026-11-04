@@ -1,3 +1,5 @@
+import re
+
 from thefuck.utils import for_app
 
 
@@ -7,10 +9,11 @@ def match(command):
 
 
 def get_new_command(command):
-    if '3' in command.script:
-        return command.script.replace("3", "2")
-    if '2' in command.script:
-        return command.script.replace("2", "3")
+    section = re.match(r'^\S+\s+(?:-s\s*)?([23])(?=\s)', command.script)
+    if section:
+        start, end = section.span(1)
+        replacement = '2' if section.group(1) == '3' else '3'
+        return command.script[:start] + replacement + command.script[end:]
 
     last_arg = command.script_parts[-1]
     help_command = last_arg + ' --help'
