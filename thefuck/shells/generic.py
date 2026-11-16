@@ -84,7 +84,10 @@ class Generic(object):
         encoded = self.encode_utf8(command)
 
         try:
-            splitted = [s.replace("??", "\\ ") for s in shlex.split(encoded.replace('\\ ', '??'))]
+            # Escape literal markers before protecting escaped spaces from shlex.
+            protected = encoded.replace('\x00', '\x00n').replace('\\ ', '\x00s')
+            splitted = [s.replace('\x00s', '\\ ').replace('\x00n', '\x00')
+                        for s in shlex.split(protected)]
         except ValueError:
             splitted = encoded.split(' ')
 
