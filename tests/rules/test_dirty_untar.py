@@ -71,3 +71,20 @@ def test_get_new_command(ext, tar_error, filename, unquoted, quoted, script, fix
     tar_error(unquoted.format(ext))
     assert (get_new_command(Command(script.format(filename.format(ext)), ''))
             == fixed.format(dir=quoted.format(''), filename=filename.format(ext)))
+
+
+def test_side_effect_keeps_files_outside_cwd(tmpdir):
+    tmpdir.mkdir('app')
+    outside = tmpdir.mkdir('app2').join('keep')
+    outside.write('*')
+    os.chdir(str(tmpdir.join('app')))
+
+    open('a', 'w').close()
+    with tarfile.TarFile('foo.tar', 'w') as archive:
+        archive.add('a')
+        archive.add('a', arcname='../app2/keep')
+
+    side_effect(Command('tar xvf foo.tar', ''), None)
+
+    assert os.listdir('.') == ['foo.tar']
+    assert outside.check()

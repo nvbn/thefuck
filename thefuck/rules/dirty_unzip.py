@@ -45,7 +45,8 @@ def get_new_command(command):
 def side_effect(old_cmd, command):
     with zipfile.ZipFile(_zip_file(old_cmd), 'r') as archive:
         for file in archive.namelist():
-            if not os.path.abspath(file).startswith(os.getcwd()):
+            if not os.path.abspath(file).startswith(
+                    os.path.join(os.getcwd(), '')):
                 # it's unsafe to overwrite files outside of the current directory
                 continue
 
