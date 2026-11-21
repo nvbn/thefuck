@@ -69,3 +69,20 @@ def test_side_effect(zip_error, script, filename):
 def test_get_new_command(zip_error, script, fixed, filename):
     zip_error(filename)
     assert get_new_command(Command(script, '')) == fixed
+
+
+def test_side_effect_keeps_files_outside_cwd(tmpdir):
+    tmpdir.mkdir('app')
+    outside = tmpdir.mkdir('app2').join('keep')
+    outside.write('*')
+    os.chdir(str(tmpdir.join('app')))
+
+    with zipfile.ZipFile('foo.zip', 'w') as archive:
+        archive.writestr('a', '1')
+        archive.writestr('../app2/keep', '2')
+    open('a', 'w').close()
+
+    side_effect(Command('unzip foo.zip', ''), None)
+
+    assert os.listdir('.') == ['foo.zip']
+    assert outside.check()
